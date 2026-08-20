@@ -3,6 +3,7 @@ use App\Config\SiteConfig;
 
 require_once ROOT.'/app/Views/layouts/header_main.php'; ?>
 
+<div id="app-dynamic" class="contents">
 <div class="w-full max-w-4xl mx-auto py-8 md:py-16 px-4 sm:px-6 text-center">
     <div class="mb-8 flex justify-center">
         <div class="h-16 w-16 bg-transparent rounded-full flex items-center justify-center">
@@ -80,6 +81,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php'; ?>
             </div>
         </div>
     <?php } ?>
+</div>
+
 </div>
 
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

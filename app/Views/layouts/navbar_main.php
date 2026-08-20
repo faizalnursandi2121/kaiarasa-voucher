@@ -21,8 +21,8 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
                 <!-- Desktop Navigation Links (Hidden on Mobile) -->
                 <?php if (isset($_SESSION['user_id'])) { ?>
                 <div class="hidden md:flex items-center gap-6 text-sm font-medium">
-                    <a href="/" class="relative py-1 <?= ($uri == '/' || $uri == '/home') ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-foreground' : 'text-accents-5 hover:text-foreground transition-colors' ?>">Home</a>
-                    <a href="/settings" class="relative py-1 <?= (strpos($uri, '/settings') === 0) ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-foreground' : 'text-accents-5 hover:text-foreground transition-colors' ?>">Settings</a>
+                    <a href="/" data-app-nav data-nav-path="/" data-on="text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-foreground" data-off="text-accents-5 hover:text-foreground transition-colors" class="relative py-1 <?= ($uri == '/' || $uri == '/home') ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-foreground' : 'text-accents-5 hover:text-foreground transition-colors' ?>">Home</a>
+                    <a href="/settings" data-app-nav data-nav-path="/settings" data-on="text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-foreground" data-off="text-accents-5 hover:text-foreground transition-colors" class="relative py-1 <?= (strpos($uri, '/settings') === 0) ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-foreground' : 'text-accents-5 hover:text-foreground transition-colors' ?>">Settings</a>
                 </div>
                 <?php } ?>
             </div>
@@ -95,11 +95,11 @@ foreach ($languages as $lang) {
             <!-- Nav Links -->
             <?php if (isset($_SESSION['user_id'])) { ?>
             <div class="flex flex-col gap-1">
-                <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= ($uri == '/' || $uri == '/home') ? 'bg-foreground/5 text-foreground font-bold' : 'text-accents-5 hover:bg-accents-1' ?>">
+                <a href="/" data-app-nav data-nav-path="/" data-on="bg-foreground/5 text-foreground font-bold" data-off="text-accents-5 hover:bg-accents-1" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= ($uri == '/' || $uri == '/home') ? 'bg-foreground/5 text-foreground font-bold' : 'text-accents-5 hover:bg-accents-1' ?>">
                     <i data-lucide="home" class="w-5 h-5 !text-black dark:!text-white" stroke-width="2.5"></i>
                     <span>Home</span>
                 </a>
-                <a href="/settings" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= (strpos($uri, '/settings') === 0) ? 'bg-foreground/5 text-foreground font-bold' : 'text-accents-5 hover:bg-accents-1' ?>">
+                <a href="/settings" data-app-nav data-nav-path="/settings" data-on="bg-foreground/5 text-foreground font-bold" data-off="text-accents-5 hover:bg-accents-1" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= (strpos($uri, '/settings') === 0) ? 'bg-foreground/5 text-foreground font-bold' : 'text-accents-5 hover:bg-accents-1' ?>">
                     <i data-lucide="settings" class="w-5 h-5 !text-black dark:!text-white" stroke-width="2.5"></i>
                     <span>Settings</span>
                 </a>
@@ -134,3 +134,137 @@ foreach ($languages as $lang) {
         </div>
     </div>
 </nav>
+
+<script>
+// ===== Unified in-app SPA navigation (Home <-> Settings <-> settings sub-nav) =====
+// The navbar persists; only #app-dynamic is swapped. Document-level delegation
+// keeps it working after #app-dynamic is replaced. Scoped to global app routes
+// ("/", "/home", "/settings*"); session dashboard links fall back to full load.
+(function () {
+    if (window.__mivoAppSpa) return;
+    window.__mivoAppSpa = true;
+
+    var DYNAMIC_ID = 'app-dynamic';
+
+    function isGlobalAppPath(pathname) {
+        return pathname === '/' || pathname === '/home' ||
+               pathname === '/settings' || pathname.indexOf('/settings/') === 0;
+    }
+
+    function isActivePath(itemPath, currentPath) {
+        if (itemPath === '/' || itemPath === '/home') {
+            return currentPath === '/' || currentPath === '/home';
+        }
+        if (itemPath === '/settings') {
+            return currentPath === '/settings' || currentPath.indexOf('/settings/') === 0;
+        }
+        return currentPath.indexOf(itemPath) === 0;
+    }
+
+    function setActiveNav(pathname) {
+        document.querySelectorAll('[data-app-nav]').forEach(function (a) {
+            var p = a.getAttribute('data-nav-path') || '/';
+            var on = (a.getAttribute('data-on') || '').split(/\s+/);
+            var off = (a.getAttribute('data-off') || '').split(/\s+/);
+            var active = isActivePath(p, pathname);
+            on.forEach(function (c) { if (c) a.classList.remove(c); });
+            off.forEach(function (c) { if (c) a.classList.remove(c); });
+            (active ? on : off).forEach(function (c) { if (c) a.classList.add(c); });
+        });
+    }
+
+    function executeScripts(root) {
+        root.querySelectorAll('script').forEach(function (oldScript) {
+            var s = document.createElement('script');
+            if (oldScript.src) { s.src = oldScript.src; }
+            else { s.textContent = oldScript.textContent; }
+            if (oldScript.type) { s.type = oldScript.type; }
+            s.async = false;
+            oldScript.parentNode.replaceChild(s, oldScript);
+        });
+    }
+
+    function reinitScope(root) {
+        try { if (window.lucide) lucide.createIcons(); } catch (e) {}
+        try { if (window.i18n && window.i18n.applyTranslations) window.i18n.applyTranslations(); } catch (e) {}
+        try {
+            var SelectCtor = window.Mivo && window.Mivo.components && window.Mivo.components.Select;
+            if (SelectCtor) {
+                root.querySelectorAll('select.custom-select').forEach(function (el) {
+                    if (!SelectCtor.get(el)) { new SelectCtor(el); }
+                });
+            }
+        } catch (e) {}
+    }
+
+    function setLoading(on) {
+        var root = document.getElementById(DYNAMIC_ID);
+        if (!root) return;
+        for (var i = 0; i < root.children.length; i++) {
+            var kid = root.children[i];
+            if (kid.tagName === 'SCRIPT' || kid.tagName === 'TEMPLATE') continue;
+            kid.style.opacity = on ? '0.5' : '';
+            kid.style.pointerEvents = on ? 'none' : '';
+        }
+        document.body.style.cursor = on ? 'wait' : '';
+    }
+
+    function loadApp(url, push) {
+        if (push === undefined) push = true;
+        var u = new URL(url, window.location.href);
+        u.hash = '';
+        var target = u.pathname + u.search;
+        setLoading(true);
+        fetch(target, { credentials: 'same-origin' })
+            .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.text(); })
+            .then(function (html) {
+                var doc = new DOMParser().parseFromString(html, 'text/html');
+                var fresh = doc.getElementById(DYNAMIC_ID);
+                if (!fresh) { window.location.href = url; return; }
+                var current = document.getElementById(DYNAMIC_ID);
+                if (!current) { window.location.href = url; return; }
+                var imported = document.importNode(fresh, true);
+                current.replaceWith(imported);
+                executeScripts(imported);
+                reinitScope(imported);
+                if (push) history.pushState({ appSpa: true, url: u.href }, '', u.href);
+                setActiveNav(u.pathname);
+                if (doc.title) document.title = doc.title;
+                setLoading(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.dispatchEvent(new CustomEvent('app:loaded', { detail: { url: u.href } }));
+            })
+            .catch(function (err) {
+                console.error('[app-spa] load failed, falling back to full navigation:', err);
+                window.location.href = url;
+            });
+    }
+
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest('a');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href || href === '#' || a.target === '_blank') return;
+        if (a.hasAttribute('data-no-spa') || a.closest('[data-no-spa]')) return;
+        try {
+            var u = new URL(href, window.location.href);
+            if (u.origin !== window.location.origin) return;
+            if (!isGlobalAppPath(u.pathname)) return;
+            if (u.pathname === window.location.pathname && u.search === window.location.search) {
+                e.preventDefault(); // same page
+                return;
+            }
+            e.preventDefault();
+            loadApp(u.href, true);
+        } catch (err) { /* allow default navigation */ }
+    });
+
+    window.addEventListener('popstate', function () {
+        loadApp(window.location.href, false);
+    });
+
+    if (!history.state || !history.state.appSpa) {
+        history.replaceState({ appSpa: true, url: window.location.href }, '', window.location.href);
+    }
+})();
+</script>

@@ -46,7 +46,7 @@ $menu = [
 </nav>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    (function () {
         const toggleBtn = document.getElementById('sub-navbar-toggle');
         const menu = document.getElementById('sub-navbar-menu');
         const icon = toggleBtn?.querySelector('i');
@@ -76,7 +76,7 @@ $menu = [
                 }
             });
         }
-    });
+    })();
 
     // Re-run Lucide mainly for the chevron if this is loaded via PJAX (though sidebar is usually persistent in SPA layout? 
     // Wait, in PJAX we replace content, not the sidebar if it's outside. 
@@ -87,149 +87,4 @@ $menu = [
     // OR we just re-init the script. Since it's inline, it runs on content injection.
     
     if (typeof lucide !== 'undefined') lucide.createIcons();
-</script>
-
-<script>
-// ===== Settings SPA navigation (PJAX-style content swap) =====
-// Intercepts clicks on the settings sub-nav so only #settings-dynamic is
-// swapped instead of doing a full page reload. The sub-nav lives outside
-// #settings-dynamic, so this listener persists across swaps.
-(function () {
-    if (window.__mivoSettingsSpa) return;
-    window.__mivoSettingsSpa = true;
-
-    var menu = document.getElementById('sub-navbar-menu');
-    if (!menu) return;
-
-    var DYNAMIC_ID = 'settings-dynamic';
-
-    function isSettingsPath(pathname) {
-        return pathname === '/settings' || pathname.indexOf('/settings/') === 0;
-    }
-
-    // Mirror of PHP isActive() in this file.
-    function isActivePath(itemPath, currentPath) {
-        if (itemPath === '/settings') {
-            return currentPath === '/settings' || currentPath === '/settings/' ||
-                   currentPath.indexOf('/settings/routers') === 0 ||
-                   currentPath.indexOf('/settings/add') === 0;
-        }
-        return currentPath.indexOf(itemPath) === 0;
-    }
-
-    function setActiveNav(pathname) {
-        menu.querySelectorAll('.sub-nav-item').forEach(function (a) {
-            var itemPath = a.getAttribute('href') || '';
-            var active = isActivePath(itemPath, pathname);
-            ['bg-foreground', 'text-background', 'shadow-sm'].forEach(function (c) {
-                a.classList.toggle(c, active);
-            });
-            ['text-accents-5', 'hover:text-foreground', 'hover:bg-accents-1'].forEach(function (c) {
-                a.classList.toggle(c, !active);
-            });
-        });
-    }
-
-    // Re-execute inline <script> tags inside the swapped fragment
-    // (imported nodes do not run scripts automatically).
-    function executeScripts(root) {
-        root.querySelectorAll('script').forEach(function (oldScript) {
-            var s = document.createElement('script');
-            if (oldScript.src) { s.src = oldScript.src; }
-            else { s.textContent = oldScript.textContent; }
-            if (oldScript.type) { s.type = oldScript.type; }
-            s.async = false;
-            oldScript.parentNode.replaceChild(s, oldScript);
-        });
-    }
-
-    // Re-initialise scoped components/luxuries after a swap.
-    function reinitScope(root) {
-        try { if (window.lucide) lucide.createIcons(); } catch (e) {}
-        try { if (window.i18n && window.i18n.applyTranslations) window.i18n.applyTranslations(); } catch (e) {}
-        try {
-            var SelectCtor = window.Mivo && window.Mivo.components && window.Mivo.components.Select;
-            if (SelectCtor) {
-                root.querySelectorAll('select.custom-select').forEach(function (el) {
-                    if (!SelectCtor.get(el)) { new SelectCtor(el); }
-                });
-            }
-        } catch (e) {}
-    }
-
-    function setLoading(on) {
-        var root = document.getElementById(DYNAMIC_ID);
-        if (!root) return;
-        for (var i = 0; i < root.children.length; i++) {
-            var kid = root.children[i];
-            if (kid.tagName === 'SCRIPT' || kid.tagName === 'TEMPLATE') continue;
-            kid.style.opacity = on ? '0.5' : '';
-            kid.style.pointerEvents = on ? 'none' : '';
-        }
-        document.body.style.cursor = on ? 'wait' : '';
-    }
-
-    function loadSettings(url, push) {
-        if (push === undefined) push = true;
-        var u = new URL(url, window.location.href);
-        u.hash = '';
-        var target = u.pathname + u.search;
-        setLoading(true);
-        fetch(target, { credentials: 'same-origin' })
-            .then(function (res) {
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                return res.text();
-            })
-            .then(function (html) {
-                var doc = new DOMParser().parseFromString(html, 'text/html');
-                var fresh = doc.getElementById(DYNAMIC_ID);
-                if (!fresh) { window.location.href = url; return; } // not a settings page -> full nav
-                var current = document.getElementById(DYNAMIC_ID);
-                if (!current) { window.location.href = url; return; }
-                var imported = document.importNode(fresh, true);
-                current.replaceWith(imported);
-                executeScripts(imported);
-                reinitScope(imported);
-                if (push) history.pushState({ settingsSpa: true, url: u.href }, '', u.href);
-                setActiveNav(u.pathname);
-                if (doc.title) document.title = doc.title;
-                setLoading(false);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                window.dispatchEvent(new CustomEvent('settings:loaded', { detail: { url: u.href } }));
-            })
-            .catch(function (err) {
-                console.error('[settings-spa] load failed, falling back to full navigation:', err);
-                window.location.href = url;
-            });
-    }
-
-    // Intercept sub-nav clicks (only the 6 settings menu items).
-    menu.addEventListener('click', function (e) {
-        var a = e.target.closest('.sub-nav-item');
-        if (!a) return;
-        var href = a.getAttribute('href');
-        if (!href || href === '#' || a.target === '_blank') return;
-        try {
-            var u = new URL(href, window.location.href);
-            if (u.origin !== window.location.origin) return;
-            if (!isSettingsPath(u.pathname)) return;
-            if (u.pathname === window.location.pathname && u.search === window.location.search) {
-                e.preventDefault(); // same page
-                return;
-            }
-            e.preventDefault();
-            loadSettings(u.href, true);
-        } catch (err) { /* allow default navigation */ }
-    });
-
-    // Back / forward.
-    window.addEventListener('popstate', function () {
-        loadSettings(window.location.href, false);
-    });
-
-    // Seed history state so popstate has a marker on the initial settings page.
-    if (!history.state || !history.state.settingsSpa) {
-        history.replaceState({ settingsSpa: true, url: window.location.href }, '', window.location.href);
-    }
-})();
 </script>

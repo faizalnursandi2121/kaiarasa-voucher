@@ -5,6 +5,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 ?>
 
 <!-- Sub-Navbar Navigation -->
+<div id="app-dynamic" class="contents">
 <?php include ROOT.'/app/Views/layouts/sidebar_settings.php'; ?>
 
 <div id="settings-dynamic" class="contents">
@@ -176,6 +177,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         });
     })();
 </script>
+</div>
 </div>
 
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
