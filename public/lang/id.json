@@ -180,6 +180,8 @@
         "unique_id": "ID Unik. Pratinjau:",
         "show_quick_access": "Tampilkan di Akses Cepat (Beranda)",
         "connection_details": "Detail Koneksi",
+        "api_port": "Port API",
+        "use_ssl": "Gunakan SSL (api-ssl / port 8729)",
         "password_hint": "Biarkan kosong untuk menggunakan kata sandi yang ada.",
         "hotspot_info": "Informasi Hotspot",
         "dns_name": "Nama DNS",

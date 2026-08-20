@@ -20,7 +20,7 @@ class GeneratorController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
             // Fetch Profiles for Dropdown
             $profiles = $API->comm('/ip/hotspot/user/profile/print');
@@ -101,7 +101,7 @@ class GeneratorController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
 
             // Format Comment: prefix-rand-date- comment

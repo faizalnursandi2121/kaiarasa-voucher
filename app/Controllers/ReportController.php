@@ -57,7 +57,7 @@ class ReportController extends Controller
             return null;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($config);
         $users = [];
 
         $profilePriceMap = [];
@@ -171,7 +171,7 @@ class ReportController extends Controller
             exit;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($config);
         $users = [];
 
         $profilePriceMap = [];

@@ -30,7 +30,9 @@ class Migrations
             reload_interval INTEGER DEFAULT 60,
             interface TEXT,
             description TEXT,
-            quick_access INTEGER DEFAULT 0
+            quick_access INTEGER DEFAULT 0,
+            port INTEGER DEFAULT 8728,
+            ssl INTEGER DEFAULT 0
         )");
 
         // 3. Quick Access (Dashboard Shortcuts)
@@ -100,6 +102,31 @@ class Migrations
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )");
 
+        // 9. Additive migration: ensure new columns exist on upgrades
+        // (CREATE TABLE IF NOT EXISTS won't add columns to existing tables)
+        self::ensureColumn($pdo, 'routers', 'port', 'INTEGER DEFAULT 8728');
+        self::ensureColumn($pdo, 'routers', 'ssl', 'INTEGER DEFAULT 0');
+
         return true;
+    }
+
+    /**
+     * Add a column to a table only if it doesn't already exist (SQLite).
+     *
+     * @param \PDO   $pdo
+     * @param string $table
+     * @param string $column
+     * @param string $definition
+     */
+    private static function ensureColumn(\PDO $pdo, $table, $column, $definition)
+    {
+        $existing = $pdo->query("PRAGMA table_info({$table})")->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($existing as $row) {
+            if (($row['name'] ?? '') === $column) {
+                return; // already present
+            }
+        }
+
+        $pdo->exec("ALTER TABLE {$table} ADD COLUMN {$column} {$definition}");
     }
 }

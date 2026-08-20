@@ -45,6 +45,10 @@ class Console
                 $this->commandInstall($args);
                 break;
 
+            case 'migrate':
+                $this->commandMigrate();
+                break;
+
             case 'help':
             default:
                 $this->commandHelp();
@@ -163,6 +167,22 @@ class Console
         }
     }
 
+    /**
+     * Run database migrations (idempotent). Safe for fresh and existing installs.
+     * Applies additive schema changes like new columns to existing tables.
+     */
+    private function commandMigrate()
+    {
+        echo "Running migrations...\n";
+        try {
+            if (Migrations::up()) {
+                echo self::COLOR_GREEN.'Migrations applied successfully.'.self::COLOR_RESET."\n";
+            }
+        } catch (\Exception $e) {
+            echo self::COLOR_RED.'Migration Error: '.$e->getMessage().self::COLOR_RESET."\n";
+        }
+    }
+
     private function commandInstall($args)
     {
         echo self::COLOR_BLUE.'=== MIVO Installer ==='.self::COLOR_RESET."\n";
@@ -255,6 +275,7 @@ class Console
         echo '  '.self::COLOR_GREEN.'serve        '.self::COLOR_RESET."    Start the development server\n";
         echo '  '.self::COLOR_GREEN.'key:generate '.self::COLOR_RESET."    Set the application key\n";
         echo '  '.self::COLOR_GREEN.'admin:reset  '.self::COLOR_RESET."    Reset admin password (default: admin)\n";
+        echo '  '.self::COLOR_GREEN.'migrate      '.self::COLOR_RESET."    Run database migrations (upgrades/adds new columns)\n";
         echo '  '.self::COLOR_GREEN.'help         '.self::COLOR_RESET."    Show this help message\n";
         echo "\n";
     }

@@ -26,6 +26,7 @@ class ApiController extends Controller
         $pass = $input['password'] ?? '';
         $id = $input['id'] ?? null;
         $port = $input['port'] ?? 8728; // Default port
+        $ssl = ! empty($input['ssl']); // api-ssl
 
         // Fallback to stored password if empty and ID provided (Edit Mode)
         if (empty($pass) && ! empty($id)) {
@@ -47,6 +48,7 @@ class ApiController extends Controller
         $api = new RouterOSAPI;
         // $api->debug = true; // Enable for debugging
         $api->port = (int) $port;
+        $api->ssl = $ssl;
 
         if ($api->connect($ip, $user, $pass)) {
             $api->write('/interface/print');

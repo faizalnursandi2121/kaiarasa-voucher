@@ -59,7 +59,7 @@ class DashboardController extends Controller
             return $this->view('dashboard', $data);
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
 
         // Determine password: if legacy, decrypt it. If SQLite (new), assume plain for now
         // (since we just seeded 'admin' plain in setup_database.php) or decrypt if you decide to encrypt in DB.

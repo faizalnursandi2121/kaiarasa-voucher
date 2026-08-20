@@ -34,7 +34,7 @@ class HotspotController extends Controller
         $servers = [];
         $error = null;
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         // $API->debug = true; // Enable for debugging
 
         // Decrypt password if from SQLite
@@ -75,7 +75,7 @@ class HotspotController extends Controller
             return;
         } // Should handle error better
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
 
         $password = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
@@ -147,7 +147,7 @@ class HotspotController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -191,7 +191,7 @@ class HotspotController extends Controller
         $configModel = new Config;
         $creds = $configModel->getSession($session);
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -247,7 +247,7 @@ class HotspotController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -385,7 +385,7 @@ class HotspotController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -432,7 +432,7 @@ class HotspotController extends Controller
         $items = [];
         $error = null;
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -472,7 +472,7 @@ class HotspotController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -500,7 +500,7 @@ class HotspotController extends Controller
         $items = [];
         $error = null;
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -536,7 +536,7 @@ class HotspotController extends Controller
         $items = [];
         $error = null;
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -581,7 +581,7 @@ class HotspotController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -626,7 +626,7 @@ class HotspotController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -654,7 +654,7 @@ class HotspotController extends Controller
         $items = [];
         $error = null;
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -717,7 +717,7 @@ class HotspotController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -789,7 +789,7 @@ class HotspotController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);
@@ -829,7 +829,7 @@ class HotspotController extends Controller
         }
 
         $cookies = [];
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $API->attempts = 1;
         $API->timeout = 3;
 
@@ -855,7 +855,7 @@ class HotspotController extends Controller
             return;
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         if ($API->connect($creds['ip_address'], $creds['username'], $creds['password'])) {
             $API->comm('/ip/hotspot/cookie/remove', ['.id' => $id]);
             $API->disconnect();
@@ -873,7 +873,7 @@ class HotspotController extends Controller
             exit('Session error');
         }
 
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);

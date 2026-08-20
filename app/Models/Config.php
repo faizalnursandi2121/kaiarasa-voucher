@@ -39,6 +39,8 @@ class Config
                     'interface' => $router['interface'],
                     'info' => $router['description'],
                     'quick_access' => $router['quick_access'] ?? 0,
+                    'port' => (int) ($router['port'] ?? 8728),
+                    'ssl' => (int) ($router['ssl'] ?? 0),
                     'source' => 'sqlite',
                 ];
             }
@@ -68,6 +70,8 @@ class Config
                 'reload' => isset($s[7]) ? explode('*', $s[7])[1] : '',
                 'interface' => isset($s[8]) ? explode('(', $s[8])[1] : '',
                 'info' => isset($s[9]) ? explode(')', $s[9])[1] : '',
+                'port' => 8728, // Legacy config has no port info, default API port
+                'ssl' => 0,
                 'source' => 'legacy',
             ];
         }
@@ -106,9 +110,10 @@ class Config
                 'currency' => $router['currency'],
                 'reload_interval' => $router['reload_interval'],
                 'interface' => $router['interface'],
-                'interface' => $router['interface'],
                 'description' => $router['description'],
                 'quick_access' => $router['quick_access'] ?? 0,
+                'port' => (int) ($router['port'] ?? 8728),
+                'ssl' => (int) ($router['ssl'] ?? 0),
             ];
         }
 
@@ -118,8 +123,8 @@ class Config
     public function addSession($data)
     {
         $db = Database::getInstance();
-        $sql = 'INSERT INTO routers (session_name, ip_address, username, password, hotspot_name, dns_name, currency, reload_interval, interface, description, quick_access) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO routers (session_name, ip_address, username, password, hotspot_name, dns_name, currency, reload_interval, interface, description, quick_access, port, ssl) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         return $db->query($sql, [
             $data['session_name'] ?? 'New Session',
@@ -133,6 +138,8 @@ class Config
             $data['interface'] ?? 'ether1',
             $data['description'] ?? '',
             $data['quick_access'] ?? 0,
+            $data['port'] ?? 8728,
+            $data['ssl'] ?? 0,
         ]);
     }
 
@@ -142,7 +149,7 @@ class Config
 
         // If password is provided, encrypt it. If empty, don't update it (keep existing).
         if (! empty($data['password'])) {
-            $sql = 'UPDATE routers SET session_name=?, ip_address=?, username=?, password=?, hotspot_name=?, dns_name=?, currency=?, reload_interval=?, interface=?, description=?, quick_access=? WHERE id=?';
+            $sql = 'UPDATE routers SET session_name=?, ip_address=?, username=?, password=?, hotspot_name=?, dns_name=?, currency=?, reload_interval=?, interface=?, description=?, quick_access=?, port=?, ssl=? WHERE id=?';
             $params = [
                 $data['session_name'],
                 $data['ip_address'],
@@ -155,10 +162,12 @@ class Config
                 $data['interface'],
                 $data['description'],
                 $data['quick_access'] ?? 0,
+                $data['port'] ?? 8728,
+                $data['ssl'] ?? 0,
                 $id,
             ];
         } else {
-            $sql = 'UPDATE routers SET session_name=?, ip_address=?, username=?, hotspot_name=?, dns_name=?, currency=?, reload_interval=?, interface=?, description=?, quick_access=? WHERE id=?';
+            $sql = 'UPDATE routers SET session_name=?, ip_address=?, username=?, hotspot_name=?, dns_name=?, currency=?, reload_interval=?, interface=?, description=?, quick_access=?, port=?, ssl=? WHERE id=?';
             $params = [
                 $data['session_name'],
                 $data['ip_address'],
@@ -170,6 +179,8 @@ class Config
                 $data['interface'],
                 $data['description'],
                 $data['quick_access'] ?? 0,
+                $data['port'] ?? 8728,
+                $data['ssl'] ?? 0,
                 $id,
             ];
         }

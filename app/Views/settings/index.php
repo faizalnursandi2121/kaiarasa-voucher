@@ -63,6 +63,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                                 data-iface="<?= htmlspecialchars($router['interface'] ?? 'ether1') ?>"
                                 data-currency="<?= htmlspecialchars($router['currency'] ?? 'Rp') ?>"
                                 data-areload="<?= htmlspecialchars($router['reload_interval'] ?? '10') ?>"
+                                data-port="<?= htmlspecialchars($router['port'] ?? 8728) ?>"
+                                data-ssl="<?= htmlspecialchars($router['ssl'] ?? 0) ?>"
                                 data-quick-access="<?= $router['quick_access'] ?? 0 ?>">
                                 <td>
                                     <div class="flex items-center">
@@ -147,7 +149,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 <h2 class="text-base font-semibold mb-3 flex items-center gap-2" data-i18n="routers.connection_details">
                     <i data-lucide="zap" class="w-4 h-4"></i> Connection Details
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="space-y-1 md:col-span-1">
                         <label class="form-label" data-i18n="home.ip_address">IP Address</label>
                         <input class="w-full" type="text" name="ipmik" placeholder="192.168.88.1" required/>
@@ -160,6 +162,14 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         <label class="form-label" data-i18n="login.password">Password</label>
                         <input class="w-full" type="password" name="passmik" id="passmik" placeholder="••••••••"/>
                     </div>
+                    <div class="space-y-1">
+                        <label class="form-label" data-i18n="routers.api_port">API Port</label>
+                        <input class="w-full" type="number" name="port" id="api-port" min="1" max="65535" placeholder="8728"/>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mt-4">
+                    <input type="checkbox" id="ssl" name="ssl" class="checkbox flex-shrink-0" value="1">
+                    <label for="ssl" class="text-xs font-bold cursor-pointer select-none whitespace-nowrap uppercase tracking-wider" data-i18n="routers.use_ssl">Use SSL (api-ssl / port 8729)</label>
                 </div>
             </div>
 
@@ -249,6 +259,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     const user = form.querySelector('[name="usermik"]').value;
                     const pass = form.querySelector('[name="passmik"]').value;
                     const id = form.querySelector('[name="id"]').value || null;
+                    const port = form.querySelector('[name="port"]').value || '8728';
+                    const ssl = form.querySelector('#ssl')?.checked ? 1 : 0;
 
                     if (!ip || !user) {
                         Mivo.toast('warning', 'Missing Details', 'IP Address and Username are required');
@@ -262,7 +274,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         const response = await fetch('/api/router/interfaces', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ ip, user, password: pass, id })
+                            body: JSON.stringify({ ip, user, password: pass, id, port, ssl })
                         });
                         const data = await response.json();
 
@@ -321,6 +333,10 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                  form.querySelector('[name="dnsname"]').value = row.dataset.dnsname || '';
                  form.querySelector('[name="currency"]').value = row.dataset.currency || 'Rp';
                  form.querySelector('[name="areload"]').value = row.dataset.areload || '10';
+                 form.querySelector('[name="port"]').value = row.dataset.port || '8728';
+                 form.querySelector('[name="port"]').placeholder = row.dataset.port || '8728';
+                 const sslCheck = form.querySelector('#ssl');
+                 if(sslCheck) sslCheck.checked = row.dataset.ssl == '1';
                  
                  const quickCheck = form.querySelector('#quick_access');
                  if(quickCheck) quickCheck.checked = row.dataset.quickAccess == '1';

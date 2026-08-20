@@ -178,6 +178,8 @@
         "unique_id": "Unique ID. Preview:",
         "show_quick_access": "Show in Quick Access (Home Page)",
         "connection_details": "Connection Details",
+        "api_port": "API Port",
+        "use_ssl": "Use SSL (api-ssl / port 8729)",
         "password_hint": "Leave empty to keep existing password.",
         "hotspot_info": "Hotspot Information",
         "dns_name": "DNS Name",

@@ -18,7 +18,7 @@ class LogController extends Controller
         }
 
         $logs = [];
-        $API = new RouterOSAPI;
+        $API = RouterOSAPI::fromSession($config);
         $API->attempts = 1;
         $API->timeout = 3;
 

@@ -37,6 +37,22 @@ class RouterOSAPI
         // Constructor logic if needed
     }
 
+    /**
+     * Build a configured RouterOSAPI instance from a session/config array.
+     * Applies the stored API port and SSL flag (api-ssl) so custom ports are honored.
+     *
+     * @param array $creds Session config (from Config::getSession / getSessionById)
+     * @return static
+     */
+    public static function fromSession(array $creds = [])
+    {
+        $api = new static;
+        $api->port = (int) ($creds['port'] ?? 8728);
+        $api->ssl = ! empty($creds['ssl']);
+
+        return $api;
+    }
+
     public function isIterable($var)
     {
         return $var !== null
