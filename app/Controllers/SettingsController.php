@@ -44,6 +44,19 @@ class SettingsController extends Controller
         return $this->view('settings/index', ['routers' => $routers]);
     }
 
+    public function add()
+    {
+        // Renders the same listing, auto-opening the "Add Router" modal.
+        // Linked from the dashboard session switcher (GET /settings/add).
+        $configModel = new Config;
+        $routers = $configModel->getAllSessions();
+
+        return $this->view('settings/index', [
+            'routers' => $routers,
+            'open_add_modal' => true,
+        ]);
+    }
+
     // ... (Existing Store methods) ...
     public function store()
     {

@@ -359,4 +359,15 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     }
 </script>
 
+<?php if (! empty($open_add_modal)) { ?>
+<script>
+    // Auto-open the "Add Router" modal when reached via /settings/add
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof openRouterModal === 'function') {
+            openRouterModal('add');
+        }
+    });
+</script>
+<?php } ?>
+
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
