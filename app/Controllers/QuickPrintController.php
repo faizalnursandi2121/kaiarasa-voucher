@@ -86,7 +86,7 @@ class QuickPrintController extends Controller
         $creds = $configModel->getSession($session);
         $routerId = $creds['id'] ?? 0;
 
-        // Build time_limit (e.g. "1d2h30m") and data_limit (e.g. "500M") from split fields
+        // Build time_limit (e.g. "1d2h30m") and data_limit (bytes) from split fields
         $timelimit_d = $_POST['timelimit_d'] ?? '';
         $timelimit_h = $_POST['timelimit_h'] ?? '';
         $timelimit_m = $_POST['timelimit_m'] ?? '';
@@ -97,7 +97,10 @@ class QuickPrintController extends Controller
 
         $datalimit_val = $_POST['datalimit_val'] ?? '';
         $datalimit_unit = $_POST['datalimit_unit'] ?? 'MB';
-        $dataLimit = ($datalimit_val !== '') ? $datalimit_val.(($datalimit_unit === 'GB') ? 'G' : 'M') : '';
+        $dataLimit = 0; // bytes
+        if ($datalimit_val !== '' && is_numeric($datalimit_val)) {
+            $dataLimit = (int) round((float) $datalimit_val * (($datalimit_unit === 'GB') ? 1073741824 : 1048576));
+        }
 
         $data = [
             'router_id' => $routerId,
@@ -139,7 +142,7 @@ class QuickPrintController extends Controller
             exit;
         }
 
-        // Build time_limit (e.g. "1d2h30m") and data_limit (e.g. "500M") from split fields
+        // Build time_limit (e.g. "1d2h30m") and data_limit (bytes) from split fields
         $timelimit_d = $_POST['timelimit_d'] ?? '';
         $timelimit_h = $_POST['timelimit_h'] ?? '';
         $timelimit_m = $_POST['timelimit_m'] ?? '';
@@ -150,7 +153,10 @@ class QuickPrintController extends Controller
 
         $datalimit_val = $_POST['datalimit_val'] ?? '';
         $datalimit_unit = $_POST['datalimit_unit'] ?? 'MB';
-        $dataLimit = ($datalimit_val !== '') ? $datalimit_val.(($datalimit_unit === 'GB') ? 'G' : 'M') : '';
+        $dataLimit = 0; // bytes
+        if ($datalimit_val !== '' && is_numeric($datalimit_val)) {
+            $dataLimit = (int) round((float) $datalimit_val * (($datalimit_unit === 'GB') ? 1073741824 : 1048576));
+        }
 
         $data = [
             'name' => $_POST['name'] ?? 'Package',
@@ -235,20 +241,8 @@ class QuickPrintController extends Controller
                 $userData['limit-uptime'] = $package['time_limit'];
             }
             if (! empty($package['data_limit'])) {
-                // Check if M or G
-                // Simple logic for now, assuming raw if number, or passing string if Mikrotik accepts it (usually requires bytes)
-                // Let's assume user inputs "100M" or "1G" which usually needs parsing.
-                // For now, let's assume input is NUMBER in MB as per standard Mivo practice, OR generic string.
-                // We'll pass as is for strings, or multiply if strictly numeric?
-                // Let's rely on standard Mikrotik parsing if string passed, or convert.
-                // Mivo usually uses dropdown "MB/GB".
-                // Implementing simple conversion:
-                $val = intval($package['data_limit']);
-                if (strpos(strtolower($package['data_limit']), 'g') !== false) {
-                    $userData['limit-bytes-total'] = $val * 1024 * 1024 * 1024;
-                } else {
-                    $userData['limit-bytes-total'] = $val * 1024 * 1024; // Default MB
-                }
+                // data_limit is stored as bytes
+                $userData['limit-bytes-total'] = intval($package['data_limit']);
             }
 
             $API->comm('/ip/hotspot/user/add', $userData);
@@ -277,9 +271,8 @@ class QuickPrintController extends Controller
             }
         }
 
-        // Calculate bytes for display
-        $dlVal = intval($package['data_limit']);
-        $bytes = (strpos(strtolower($package['data_limit']), 'g') !== false) ? $dlVal * 1024 * 1024 * 1024 : $dlVal * 1024 * 1024;
+        // data_limit is stored as bytes
+        $bytes = intval($package['data_limit']);
 
         $userDataValues = [
             'username' => $username,

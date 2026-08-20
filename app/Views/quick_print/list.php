@@ -369,12 +369,22 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                  form.querySelector('[name="timelimit_h"]').value = mH ? mH[1] : '';
                  form.querySelector('[name="timelimit_m"]').value = mM ? mM[1] : '';
 
-                 // Parse stored data_limit (e.g. "500M", "1G") back into val + unit
-                 const dl = row.dataset.dataLimit || '';
-                 const dlVal = dl.match(/(\d+)/);
-                 form.querySelector('[name="datalimit_val"]').value = dlVal ? dlVal[1] : '';
-                 const dlUnit = form.querySelector('[name="datalimit_unit"]');
-                 if (/g/i.test(dl)) dlUnit.value = 'GB'; else dlUnit.value = 'MB';
+                 // Parse stored data_limit (bytes integer) back into val + unit
+                 const dlBytes = parseInt(row.dataset.dataLimit, 10) || 0;
+                 const dlValInput = form.querySelector('[name="datalimit_val"]');
+                 const dlUnitSel = form.querySelector('[name="datalimit_unit"]');
+                 if (dlBytes > 0) {
+                     if (dlBytes % 1073741824 === 0) {
+                         dlValInput.value = dlBytes / 1073741824;
+                         dlUnitSel.value = 'GB';
+                     } else {
+                         dlValInput.value = dlBytes / 1048576;
+                         dlUnitSel.value = 'MB';
+                     }
+                 } else {
+                     dlValInput.value = '';
+                     dlUnitSel.value = 'MB';
+                 }
 
                  form.querySelector('[name="comment"]').value = row.dataset.comment;
                  
