@@ -361,12 +361,22 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 <?php if (! empty($open_add_modal)) { ?>
 <script>
-    // Auto-open the "Add Router" modal when reached via /settings/add
-    document.addEventListener('DOMContentLoaded', function () {
-        if (typeof openRouterModal === 'function') {
-            openRouterModal('add');
-        }
-    });
+    // Auto-open the "Add Router" modal when reached via /settings/add.
+    // Wait until Mivo, window.i18n AND its translations are ready, otherwise
+    // the modal title/buttons would render as raw keys (e.g. routers.add_router_title).
+    (function () {
+        var tries = 0;
+        var timer = setInterval(function () {
+            if (window.Mivo && window.i18n && window.i18n.isLoaded && typeof openRouterModal === 'function') {
+                clearInterval(timer);
+                setTimeout(function () {
+                    openRouterModal('add');
+                }, 60);
+            } else if (++tries > 100) {
+                clearInterval(timer); // give up (~5s)
+            }
+        }, 60);
+    })();
 </script>
 <?php } ?>
 
