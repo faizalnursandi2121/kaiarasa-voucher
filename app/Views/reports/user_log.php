@@ -239,7 +239,7 @@ sort($uniqueTopics);
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         if (typeof CustomSelect !== 'undefined') {
             document.querySelectorAll('.custom-select').forEach(s => new CustomSelect(s));
         }

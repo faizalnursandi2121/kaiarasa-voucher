@@ -158,7 +158,7 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
 
 <script src="/assets/js/chart.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         const ctx = document.getElementById('trafficChart').getContext('2d');
         const labels = Array(20).fill(''); 
         const rxData = Array(20).fill(0);
@@ -323,10 +323,11 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
         }
 
         // Init
+        let trafficInterval;
         fetchInterfaces().then(() => {
             // Start Polling after interfaces loaded
             const reloadInterval = <?= ($reload_interval ?? 5) * 1000 ?>; // Convert sec to ms
-            setInterval(fetchTraffic, reloadInterval); 
+            trafficInterval = setInterval(fetchTraffic, reloadInterval); 
             fetchTraffic();
         });
 
@@ -353,6 +354,14 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
         
         // Try initial update after a short delay to ensure i18n is ready if race condition
         setTimeout(updateChartLabels, 500); 
+
+        // SPA cleanup: stop polling, destroy chart, remove listeners when navigating away.
+        window.__mivoSessionCleanup = function () {
+            if (trafficInterval) clearInterval(trafficInterval);
+            try { chart.destroy(); } catch (e) {}
+            window.removeEventListener('languageChanged', updateChartLabels);
+            if (window.Mivo) window.Mivo.off('languageChanged', updateChartLabels);
+        };
     });
 </script>
 

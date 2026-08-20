@@ -580,7 +580,7 @@ sort($uniqueComments);
         Mivo.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         // Init Checkboxes & Table methods
         const selectAll = document.getElementById('select-all');
         const toolbar = document.getElementById('batch-toolbar');

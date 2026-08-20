@@ -249,7 +249,7 @@
 <!-- Footer closes the divs opened in sidebar.php -->
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         // Initialize Custom Selects with Search
         if (typeof CustomSelect !== 'undefined') {
             document.querySelectorAll('.custom-select').forEach(select => {

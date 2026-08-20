@@ -86,7 +86,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 <script src="/assets/js/components/datatable.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         // Init Datatables
         if (typeof SimpleDataTable !== 'undefined') {
             new SimpleDataTable('#table-daily', { itemsPerPage: 10, searchable: true });

@@ -313,7 +313,7 @@ sort($uniqueModes);
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         if (typeof CustomSelect !== 'undefined') {
             document.querySelectorAll('.custom-select').forEach(select => {
                 new CustomSelect(select);

@@ -3,6 +3,7 @@ use App\Core\Hooks;
 use App\Helpers\FlashHelper;
 
 if (isset($session) && ! empty($session)) { ?>
+            </div> <!-- /#session-dynamic -->
             </div> <!-- /.max-w-7xl (Sidebar content) -->
         </main>
     </div> <!-- /.flex-col (Main Content Wrapper) -->

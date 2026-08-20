@@ -113,7 +113,7 @@ $getInitials = function ($name) {
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity opacity-0"></div>
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 flex-shrink-0 border-r border-white/20 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-[40px] fixed md:static inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200 flex flex-col h-full">
+    <aside id="sidebar" data-session="<?= htmlspecialchars($session ?? '') ?>" class="w-64 flex-shrink-0 border-r border-white/20 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-[40px] fixed md:static inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200 flex flex-col h-full">
         <!-- Sidebar Header -->
         <!-- Sidebar Header -->
         <div id="sidebar-header" class="group flex flex-col items-center py-5 border-b border-accents-2 flex-shrink-0 relative cursor-default overflow-hidden">
@@ -257,7 +257,7 @@ foreach ($languages as $lang) {
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isHotspotActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
-                <div id="hotspot-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isHotspotActive ? '500px' : '0px' ?>">
+                <div id="hotspot-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isHotspotActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="hotspot_menu.users"><?= LanguageHelper::t('hotspot_menu.users', 'Users') ?></span>
                     </a>
@@ -283,7 +283,7 @@ foreach ($languages as $lang) {
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isStatusActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
-                <div id="status-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isStatusActive ? '500px' : '0px' ?>">
+                <div id="status-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isStatusActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/active" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="hotspot_menu.active"><?= LanguageHelper::t('hotspot_menu.active', 'Active') ?></span>
                     </a>
@@ -303,7 +303,7 @@ foreach ($languages as $lang) {
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isSecurityActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
-                <div id="security-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSecurityActive ? '500px' : '0px' ?>">
+                <div id="security-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSecurityActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/bindings" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/bindings') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="hotspot_menu.bindings"><?= LanguageHelper::t('hotspot_menu.bindings', 'IP Bindings') ?></span>
                     </a>
@@ -324,7 +324,7 @@ foreach ($languages as $lang) {
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isReportsActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
-                <div id="reports-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isReportsActive ? '500px' : '0px' ?>">
+                <div id="reports-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isReportsActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/reports/resume" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/resume') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="reports_menu.resume"><?= LanguageHelper::t('reports_menu.resume', 'Resume') ?></span>
                     </a>
@@ -347,7 +347,7 @@ foreach ($languages as $lang) {
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isNetworkActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
-                <div id="network-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isNetworkActive ? '500px' : '0px' ?>">
+                <div id="network-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isNetworkActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/network/dhcp" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/network/dhcp') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="network_menu.dhcp"><?= LanguageHelper::t('network_menu.dhcp', 'DHCP Leases') ?></span>
                     </a>
@@ -364,7 +364,7 @@ foreach ($languages as $lang) {
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isSystemActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
-                <div id="system-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSystemActive ? '500px' : '0px' ?>">
+                <div id="system-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSystemActive ? '500px' : '0px' ?>">
                      <a href="/<?= htmlspecialchars($session) ?>/system/scheduler" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/system/scheduler') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="system_menu.scheduler"><?= LanguageHelper::t('system_menu.scheduler', 'Scheduler') ?></span>
                     </a>
@@ -480,8 +480,186 @@ foreach ($languages as $lang) {
             </div>
         </header>
 
+        <!-- Session SPA navigation (persistent; lives outside #session-dynamic) -->
+        <script>
+        (function () {
+            if (window.__mivoSessionSpa) return;
+            window.__mivoSessionSpa = true;
+
+            var DYNAMIC_ID = 'session-dynamic';
+            var TOP_ON = ['bg-white/40', 'dark:bg-white/5', 'shadow-sm', 'text-foreground', 'ring-1', 'ring-white/10'];
+            var TOP_OFF = ['text-accents-6', 'hover:text-foreground', 'hover:bg-white/5'];
+            var SUB_ON = ['bg-white/40', 'dark:bg-white/5', 'text-foreground', 'ring-1', 'ring-white/10', 'font-medium'];
+            var SUB_OFF = ['text-accents-6', 'hover:text-foreground'];
+
+            function getSession() {
+                var aside = document.getElementById('sidebar');
+                return aside ? (aside.getAttribute('data-session') || '') : '';
+            }
+
+            function isSessionPath(pathname, session) {
+                if (!session) return false;
+                return pathname === '/' + session || pathname.indexOf('/' + session + '/') === 0;
+            }
+
+            // Mirrors the PHP strpos() active checks in sidebar_session.php.
+            function isLinkActive(hrefPath, pathname, session) {
+                var prefix = '/' + session;
+                if (hrefPath.indexOf(prefix) !== 0) return false;
+                var rest = hrefPath.slice(prefix.length); // e.g. /hotspot/users
+                if (!rest) return false;
+                // PHP matches /hotspot/profile (singular) for both profile & profiles.
+                var match = (rest === '/hotspot/profiles') ? '/hotspot/profile' : rest;
+                return pathname.indexOf(match) !== -1;
+            }
+
+            function setClasses(el, add, remove) {
+                remove.forEach(function (c) { el.classList.remove(c); });
+                add.forEach(function (c) { el.classList.add(c); });
+            }
+
+            function updateSidebarActive(pathname) {
+                var session = getSession();
+                document.querySelectorAll('#sidebar a').forEach(function (a) {
+                    var href = a.getAttribute('href') || '';
+                    var u;
+                    try { u = new URL(href, window.location.href); } catch (e) { return; }
+                    if (!isSessionPath(u.pathname, session)) return;
+                    var active = isLinkActive(u.pathname, pathname, session);
+                    var inGroup = !!a.closest('[data-nav-group]');
+                    var on = inGroup ? SUB_ON : TOP_ON;
+                    var off = inGroup ? SUB_OFF : TOP_OFF;
+                    setClasses(a, active ? on : off, active ? off : on);
+                });
+                // Expand active groups, collapse others (matches PHP initial state).
+                document.querySelectorAll('#sidebar [data-nav-group]').forEach(function (menu) {
+                    var hasActive = false;
+                    menu.querySelectorAll('a').forEach(function (a) {
+                        var href = a.getAttribute('href') || '';
+                        try { var uu = new URL(href, window.location.href); if (isSessionPath(uu.pathname, session) && isLinkActive(uu.pathname, pathname, session)) hasActive = true; } catch (e) {}
+                    });
+                    menu.style.maxHeight = hasActive ? '500px' : '0px';
+                    var btn = menu.previousElementSibling;
+                    if (btn) {
+                        var chev = btn.querySelector('svg.lucide-chevron-down') || btn.querySelector('[data-lucide="chevron-down"]');
+                        if (chev) { chev.classList.toggle('rotate-180', hasActive); }
+                    }
+                });
+            }
+
+            function executeScriptsAsync(root) {
+                var scripts = Array.prototype.slice.call(root.querySelectorAll('script'));
+                return scripts.reduce(function (p, oldScript) {
+                    return p.then(function () {
+                        return new Promise(function (resolve) {
+                            var s = document.createElement('script');
+                            if (oldScript.src) { s.src = oldScript.src; }
+                            else { s.textContent = oldScript.textContent; }
+                            if (oldScript.type) { s.type = oldScript.type; }
+                            s.async = false;
+                            oldScript.parentNode.replaceChild(s, oldScript);
+                            if (oldScript.src) { s.onload = resolve; s.onerror = resolve; }
+                            else { resolve(); }
+                        });
+                    });
+                }, Promise.resolve());
+            }
+
+            function reinitScope(root) {
+                try { if (window.lucide) lucide.createIcons(); } catch (e) {}
+                try { if (window.i18n && window.i18n.applyTranslations) window.i18n.applyTranslations(); } catch (e) {}
+                try {
+                    var SelectCtor = window.Mivo && window.Mivo.components && window.Mivo.components.Select;
+                    if (SelectCtor) {
+                        root.querySelectorAll('select.custom-select').forEach(function (el) {
+                            if (!SelectCtor.get(el)) { new SelectCtor(el); }
+                        });
+                    }
+                } catch (e) {}
+            }
+
+            function cleanupSession() {
+                if (window.__mivoSessionCleanup) {
+                    try { window.__mivoSessionCleanup(); } catch (e) {}
+                    window.__mivoSessionCleanup = null;
+                }
+            }
+
+            function setLoading(on) {
+                var root = document.getElementById(DYNAMIC_ID);
+                if (!root) return;
+                for (var i = 0; i < root.children.length; i++) {
+                    var kid = root.children[i];
+                    if (kid.tagName === 'SCRIPT' || kid.tagName === 'TEMPLATE') continue;
+                    kid.style.opacity = on ? '0.5' : '';
+                    kid.style.pointerEvents = on ? 'none' : '';
+                }
+                document.body.style.cursor = on ? 'wait' : '';
+            }
+
+            function loadSession(url, push) {
+                if (push === undefined) push = true;
+                var u = new URL(url, window.location.href);
+                u.hash = '';
+                var target = u.pathname + u.search;
+                cleanupSession();
+                setLoading(true);
+                fetch(target, { credentials: 'same-origin' })
+                    .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.text(); })
+                    .then(function (html) {
+                        var doc = new DOMParser().parseFromString(html, 'text/html');
+                        var fresh = doc.getElementById(DYNAMIC_ID);
+                        if (!fresh) { window.location.href = url; return; } // cross-layout / not a session page -> full nav
+                        var current = document.getElementById(DYNAMIC_ID);
+                        if (!current) { window.location.href = url; return; }
+                        var imported = document.importNode(fresh, true);
+                        current.replaceWith(imported);
+                        updateSidebarActive(u.pathname);
+                        if (doc.title) document.title = doc.title;
+                        executeScriptsAsync(imported).then(function () {
+                            reinitScope(imported);
+                            if (push) history.pushState({ sessionSpa: true, url: u.href }, '', u.href);
+                            setLoading(false);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            window.dispatchEvent(new CustomEvent('session:loaded', { detail: { url: u.href } }));
+                        });
+                    })
+                    .catch(function (err) {
+                        console.error('[session-spa] load failed, falling back to full navigation:', err);
+                        window.location.href = url;
+                    });
+            }
+
+            document.addEventListener('click', function (e) {
+                var a = e.target.closest('a');
+                if (!a) return;
+                var href = a.getAttribute('href');
+                if (!href || href === '#' || a.target === '_blank') return;
+                if (a.hasAttribute('data-no-spa') || a.closest('[data-no-spa]')) return;
+                var session = getSession();
+                try {
+                    var u = new URL(href, window.location.href);
+                    if (u.origin !== window.location.origin) return;
+                    if (!isSessionPath(u.pathname, session)) return; // settings/disconnect/logout -> full load
+                    if (u.pathname === window.location.pathname && u.search === window.location.search) { e.preventDefault(); return; }
+                    e.preventDefault();
+                    loadSession(u.href, true);
+                } catch (err) { /* allow default navigation */ }
+            });
+
+            window.addEventListener('popstate', function () {
+                loadSession(window.location.href, false);
+            });
+
+            if (!history.state || !history.state.sessionSpa) {
+                history.replaceState({ sessionSpa: true, url: window.location.href }, '', window.location.href);
+            }
+        })();
+        </script>
+
         <!-- Scrollable Page Content -->
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-background p-4 md:p-8">
             <div class="max-w-7xl mx-auto">
+            <div id="session-dynamic" class="contents">
 
 

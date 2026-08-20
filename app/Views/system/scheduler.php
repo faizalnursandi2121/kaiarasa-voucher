@@ -263,7 +263,7 @@ function openSchedulerModal(mode, btn = null) {
     Mivo.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn);
 }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         new TableManager(document.querySelectorAll('.table-row-item'), 10);
     });
 </script>

@@ -117,7 +117,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <script src="/assets/vendor/xlsx/xlsx.full.min.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         if (typeof SimpleDataTable !== 'undefined') {
             new SimpleDataTable('#report-table', { 
                 itemsPerPage: 15, 

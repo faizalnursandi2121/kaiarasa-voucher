@@ -43,7 +43,28 @@ class MivoCore {
      * @param {function} callback 
      */
     on(eventName, callback) {
-        this.events.addEventListener(eventName, (e) => callback(e.detail));
+        const wrapper = (e) => callback(e.detail);
+        this.events.addEventListener(eventName, wrapper);
+        // Track wrappers so off() can remove them.
+        if (!this._listeners) this._listeners = new Map();
+        if (!this._listeners.has(eventName)) this._listeners.set(eventName, new Map());
+        this._listeners.get(eventName).set(callback, wrapper);
+        return wrapper;
+    }
+
+    /**
+     * Remove a global event listener previously added with on().
+     * @param {string} eventName
+     * @param {function} callback
+     */
+    off(eventName, callback) {
+        if (!this._listeners?.has(eventName)) return;
+        const map = this._listeners.get(eventName);
+        const wrapper = map.get(callback);
+        if (wrapper) {
+            this.events.removeEventListener(eventName, wrapper);
+            map.delete(callback);
+        }
     }
 
     /**

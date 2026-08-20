@@ -355,7 +355,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         Mivo.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn);
     }
     
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         new TableManager(document.querySelectorAll('.table-row-item'), 10);
     });
 </script>

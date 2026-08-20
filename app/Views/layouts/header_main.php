@@ -60,6 +60,16 @@ $title = isset($title) ? $title : SiteConfig::APP_NAME;
     <script src="/assets/js/lucide.min.js"></script>
     <script>
         window.currentVersion = '<?= SiteConfig::APP_VERSION ?>';
+        // Run a callback now if the DOM is already parsed, otherwise on DOMContentLoaded.
+        // Lets view scripts work both on a full page load (waits for deferred libs)
+        // and when injected via SPA (readyState is already 'complete').
+        window.whenReady = function (cb) {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', cb);
+            } else {
+                cb();
+            }
+        };
     </script>
     <script src="/assets/js/mivo.js" defer></script>
     <script src="/assets/js/modules/updater.js" defer></script>
