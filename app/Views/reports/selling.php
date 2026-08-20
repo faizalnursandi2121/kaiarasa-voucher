@@ -32,7 +32,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             <i data-lucide="printer" class="w-4 h-4 mr-2"></i> <span data-i18n="reports.print_report">Print Report</span>
         </button>
     </div>
-    </div>
 </div>
 
 <!-- Summary Cards -->
@@ -112,7 +111,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 </div>
 
 
-<script src="/assets/js/components/datatable.js"></script>
 <!-- Local SheetJS Library -->
 <script src="/assets/vendor/xlsx/xlsx.full.min.js"></script>
 

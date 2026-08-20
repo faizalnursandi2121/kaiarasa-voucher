@@ -84,7 +84,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     </table>
 </div>
 
-<script src="/assets/js/components/datatable.js"></script>
 <script>
     window.whenReady(() => {
         // Init Datatables

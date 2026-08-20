@@ -41,6 +41,7 @@ class DataTable {
     }
 
     reTranslate() {
+        if (!this.wrapper) return; // init() not run yet (e.g. languageChanged fires early)
         const i18n = window.Mivo?.modules?.I18n || window.i18n;
         if (!i18n) return;
 
