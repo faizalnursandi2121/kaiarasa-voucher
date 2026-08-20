@@ -86,6 +86,19 @@ class QuickPrintController extends Controller
         $creds = $configModel->getSession($session);
         $routerId = $creds['id'] ?? 0;
 
+        // Build time_limit (e.g. "1d2h30m") and data_limit (e.g. "500M") from split fields
+        $timelimit_d = $_POST['timelimit_d'] ?? '';
+        $timelimit_h = $_POST['timelimit_h'] ?? '';
+        $timelimit_m = $_POST['timelimit_m'] ?? '';
+        $timeLimit = '';
+        if ($timelimit_d !== '') { $timeLimit .= $timelimit_d.'d'; }
+        if ($timelimit_h !== '') { $timeLimit .= $timelimit_h.'h'; }
+        if ($timelimit_m !== '') { $timeLimit .= $timelimit_m.'m'; }
+
+        $datalimit_val = $_POST['datalimit_val'] ?? '';
+        $datalimit_unit = $_POST['datalimit_unit'] ?? 'MB';
+        $dataLimit = ($datalimit_val !== '') ? $datalimit_val.(($datalimit_unit === 'GB') ? 'G' : 'M') : '';
+
         $data = [
             'router_id' => $routerId,
             'session_name' => $session,
@@ -96,8 +109,8 @@ class QuickPrintController extends Controller
             'char_length' => $_POST['char_length'] ?? 4,
             'price' => $_POST['price'] ?? 0,
             'selling_price' => $_POST['selling_price'] ?? ($_POST['price'] ?? 0),
-            'time_limit' => $_POST['time_limit'] ?? '',
-            'data_limit' => $_POST['data_limit'] ?? '',
+            'time_limit' => $timeLimit,
+            'data_limit' => $dataLimit,
             'comment' => $_POST['comment'] ?? '',
             'color' => $_POST['color'] ?? 'bg-blue-500',
         ];
@@ -126,6 +139,19 @@ class QuickPrintController extends Controller
             exit;
         }
 
+        // Build time_limit (e.g. "1d2h30m") and data_limit (e.g. "500M") from split fields
+        $timelimit_d = $_POST['timelimit_d'] ?? '';
+        $timelimit_h = $_POST['timelimit_h'] ?? '';
+        $timelimit_m = $_POST['timelimit_m'] ?? '';
+        $timeLimit = '';
+        if ($timelimit_d !== '') { $timeLimit .= $timelimit_d.'d'; }
+        if ($timelimit_h !== '') { $timeLimit .= $timelimit_h.'h'; }
+        if ($timelimit_m !== '') { $timeLimit .= $timelimit_m.'m'; }
+
+        $datalimit_val = $_POST['datalimit_val'] ?? '';
+        $datalimit_unit = $_POST['datalimit_unit'] ?? 'MB';
+        $dataLimit = ($datalimit_val !== '') ? $datalimit_val.(($datalimit_unit === 'GB') ? 'G' : 'M') : '';
+
         $data = [
             'name' => $_POST['name'] ?? 'Package',
             'profile' => $_POST['profile'] ?? 'default',
@@ -133,8 +159,8 @@ class QuickPrintController extends Controller
             'char_length' => $_POST['char_length'] ?? 4,
             'price' => $_POST['price'] ?? 0,
             'selling_price' => $_POST['selling_price'] ?? ($_POST['price'] ?? 0),
-            'time_limit' => $_POST['time_limit'] ?? '',
-            'data_limit' => $_POST['data_limit'] ?? '',
+            'time_limit' => $timeLimit,
+            'data_limit' => $dataLimit,
             'comment' => $_POST['comment'] ?? '',
             'color' => $_POST['color'] ?? 'bg-blue-500',
         ];

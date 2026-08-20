@@ -172,14 +172,43 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 </select>
             </div>
             
-             <div>
+            <div class="col-span-1 md:col-span-2">
                 <label class="form-label" data-i18n="quick_print.time_limit">Time Limit</label>
-                <input type="text" name="time_limit" class="w-full" placeholder="3h">
+                <div class="flex w-full">
+                    <!-- Day -->
+                    <div class="input-group flex-1">
+                        <input type="number" name="timelimit_d" min="0" class="form-input w-full pr-8 rounded-r-none border-r-0 focus:z-10 font-mono text-center" placeholder="0">
+                        <div class="input-suffix text-xs font-bold w-8 justify-center">D</div>
+                    </div>
+                    <!-- Hour -->
+                    <div class="input-group flex-1">
+                        <input type="number" name="timelimit_h" min="0" max="23" class="form-input w-full pr-8 rounded-none border-r-0 focus:z-10 font-mono text-center" placeholder="0">
+                        <div class="input-suffix text-xs font-bold w-8 justify-center">H</div>
+                    </div>
+                    <!-- Minute -->
+                    <div class="input-group flex-1">
+                        <input type="number" name="timelimit_m" min="0" max="59" class="form-input w-full pr-8 rounded-l-none focus:z-10 font-mono text-center" placeholder="0">
+                        <div class="input-suffix text-xs font-bold w-8 justify-center">M</div>
+                    </div>
+                </div>
+                <p class="text-xs text-accents-5 mt-1" data-i18n="quick_print.time_limit_help">Max uptime (e.g. 1d, 3h, 30m).</p>
             </div>
 
-             <div>
+            <div class="col-span-1 md:col-span-2">
                 <label class="form-label" data-i18n="quick_print.data_limit">Data Limit</label>
-                 <input type="text" name="data_limit" class="w-full" placeholder="500M (Optional)">
+                <div class="flex w-full">
+                    <div class="input-group flex-grow z-0 focus-within:z-10">
+                        <div class="input-icon">
+                            <i data-lucide="database" class="w-4 h-4"></i>
+                        </div>
+                        <input type="number" name="datalimit_val" min="0" class="form-input w-full rounded-r-none border-r-0" placeholder="0">
+                    </div>
+                    <select name="datalimit_unit" class="custom-select w-32 bg-accents-1 font-medium text-accents-6 text-center rounded-l-none border-l-0 -ml-px z-0 focus:z-10">
+                        <option value="MB" selected>MB</option>
+                        <option value="GB">GB</option>
+                    </select>
+                </div>
+                <p class="text-xs text-accents-5 mt-1" data-i18n="quick_print.data_limit_help">Max data transfer (MB).</p>
             </div>
 
              <div class="col-span-1 md:col-span-2">
@@ -330,8 +359,23 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                  form.querySelector('[name="price"]').value = row.dataset.price;
                  form.querySelector('[name="selling_price"]').value = row.dataset.sellingPrice;
                  form.querySelector('[name="prefix"]').value = row.dataset.prefix;
-                 form.querySelector('[name="time_limit"]').value = row.dataset.timeLimit;
-                 form.querySelector('[name="data_limit"]').value = row.dataset.dataLimit;
+
+                 // Parse stored time_limit (e.g. "3h", "1d2h30m") back into D/H/M fields
+                 const tl = row.dataset.timeLimit || '';
+                 const mD = tl.match(/(\d+)d/);
+                 const mH = tl.match(/(\d+)h/);
+                 const mM = tl.match(/(\d+)m/);
+                 form.querySelector('[name="timelimit_d"]').value = mD ? mD[1] : '';
+                 form.querySelector('[name="timelimit_h"]').value = mH ? mH[1] : '';
+                 form.querySelector('[name="timelimit_m"]').value = mM ? mM[1] : '';
+
+                 // Parse stored data_limit (e.g. "500M", "1G") back into val + unit
+                 const dl = row.dataset.dataLimit || '';
+                 const dlVal = dl.match(/(\d+)/);
+                 form.querySelector('[name="datalimit_val"]').value = dlVal ? dlVal[1] : '';
+                 const dlUnit = form.querySelector('[name="datalimit_unit"]');
+                 if (/g/i.test(dl)) dlUnit.value = 'GB'; else dlUnit.value = 'MB';
+
                  form.querySelector('[name="comment"]').value = row.dataset.comment;
                  
                  // Selects (Just setting value works because CustomSelect hasn't init yet!)
