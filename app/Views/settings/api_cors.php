@@ -7,6 +7,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <!-- Sub-Navbar Navigation -->
 <?php include ROOT.'/app/Views/layouts/sidebar_settings.php'; ?>
 
+<div id="settings-dynamic" class="contents">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
 
     <div class="mb-8">
@@ -157,4 +158,5 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     </form>
 </template>
 
+</div>
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

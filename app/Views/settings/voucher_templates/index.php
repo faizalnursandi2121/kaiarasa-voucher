@@ -7,6 +7,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <!-- Sub-Navbar Navigation -->
 <?php include ROOT.'/app/Views/layouts/sidebar_settings.php'; ?>
 
+<div id="settings-dynamic" class="contents">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
 
     <div class="mb-8">
@@ -107,10 +108,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         </div> <!-- End Content Area -->
 
 
-<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
-
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    (function () {
         // Intercept Template Deletion
         const deleteForms = document.querySelectorAll('.delete-template-form');
         deleteForms.forEach(form => {
@@ -175,7 +174,10 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         document.querySelectorAll('iframe[data-src]').forEach(iframe => {
             observer.observe(iframe);
         });
-    });
+    })();
 </script>
+</div>
+
+<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 
 
