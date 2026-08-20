@@ -117,9 +117,8 @@ sort($uniqueTopics);
     </div>
 </div>
 
-<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 <script>
-    class TableManager {
+    var TableManager = class TableManager {
         constructor(rows, itemsPerPage = 15) {
             this.allRows = Array.from(rows);
             // Hide duplicates in unique topics select options (hacky fix for double output)
@@ -237,7 +236,7 @@ sort($uniqueTopics);
 
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
-    }
+    };
 
     window.whenReady(() => {
         if (typeof CustomSelect !== 'undefined') {
@@ -246,3 +245,5 @@ sort($uniqueTopics);
         new TableManager(document.querySelectorAll('.table-row-item'), 15);
     });
 </script>
+
+<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

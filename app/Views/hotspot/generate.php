@@ -246,8 +246,6 @@
     </div>
 </div>
 
-<!-- Footer closes the divs opened in sidebar.php -->
-<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 <script>
     window.whenReady(() => {
         // Initialize Custom Selects with Search
@@ -258,3 +256,5 @@
         }
     });
 </script>
+
+<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

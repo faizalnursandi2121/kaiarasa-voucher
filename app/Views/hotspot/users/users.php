@@ -225,7 +225,6 @@ sort($uniqueComments);
     </div>
 </div>
 
-<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 <!-- Add/Edit User Template -->
 <template id="user-form-template">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
@@ -356,7 +355,7 @@ sort($uniqueComments);
 </template>
 
 <script>
-    class TableManager {
+    var TableManager = class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;
@@ -500,7 +499,7 @@ sort($uniqueComments);
             // Reset "Select All"
             document.getElementById('select-all').checked = false;
         }
-    }
+    };
 
     // --- Modal Logic ---
     function openUserModal(mode, btn = null) {
@@ -668,3 +667,5 @@ sort($uniqueComments);
         });
     }
 </script>
+
+<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

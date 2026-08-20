@@ -99,9 +99,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     </div>
 </div>
 
-<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 <script>
-    class TableManager {
+    var TableManager = class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;
@@ -201,9 +200,11 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
-    }
+    };
 
     window.whenReady(() => {
         new TableManager(document.querySelectorAll('.table-row-item'), 10);
     });
 </script>
+
+<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

@@ -176,9 +176,8 @@ sort($uniqueModes);
     </div>
 </div>
 
-<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 <script>
-    class TableManager {
+    var TableManager = class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;
@@ -311,7 +310,7 @@ sort($uniqueModes);
                 lucide.createIcons();
             }
         }
-    }
+    };
 
     window.whenReady(() => {
         if (typeof CustomSelect !== 'undefined') {
@@ -520,3 +519,5 @@ sort($uniqueModes);
         </div>
     </div>
 </template>
+
+<?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

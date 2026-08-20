@@ -113,7 +113,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 
 <script>
-    class TableManager {
+    var TableManager = class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;
@@ -216,7 +216,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
-    }
+    };
 
 function openSchedulerModal(mode, btn = null) {
     const template = document.getElementById('scheduler-form-template').innerHTML;
