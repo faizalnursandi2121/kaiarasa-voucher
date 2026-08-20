@@ -1,5 +1,4 @@
     <?php
-use App\Config\SiteConfig;
 use App\Core\Hooks;
 use App\Helpers\FlashHelper;
 
@@ -10,35 +9,8 @@ if (isset($session) && ! empty($session)) { ?>
 </div> <!-- /.flex h-screen (Sidebar Layout Root) -->
     <?php } else { ?>
     </div> <!-- /.container (Navbar Global) -->
-    
-    <footer class="border-t border-accents-2 bg-background mt-auto transition-colors duration-200 py-8 text-center space-y-4">
-        <!-- Links Row -->
-        <div class="flex justify-center items-center gap-6 text-sm font-medium text-accents-5">
-            <a href="https://mivodev.github.io" target="_blank" class="hover:text-foreground transition-colors flex items-center gap-2">
-                <i data-lucide="book-open" class="w-4 h-4"></i>
-                <span>Docs</span>
-            </a>
-            <a href="https://github.com/mivodev/mivo/discussions" target="_blank" class="hover:text-foreground transition-colors flex items-center gap-2">
-                <i data-lucide="message-circle" class="w-4 h-4"></i>
-                <span>Community</span>
-            </a>
-            <a href="https://github.com/mivodev/mivo" target="_blank" class="hover:text-foreground transition-colors flex items-center gap-2">
-                <i data-lucide="github" class="w-4 h-4"></i>
-                <span>Repo</span>
-            </a>
-        </div>
-
-        <!-- Copyright Row -->
-        <div class="text-xs text-accents-4 opacity-50">
-            <?= SiteConfig::getFooter() ?>
-        </div>
-    </footer>
     <?php } ?>
 
-    <script>
-        window.MIVO_VERSION = "<?= SiteConfig::APP_VERSION ?>";
-    </script>
-    <script src="/assets/js/modules/update-checker.js"></script>
     <script>
         // Global Theme Toggle Logic (Class-based for multiple instances)
         document.addEventListener('DOMContentLoaded', () => {

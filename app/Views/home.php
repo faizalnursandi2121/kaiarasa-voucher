@@ -18,20 +18,12 @@ require_once ROOT.'/app/Views/layouts/header_main.php'; ?>
 
     <!-- Action Section -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto mb-16">
-        <a href="/settings" class="group card hover:border-foreground transition-all duration-200 text-left">
+        <a href="/settings" class="md:col-span-2 max-w-xs mx-auto group card hover:border-foreground transition-all duration-200 text-left">
             <div class="h-10 w-10 bg-accents-1 rounded-lg flex items-center justify-center mb-4 group-hover:bg-foreground group-hover:text-background transition-colors">
                 <i data-lucide="server" class="w-5 h-5"></i>
             </div>
             <h3 class="font-semibold text-lg mb-1" data-i18n="home.manage_routers">Manage Routers</h3>
             <p class="text-sm text-accents-5" data-i18n="home.manage_routers_desc">Configure RouterOS connections and view status.</p>
-        </a>
-
-        <a href="<?= SiteConfig::REPO_URL ?>" target="_blank" class="group card hover:border-foreground transition-all duration-200 text-left">
-             <div class="h-10 w-10 bg-accents-1 rounded-lg flex items-center justify-center mb-4 group-hover:bg-foreground group-hover:text-background transition-colors">
-                <i data-lucide="github" class="w-5 h-5"></i>
-            </div>
-            <h3 class="font-semibold text-lg mb-1" data-i18n="home.source_code">Source Code</h3>
-            <p class="text-sm text-accents-5" data-i18n="home.source_code_desc">View the project repository and contribute.</p>
         </a>
     </div>
 

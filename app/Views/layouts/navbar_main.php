@@ -31,22 +31,6 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
             <div class="flex items-center gap-3">
                 <!-- Desktop Control Pill (Hidden on Mobile) -->
                 <div class="hidden md:flex control-pill scale-95 hover:scale-100 transition-transform">
-                    <!-- Notification Bell -->
-                    <div class="relative group" onmouseleave="closeMenu('notification-dropdown')">
-                        <button id="notification-bell" type="button" class="pill-lang-btn relative" onclick="toggleMenu('notification-dropdown', this)" title="Notifications">
-                             <i data-lucide="bell" class="w-4 h-4"></i>
-                             <span id="update-badge" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full hidden animate-pulse"></span>
-                        </button>
-                        <div id="notification-dropdown" class="absolute right-0 top-full mt-3 w-64 bg-background/95 backdrop-blur-2xl border border-accents-2 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-out origin-top-right opacity-0 scale-95 invisible pointer-events-none z-50 dropdown-bridge">
-                            <div class="px-3 py-2 text-[10px] font-bold text-accents-4 uppercase tracking-widest border-b border-accents-2/50 bg-accents-1/50" data-i18n="notifications.title">Notifications</div>
-                            <div id="notification-content" class="p-4 text-sm text-accents-5 text-center" data-i18n="notifications.empty">
-                                No new notifications
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pill-divider"></div>
-
                     <!-- Language Switcher -->
                     <div class="relative group" onmouseleave="closeMenu('lang-dropdown-desktop')">
                         <button type="button" class="pill-lang-btn" onclick="toggleMenu('lang-dropdown-desktop', this)" title="Change Language">
