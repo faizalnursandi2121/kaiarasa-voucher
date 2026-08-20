@@ -8,7 +8,10 @@ use App\Core\Router;
 use App\Helpers\ErrorHelper;
 
 // Start Output Buffering
-ob_start();
+// Process buffered HTML through server-side i18n to prevent FOUC
+ob_start(function ($html) {
+    return \App\Helpers\LanguageHelper::translateHtml($html);
+});
 
 // Define Root Path
 define('ROOT', dirname(__DIR__));

@@ -41,7 +41,15 @@
             "enabled": "Enabled",
             "disabled": "Disabled"
         },
-        "warning": "Warning"
+        "warning": "Warning",
+        "all_comments": "All Comments",
+        "all_profiles": "All Profiles",
+        "author": "Author",
+        "none": "none",
+        "print": "Print",
+        "selected": "Selected",
+        "tips": "Tips",
+        "version": "Version"
     },
     "home": {
         "subtitle": "A modern, lightweight MikroTik Hotspot Manager built for performance and simplicity.",
@@ -159,7 +167,8 @@
         "plugin_installed_desc": "Plugin \"{name}\" has been installed successfully.",
         "delete_plugin": "Delete Plugin?",
         "delete_plugin_confirm": "Are you sure you want to delete plugin <strong>{name}</strong>? This cannot be undone.",
-        "install_failed": "Installation Failed"
+        "install_failed": "Installation Failed",
+        "security": "Security & Access"
     },
     "routers": {
         "edit_router_title": "Edit Router",
@@ -176,7 +185,8 @@
         "check_btn": "Check",
         "currency": "Currency",
         "auto_reload": "Auto Reload (Sec)",
-        "save_connect": "Save & Connect"
+        "save_connect": "Save & Connect",
+        "check_connection": "Check Connection"
     },
     "login": {
         "welcome": "Welcome back, please sign in to continue.",
@@ -226,7 +236,13 @@
         "settings": "Settings",
         "templates": "Templates",
         "disconnect": "Disconnect",
-        "logout": "Logout from Mivo"
+        "logout": "Logout from Mivo",
+        "switch_language": "Select Language",
+        "switch_session": "Switch Session",
+        "support": "Support",
+        "docs": "Documentation",
+        "community": "Community",
+        "repo": "Repository"
     },
     "hotspot_active": {
         "title": "Active Users",
@@ -257,7 +273,8 @@
         "active": "Active",
         "hosts": "Hosts",
         "bindings": "IP Bindings",
-        "walled_garden": "Walled Garden"
+        "walled_garden": "Walled Garden",
+        "hotspot": "Hotspot"
     },
     "reports_menu": {
         "resume": "Resume",
@@ -290,7 +307,8 @@
         "ip": "IP Address",
         "expires": "Expires In",
         "remove_cookie": "Remove Cookie?",
-        "remove_confirm": "Are you sure you want to remove the cookie for {user}?"
+        "remove_confirm": "Are you sure you want to remove the cookie for {user}?",
+        "user": "User"
     },
     "reports": {
         "selling_title": "Selling Report",
@@ -315,7 +333,13 @@
         "month": "Month",
         "year": "Year",
         "refresh": "Refresh",
-        "print_report": "Print Report"
+        "print_report": "Print Report",
+        "export": "Export",
+        "generated_stock": "Generated Stock",
+        "realized_income": "Realized Income",
+        "status": "Status",
+        "total_stock": "Total Stock",
+        "used": "Used"
     },
     "hotspot_profiles": {
         "title": "User Profiles",
@@ -351,7 +375,15 @@
             "quick_tips": "Quick Tips",
             "tip_rate_limit": "<strong>Rate Limit</strong>: Rx/Tx (Upload/Download). Example: <code>512k/1M</code>",
             "tip_expired_mode": "<strong>Expired Mode</strong>: Select 'Remove' or 'Notice' to enable Validity.",
-            "tip_parent_queue": "<strong>Parent Queue</strong>: Assigns users to a specific parent queue for bandwidth management."
+            "tip_parent_queue": "<strong>Parent Queue</strong>: Assigns users to a specific parent queue for bandwidth management.",
+            "expired_mode": "Expired Mode",
+            "lock_user": "Lock User",
+            "parent_queue": "Parent Queue",
+            "price": "Price (Rp)",
+            "rate_limit": "Rate Limit (Rx/Tx)",
+            "selling_price": "Selling Price (Rp)",
+            "shared_users": "Shared Users",
+            "validity": "Validity"
         }
     },
     "hotspot_users": {
@@ -628,5 +660,18 @@
         "router_not_found_desc": "The router session you are trying to access does not exist or has been removed.",
         "return_home": "Return Home",
         "go_back": "Go Back"
+    },
+    "colors": {
+        "blue": "Blue",
+        "dark": "Dark",
+        "green": "Green",
+        "indigo": "Indigo",
+        "pink": "Pink",
+        "purple": "Purple",
+        "red": "Red",
+        "yellow": "Yellow"
+    },
+    "status_menu": {
+        "active": "Active"
     }
 }

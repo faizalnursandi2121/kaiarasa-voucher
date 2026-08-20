@@ -136,7 +136,7 @@ $getInitials = function ($name) {
                                 <i data-lucide="languages" class="w-4 h-4 !text-black dark:!text-white" stroke-width="2.5"></i>
                             </button>
                             <div id="lang-dropdown-sidebar" class="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-48 bg-background/95 backdrop-blur-2xl border border-accents-2 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-out origin-top opacity-0 scale-95 invisible pointer-events-none z-50 dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
-                                <div class="px-3 py-2 text-[10px] font-bold text-accents-4 uppercase tracking-widest border-b border-accents-2/50 bg-accents-1/50" data-i18n="sidebar.switch_language">Select Language</div>
+                                <div class="px-3 py-2 text-[10px] font-bold text-accents-4 uppercase tracking-widest border-b border-accents-2/50 bg-accents-1/50" data-i18n="sidebar.switch_language"><?= LanguageHelper::t('sidebar.switch_language', 'Select Language') ?></div>
                                 <?php
                                 $languages = LanguageHelper::getAvailableLanguages();
 foreach ($languages as $lang) {
@@ -224,7 +224,7 @@ foreach ($languages as $lang) {
                     <div class="border-t border-accents-2 p-1 bg-accents-1/30">
                          <a href="/settings/add" class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accents-2 rounded-md transition-colors text-accents-5 hover:text-foreground">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                            <span data-i18n="settings.add_router">Connect Router</span>
+                            <span data-i18n="settings.add_router"><?= LanguageHelper::t('settings.add_router', 'Connect Router') ?></span>
                         </a>
                     </div>
                 </div>
@@ -233,18 +233,18 @@ foreach ($languages as $lang) {
             <!-- Dashboard -->
             <a href="/<?= htmlspecialchars($session) ?>/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= $isDashboard ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
                 <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-                <span data-i18n="sidebar.dashboard">Dashboard</span>
+                <span data-i18n="sidebar.dashboard"><?= LanguageHelper::t('sidebar.dashboard', 'Dashboard') ?></span>
             </a>
 
             <!-- Quick Print -->
              <a href="/<?= htmlspecialchars($session) ?>/quick-print" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/quick-print') !== false) ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
                 <i data-lucide="printer" class="w-4 h-4"></i>
-                <span data-i18n="sidebar.quick_print">Quick Print</span>
+                <span data-i18n="sidebar.quick_print"><?= LanguageHelper::t('sidebar.quick_print', 'Quick Print') ?></span>
             </a>
 
             <!-- Hotspots Separator -->
             <div class="pt-4 pb-1 px-3">
-                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.hotspot">Hotspots</div>
+                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.hotspot"><?= LanguageHelper::t('sidebar.hotspot', 'Hotspots') ?></div>
             </div>
 
             <!-- Hotspot Group (Collapsible) -->
@@ -252,23 +252,23 @@ foreach ($languages as $lang) {
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('hotspot-menu', this)">
                     <div class="flex items-center gap-3">
                         <i data-lucide="wifi" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.hotspot">Hotspot</span>
+                        <span data-i18n="sidebar.hotspot"><?= LanguageHelper::t('sidebar.hotspot', 'Hotspot') ?></span>
                     </div>
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isHotspotActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
                 <div id="hotspot-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isHotspotActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.users">Users</span>
+                        <span data-i18n="hotspot_menu.users"><?= LanguageHelper::t('hotspot_menu.users', 'Users') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/profiles" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/profile') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.profiles">User Profiles</span>
+                        <span data-i18n="hotspot_menu.profiles"><?= LanguageHelper::t('hotspot_menu.profiles', 'User Profiles') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/generate" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/generate') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.generate">Generate</span>
+                        <span data-i18n="hotspot_menu.generate"><?= LanguageHelper::t('hotspot_menu.generate', 'Generate') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/cookies" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/cookies') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.cookies">Cookies</span>
+                        <span data-i18n="hotspot_menu.cookies"><?= LanguageHelper::t('hotspot_menu.cookies', 'Cookies') ?></span>
                     </a>
                 </div>
             </div>
@@ -278,17 +278,17 @@ foreach ($languages as $lang) {
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('status-menu', this)">
                     <div class="flex items-center gap-3">
                         <i data-lucide="activity" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.status">Status</span>
+                        <span data-i18n="sidebar.status"><?= LanguageHelper::t('sidebar.status', 'Status') ?></span>
                     </div>
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isStatusActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
                 <div id="status-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isStatusActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/active" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.active">Active</span>
+                        <span data-i18n="hotspot_menu.active"><?= LanguageHelper::t('hotspot_menu.active', 'Active') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/hosts" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/hosts') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.hosts">Hosts</span>
+                        <span data-i18n="hotspot_menu.hosts"><?= LanguageHelper::t('hotspot_menu.hosts', 'Hosts') ?></span>
                     </a>
                 </div>
             </div>
@@ -298,17 +298,17 @@ foreach ($languages as $lang) {
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('security-menu', this)">
                     <div class="flex items-center gap-3">
                         <i data-lucide="shield" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.security">Security</span>
+                        <span data-i18n="sidebar.security"><?= LanguageHelper::t('sidebar.security', 'Security') ?></span>
                     </div>
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isSecurityActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
                 <div id="security-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSecurityActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/bindings" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/bindings') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.bindings">IP Bindings</span>
+                        <span data-i18n="hotspot_menu.bindings"><?= LanguageHelper::t('hotspot_menu.bindings', 'IP Bindings') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/walled-garden" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/walled-garden') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.walled_garden">Walled Garden</span>
+                        <span data-i18n="hotspot_menu.walled_garden"><?= LanguageHelper::t('hotspot_menu.walled_garden', 'Walled Garden') ?></span>
                     </a>
                 </div>
             </div>
@@ -319,20 +319,20 @@ foreach ($languages as $lang) {
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('reports-menu', this)">
                     <div class="flex items-center gap-3">
                         <i data-lucide="file-text" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.reports">Reports</span>
+                        <span data-i18n="sidebar.reports"><?= LanguageHelper::t('sidebar.reports', 'Reports') ?></span>
                     </div>
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isReportsActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
                 <div id="reports-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isReportsActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/reports/resume" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/resume') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="reports_menu.resume">Resume</span>
+                        <span data-i18n="reports_menu.resume"><?= LanguageHelper::t('reports_menu.resume', 'Resume') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/reports/selling" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/selling') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="reports_menu.selling">Selling Report</span>
+                        <span data-i18n="reports_menu.selling"><?= LanguageHelper::t('reports_menu.selling', 'Selling Report') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/reports/user-log" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="reports_menu.user_log">User Log</span>
+                        <span data-i18n="reports_menu.user_log"><?= LanguageHelper::t('reports_menu.user_log', 'User Log') ?></span>
                     </a>
                 </div>
             </div>
@@ -342,14 +342,14 @@ foreach ($languages as $lang) {
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('network-menu', this)">
                     <div class="flex items-center gap-3">
                         <i data-lucide="network" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.network">Network</span>
+                        <span data-i18n="sidebar.network"><?= LanguageHelper::t('sidebar.network', 'Network') ?></span>
                     </div>
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isNetworkActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
                 <div id="network-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isNetworkActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/network/dhcp" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/network/dhcp') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="network_menu.dhcp">DHCP Leases</span>
+                        <span data-i18n="network_menu.dhcp"><?= LanguageHelper::t('network_menu.dhcp', 'DHCP Leases') ?></span>
                     </a>
                 </div>
             </div>
@@ -359,64 +359,64 @@ foreach ($languages as $lang) {
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('system-menu', this)">
                     <div class="flex items-center gap-3">
                         <i data-lucide="cpu" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.system">System</span>
+                        <span data-i18n="sidebar.system"><?= LanguageHelper::t('sidebar.system', 'System') ?></span>
                     </div>
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isSystemActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
                 <div id="system-menu" class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSystemActive ? '500px' : '0px' ?>">
                      <a href="/<?= htmlspecialchars($session) ?>/system/scheduler" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/system/scheduler') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="system_menu.scheduler">Scheduler</span>
+                        <span data-i18n="system_menu.scheduler"><?= LanguageHelper::t('system_menu.scheduler', 'Scheduler') ?></span>
                     </a>
                     <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/reboot', 'Reboot Router?')" class="w-full text-left block px-3 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
-                        <span data-i18n="system_menu.reboot">Reboot</span>
+                        <span data-i18n="system_menu.reboot"><?= LanguageHelper::t('system_menu.reboot', 'Reboot') ?></span>
                     </button>
                     <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/shutdown', 'Shutdown Router?')" class="w-full text-left block px-3 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
-                        <span data-i18n="system_menu.shutdown">Shutdown</span>
+                        <span data-i18n="system_menu.shutdown"><?= LanguageHelper::t('system_menu.shutdown', 'Shutdown') ?></span>
                     </button>
                 </div>
             </div>
 
             <!-- Systems Separator -->
             <div class="pt-4 pb-1 px-3">
-                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.system">Systems</div>
+                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.system"><?= LanguageHelper::t('sidebar.system', 'Systems') ?></div>
             </div>
 
             <!-- Settings -->
             <a href="/settings" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= $isSettings ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
                  <i data-lucide="settings" class="w-4 h-4"></i>
-                 <span data-i18n="sidebar.settings">Settings</span>
+                 <span data-i18n="sidebar.settings"><?= LanguageHelper::t('sidebar.settings', 'Settings') ?></span>
             </a>
 
             <!-- Voucher Templates -->
             <a href="/settings/voucher-templates" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= $isTemplates ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
                  <i data-lucide="file-code" class="w-4 h-4"></i>
-                 <span data-i18n="sidebar.templates">Templates</span>
+                 <span data-i18n="sidebar.templates"><?= LanguageHelper::t('sidebar.templates', 'Templates') ?></span>
             </a>
 
             <!-- Support Separator -->
             <div class="pt-4 pb-1 px-3">
-                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.support">Support</div>
+                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.support"><?= LanguageHelper::t('sidebar.support', 'Support') ?></div>
             </div>
 
             <!-- Docs -->
             <a href="https://mivodev.github.io" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-6 hover:text-foreground hover:bg-white/5">
                  <i data-lucide="book-open" class="w-4 h-4"></i>
-                 <span data-i18n="sidebar.docs">Documentation</span>
+                 <span data-i18n="sidebar.docs"><?= LanguageHelper::t('sidebar.docs', 'Documentation') ?></span>
                  <i data-lucide="external-link" class="w-3 h-3 ml-auto opacity-50"></i>
             </a>
 
             <!-- Community -->
             <a href="https://github.com/mivodev/mivo/discussions" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-6 hover:text-foreground hover:bg-white/5">
                  <i data-lucide="message-circle" class="w-4 h-4"></i>
-                 <span data-i18n="sidebar.community">Community</span>
+                 <span data-i18n="sidebar.community"><?= LanguageHelper::t('sidebar.community', 'Community') ?></span>
                  <i data-lucide="external-link" class="w-3 h-3 ml-auto opacity-50"></i>
             </a>
 
             <!-- Repo -->
             <a href="https://github.com/mivodev/mivo" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-6 hover:text-foreground hover:bg-white/5">
                  <i data-lucide="github" class="w-4 h-4"></i>
-                 <span data-i18n="sidebar.repo">Repository</span>
+                 <span data-i18n="sidebar.repo"><?= LanguageHelper::t('sidebar.repo', 'Repository') ?></span>
                  <i data-lucide="external-link" class="w-3 h-3 ml-auto opacity-50"></i>
             </a>
 
@@ -431,7 +431,7 @@ foreach ($languages as $lang) {
                          <i data-lucide="cast" class="!w-4 !h-4 !text-black dark:!text-white !flex-shrink-0 transition-colors"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-xs font-bold text-accents-6 group-hover:text-foreground transition-colors leading-none" data-i18n="sidebar.disconnect">Disconnect</span>
+                        <span class="text-xs font-bold text-accents-6 group-hover:text-foreground transition-colors leading-none" data-i18n="sidebar.disconnect"><?= LanguageHelper::t('sidebar.disconnect', 'Disconnect') ?></span>
                         <span class="text-[10px] text-accents-4 leading-none mt-1">Exit Session</span>
                     </div>
                 </div>
@@ -446,7 +446,7 @@ foreach ($languages as $lang) {
                          <i data-lucide="log-out" class="w-4 h-4"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-xs font-bold text-accents-6 group-hover:text-red-500 transition-colors leading-none" data-i18n="sidebar.logout">Logout</span>
+                        <span class="text-xs font-bold text-accents-6 group-hover:text-red-500 transition-colors leading-none" data-i18n="sidebar.logout"><?= LanguageHelper::t('sidebar.logout', 'Logout') ?></span>
                         <span class="text-[10px] text-accents-4 group-hover:text-red-400/80 leading-none mt-1">Sign Out</span>
                     </div>
                 </div>
@@ -474,7 +474,7 @@ foreach ($languages as $lang) {
                              <i data-lucide="languages" class="w-4 h-4"></i>
                         </button>
                          <div id="lang-dropdown-mobile" class="absolute right-0 top-full mt-3 w-48 bg-background/90 backdrop-blur-xl border border-accents-2 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-out origin-top-right opacity-0 scale-95 invisible pointer-events-none z-50 dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
-                            <div class="px-3 py-2 text-[10px] font-bold text-accents-4 uppercase tracking-widest border-b border-accents-2/50 bg-accents-1/50" data-i18n="sidebar.switch_language">Select Language</div>
+                            <div class="px-3 py-2 text-[10px] font-bold text-accents-4 uppercase tracking-widest border-b border-accents-2/50 bg-accents-1/50" data-i18n="sidebar.switch_language"><?= LanguageHelper::t('sidebar.switch_language', 'Select Language') ?></div>
                             <?php
                             $languages = LanguageHelper::getAvailableLanguages();
 foreach ($languages as $lang) {

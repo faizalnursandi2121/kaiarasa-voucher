@@ -30,6 +30,8 @@ class I18n {
             this.translations = await response.json();
             this.currentLang = lang;
             localStorage.setItem('mivo_lang', lang);
+            // Also set cookie so PHP can render translations server-side (prevents FOUC)
+            document.cookie = 'mivo_lang=' + lang + ';path=/;max-age=31536000;SameSite=Lax';
             
             this.applyTranslations();
             
@@ -90,6 +92,9 @@ class I18n {
                 }
             }
         });
+        
+        // Mark body as i18n-ready to prevent FOUC
+        document.body.classList.add('i18n-ready');
     }
 
     getNestedValue(obj, path) {

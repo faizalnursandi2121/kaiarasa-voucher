@@ -39,9 +39,19 @@
             "required": "wajib",
             "save_changes": "Simpan Perubahan",
             "please_wait": "Mohon tunggu...",
-            "none": "tidak ada"
+            "none": "tidak ada",
+            "enabled": "Aktif",
+            "disabled": "Nonaktif"
         },
-        "warning": "Peringatan"
+        "warning": "Peringatan",
+        "all_comments": "Semua Komentar",
+        "all_profiles": "Semua Profil",
+        "author": "Penulis",
+        "none": "tidak ada",
+        "print": "Cetak",
+        "selected": "Terpilih",
+        "tips": "Tips",
+        "version": "Versi"
     },
     "home": {
         "subtitle": "Hotspot Manager MikroTik modern dan ringan yang dirancang untuk performa dan kemudahan.",
@@ -159,7 +169,8 @@
         "plugin_installed_desc": "Plugin \"{name}\" berhasil diinstal.",
         "delete_plugin": "Hapus Plugin?",
         "delete_plugin_confirm": "Apakah Anda yakin ingin menghapus plugin <strong>{name}</strong>? Tindakan ini tidak dapat dibatalkan.",
-        "install_failed": "Instalasi Gagal"
+        "install_failed": "Instalasi Gagal",
+        "security": "Keamanan & Akses"
     },
     "routers": {
         "edit_router_title": "Edit Router",
@@ -176,7 +187,8 @@
         "check_btn": "Periksa",
         "currency": "Mata Uang",
         "auto_reload": "Auto Reload (Detik)",
-        "save_connect": "Simpan & Hubungkan"
+        "save_connect": "Simpan & Hubungkan",
+        "check_connection": "Periksa Koneksi"
     },
     "login": {
         "welcome": "Selamat datang kembali, silakan masuk untuk melanjutkan.",
@@ -226,7 +238,13 @@
         "settings": "Pengaturan",
         "templates": "Template",
         "disconnect": "Putuskan Sesi",
-        "logout": "Keluar dari Mivo"
+        "logout": "Keluar dari Mivo",
+        "switch_language": "Pilih Bahasa",
+        "switch_session": "Ganti Sesi",
+        "support": "Dukungan",
+        "docs": "Dokumentasi",
+        "community": "Komunitas",
+        "repo": "Repository"
     },
     "hotspot_active": {
         "title": "User Aktif",
@@ -257,7 +275,8 @@
         "active": "Aktif",
         "hosts": "Host",
         "bindings": "IP Binding",
-        "walled_garden": "Walled Garden"
+        "walled_garden": "Walled Garden",
+        "hotspot": "Hotspot"
     },
     "reports_menu": {
         "resume": "Resume",
@@ -290,7 +309,8 @@
         "ip": "Alamat IP",
         "expires": "Kedaluwarsa Dalam",
         "remove_cookie": "Hapus Cookie?",
-        "remove_confirm": "Apakah Anda yakin ingin menghapus cookie untuk {user}?"
+        "remove_confirm": "Apakah Anda yakin ingin menghapus cookie untuk {user}?",
+        "user": "Pengguna"
     },
     "reports": {
         "selling_title": "Laporan Penjualan",
@@ -315,7 +335,13 @@
         "month": "Bulan",
         "year": "Tahun",
         "refresh": "Refresh",
-        "print_report": "Cetak Laporan"
+        "print_report": "Cetak Laporan",
+        "export": "Ekspor",
+        "generated_stock": "Stok Dihasilkan",
+        "realized_income": "Pendapatan Terealisasi",
+        "status": "Status",
+        "total_stock": "Total Stok",
+        "used": "Terpakai"
     },
     "colors": {
         "blue": "Biru",
@@ -361,7 +387,15 @@
             "quick_tips": "Tips Cepat",
             "tip_rate_limit": "<strong>Batas Kecepatan</strong>: Rx/Tx (Upload/Download). Contoh: <code>512k/1M</code>",
             "tip_expired_mode": "<strong>Mode Kedaluwarsa</strong>: Pilih 'Remove' atau 'Notice' untuk mengaktifkan Masa Aktif.",
-            "tip_parent_queue": "<strong>Antrean Induk</strong>: Menempatkan user pada antrean induk tertentu untuk manajemen bandwidth."
+            "tip_parent_queue": "<strong>Antrean Induk</strong>: Menempatkan user pada antrean induk tertentu untuk manajemen bandwidth.",
+            "expired_mode": "Mode Kedaluwarsa",
+            "lock_user": "Kunci Pengguna",
+            "parent_queue": "Antrian Induk",
+            "price": "Harga (Rp)",
+            "rate_limit": "Batas Kecepatan (Rx/Tx)",
+            "selling_price": "Harga Jual (Rp)",
+            "shared_users": "Pengguna Bersama",
+            "validity": "Masa Berlaku"
         }
     },
     "hotspot_users": {
@@ -638,5 +672,8 @@
         "router_not_found_desc": "Sesi router yang Anda coba akses tidak ada atau telah dihapus.",
         "return_home": "Kembali ke Beranda",
         "go_back": "Kembali"
+    },
+    "status_menu": {
+        "active": "Aktif"
     }
 }

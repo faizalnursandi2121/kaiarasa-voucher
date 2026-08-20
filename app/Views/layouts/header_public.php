@@ -163,6 +163,8 @@ use App\Core\Hooks;
             
             window.changeLanguage = (lang) => {
                  localStorage.setItem('mivo_lang', lang);
+                 // Also set cookie so PHP can render translations server-side (prevents FOUC)
+                 document.cookie = 'mivo_lang=' + lang + ';path=/;max-age=31536000;SameSite=Lax';
                  // Reload or use i18n module to reload
                  location.reload(); 
             };
