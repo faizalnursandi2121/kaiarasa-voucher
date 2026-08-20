@@ -487,6 +487,17 @@ foreach ($languages as $lang) {
             window.__mivoSessionSpa = true;
 
             var DYNAMIC_ID = 'session-dynamic';
+
+            // Track external scripts already loaded on the page so SPA swaps don't
+            // re-inject them (re-declaring `class X` throws a fatal SyntaxError and
+            // aborts the rest of the script chain — that was breaking the selling
+            // report's DataTable init after a SPA navigation).
+            if (!window.__mivoLoadedScripts) {
+                window.__mivoLoadedScripts = new Set();
+                document.querySelectorAll('script[src]').forEach(function (s) {
+                    try { window.__mivoLoadedScripts.add(new URL(s.src, window.location.href).href); } catch (e) {}
+                });
+            }
             var TOP_ON = ['bg-white/40', 'dark:bg-white/5', 'shadow-sm', 'text-foreground', 'ring-1', 'ring-white/10'];
             var TOP_OFF = ['text-accents-6', 'hover:text-foreground', 'hover:bg-white/5'];
             var SUB_ON = ['bg-white/40', 'dark:bg-white/5', 'text-foreground', 'ring-1', 'ring-white/10', 'font-medium'];
@@ -552,14 +563,32 @@ foreach ($languages as $lang) {
                 return scripts.reduce(function (p, oldScript) {
                     return p.then(function () {
                         return new Promise(function (resolve) {
-                            var s = document.createElement('script');
-                            if (oldScript.src) { s.src = oldScript.src; }
-                            else { s.textContent = oldScript.textContent; }
-                            if (oldScript.type) { s.type = oldScript.type; }
-                            s.async = false;
-                            oldScript.parentNode.replaceChild(s, oldScript);
-                            if (oldScript.src) { s.onload = resolve; s.onerror = resolve; }
-                            else { resolve(); }
+                            // Inline scripts always re-run (view init logic).
+                            // External scripts run once; later swaps skip them to
+                            // avoid re-declaring top-level `class`/`const` bindings.
+                            if (oldScript.src) {
+                                var absUrl;
+                                try { absUrl = new URL(oldScript.src, window.location.href).href; } catch (e) { absUrl = oldScript.src; }
+                                if (window.__mivoLoadedScripts.has(absUrl)) {
+                                    oldScript.parentNode.removeChild(oldScript);
+                                    resolve();
+                                    return;
+                                }
+                                window.__mivoLoadedScripts.add(absUrl);
+                                var s = document.createElement('script');
+                                s.src = oldScript.src;
+                                if (oldScript.type) { s.type = oldScript.type; }
+                                s.async = false;
+                                oldScript.parentNode.replaceChild(s, oldScript);
+                                s.onload = resolve; s.onerror = resolve;
+                            } else {
+                                var inline = document.createElement('script');
+                                inline.textContent = oldScript.textContent;
+                                if (oldScript.type) { inline.type = oldScript.type; }
+                                inline.async = false;
+                                oldScript.parentNode.replaceChild(inline, oldScript);
+                                resolve();
+                            }
                         });
                     });
                 }, Promise.resolve());
