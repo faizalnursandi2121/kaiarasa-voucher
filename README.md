@@ -17,7 +17,7 @@ Kaiarasa is a next-generation **Voucher Management System** with a modern MVC ar
 *   **Responsive**: Fully optimized mobile experience with touch-friendly navigation.
 *   **Secure**: Environment-based configuration (`.env`), encrypted credentials, and secure session management.
 *   **API Ready**: Built-in REST API support with CORS management for external integrations.
-*   **CLI Tool**: Includes `mivo` CLI helper for easy management and installation.
+*   **CLI Tool**: Includes `kaiarasa` CLI helper for easy management and installation.
 
 ## Installation
 
@@ -31,7 +31,7 @@ Kaiarasa is a next-generation **Voucher Management System** with a modern MVC ar
 1.  **Install via Composer**
     ```bash
     composer create-project kaiarasa/kaiarasa
-    cd mivo
+    cd kaiarasa
     ```
 
     > **Alternative (Docker):**
@@ -47,14 +47,14 @@ Kaiarasa is a next-generation **Voucher Management System** with a modern MVC ar
 
 3.  **Run Development Server**
     ```bash
-    php mivo serve
+    php kaiarasa serve
     ```
     Access the app at `http://localhost:8000`.
 
 4.  **Install Application**
     *   **Option A: CLI (Recommended)**
         ```bash
-        php mivo install
+        php kaiarasa install
         ```
     *   **Option B: Web Installer**
         Open `http://localhost:8000/install` in your browser and follow the instructions.
@@ -64,7 +64,7 @@ Kaiarasa is a next-generation **Voucher Management System** with a modern MVC ar
 *   `app/` - Core application logic (Controllers, Models, Views).
 *   `public/` - Web root and assets.
 *   `routes/` - Route definitions (`web.php`, `api.php`).
-*   `mivo` - CLI executable entry point.
+*   `kaiarasa` - CLI executable entry point.
 
 
 ## Contributing

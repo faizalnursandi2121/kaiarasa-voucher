@@ -478,8 +478,8 @@ foreach ($languages as $lang) {
         <!-- Session SPA navigation (persistent; lives outside #session-dynamic) -->
         <script>
         (function () {
-            if (window.__mivoSessionSpa) return;
-            window.__mivoSessionSpa = true;
+            if (window.__kaiarasaSessionSpa) return;
+            window.__kaiarasaSessionSpa = true;
 
             var DYNAMIC_ID = 'session-dynamic';
 
@@ -487,10 +487,10 @@ foreach ($languages as $lang) {
             // re-inject them (re-declaring `class X` throws a fatal SyntaxError and
             // aborts the rest of the script chain — that was breaking the selling
             // report's DataTable init after a SPA navigation).
-            if (!window.__mivoLoadedScripts) {
-                window.__mivoLoadedScripts = new Set();
+            if (!window.__kaiarasaLoadedScripts) {
+                window.__kaiarasaLoadedScripts = new Set();
                 document.querySelectorAll('script[src]').forEach(function (s) {
-                    try { window.__mivoLoadedScripts.add(new URL(s.src, window.location.href).href); } catch (e) {}
+                    try { window.__kaiarasaLoadedScripts.add(new URL(s.src, window.location.href).href); } catch (e) {}
                 });
             }
             var TOP_ON = ['bg-white/40', 'dark:bg-white/5', 'shadow-sm', 'text-foreground', 'ring-1', 'ring-white/10'];
@@ -564,12 +564,12 @@ foreach ($languages as $lang) {
                             if (oldScript.src) {
                                 var absUrl;
                                 try { absUrl = new URL(oldScript.src, window.location.href).href; } catch (e) { absUrl = oldScript.src; }
-                                if (window.__mivoLoadedScripts.has(absUrl)) {
+                                if (window.__kaiarasaLoadedScripts.has(absUrl)) {
                                     oldScript.parentNode.removeChild(oldScript);
                                     resolve();
                                     return;
                                 }
-                                window.__mivoLoadedScripts.add(absUrl);
+                                window.__kaiarasaLoadedScripts.add(absUrl);
                                 var s = document.createElement('script');
                                 s.src = oldScript.src;
                                 if (oldScript.type) { s.type = oldScript.type; }
@@ -603,9 +603,9 @@ foreach ($languages as $lang) {
             }
 
             function cleanupSession() {
-                if (window.__mivoSessionCleanup) {
-                    try { window.__mivoSessionCleanup(); } catch (e) {}
-                    window.__mivoSessionCleanup = null;
+                if (window.__kaiarasaSessionCleanup) {
+                    try { window.__kaiarasaSessionCleanup(); } catch (e) {}
+                    window.__kaiarasaSessionCleanup = null;
                 }
             }
 

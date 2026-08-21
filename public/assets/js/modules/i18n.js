@@ -31,7 +31,7 @@ class I18n {
             this.currentLang = lang;
             localStorage.setItem('kaiarasa_lang', lang);
             // Also set cookie so PHP can render translations server-side (prevents FOUC)
-            document.cookie = 'mivo_lang=' + lang + ';path=/;max-age=31536000;SameSite=Lax';
+            document.cookie = 'kaiarasa_lang=' + lang + ';path=/;max-age=31536000;SameSite=Lax';
             
             this.applyTranslations();
             

@@ -262,13 +262,13 @@ class Console
         }
 
         echo "\n".self::COLOR_GREEN.'Installation Completed Successfully!'.self::COLOR_RESET."\n";
-        echo 'You can now run: '.self::COLOR_YELLOW.'php mivo serve'.self::COLOR_RESET."\n";
+        echo 'You can now run: '.self::COLOR_YELLOW.'php kaiarasa serve'.self::COLOR_RESET."\n";
     }
 
     private function commandHelp()
     {
         echo self::COLOR_YELLOW.'Usage:'.self::COLOR_RESET."\n";
-        echo "  php mivo [command] [options]\n\n";
+        echo "  php kaiarasa [command] [options]\n\n";
 
         echo self::COLOR_YELLOW.'Available commands:'.self::COLOR_RESET."\n";
         echo '  '.self::COLOR_GREEN.'install      '.self::COLOR_RESET."    Install Kaiarasa (Setup DB & Admin)\n";

@@ -134,10 +134,10 @@ class AlertModule {
             }, 300);
         };
 
-        toast.querySelector('.mivo-toast-close').addEventListener('click', closeToast);
+        toast.querySelector('.kaiarasa-toast-close').addEventListener('click', closeToast);
 
         // Progress Bar
-        const progress = toast.querySelector('.mivo-toast-progress');
+        const progress = toast.querySelector('.kaiarasa-toast-progress');
         const start = Date.now();
         
         const updateProgress = () => {

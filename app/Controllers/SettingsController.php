@@ -249,11 +249,11 @@ class SettingsController extends Controller
         $mime = $file['type'];
 
         // Validate Extension & MIME
-        $allowedExtensions = ['mivo'];
+        $allowedExtensions = ['kaiarasa'];
         $allowedMimes = ['application/octet-stream', 'text/plain']; // text/plain fallback for some OS/Browsers
 
         if (! in_array($extension, $allowedExtensions) || (! empty($mime) && ! in_array($mime, $allowedMimes))) {
-            FlashHelper::set('error', 'toasts.restore_failed', 'toasts.invalid_file_type_mivo', [], true);
+            FlashHelper::set('error', 'toasts.restore_failed', 'toasts.invalid_file_type_kaiarasa', [], true);
             header('Location: /settings/system');
             exit;
         }

@@ -649,7 +649,7 @@
 		"restore_failed": "Gagal Memulihkan",
 		"no_file_selected": "Tidak ada file cadangan yang dipilih.",
 		"invalid_file_type": "Tipe file tidak valid. Silakan unggah file .kaiarasa atau .json.",
-		"invalid_file_type_mivo": "Tipe file tidak valid. Silakan unggah file .kaiarasa.",
+		"invalid_file_type_kaiarasa": "Tipe file tidak valid. Silakan unggah file .kaiarasa.",
 		"file_empty": "File yang diunggah kosong.",
 		"file_corrupted": "File rusak atau bukan cadangan Kaiarasa yang valid.",
 		"logo_uploaded": "Logo Diunggah",

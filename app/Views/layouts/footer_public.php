@@ -61,6 +61,6 @@
             });
         <?php } ?>
     </script>
-    <?php Hooks::doAction('mivo_footer'); ?>
+    <?php Hooks::doAction('kaiarasa_footer'); ?>
 </body>
 </html>

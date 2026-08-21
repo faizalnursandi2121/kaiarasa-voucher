@@ -356,7 +356,7 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
         setTimeout(updateChartLabels, 500); 
 
         // SPA cleanup: stop polling, destroy chart, remove listeners when navigating away.
-        window.__mivoSessionCleanup = function () {
+        window.__kaiarasaSessionCleanup = function () {
             if (trafficInterval) clearInterval(trafficInterval);
             try { chart.destroy(); } catch (e) {}
             window.removeEventListener('languageChanged', updateChartLabels);

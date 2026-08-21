@@ -637,7 +637,7 @@
 		"restore_failed": "Restore Failed",
 		"no_file_selected": "No backup file selected.",
 		"invalid_file_type": "Invalid file type. Please upload a .kaiarasa or .json file.",
-		"invalid_file_type_mivo": "Invalid file type. Please upload a .kaiarasa file.",
+		"invalid_file_type_kaiarasa": "Invalid file type. Please upload a .kaiarasa file.",
 		"file_empty": "The uploaded file is empty.",
 		"file_corrupted": "The file is corrupted or not a valid Kaiarasa backup.",
 		"logo_uploaded": "Logo Uploaded",

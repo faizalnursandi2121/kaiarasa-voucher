@@ -140,8 +140,8 @@ foreach ($languages as $lang) {
 // keeps it working after #app-dynamic is replaced. Scoped to global app routes
 // ("/", "/home", "/settings*"); session dashboard links fall back to full load.
 (function () {
-    if (window.__mivoAppSpa) return;
-    window.__mivoAppSpa = true;
+    if (window.__kaiarasaAppSpa) return;
+    window.__kaiarasaAppSpa = true;
 
     var DYNAMIC_ID = 'app-dynamic';
 

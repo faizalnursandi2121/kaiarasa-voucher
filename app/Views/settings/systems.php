@@ -93,7 +93,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     <div class="p-4 rounded-lg bg-accents-1 border border-accents-2 flex flex-col h-full">
                             <div class="flex-1">
                                 <h4 class="font-medium mb-2 text-sm" data-i18n="settings.backup_data">Backup Data</h4>
-                                <p class="text-xs text-accents-5 mb-4" data-i18n="settings.backup_data_desc">Download a configuration file (.mivo) containing your database and settings.</p>
+                                <p class="text-xs text-accents-5 mb-4" data-i18n="settings.backup_data_desc">Download a configuration file (.kaiarasa) containing your database and settings.</p>
                             </div>
                             <a href="/settings/backup" class="btn btn-primary w-full justify-center text-sm mt-auto">
                             <i data-lucide="download" class="w-4 h-4 mr-2"></i> <span data-i18n="settings.download_backup">Download Backup</span>
@@ -104,11 +104,11 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         <div class="p-4 rounded-lg bg-accents-1 border border-accents-2 flex flex-col h-full">
                             <div class="flex-1">
                                 <h4 class="font-medium mb-2 text-sm" data-i18n="settings.restore_data">Restore Data</h4>
-                                <p class="text-xs text-accents-5 mb-4" data-i18n="settings.restore_data_desc">Upload a previously backup file (.mivo). <strong>Overwrites or adds to existing data.</strong></p>
+                                <p class="text-xs text-accents-5 mb-4" data-i18n="settings.restore_data_desc">Upload a previously backup file (.kaiarasa). <strong>Overwrites or adds to existing data.</strong></p>
                             </div>
                             <form action="/settings/restore" method="POST" enctype="multipart/form-data" class="flex flex-col sm:flex-row gap-2 mt-auto">
                             <div class="w-full">
-                                <input type="file" name="backup_file" accept=".mivo" class="form-control-file" required>
+                                <input type="file" name="backup_file" accept=".kaiarasa" class="form-control-file" required>
                             </div>
                             <button type="submit" class="btn btn-primary w-full sm:w-auto mt-2 sm:mt-0" onclick="event.preventDefault(); Kaiarasa.confirm(window.i18n ? window.i18n.t('settings.restore_data') : 'Restore Data?', window.i18n ? window.i18n.t('settings.warning_restore') : 'WARNING: This will restore settings from the file and may overwrite existing data. Continue?', window.i18n ? window.i18n.t('settings.restore') : 'Restore', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { if(res) this.closest('form').submit(); });">
                                 <span data-i18n="settings.restore">Restore</span>

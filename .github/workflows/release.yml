@@ -62,12 +62,12 @@ jobs:
       - name: Build Zip Artifact
         run: |
           cd release_temp
-          zip -r ../mivo-v${{ steps.get_version.outputs.VERSION }}.zip .
+          zip -r ../m-v... no, kaiarasa-v${{ steps.get_version.outputs.VERSION }}.zip .
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: mivo-v${{ steps.get_version.outputs.VERSION }}.zip
+          files: m-v... no, kaiarasa-v${{ steps.get_version.outputs.VERSION }}.zip
           body_path: .github/release_notes.md
           generate_release_notes: false
           draft: false

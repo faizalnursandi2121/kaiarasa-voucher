@@ -304,8 +304,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         '{{hotspotname}}': 'Kaiarasa Hotspot',
         '{{num}}': '1',
         '{{logo}}': '<img src="/assets/img/logo-sage.webp" style="height:30px;border:0;">', // Default placeholder
-        '{{dns_name}}': 'hotspot.mivo', 
-        '{{login_url}}': 'http://hotspot.mivo/login',
+        '{{dns_name}}': 'hotspot.kaiarasa', 
+        '{{login_url}}': 'http://hotspot.kaiarasa/login',
     };
 
     function updatePreview() {

@@ -47,7 +47,7 @@ Nginx does not read `.htaccess`. Use this configuration block in your `server` b
 server {
     listen 80;
     server_name your-domain.com;
-    root /path/to/mivo/public;
+    root /path/to/kaiarasa/public;
     index index.php;
 
     location / {
@@ -86,7 +86,7 @@ server {
 2.  Navigate to Kaiarasa directory: `cd kaiarasa`
 3.  Use the built-in server:
     ```bash
-    php mivo serve --host=0.0.0.0 --port=8080
+    php kaiarasa serve --host=0.0.0.0 --port=8080
     ```
 4.  Access via browser.
 
@@ -98,9 +98,9 @@ server {
 ## Shared Hosting (cPanel / DirectAdmin)
 Most shared hosting uses Apache or OpenLiteSpeed, which is fully compatible.
 
-1.  **Upload Files**: Upload the Kaiarasa files to `public_html/mivo` (or a subdomain folder).
+1.  **Upload Files**: Upload the Kaiarasa files to `public_html/kaiarasa` (or a subdomain folder).
 2.  **Point Domain**:
-    *   **Recommended**: Go to "Domains" or "Subdomains" in cPanel and set the **Document Root** to point strictly to the `public/` folder (e.g., `public_html/mivo/public`).
+    *   **Recommended**: Go to "Domains" or "Subdomains" in cPanel and set the **Document Root** to point strictly to the `public/` folder (e.g., `public_html/kaiarasa/public`).
     *   **Alternative**: If you cannot change Document Root, you can move contents of `public/` to the root `public_html` and move `app/`, `routes/`, etc. one level up (not recommended for security).
 3.  **PHP Version**: Select PHP 8.0+ in "Select PHP Version" menu.
 4.  **Extensions**: Ensure `sqlite3` and `fileinfo` are checked.
@@ -131,6 +131,6 @@ After setting up the server:
 1.  Copy `.env.example` to `.env` (if not already done).
 2.  **Install Application**
     *   **Option A: CLI**
-        Run `php mivo install` in your terminal.
+        Run `php kaiarasa install` in your terminal.
     *   **Option B: Web Installer**
         Open `http://your-domain.com/install` in your browser.
