@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="-1">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Kaiarasa — Connected</title>
+
+    $(if refresh-timeout)
+    <meta http-equiv="refresh" content="$(refresh-timeout-secs); url=$(link-status)">
+    $(endif)
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script defer src="assets/js/alpine.min.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        $(if advert-pending == 'yes')
+            var popup = '';
+            function openAdvert() {
+                popup = open('$(link-advert)', 'hotspot_advert', '');
+                setTimeout('popup.focus()', 1000);
+            }
+            window.addEventListener('load', openAdvert);
+        $(endif)
+    </script>
+
+    <style>
+        /* Self-hosted Inter (latin, variable font) */
+        @font-face {
+            font-family: "Inter";
+            font-style: normal;
+            font-weight: 400 700;
+            font-display: swap;
+            src: url("assets/fonts/inter-latin.woff2") format("woff2");
+        }
+
+        :root {
+            --sage: #92aa96;
+            --sage-deep: #5f7f67;
+
+            --card-bg: rgba(250, 250, 247, 0.96);
+            --card-border: rgba(28, 36, 32, 0.08);
+
+            --card-ink: #1c2420;
+            --card-ink-88: rgba(28, 36, 32, 0.88);
+            --card-ink-75: rgba(28, 36, 32, 0.75);
+            --card-ink-65: rgba(28, 36, 32, 0.65);
+            --card-ink-52: rgba(28, 36, 32, 0.52);
+
+            --page-x: clamp(24px, 4.5vw, 72px);
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            min-height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #121613;
+            color: var(--card-ink);
+            overflow-x: hidden;
+        }
+
+        button { font: inherit; }
+
+        /* =========================================================
+           PORTAL + BACKGROUND (same as login)
+        ========================================================= */
+
+        .portal {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .background {
+            position: absolute;
+            inset: 0;
+            z-index: -10;
+            overflow: hidden;
+            background: #151a16;
+        }
+
+        .bg-slide {
+            position: absolute;
+            inset: -2%;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transform: scale(1.025);
+            transition: opacity 1.4s ease, transform 8s ease;
+        }
+
+        .bg-slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .background-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(9, 13, 10, 0.45);
+        }
+
+        .background-bottom {
+            position: absolute;
+            inset-inline: 0;
+            bottom: 0;
+            height: 190px;
+            background: linear-gradient(to top, rgba(7, 10, 8, 0.56), transparent);
+        }
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .main {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 48px var(--page-x) 90px;
+        }
+
+        /* =========================================================
+           CARD
+        ========================================================= */
+
+        .status-card {
+            width: 100%;
+            max-width: 430px;
+            padding: 28px;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            background: var(--card-bg);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35), 0 8px 24px rgba(0, 0, 0, 0.14);
+        }
+
+        .logo {
+            display: block;
+            width: auto;
+            height: 56px;
+            margin: 0 auto 22px;
+            object-fit: contain;
+        }
+
+        /* Header */
+        .status-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+        }
+
+        .status-title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            color: var(--card-ink);
+        }
+
+        .status-live {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 4px;
+            color: var(--sage-deep);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+
+        .live-dot {
+            position: relative;
+            width: 8px;
+            height: 8px;
+        }
+
+        .live-dot::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 999px;
+            background: #34d399;
+            opacity: 0.75;
+            animation: ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        .live-dot::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 999px;
+            background: #10b981;
+        }
+
+        @keyframes ping {
+            75%, 100% { transform: scale(2.1); opacity: 0; }
+        }
+
+        .wifi-badge {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: rgba(95, 127, 103, 0.10);
+            border: 1px solid rgba(95, 127, 103, 0.22);
+            color: var(--sage-deep);
+        }
+
+        /* Rows */
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border-radius: 13px;
+            background: rgba(28, 36, 32, 0.04);
+            border: 1px solid rgba(28, 36, 32, 0.06);
+        }
+
+        .row .k {
+            color: var(--card-ink-65);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .row .v {
+            color: var(--card-ink);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        /* Stats grid */
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stat {
+            padding: 14px;
+            border-radius: 13px;
+            background: rgba(28, 36, 32, 0.04);
+            border: 1px solid rgba(28, 36, 32, 0.06);
+        }
+
+        .stat .label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            color: var(--card-ink-65);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .stat .value {
+            color: var(--card-ink);
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Session block */
+        .session {
+            margin-top: 10px;
+            padding: 14px;
+            border-radius: 13px;
+            background: rgba(28, 36, 32, 0.04);
+            border: 1px solid rgba(28, 36, 32, 0.06);
+        }
+
+        .session-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .session-row .k {
+            color: var(--card-ink-65);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .session-row .v {
+            color: var(--card-ink);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .limit-block {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(28, 36, 32, 0.08);
+        }
+
+        .limit-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .limit-head .k { color: var(--card-ink-65); font-weight: 500; }
+        .limit-head .v {
+            color: var(--card-ink);
+            font-weight: 700;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        .bar {
+            height: 7px;
+            border-radius: 999px;
+            background: rgba(28, 36, 32, 0.10);
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.5s ease;
+        }
+
+        .bar-ok { background: #10b981; }
+        .bar-warn { background: #f59e0b; }
+        .bar-low { background: #ef4444; }
+
+        .limit-total {
+            margin-top: 6px;
+            text-align: right;
+            color: var(--card-ink-52);
+            font-size: 10px;
+        }
+
+        /* Buttons */
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-disconnect {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 50px;
+            border: 0;
+            border-radius: 13px;
+            background: #dc2626;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.18s ease, transform 0.18s ease;
+        }
+
+        .btn-disconnect:hover {
+            background: #ef4444;
+            transform: translateY(-1px);
+        }
+
+        .btn-refresh {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 46px;
+            border: 1px solid rgba(28, 36, 32, 0.16);
+            border-radius: 12px;
+            background: transparent;
+            color: var(--card-ink-88);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .btn-refresh:hover {
+            background: rgba(28, 36, 32, 0.045);
+            border-color: rgba(28, 36, 32, 0.24);
+        }
+
+        /* Slider indicator */
+        .slider {
+            position: absolute;
+            right: var(--page-x);
+            bottom: 25px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dots { display: flex; align-items: center; gap: 5px; }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            padding: 0;
+            border: 0;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.27);
+            cursor: pointer;
+            transition: width 0.25s ease, background 0.25s ease;
+        }
+
+        .dot.active {
+            width: 20px;
+            background: var(--sage);
+        }
+
+        .slide-number {
+            color: rgba(255, 255, 255, 0.70);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+        }
+
+        /* Page loader */
+        .loader {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 26px;
+            background: #121613;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .loader.done {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-logo {
+            height: 52px;
+            width: auto;
+            animation: loader-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .loader-spinner {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            border-top-color: var(--sage);
+            animation: loader-spin 0.8s linear infinite;
+        }
+
+        @keyframes loader-spin { to { transform: rotate(360deg); } }
+
+        @keyframes loader-in {
+            from { opacity: 0; transform: translateY(8px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @media (max-width: 640px) {
+            .main { padding: 28px 20px 80px; }
+            .status-card { padding: 24px; border-radius: 17px; }
+            .logo { height: 46px; margin-bottom: 18px; }
+            .slider { right: 20px; bottom: 18px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Page loader -->
+<div class="loader" id="page-loader">
+    <img class="loader-logo" src="assets/img/logo-white.webp" alt="Kaiarasa">
+    <div class="loader-spinner"></div>
+</div>
+
+<div
+    class="portal"
+    x-data="{
+        slide: 0,
+        slides: [
+            'assets/img/bg-1.webp',
+            'assets/img/bg-2.webp',
+            'assets/img/bg-3.webp',
+            'assets/img/bg-4.webp',
+            'assets/img/bg-5.webp'
+        ],
+        timer: null,
+        start() {
+            this.timer = setInterval(() => { this.next(); }, 8000);
+        },
+        next() {
+            this.slide = (this.slide + 1) % this.slides.length;
+        },
+        go(index) {
+            this.slide = index;
+            clearInterval(this.timer);
+            this.start();
+        }
+    }"
+    x-init="start()"
+>
+
+    <!-- Background -->
+    <div class="background">
+        <template x-for="(src, i) in slides" :key="i">
+            <div
+                class="bg-slide"
+                :class="{ active: slide === i }"
+                :style="'background-image: url(' + src + ')'"
+            ></div>
+        </template>
+        <div class="background-overlay"></div>
+        <div class="background-bottom"></div>
+    </div>
+
+    <!-- Main -->
+    <main class="main">
+
+        <div
+            class="status-card"
+            x-data="window.initStatusPage({
+                uptime: '$(uptime)',
+                username: '$(username)',
+                limitTime: '$(limit-session-time)',
+                limitBytes: '$(limit-bytes-total)',
+                remainBytes: '$(remain-bytes-total)',
+                remainTime: '$(remain-time)'
+            })"
+        >
+
+            <img class="logo" src="assets/img/logo-sage.webp" alt="Kaiarasa">
+
+            <!-- Header -->
+            <div class="status-head">
+                <div>
+                    <h1 class="status-title">Connected</h1>
+                    <p class="status-live">
+                        <span class="live-dot"></span>
+                        Active Session
+                    </p>
+                </div>
+                <div class="wifi-badge">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                </div>
+            </div>
+
+            <!-- User -->
+            <div class="row">
+                <span class="k">User</span>
+                <span class="v">$(username)</span>
+            </div>
+
+            <!-- IP / MAC -->
+            <div class="stats">
+                <div class="stat">
+                    <p class="label">IP Address</p>
+                    <p class="value" style="font-size:13px;">$(ip)</p>
+                </div>
+                <div class="stat">
+                    <p class="label">MAC</p>
+                    <p class="value" style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="$(mac)">$(mac)</p>
+                </div>
+            </div>
+
+            <!-- Download / Upload -->
+            <div class="stats">
+                <div class="stat">
+                    <p class="label">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"></path></svg>
+                        Download
+                    </p>
+                    <p class="value">$(bytes-out-nice)</p>
+                </div>
+                <div class="stat">
+                    <p class="label">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
+                        Upload
+                    </p>
+                    <p class="value">$(bytes-in-nice)</p>
+                </div>
+            </div>
+
+            <!-- Session -->
+            <div class="session">
+                <div class="session-row">
+                    <span class="k">Session Uptime</span>
+                    <span class="v" x-text="formattedUptime">$(uptime)</span>
+                </div>
+
+                <!-- Time Limit -->
+                <template x-if="limitTimeSecs > 0">
+                    <div class="limit-block">
+                        <div class="limit-head">
+                            <span class="k">Time Remaining</span>
+                            <span class="v" x-text="window.formatSeconds(limitTimeSecs - uptimeSecs)"></span>
+                        </div>
+                        <div class="bar">
+                            <div
+                                class="bar-fill"
+                                :class="getTimePercent() > 50 ? 'bar-ok' : (getTimePercent() > 20 ? 'bar-warn' : 'bar-low')"
+                                :style="'width: ' + getTimePercent() + '%'"
+                            ></div>
+                        </div>
+                        <p class="limit-total">Limit: <span x-text="limitTimeStrDisplay"></span></p>
+                    </div>
+                </template>
+
+                <!-- Remaining time fallback (no limit detected) -->
+                <template x-if="hasRemainTime() && limitTimeSecs <= 0">
+                    <div class="limit-block">
+                        <div class="limit-head">
+                            <span class="k">Time Remaining</span>
+                            <span class="v" style="color: var(--sage-deep);" x-text="getRemainTimeDisplay()"></span>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Data Limit -->
+                <template x-if="limitBytes > 0 && remainBytes > 0">
+                    <div class="limit-block">
+                        <div class="limit-head">
+                            <span class="k">Data Remaining</span>
+                            <span class="v" x-text="window.bytesToSize(remainBytes)">$(remain-bytes-total-nice)</span>
+                        </div>
+                        <div class="bar">
+                            <div
+                                class="bar-fill"
+                                :class="getDataPercent() > 50 ? 'bar-ok' : (getDataPercent() > 20 ? 'bar-warn' : 'bar-low')"
+                                :style="'width: ' + getDataPercent() + '%'"
+                            ></div>
+                        </div>
+                        <p class="limit-total">Limit: <span x-text="window.bytesToSize(limitBytes)"></span></p>
+                    </div>
+                </template>
+
+                <!-- API quota fallback -->
+                <template x-if="(!limitBytes || limitBytes <= 0) && apiData && apiData.data_left">
+                    <div class="limit-block">
+                        <div class="limit-head">
+                            <span class="k">Quota Remaining</span>
+                            <span class="v" style="color: var(--sage-deep);" x-text="apiData.data_left"></span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+                <button type="button" class="btn-disconnect" onclick="location.href='$(link-logout)'">
+                    Disconnect
+                </button>
+                <button type="button" class="btn-refresh" @click="refresh()">
+                    Refresh Status
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Slider indicator -->
+    <div class="slider">
+        <div class="dots">
+            <template x-for="(src, i) in slides" :key="i">
+                <button
+                    type="button"
+                    class="dot"
+                    :class="{ active: slide === i }"
+                    @click="go(i)"
+                    :aria-label="'Background ' + (i + 1)"
+                ></button>
+            </template>
+        </div>
+        <span
+            class="slide-number"
+            x-text="String(slide + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0')"
+        ></span>
+    </div>
+
+</div>
+
+<script>
+    // Page loader: show on load/refresh, fade out when ready
+    (function () {
+        var loader = document.getElementById('page-loader');
+        var minDelay = 600;
+        var started = Date.now();
+        var hidden = false;
+
+        function hide() {
+            if (hidden) return;
+            hidden = true;
+            var elapsed = Date.now() - started;
+            var wait = Math.max(0, minDelay - elapsed);
+            setTimeout(function () {
+                loader.classList.add('done');
+            }, wait);
+        }
+
+        window.addEventListener('load', hide);
+        setTimeout(hide, 3000);
+    })();
+</script>
+</body>
+</html>

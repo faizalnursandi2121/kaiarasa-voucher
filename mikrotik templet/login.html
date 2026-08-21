@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="-1">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Kaiarasa — Co-Working Space</title>
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script defer src="assets/js/alpine.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/md5.js"></script>
+    <script src="assets/js/html5-qrcode.min.js"></script>
+
+    <style>
+        /* Self-hosted Inter (latin, variable font) — captive portal
+           has no internet access, so Google Fonts cannot be used */
+        @font-face {
+            font-family: "Inter";
+            font-style: normal;
+            font-weight: 400 700;
+            font-display: swap;
+            src: url("assets/fonts/inter-latin.woff2") format("woff2");
+        }
+
+        :root {
+            --sage: #92aa96;
+            --sage-hover: #a3b9a6;
+
+            --white: #ffffff;
+            --white-80: rgba(255, 255, 255, 0.92);
+            --white-65: rgba(255, 255, 255, 0.75);
+            --white-45: rgba(255, 255, 255, 0.60);
+            --white-25: rgba(255, 255, 255, 0.40);
+
+            --card-bg: rgba(250, 250, 247, 0.96);
+            --card-border: rgba(28, 36, 32, 0.08);
+
+            --card-ink: #1c2420;
+            --card-ink-70: rgba(28, 36, 32, 0.88);
+            --card-ink-55: rgba(28, 36, 32, 0.75);
+            --card-ink-45: rgba(28, 36, 32, 0.65);
+            --card-ink-35: rgba(28, 36, 32, 0.52);
+
+            --sage-deep: #5f7f67;
+
+            --input-bg: rgba(28, 36, 32, 0.04);
+            --input-border: rgba(28, 36, 32, 0.14);
+
+            --page-x: clamp(24px, 4.5vw, 72px);
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            min-height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #121613;
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        button, input { font: inherit; }
+
+        /* =========================================================
+           PORTAL
+        ========================================================= */
+
+        .portal {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        /* =========================================================
+           BACKGROUND
+        ========================================================= */
+
+        .background {
+            position: absolute;
+            inset: 0;
+            z-index: -10;
+            overflow: hidden;
+            background: #151a16;
+        }
+
+        .bg-slide {
+            position: absolute;
+            inset: -2%;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transform: scale(1.025);
+            transition: opacity 1.4s ease, transform 8s ease;
+        }
+
+        .bg-slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .background-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(9, 13, 10, 0.68) 0%,
+                rgba(9, 13, 10, 0.49) 34%,
+                rgba(9, 13, 10, 0.25) 62%,
+                rgba(9, 13, 10, 0.46) 100%
+            );
+        }
+
+        .background-bottom {
+            position: absolute;
+            inset-inline: 0;
+            bottom: 0;
+            height: 190px;
+            background: linear-gradient(to top, rgba(7, 10, 8, 0.56), transparent);
+        }
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .main {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            padding: 56px var(--page-x) 100px;
+        }
+
+        .layout {
+            width: 100%;
+            max-width: 1220px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(360px, 430px);
+            gap: clamp(64px, 10vw, 150px);
+            align-items: center;
+        }
+
+        /* =========================================================
+           LEFT / BRAND MESSAGE
+        ========================================================= */
+
+        .welcome {
+            max-width: 700px;
+            text-shadow: 0 2px 24px rgba(7, 10, 8, 0.35);
+        }
+
+        .welcome > * {
+            animation: welcome-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .welcome > *:nth-child(2) { animation-delay: 0.12s; }
+
+        @keyframes welcome-in {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            display: block;
+            width: auto;
+            height: 64px;
+            margin: 0 auto 30px;
+            object-fit: contain;
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 0 0 22px;
+        }
+
+        .eyebrow-line {
+            width: 44px;
+            height: 1px;
+            background: var(--sage);
+            opacity: 0.85;
+        }
+
+        .space-label {
+            margin: 0;
+            color: var(--white-80);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 27px;
+            line-height: 1.1;
+            font-weight: 400;
+            font-style: italic;
+            letter-spacing: -0.035em;
+        }
+
+        .headline {
+            margin: 0;
+            max-width: 680px;
+            color: var(--white);
+            font-size: clamp(58px, 6.5vw, 84px);
+            line-height: 0.98;
+            font-weight: 600;
+            letter-spacing: -0.055em;
+        }
+
+        .headline-sans {
+            display: block;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .headline-editorial {
+            display: block;
+            margin-top: 6px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 0.97em;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: -0.045em;
+            color: var(--white-80);
+        }
+
+        /* =========================================================
+           RIGHT / LOGIN CARD
+        ========================================================= */
+
+        .card-wrap { width: 100%; }
+
+        .login-card {
+            width: 100%;
+            padding: 28px;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            background: var(--card-bg);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35), 0 8px 24px rgba(0, 0, 0, 0.14);
+        }
+
+        .card-label {
+            margin: 0 0 8px;
+            color: var(--card-ink-45);
+            font-size: 10px;
+            line-height: 1.4;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .card-title {
+            margin: 0;
+            color: var(--card-ink);
+            font-size: 25px;
+            line-height: 1.2;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+        }
+
+        .card-description {
+            margin: 9px 0 0;
+            max-width: 320px;
+            color: var(--card-ink-55);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* =========================================================
+           TABS
+        ========================================================= */
+
+        .tabs {
+            position: relative;
+            display: flex;
+            margin-top: 18px;
+            padding: 3px;
+            border-radius: 12px;
+            background: rgba(28, 36, 32, 0.05);
+            border: 1px solid rgba(28, 36, 32, 0.07);
+        }
+
+        .tab-ind {
+            position: absolute;
+            top: 3px;
+            bottom: 3px;
+            border-radius: 9px;
+            background: #ffffff;
+            border: 1px solid rgba(28, 36, 32, 0.06);
+            box-shadow: 0 2px 8px rgba(28, 36, 32, 0.10);
+            transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1), width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            height: 36px;
+            border: 0;
+            background: transparent;
+            color: var(--card-ink-45);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .tab-btn.active { color: var(--card-ink); }
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .form { margin-top: 18px; }
+
+        .field-label {
+            display: block;
+            margin-bottom: 9px;
+            color: var(--card-ink-55);
+            font-size: 11px;
+            line-height: 1.4;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .field-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .voucher-input {
+            display: block;
+            width: 100%;
+            height: 54px;
+            padding: 0 16px;
+            border: 1px solid var(--input-border);
+            border-radius: 13px;
+            background: var(--input-bg);
+            color: var(--card-ink);
+            outline: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .voucher-input.mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .voucher-input::placeholder { color: var(--card-ink-35); }
+
+        .voucher-input:focus {
+            border-color: rgba(95, 127, 103, 0.65);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(95, 127, 103, 0.12);
+        }
+
+        .icon-btn {
+            flex-shrink: 0;
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--input-border);
+            border-radius: 13px;
+            background: var(--input-bg);
+            color: var(--card-ink-55);
+            cursor: pointer;
+            transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+        }
+
+        .icon-btn:hover {
+            border-color: rgba(95, 127, 103, 0.55);
+            color: var(--card-ink);
+            background: #ffffff;
+        }
+
+        .connect-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            height: 54px;
+            margin-top: 11px;
+            border: 0;
+            border-radius: 13px;
+            background: var(--sage-deep);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.18s ease, transform 0.18s ease, opacity 0.18s ease;
+        }
+
+        .connect-btn:hover {
+            background: #6b8b73;
+            transform: translateY(-1px);
+        }
+
+        .connect-btn:active { transform: translateY(0); }
+        .connect-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+
+        .field-group { margin-bottom: 14px; }
+        .field-group:last-of-type { margin-bottom: 0; }
+
+        /* =========================================================
+           PANES — stacked grid: crossfade tanpa layout jump
+        ========================================================= */
+
+        .panes {
+            display: grid;
+        }
+
+        .pane {
+            grid-area: 1 / 1;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.22s ease, visibility 0.22s;
+        }
+
+        .pane.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* =========================================================
+           CHECK RESULT
+        ========================================================= */
+
+        .check-result {
+            margin-top: 14px;
+            padding: 16px;
+            border-radius: 13px;
+            background: rgba(28, 36, 32, 0.04);
+            border: 1px solid rgba(28, 36, 32, 0.08);
+        }
+
+        .check-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 12px;
+        }
+
+        .check-row .k { color: var(--card-ink-45); }
+        .check-row .v { color: var(--card-ink); font-weight: 600; }
+        .check-row .v.ok { color: var(--sage-deep); }
+
+        .check-error {
+            margin-top: 14px;
+            padding: 14px;
+            border-radius: 13px;
+            background: rgba(220, 38, 38, 0.06);
+            border: 1px solid rgba(220, 38, 38, 0.20);
+            color: #dc2626;
+            font-size: 12px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* =========================================================
+           ERROR (Mikrotik)
+        ========================================================= */
+
+        .mt-error {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 16px;
+            padding: 13px 14px;
+            border-radius: 13px;
+            background: rgba(220, 38, 38, 0.06);
+            border: 1px solid rgba(220, 38, 38, 0.20);
+            color: #dc2626;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .mt-error svg { flex-shrink: 0; margin-top: 1px; }
+
+        /* =========================================================
+           DIVIDER + GUEST
+        ========================================================= */
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0;
+            color: var(--card-ink-35);
+            font-size: 10px;
+            line-height: 1;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(28, 36, 32, 0.10);
+        }
+
+        .guest-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 48px;
+            border: 1px solid rgba(28, 36, 32, 0.16);
+            border-radius: 12px;
+            background: transparent;
+            color: var(--card-ink-70);
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+        }
+
+        .guest-btn:hover {
+            background: rgba(28, 36, 32, 0.045);
+            border-color: rgba(28, 36, 32, 0.24);
+            color: var(--card-ink);
+        }
+
+        .help {
+            margin: 14px 0 0;
+            text-align: center;
+            color: var(--card-ink-35);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .help a {
+            color: var(--card-ink-55);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(28, 36, 32, 0.22);
+        }
+
+        /* =========================================================
+           SLIDER INDICATOR
+        ========================================================= */
+
+        .slider {
+            position: absolute;
+            right: var(--page-x);
+            bottom: 25px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dots { display: flex; align-items: center; gap: 5px; }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            padding: 0;
+            border: 0;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.27);
+            cursor: pointer;
+            transition: width 0.25s ease, background 0.25s ease;
+        }
+
+        .dot.active {
+            width: 20px;
+            background: var(--sage);
+        }
+
+        .slide-number {
+            color: rgba(255, 255, 255, 0.70);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+        }
+
+        /* =========================================================
+           QR MODAL
+        ========================================================= */
+
+        .qr-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(7, 10, 8, 0.82);
+            backdrop-filter: blur(6px);
+        }
+
+        .qr-card {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            padding: 28px;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            background: var(--card-bg);
+            color: var(--card-ink);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+        }
+
+        .qr-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 9px;
+            background: transparent;
+            color: var(--card-ink-45);
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .qr-close:hover {
+            background: rgba(28, 36, 32, 0.07);
+            color: var(--card-ink);
+        }
+
+        .qr-title {
+            margin: 0 0 18px;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .qr-reader {
+            position: relative;
+            aspect-ratio: 1;
+            margin-bottom: 14px;
+            border-radius: 14px;
+            overflow: hidden;
+            background: rgba(28, 36, 32, 0.05);
+        }
+
+        .qr-reader #reader { width: 100%; height: 100%; }
+        .qr-reader video { object-fit: cover; }
+
+        .qr-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .qr-actions .guest-btn { height: 42px; font-size: 11px; }
+
+        .qr-success {
+            text-align: center;
+            padding: 12px 0 4px;
+        }
+
+        .qr-success .badge {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            background: rgba(95, 127, 103, 0.12);
+            border: 1px solid rgba(95, 127, 103, 0.30);
+            color: var(--sage-deep);
+        }
+
+        .qr-success h4 {
+            margin: 0 0 4px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .qr-success p {
+            margin: 0 0 18px;
+            color: var(--card-ink-55);
+            font-size: 12px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        .qr-success .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        /* html5-qrcode default camera error text */
+        #reader__scan_region video { border-radius: 14px; }
+        #reader img[alt="Info icon"] { display: none; }
+        #reader__dashboard_section_csr span { color: var(--card-ink-55) !important; }
+
+        /* =========================================================
+           PAGE LOADER
+        ========================================================= */
+
+        .loader {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 26px;
+            background: #121613;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .loader.done {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-logo {
+            height: 52px;
+            width: auto;
+            animation: loader-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .loader-spinner {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            border-top-color: var(--sage);
+            animation: loader-spin 0.8s linear infinite;
+        }
+
+        @keyframes loader-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes loader-in {
+            from { opacity: 0; transform: translateY(8px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 920px) {
+            .main {
+                min-height: auto;
+                padding: 40px var(--page-x) 95px;
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+                gap: 46px;
+                max-width: 650px;
+            }
+
+            .welcome { max-width: 650px; }
+            .card-wrap { max-width: 500px; }
+        }
+
+        @media (max-width: 640px) {
+            .main { padding: 28px 20px 88px; }
+            .layout { gap: 34px; }
+
+            .logo { height: 52px; margin-bottom: 24px; }
+            .eyebrow { margin-bottom: 18px; }
+            .eyebrow-line { width: 34px; }
+            .space-label { font-size: 22px; }
+            .headline { font-size: 46px; line-height: 0.99; }
+
+            .login-card { padding: 24px; border-radius: 17px; }
+            .card-title { font-size: 22px; }
+
+            .slider { right: 20px; bottom: 18px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     PAGE LOADER
+========================================================== -->
+
+<div class="loader" id="page-loader">
+    <img class="loader-logo" src="assets/img/logo-white.webp" alt="Kaiarasa">
+    <div class="loader-spinner"></div>
+</div>
+
+<div
+    class="portal"
+    x-data="{
+        slide: 0,
+        slides: [
+            'assets/img/bg-1.webp',
+            'assets/img/bg-2.webp',
+            'assets/img/bg-3.webp',
+            'assets/img/bg-4.webp',
+            'assets/img/bg-5.webp'
+        ],
+        timer: null,
+        start() {
+            this.timer = setInterval(() => { this.next(); }, 8000);
+        },
+        next() {
+            this.slide = (this.slide + 1) % this.slides.length;
+        },
+        go(index) {
+            this.slide = index;
+            clearInterval(this.timer);
+            this.start();
+        }
+    }"
+    x-init="start()"
+>
+
+    <!-- =========================================================
+         BACKGROUND
+    ========================================================== -->
+
+    <div class="background">
+        <template x-for="(src, i) in slides" :key="i">
+            <div
+                class="bg-slide"
+                :class="{ active: slide === i }"
+                :style="'background-image: url(' + src + ')'"
+            ></div>
+        </template>
+        <div class="background-overlay"></div>
+        <div class="background-bottom"></div>
+    </div>
+
+    <!-- =========================================================
+         MAIN
+    ========================================================== -->
+
+    <main class="main">
+        <div class="layout">
+
+            <!-- =================================================
+                 LEFT / BRAND
+            ================================================== -->
+
+            <section class="welcome">
+                <div class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    <p class="space-label">Co-Working Space</p>
+                </div>
+
+                <h1 class="headline">
+                    <span class="headline-sans">A better place</span>
+                    <span class="headline-editorial">to get things done.</span>
+                </h1>
+            </section>
+
+            <!-- =================================================
+                 RIGHT / WIFI ACCESS
+            ================================================== -->
+
+            <section class="card-wrap" x-data="loginData()">
+
+                <script>
+                    function loginData() {
+                        return {
+                            ...qrMixin(),
+                            loading: false,
+                            checkLoading: false,
+                            loginType: 'voucher', // 'voucher', 'member', 'check'
+                            checkCode: '',
+                            checkRes: null,
+                            checkError: false,
+                            showPass: false,
+
+                            // API config
+                            hasApi: window.MivoConfig?.apiBaseUrl !== '' || window.MivoConfig?.debugMode,
+
+                            auth: {
+                                username: '',
+                                password: '',
+                                voucher: ''
+                            },
+
+                            get tabIndex() {
+                                if (this.loginType === 'voucher') return 0;
+                                if (this.loginType === 'member') return 1;
+                                return 2;
+                            },
+
+                            get tabCount() {
+                                return this.hasApi ? 3 : 2;
+                            },
+
+                            async checkVoucher() {
+                                if (!this.checkCode) return;
+                                this.checkLoading = true;
+                                this.checkRes = null;
+                                this.checkError = '';
+
+                                try {
+                                    const response = await fetch(`${window.MivoConfig.apiBaseUrl}/api/status/check`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            session: window.MivoConfig.apiSession,
+                                            code: this.checkCode
+                                        })
+                                    });
+                                    const result = await response.json();
+                                    if (result.success) {
+                                        this.checkRes = result.data;
+                                    } else {
+                                        this.checkError = result.message || 'not_found';
+                                    }
+                                } catch (e) {
+                                    console.error(e);
+                                    this.checkError = 'Connection failed';
+                                } finally {
+                                    this.checkLoading = false;
+                                }
+                            },
+
+                            get submitUsername() {
+                                return this.loginType === 'voucher' ? this.auth.voucher : this.auth.username;
+                            },
+
+                            get submitPassword() {
+                                return this.loginType === 'voucher' ? this.auth.voucher : this.auth.password;
+                            },
+
+                            submit() {
+                                // Intercept 'check' mode to prevent login submission
+                                if (this.loginType === 'check') {
+                                    this.checkVoucher();
+                                    return;
+                                }
+
+                                this.loading = true;
+
+                                if (typeof hexMD5 === 'function' && document.sendin) {
+                                    document.sendin.username.value = this.submitUsername;
+                                    document.sendin.password.value = hexMD5('$(chap-id)' + this.submitPassword + '$(chap-challenge)');
+                                    document.sendin.submit();
+                                } else {
+                                    setTimeout(() => {
+                                        document.getElementById('send-form').submit();
+                                    }, 50);
+                                }
+                            }
+                        }
+                    }
+                </script>
+
+                $(if chap-id)
+                <form name="sendin" action="$(link-login-only)" method="post" style="display:none">
+                    <input type="hidden" name="username">
+                    <input type="hidden" name="password">
+                    <input type="hidden" name="dst" value="$(link-orig)">
+                    <input type="hidden" name="popup" value="true">
+                </form>
+                $(endif)
+
+                <div class="login-card">
+
+                    <img class="logo" src="assets/img/logo-sage.webp" alt="Kaiarasa">
+
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div
+                            class="tab-ind"
+                            :style="'width: calc(' + (100 / tabCount) + '% - 7px); left: calc(' + (tabIndex * 100 / tabCount) + '% + 3.5px)'"
+                        ></div>
+                        <button type="button" class="tab-btn" :class="{ active: loginType === 'voucher' }" @click="loginType = 'voucher'">Voucher</button>
+                        <button type="button" class="tab-btn" :class="{ active: loginType === 'member' }" @click="loginType = 'member'">Account</button>
+                        <template x-if="hasApi">
+                            <button type="button" class="tab-btn" :class="{ active: loginType === 'check' }" @click="loginType = 'check'">Check</button>
+                        </template>
+                    </div>
+
+                    <form
+                        id="send-form"
+                        name="login"
+                        class="form"
+                        action="$(link-login-only)"
+                        method="post"
+                        @submit.prevent="submit()"
+                    >
+                        <input type="hidden" name="dst" value="$(link-orig)">
+                        <input type="hidden" name="popup" value="true">
+                        <input type="hidden" name="username" :value="submitUsername">
+                        <input type="hidden" name="password" :value="submitPassword">
+
+                        <div class="panes">
+
+                        <!-- ===== VOUCHER PANE ===== -->
+                        <div class="pane" :class="{ active: loginType === 'voucher' }">
+                            <div class="field-group">
+                                <label class="field-label" for="voucher">Voucher Code</label>
+                                <div class="field-row">
+                                    <input
+                                        id="voucher"
+                                        type="text"
+                                        class="voucher-input mono"
+                                        placeholder="Enter voucher code"
+                                        maxlength="32"
+                                        autocomplete="off"
+                                        spellcheck="false"
+                                        x-model="auth.voucher"
+                                        x-ref="voucherInput"
+                                    >
+                                    <button type="button" class="icon-btn" @click="initQr('voucher')" title="Scan QR">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="5" rx="1"></rect><rect x="16" y="3" width="5" height="5" rx="1"></rect><rect x="3" y="16" width="5" height="5" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="connect-btn" :disabled="loading">
+                                <template x-if="!loading">
+                                    <span>Connect</span>
+                                </template>
+                                <template x-if="loading">
+                                    <span style="display:flex;align-items:center;gap:9px;">
+                                        <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle style="opacity:0.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path style="opacity:0.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                        Connecting…
+                                    </span>
+                                </template>
+                            </button>
+                        </div>
+
+                        <!-- ===== MEMBER PANE ===== -->
+                        <div class="pane" :class="{ active: loginType === 'member' }">
+                            <div class="field-group">
+                                <label class="field-label" for="username">Username</label>
+                                <div class="field-row">
+                                    <input
+                                        id="username"
+                                        type="text"
+                                        class="voucher-input"
+                                        placeholder="Username"
+                                        autocomplete="off"
+                                        spellcheck="false"
+                                        x-model="auth.username"
+                                    >
+                                    <button type="button" class="icon-btn" @click="initQr('member')" title="Scan QR">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="5" rx="1"></rect><rect x="16" y="3" width="5" height="5" rx="1"></rect><rect x="3" y="16" width="5" height="5" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="field-group">
+                                <label class="field-label" for="password">Password</label>
+                                <div class="field-row">
+                                    <input
+                                        id="password"
+                                        :type="showPass ? 'text' : 'password'"
+                                        class="voucher-input"
+                                        placeholder="••••••••"
+                                        x-model="auth.password"
+                                    >
+                                    <button type="button" class="icon-btn" @click="showPass = !showPass" title="Show password">
+                                        <svg x-show="!showPass" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                        <svg x-show="showPass" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="connect-btn" :disabled="loading">
+                                <template x-if="!loading">
+                                    <span>Connect</span>
+                                </template>
+                                <template x-if="loading">
+                                    <span style="display:flex;align-items:center;gap:9px;">
+                                        <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle style="opacity:0.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path style="opacity:0.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                        Connecting…
+                                    </span>
+                                </template>
+                            </button>
+                        </div>
+
+                        <!-- ===== CHECK PANE ===== -->
+                        <template x-if="hasApi">
+                            <div class="pane" :class="{ active: loginType === 'check' }">
+                                <div class="field-group">
+                                    <label class="field-label" for="checkcode">Check Voucher</label>
+                                    <div class="field-row">
+                                        <input
+                                            id="checkcode"
+                                            type="text"
+                                            class="voucher-input mono"
+                                            placeholder="Enter voucher code"
+                                            maxlength="32"
+                                            autocomplete="off"
+                                            spellcheck="false"
+                                            x-model="checkCode"
+                                        >
+                                        <button type="button" class="icon-btn" @click="initQr('check')" title="Scan QR">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="5" rx="1"></rect><rect x="16" y="3" width="5" height="5" rx="1"></rect><rect x="3" y="16" width="5" height="5" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="connect-btn" :disabled="checkLoading" @click="checkVoucher()">
+                                    <template x-if="!checkLoading">
+                                        <span>Check Status</span>
+                                    </template>
+                                    <template x-if="checkLoading">
+                                        <span style="display:flex;align-items:center;gap:9px;">
+                                            <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle style="opacity:0.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path style="opacity:0.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                            Checking…
+                                        </span>
+                                    </template>
+                                </button>
+
+                                <!-- Result -->
+                                <div x-show="checkRes" x-transition.opacity class="check-result">
+                                    <div class="check-row">
+                                        <span class="k">Status</span>
+                                        <span class="v ok" x-text="checkRes?.status_label"></span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="k">Data Remaining</span>
+                                        <span class="v" x-text="checkRes?.data_left"></span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="k">Time Remaining</span>
+                                        <span class="v" x-text="window.formatTime(checkRes?.time_left)"></span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="k">Expires</span>
+                                        <span class="v" x-text="checkRes?.expiration"></span>
+                                    </div>
+                                </div>
+
+                                <div x-show="checkError" x-transition.opacity class="check-error">
+                                    Voucher not found or not active.
+                                </div>
+                            </div>
+                        </template>
+
+                        </div><!-- /.panes -->
+                    </form>
+
+                    <!-- Mikrotik Error -->
+                    $(if error)
+                    <div class="mt-error">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        <span>$(error)</span>
+                    </div>
+                    $(endif)
+
+                    $(if trial == 'yes')
+                    <div class="divider">or</div>
+
+                    <a class="guest-btn" href="$(link-login-only)?dst=$(link-orig-esc)&amp;username=T-$(mac-esc)">
+                        Free 60-Minute Access
+                    </a>
+                    $(endif)
+
+                    <p class="help">
+                        Don't have a voucher? Contact the receptionist.
+                    </p>
+
+                </div>
+
+                <!-- ===== QR MODAL ===== -->
+                <div x-show="showQr" x-transition.opacity class="qr-overlay" style="display:none;">
+                    <div class="qr-card" @click.outside="closeQr()">
+                        <button type="button" class="qr-close" @click="closeQr()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+
+                        <h3 class="qr-title" x-text="qrType === 'login' ? 'Scan Login QR' : 'Scan Check QR'"></h3>
+
+                        <div x-show="!qrResult">
+                            <div class="qr-reader">
+                                <div id="reader"></div>
+                            </div>
+
+                            <div class="qr-actions">
+                                <button type="button" class="guest-btn" @click="switchCamera()">Flip Camera</button>
+                                <button type="button" class="guest-btn" @click="$refs.qrFile.click()">From Image</button>
+                                <input type="file" x-ref="qrFile" style="display:none" accept="image/*" @change="scanFile($event)">
+                            </div>
+                        </div>
+
+                        <div x-show="qrError" class="check-error" x-text="qrError"></div>
+
+                        <!-- Confirmation -->
+                        <div x-show="qrResult" class="qr-success">
+                            <div class="badge">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <h4>Scanned Successfully</h4>
+                            <p x-text="qrResult?.display"></p>
+                            <div class="row">
+                                <button type="button" class="guest-btn" @click="initQr(scanTarget)">Rescan</button>
+                                <button type="button" class="connect-btn" style="margin-top:0;height:48px;" @click="confirmQr()">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <!-- =========================================================
+         SLIDER
+    ========================================================== -->
+
+    <div class="slider">
+        <div class="dots">
+            <template x-for="(src, i) in slides" :key="i">
+                <button
+                    type="button"
+                    class="dot"
+                    :class="{ active: slide === i }"
+                    @click="go(i)"
+                    :aria-label="'Background ' + (i + 1)"
+                ></button>
+            </template>
+        </div>
+
+        <span
+            class="slide-number"
+            x-text="String(slide + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0')"
+        ></span>
+    </div>
+
+</div>
+
+<script src="assets/js/qr.js"></script>
+<script>
+    // Page loader: show on load/refresh, fade out when ready
+    (function () {
+        var loader = document.getElementById('page-loader');
+        var minDelay = 600; // minimum visible time (ms)
+        var started = Date.now();
+        var hidden = false;
+
+        function hide() {
+            if (hidden) return;
+            hidden = true;
+            var elapsed = Date.now() - started;
+            var wait = Math.max(0, minDelay - elapsed);
+            setTimeout(function () {
+                loader.classList.add('done');
+            }, wait);
+        }
+
+        window.addEventListener('load', hide);
+        // Fallback: never block the page if load stalls
+        setTimeout(hide, 3000);
+    })();
+</script>
+</body>
+</html>
