@@ -298,7 +298,7 @@ window.initStatusPage = function(props) {
 
                 const url = `${window.MivoConfig.apiBaseUrl}/api/voucher/check/${user}`;
                 const res = await fetch(url, {
-                    headers: { 'X-Mivo-Session': window.MivoConfig.apiSession } 
+                    headers: { 'X-Kaiarasa-Session': window.MivoConfig.apiSession } 
                 });
                 
                 if (res.ok) {
