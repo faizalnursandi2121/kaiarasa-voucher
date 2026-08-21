@@ -3,6 +3,8 @@
 $title = 'Plugins';
 $no_main_container = true;
 require_once ROOT.'/app/Views/layouts/header_main.php';
+
+use App\Helpers\LanguageHelper;
 ?>
 
 <!-- Sub-Navbar Navigation -->
@@ -12,20 +14,31 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <div id="settings-dynamic" class="contents">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
 
-    <div class="mb-8 flex items-center justify-between">
-        <div>
-            <h1 class="text-3xl font-bold tracking-tight" data-i18n="settings.plugins">Plugins</h1>
-            <p class="text-accents-5 mt-2" data-i18n="settings.plugins_desc">Manage and extend functionality with plugins.</p>
-        </div>
-        <button onclick="openUploadModal()" class="btn btn-primary">
-            <i data-lucide="upload" class="w-4 h-4 mr-2"></i>
-            <span data-i18n="settings.upload_plugin">Upload Plugin</span>
-        </button>
-    </div>
+<?php
+$page_title_key = 'settings.plugins';
+$page_title = 'Plugins';
+$page_desc_key = 'settings.plugins_desc';
+$page_desc = 'Manage and extend functionality with plugins.';
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => LanguageHelper::t('sidebar.settings', 'Settings'), 'href' => "/settings"],
+    ['label' => LanguageHelper::t('settings.plugins', 'Plugins'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
     <!-- Content Area -->
     <div class="mt-8 flex-1 min-w-0" id="settings-content-area">
-        
+        <div class="page-toolbar">
+            <div></div>
+            <div class="page-toolbar-right">
+                <button onclick="openUploadModal()" class="btn btn-primary">
+                    <i data-lucide="upload" class="w-4 h-4 mr-2"></i>
+                    <span data-i18n="settings.upload_plugin">Upload Plugin</span>
+                </button>
+            </div>
+        </div>
+
         <div class="card overflow-hidden p-0">
              <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left">
@@ -106,7 +119,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 </div>
 
 <script>
-    function openUploadModal() {
+    window.openUploadModal = function() {
         const title = window.i18n ? window.i18n.t('settings.upload_plugin') : 'Upload Plugin';
         const html = `
             <form id="upload-plugin-form" action="/settings/plugins/upload" method="POST" enctype="multipart/form-data" class="space-y-4">

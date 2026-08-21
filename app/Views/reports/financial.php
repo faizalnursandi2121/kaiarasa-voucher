@@ -1,16 +1,27 @@
 <?php
 use App\Helpers\FormatHelper;
+use App\Helpers\LanguageHelper;
 
 $title = 'Financial Report';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 ?>
 
-<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-    <div>
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="reports.financial_title">Financial Report</h1>
-        <p class="text-accents-5" data-i18n="reports.financial_subtitle">Comprehensive financial overview: Quick Print income, inventory value, and usage realization.</p>
-    </div>
-    <div class="flex gap-2">
+<?php
+$page_title_key = 'reports.financial_title';
+$page_title = 'Financial Report';
+$page_desc_key = 'reports.financial_subtitle';
+$page_desc = 'Comprehensive financial overview: Quick Print income, inventory value, and usage realization.';
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('sidebar.reports', 'Reports'), 'href' => null],
+    ['label' => LanguageHelper::t('reports_menu.financial', 'Financial Report'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
+
+<div class="page-toolbar">
+    <div></div>
+    <div class="page-toolbar-right">
         <div class="dropdown dropdown-end relative" id="export-dropdown">
             <button class="btn btn-secondary dropdown-toggle" onclick="document.getElementById('export-menu').classList.toggle('hidden')">
                 <i data-lucide="download" class="w-4 h-4 mr-2"></i> <span data-i18n="reports.export">Export</span>
@@ -33,8 +44,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         </button>
     </div>
 </div>
-
-<!-- Summary Cards -->
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
     <!-- Total Income -->
     <div class="card">
@@ -285,7 +294,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         }
     });
 
-    function toggleBatch(id) {
+    window.toggleBatch = function(id) {
         const row = document.getElementById(id);
         if (!row) return;
         row.classList.toggle('hidden');
@@ -294,7 +303,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         if (icon) icon.classList.toggle('rotate-90');
     }
 
-    function switchTab(tabName) {
+    window.switchTab = function(tabName) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
         document.getElementById('content-' + tabName).classList.remove('hidden');
 
@@ -307,7 +316,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         btn.classList.add('border-primary', 'text-primary');
     }
 
-    function switchTimeTab(tabName) {
+    window.switchTimeTab = function(tabName) {
         document.querySelectorAll('.time-tab-content').forEach(el => el.classList.add('hidden'));
         document.getElementById('content-time-' + tabName).classList.remove('hidden');
 
@@ -320,7 +329,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         btn.classList.add('border-primary', 'text-primary');
     }
 
-    async function exportReport(type) {
+    window.exportReport = async function(type) {
         const url = '/<?= $session ?>/reports/financial/export/' + type;
         const btn = document.querySelector('.dropdown-toggle');
         const originalText = btn.innerHTML;

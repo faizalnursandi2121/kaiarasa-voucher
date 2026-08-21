@@ -2,6 +2,8 @@
 $title = 'API CORS';
 $no_main_container = true;
 require_once ROOT.'/app/Views/layouts/header_main.php';
+
+use App\Helpers\LanguageHelper;
 ?>
 
 <!-- Sub-Navbar Navigation -->
@@ -11,19 +13,25 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <div id="settings-dynamic" class="contents">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
 
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="settings.api_cors_title">API CORS</h1>
-        <p class="text-accents-5 mt-2" data-i18n="settings.api_cors_subtitle">Manage Cross-Origin Resource Sharing for API access.</p>
-    </div>
+<?php
+$page_title_key = 'settings.api_cors_title';
+$page_title = 'API CORS';
+$page_desc_key = 'settings.api_cors_subtitle';
+$page_desc = 'Manage Cross-Origin Resource Sharing for API access.';
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => LanguageHelper::t('sidebar.settings', 'Settings'), 'href' => "/settings"],
+    ['label' => LanguageHelper::t('settings.api_cors_title', 'API CORS'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
     <!-- Content Area -->
     <div class="mt-8 flex-1 min-w-0" id="settings-content-area">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-            <div class="hidden md:block">
-                 <!-- Spacer -->
-            </div>
-            <div class="flex gap-2 w-full md:w-auto">
-                <button onclick="openCorsModal()" class="btn btn-primary w-full md:w-auto">
+        <div class="page-toolbar">
+            <div></div>
+            <div class="page-toolbar-right">
+                <button onclick="openCorsModal()" class="btn btn-primary">
                     <i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="settings.add_rule">Add CORS Rule</span>
                 </button>
             </div>
@@ -93,7 +101,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     </div>
 
 <script>
-    async function openCorsModal(row = null) {
+    window.openCorsModal = async function(row = null) {
         const isEdit = !!row;
         const title = isEdit ? (window.i18n ? window.i18n.t('settings.edit_rule') : 'Edit CORS Rule') : (window.i18n ? window.i18n.t('settings.add_rule') : 'Add CORS Rule');
         const template = document.getElementById('cors-form-template').innerHTML;

@@ -246,6 +246,60 @@
         inset: -2rem -3rem; /* Expand 32px top/bottom, 48px left/right */
         top: -2.5rem; /* Ensure it covers the gap to the button */
     }
+
+    /* ===== Page Layout System ===== */
+    .page-header-block {
+        @apply mb-6 flex flex-col gap-4;
+    }
+
+    .page-breadcrumb {
+        @apply flex items-center gap-1.5 text-sm text-accents-5 flex-wrap mb-2;
+    }
+
+    .page-breadcrumb a {
+        @apply hover:text-foreground transition-colors;
+    }
+
+    .page-breadcrumb .page-breadcrumb-separator {
+        @apply text-accents-4 select-none;
+    }
+
+    .page-breadcrumb .page-breadcrumb-current {
+        @apply text-accents-6 font-medium;
+    }
+
+    .page-header {
+        @apply flex flex-col gap-4;
+    }
+
+    .page-title-group {
+        @apply flex flex-col;
+    }
+
+    .page-title {
+        @apply text-3xl font-bold tracking-tight text-foreground;
+    }
+
+    .page-description {
+        @apply text-accents-5 mt-1.5;
+    }
+
+    .page-divider {
+        @apply border-t border-accents-2 dark:border-white/10;
+    }
+
+    .page-toolbar {
+        @apply flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-4;
+    }
+
+    .page-toolbar-left {
+        @apply flex items-center gap-2 flex-wrap;
+    }
+
+    .page-toolbar-right {
+        @apply flex items-center gap-2 flex-wrap ml-auto;
+    }
+
     /* Glassmorphism Table */
     .table-container {
         @apply w-full overflow-x-auto rounded-xl border border-accents-2 dark:border-white/10 shadow-sm;

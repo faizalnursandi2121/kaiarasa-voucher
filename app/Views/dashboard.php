@@ -5,12 +5,16 @@ use App\Helpers\FormatHelper;
 require_once ROOT.'/app/Views/layouts/header_main.php';
 ?>
 
-<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-    <div>
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="common.dashboard">Dashboard</h1>
-        <p class="text-accents-5"><span data-i18n="common.session">Session</span>: <strong class="text-foreground"><?= $session ?></strong></p>
-    </div>
-</div>
+<div class="page-header-block">
+    <header class="page-header">
+        <div class="page-title-group">
+            <h1 class="page-title" data-i18n="common.dashboard">Dashboard</h1>
+            <p class="page-description">
+                <span data-i18n="common.session">Session</span>: 
+                <strong class="text-foreground"><?= $session ?></strong>
+            </p>
+        </div>
+    </header>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <!-- System Info Card -->

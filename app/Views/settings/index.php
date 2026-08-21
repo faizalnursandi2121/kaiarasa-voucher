@@ -2,6 +2,8 @@
 $title = 'Settings';
 $no_main_container = true;
 require_once ROOT.'/app/Views/layouts/header_main.php';
+
+use App\Helpers\LanguageHelper;
 ?>
 
 <!-- Sub-Navbar Navigation -->
@@ -11,22 +13,27 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <div id="settings-dynamic" class="contents">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
 
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-        <div>
-            <h1 class="text-3xl font-bold tracking-tight">Router Sessions</h1>
-            <p class="text-accents-5 mt-2">Manage your stored MikroTik connections.</p>
-        </div>
-    </div>
+<?php
+$page_title_key = 'routers.title';
+$page_title = 'Router Sessions';
+$page_desc = 'Manage your stored MikroTik connections.';
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => LanguageHelper::t('sidebar.settings', 'Settings'), 'href' => "/settings"],
+    ['label' => LanguageHelper::t('routers.title', 'Routers'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
     <!-- Content Area -->
     <div class="mt-8 flex-1 min-w-0" id="settings-content-area">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-                <div class="hidden md:block">
-                     <!-- Spacer or Breadcrumbs if needed -->
+            <div class="page-toolbar">
+                <div></div>
+                <div class="page-toolbar-right">
+                    <button onclick="openRouterModal('add')" class="btn btn-primary">
+                        <i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="routers.add_router_title">Add Router</span>
+                    </button>
                 </div>
-                <button onclick="openRouterModal('add')" class="btn btn-primary w-full md:w-auto">
-                    <i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="routers.add_router_title">Add Router</span>
-                </button>
             </div>
 
             <?php if (empty($routers)) { ?>
@@ -223,7 +230,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 </template>
 
 <script>
-    function openRouterModal(mode, btn = null) {
+    window.openRouterModal = function(mode, btn = null) {
         const template = document.getElementById('router-form-template').innerHTML;
         
         let title = window.i18n ? window.i18n.t('routers.add_router_title') : 'Add Router';

@@ -1,22 +1,22 @@
 <?php
 $title = 'Scheduler';
 require_once ROOT.'/app/Views/layouts/header_main.php';
+
+use App\Helpers\LanguageHelper;
 ?>
 
-<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-    <div>
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="system_menu.scheduler">Scheduler</h1>
-        <p class="text-accents-5"><span data-i18n="system_tools.scheduler_subtitle">Manage RouterOS automated tasks for:</span> <span class="text-foreground font-medium"><?= htmlspecialchars($session) ?></span></p>
-    </div>
-    <div class="flex gap-2">
-         <button onclick="location.reload()" class="btn btn-secondary">
-            <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i> <span data-i18n="reports.refresh">Refresh</span>
-        </button>
-        <button onclick="openSchedulerModal('add')" class="btn btn-primary">
-            <i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="system_tools.add_task">Add Task</span>
-        </button>
-    </div>
-</div>
+<?php
+$page_title_key = 'system_menu.scheduler';
+$page_title = 'Scheduler';
+$page_desc_key = 'system_tools.scheduler_subtitle';
+$page_desc = 'Manage RouterOS automated tasks for: ' . htmlspecialchars($session);
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('sidebar.system', 'System'), 'href' => null],
+    ['label' => LanguageHelper::t('system_menu.scheduler', 'Scheduler'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
 <?php if (isset($error) && $error) { ?>
     <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center dark:bg-red-900/20 dark:text-red-400 dark:border dark:border-red-500/20">
@@ -25,17 +25,28 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     </div>
 <?php } ?>
 
-<div class="space-y-4">
-     <!-- Filter Bar -->
-    <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-        <!-- Search -->
-        <div class="input-group md:w-64 z-10">
-             <div class="input-icon">
-                <i data-lucide="search" class="h-4 w-4"></i>
-            </div>
-            <input type="text" id="global-search" class="form-input-search w-full" placeholder="Search task name..." data-i18n-placeholder="common.table.search_placeholder">
+<?php
+$toolbar_html = '
+    <div class="input-group md:w-64 z-10">
+         <div class="input-icon">
+            <i data-lucide="search" class="h-4 w-4"></i>
         </div>
+        <input type="text" id="global-search" class="form-input-search w-full" placeholder="Search task name..." data-i18n-placeholder="common.table.search_placeholder">
     </div>
+    <div class="page-toolbar-right">
+        <button onclick="location.reload()" class="btn btn-secondary">' .
+    '<i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i> <span data-i18n="reports.refresh">Refresh</span>' .
+    '</button>' .
+    '<button onclick="openSchedulerModal(\'add\')" class="btn btn-primary">' .
+    '<i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="system_tools.add_task">Add Task</span>' .
+    '</button>';
+$toolbar_html .= '
+    </div>
+';
+?>
+<div class="page-toolbar">
+<?php echo $toolbar_html; ?>
+</div>
 
     <div class="table-container">
         <table class="table-glass" id="scheduler-table">
@@ -113,7 +124,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 
 <script>
-    var TableManager = class TableManager {
+    window.TableManager = window.TableManager || class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;
@@ -218,7 +229,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         }
     };
 
-function openSchedulerModal(mode, btn = null) {
+window.openSchedulerModal = function(mode, btn = null) {
     const template = document.getElementById('scheduler-form-template').innerHTML;
     
     let title = window.i18n ? window.i18n.t('system_tools.add_title') : 'Add Scheduler Task';

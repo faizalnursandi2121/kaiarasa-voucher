@@ -2,6 +2,8 @@
 $title = 'Logo Management';
 $no_main_container = true;
 require_once ROOT.'/app/Views/layouts/header_main.php';
+
+use App\Helpers\LanguageHelper;
 ?>
 
 <!-- Sub-Navbar Navigation -->
@@ -11,10 +13,18 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <div id="settings-dynamic" class="contents">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
 
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="settings.logos_title">Logo Management</h1>
-        <p class="text-accents-5 mt-2" data-i18n="settings.logos_subtitle">Upload and manage logos for your hotspots and vouchers.</p>
-    </div>
+<?php
+$page_title_key = 'settings.logos_title';
+$page_title = 'Logo Management';
+$page_desc_key = 'settings.logos_subtitle';
+$page_desc = 'Upload and manage logos for your hotspots and vouchers.';
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => LanguageHelper::t('sidebar.settings', 'Settings'), 'href' => "/settings"],
+    ['label' => LanguageHelper::t('settings.logos_title', 'Logos'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
     <!-- Content Area -->
     <div class="mt-8 flex-1 min-w-0" id="settings-content-area">

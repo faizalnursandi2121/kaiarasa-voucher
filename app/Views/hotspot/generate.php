@@ -1,19 +1,21 @@
 <?php require_once ROOT.'/app/Views/layouts/header_main.php'; ?>
 <?php require_once ROOT.'/app/Views/layouts/sidebar_session.php'; ?>
 
-<!-- Content Inside max-w-7xl (Opened by sidebar.php) -->
+<?php
+use App\Helpers\LanguageHelper;
 
-<!-- Header -->
-<div class="flex items-center justify-between mb-8">
-    <div>
-        <h1 class="text-2xl font-bold tracking-tight text-foreground" data-i18n="hotspot_generate.title">Generate Vouchers</h1>
-        <p class="text-sm text-accents-5" data-i18n="hotspot_generate.form.subtitle" data-i18n-params='{"name": "<?= htmlspecialchars($session) ?>"}'>Create multiple hotspot vouchers in batch for: <span class="font-medium text-foreground"><?= htmlspecialchars($session) ?></span></p>
-    </div>
-    <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="btn btn-secondary" data-i18n="common.back">
-        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
-        Back to Users
-    </a>
-</div>
+$page_title_key = 'hotspot_generate.title';
+$page_title = 'Generate Vouchers';
+$page_desc_key = 'hotspot_generate.form.subtitle';
+$page_desc_params = ['name' => htmlspecialchars($session)];
+$page_desc = 'Create multiple hotspot vouchers in batch for: ' . htmlspecialchars($session);
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('sidebar.hotspot', 'Hotspot'), 'href' => null],
+    ['label' => LanguageHelper::t('hotspot_menu.generate', 'Generate'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <!-- Main Form Column -->
