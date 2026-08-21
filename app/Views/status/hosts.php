@@ -28,7 +28,7 @@ sort($uniqueServers);
 </div>
 
 <?php if ($error) { ?>
-    <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center">
+    <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center dark:bg-red-900/20 dark:text-red-400 dark:border dark:border-red-500/20">
         <i data-lucide="alert-circle" class="w-5 h-5 mr-3"></i>
         <?= htmlspecialchars($error) ?>
     </div>
@@ -104,7 +104,7 @@ sort($uniqueServers);
         </table>
         
         <!-- Pagination -->
-        <div class="px-6 py-4 border-t border-white/10 flex items-center justify-between" id="pagination-controls">
+        <div class="px-6 py-4 border-t border-accents-2 dark:border-white/10 flex items-center justify-between" id="pagination-controls">
             <div class="text-sm text-accents-5">
                 Showing <span id="start-idx" class="font-medium text-foreground">0</span> to <span id="end-idx" class="font-medium text-foreground">0</span> of <span id="total-count" class="font-medium text-foreground">0</span> hosts
             </div>
@@ -119,7 +119,7 @@ sort($uniqueServers);
 
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 <script>
-    class TableManager {
+    var TableManager = class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;

@@ -98,7 +98,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         </table>
         
         <!-- Pagination -->
-        <div class="px-6 py-4 border-t border-white/10 flex items-center justify-between" id="pagination-controls">
+        <div class="px-6 py-4 border-t border-accents-2 dark:border-white/10 flex items-center justify-between" id="pagination-controls">
             <div class="text-sm text-accents-5">
                 Showing <span id="start-idx" class="font-medium text-foreground">0</span> to <span id="end-idx" class="font-medium text-foreground">0</span> of <span id="total-count" class="font-medium text-foreground">0</span> packages
             </div>

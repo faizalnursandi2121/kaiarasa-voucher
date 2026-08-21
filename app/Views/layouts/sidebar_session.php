@@ -113,7 +113,7 @@ $getInitials = function ($name) {
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity opacity-0"></div>
 
     <!-- Sidebar -->
-    <aside id="sidebar" data-session="<?= htmlspecialchars($session ?? '') ?>" class="w-64 flex-shrink-0 border-r border-white/20 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-[40px] fixed md:static inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200 flex flex-col h-full">
+    <aside id="sidebar" data-session="<?= htmlspecialchars($session ?? '') ?>" class="w-64 flex-shrink-0 border-r border-white/20 dark:border-accents-2 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-[40px] fixed md:static inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200 flex flex-col h-full">
         <!-- Sidebar Header -->
         <!-- Sidebar Header -->
         <div id="sidebar-header" class="group flex flex-col items-center py-5 border-b border-accents-2 flex-shrink-0 relative cursor-default overflow-hidden">
@@ -131,8 +131,8 @@ $getInitials = function ($name) {
                         <!-- Language Switcher (Kaiarasa Component) -->
                         <!-- Language Switcher -->
                         <div class="relative group/lang" onmouseleave="closeMenu('lang-dropdown-sidebar')">
-                            <button type="button" class="pill-lang-btn" onclick="toggleMenu('lang-dropdown-sidebar', this)" title="Change Language">
-                                <i data-lucide="languages" class="w-4 h-4 !text-black dark:!text-white" stroke-width="2.5"></i>
+                            <button type="button" class="pill-lang-btn" onclick="toggleMenu('lang-dropdown-sidebar', this)" aria-expanded="false" aria-controls="lang-dropdown-sidebar" title="Change Language">
+                                <i data-lucide="languages" class="w-4 h-4 text-foreground dark:text-foreground" stroke-width="2.5"></i>
                             </button>
                             <div id="lang-dropdown-sidebar" class="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-48 bg-background/95 backdrop-blur-2xl border border-accents-2 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-out origin-top opacity-0 scale-95 invisible pointer-events-none z-50 dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
                                 <div class="px-3 py-2 text-[10px] font-bold text-accents-4 uppercase tracking-widest border-b border-accents-2/50 bg-accents-1/50" data-i18n="sidebar.switch_language"><?= LanguageHelper::t('sidebar.switch_language', 'Select Language') ?></div>
@@ -165,7 +165,7 @@ foreach ($languages as $lang) {
             </div>
 
             <!-- Mobile Close Button -->
-            <button id="sidebar-close" class="md:hidden absolute top-4 right-4 text-accents-5 hover:text-foreground">
+            <button id="sidebar-close" aria-label="Close sidebar" class="md:hidden absolute top-4 right-4 text-accents-5 hover:text-foreground">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
@@ -175,7 +175,7 @@ foreach ($languages as $lang) {
             <div class="py-4 px-3 space-y-1" style="direction: ltr;">
             <!-- Session Switcher -->
             <div class="px-3 mb-6 relative" onmouseleave="closeMenu('session-dropdown')">
-                <button type="button" class="w-full group grid grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all decoration-0 overflow-hidden shadow-sm" onclick="toggleMenu('session-dropdown', this)">
+                <button type="button" class="w-full group grid grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-accents-2 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all decoration-0 overflow-hidden shadow-sm" onclick="toggleMenu('session-dropdown', this)">
                     <!-- Initials -->
                     <div class="h-8 w-8 rounded-lg bg-accents-2/50 group-hover:bg-accents-2 flex items-center justify-center text-xs font-bold text-accents-6 group-hover:text-foreground transition-colors flex-shrink-0">
                         <?= $getInitials($session ?? '') ?>
@@ -248,7 +248,7 @@ foreach ($languages as $lang) {
 
             <!-- Hotspot Group (Collapsible) -->
             <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('hotspot-menu', this)">
+                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('hotspot-menu', this)" aria-expanded="" aria-controls="hotspot-menu">
                     <div class="flex items-center gap-3">
                         <i data-lucide="wifi" class="w-4 h-4"></i>
                         <span data-i18n="sidebar.hotspot"><?= LanguageHelper::t('sidebar.hotspot', 'Hotspot') ?></span>
@@ -274,7 +274,7 @@ foreach ($languages as $lang) {
 
             <!-- Status Group (Collapsible) -->
              <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('status-menu', this)">
+                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('status-menu', this)" aria-expanded="" aria-controls="status-menu">
                     <div class="flex items-center gap-3">
                         <i data-lucide="activity" class="w-4 h-4"></i>
                         <span data-i18n="sidebar.status"><?= LanguageHelper::t('sidebar.status', 'Status') ?></span>
@@ -294,7 +294,7 @@ foreach ($languages as $lang) {
 
              <!-- Security Group (Collapsible) -->
              <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('security-menu', this)">
+                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('security-menu', this)" aria-expanded="" aria-controls="security-menu">
                     <div class="flex items-center gap-3">
                         <i data-lucide="shield" class="w-4 h-4"></i>
                         <span data-i18n="sidebar.security"><?= LanguageHelper::t('sidebar.security', 'Security') ?></span>
@@ -315,7 +315,7 @@ foreach ($languages as $lang) {
 
             <!-- Reports Group -->
              <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('reports-menu', this)">
+                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('reports-menu', this)" aria-expanded="" aria-controls="reports-menu">
                     <div class="flex items-center gap-3">
                         <i data-lucide="file-text" class="w-4 h-4"></i>
                         <span data-i18n="sidebar.reports"><?= LanguageHelper::t('sidebar.reports', 'Reports') ?></span>
@@ -335,7 +335,7 @@ foreach ($languages as $lang) {
 
             <!-- Network Group -->
              <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('network-menu', this)">
+                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('network-menu', this)" aria-expanded="" aria-controls="network-menu">
                     <div class="flex items-center gap-3">
                         <i data-lucide="network" class="w-4 h-4"></i>
                         <span data-i18n="sidebar.network"><?= LanguageHelper::t('sidebar.network', 'Network') ?></span>
@@ -352,7 +352,7 @@ foreach ($languages as $lang) {
             
             <!-- System Group -->
              <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('system-menu', this)">
+                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('system-menu', this)" aria-expanded="" aria-controls="system-menu">
                     <div class="flex items-center gap-3">
                         <i data-lucide="cpu" class="w-4 h-4"></i>
                         <span data-i18n="sidebar.system"><?= LanguageHelper::t('sidebar.system', 'System') ?></span>
@@ -393,24 +393,24 @@ foreach ($languages as $lang) {
         </div>
 
         <!-- Sidebar Footer -->
-        <div class="p-4 border-t border-white/10 space-y-3">
+        <div class="p-4 border-t border-accents-2 dark:border-white/10 space-y-3">
              <!-- Disconnect (Session) -->
-             <a href="/" class="group flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all decoration-0 shadow-sm" title="Disconnect Session">
+             <a href="/" class="group flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-accents-2 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all decoration-0 shadow-sm" title="Disconnect Session">
                 <div class="flex items-center gap-3">
                     <div class="p-1.5 rounded-lg bg-accents-2/50 group-hover:bg-accents-2 transition-colors">
-                         <i data-lucide="cast" class="!w-4 !h-4 !text-black dark:!text-white !flex-shrink-0 transition-colors"></i>
+                         <i data-lucide="cast" class="!w-4 !h-4 text-foreground dark:text-foreground !flex-shrink-0 transition-colors"></i>
                     </div>
                     <div class="flex flex-col">
                         <span class="text-xs font-bold text-accents-6 group-hover:text-foreground transition-colors leading-none" data-i18n="sidebar.disconnect"><?= LanguageHelper::t('sidebar.disconnect', 'Disconnect') ?></span>
                         <span class="text-[10px] text-accents-4 leading-none mt-1">Exit Session</span>
                     </div>
                 </div>
-                <i data-lucide="chevron-right" class="!w-4 !h-4 !text-black dark:!text-white !flex-shrink-0 transition-colors"></i>
+                <i data-lucide="chevron-right" class="!w-4 !h-4 text-foreground dark:text-foreground !flex-shrink-0 transition-colors"></i>
             </a>
             
             <?php if (isset($_SESSION['user_id'])) { ?>
             <!-- Logout (System) -->
-             <a href="/logout" class="group flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-white/10 hover:bg-red-500/10 hover:border-red-500/20 transition-all decoration-0 shadow-sm" title="Logout from Kaiarasa">
+             <a href="/logout" class="group flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-accents-2 dark:border-white/10 hover:bg-red-500/10 hover:border-red-500/20 transition-all decoration-0 shadow-sm" title="Logout from Kaiarasa">
                 <div class="flex items-center gap-3">
                     <div class="p-1.5 rounded-lg bg-red-500/10 text-red-500 group-hover:bg-red-500/20 transition-colors">
                          <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -420,7 +420,7 @@ foreach ($languages as $lang) {
                         <span class="text-[10px] text-accents-4 group-hover:text-red-400/80 leading-none mt-1">Sign Out</span>
                     </div>
                 </div>
-                <i data-lucide="chevron-right" class="!w-4 !h-4 !text-black dark:!text-white !flex-shrink-0 group-hover:!text-red-500 transition-colors"></i>
+                <i data-lucide="chevron-right" class="!w-4 !h-4 text-foreground dark:text-foreground !flex-shrink-0 group-hover:!text-red-500 transition-colors"></i>
             </a>
             <?php } ?>
         </div>
@@ -439,7 +439,7 @@ foreach ($languages as $lang) {
                 <div class="control-pill scale-90 origin-right transition-transform hover:scale-95">
                     <!-- Language Switcher -->
                     <div class="relative group">
-                        <button type="button" class="pill-lang-btn" onclick="toggleMenu('lang-dropdown-mobile', this)" title="Change Language">
+                        <button type="button" class="pill-lang-btn" onclick="toggleMenu('lang-dropdown-mobile', this)" aria-expanded="false" aria-controls="lang-dropdown-mobile" title="Change Language">
                              <i data-lucide="languages" class="w-4 h-4"></i>
                         </button>
                          <div id="lang-dropdown-mobile" class="absolute right-0 top-full mt-3 w-48 bg-background/90 backdrop-blur-xl border border-accents-2 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-out origin-top-right opacity-0 scale-95 invisible pointer-events-none z-50 dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
@@ -469,7 +469,7 @@ foreach ($languages as $lang) {
                         </div>
                     </div>
                 </div>
-                 <button id="mobile-menu-toggle" class="text-accents-5 hover:text-foreground">
+                 <button id="mobile-menu-toggle" aria-label="Open menu" class="text-accents-5 hover:text-foreground">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                  </button>
             </div>

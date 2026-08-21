@@ -31,7 +31,7 @@ sort($uniqueModes);
 </div>
 
 <?php if (isset($error)) { ?>
-    <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center">
+    <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center dark:bg-red-900/20 dark:text-red-400 dark:border dark:border-red-500/20">
         <i data-lucide="alert-circle" class="w-5 h-5 mr-3"></i>
         <?= htmlspecialchars($error) ?>
     </div>
@@ -163,7 +163,7 @@ sort($uniqueModes);
         </table>
         
         <!-- Pagination -->
-        <div class="px-6 py-4 border-t border-white/10 flex items-center justify-between" id="pagination-controls">
+        <div class="px-6 py-4 border-t border-accents-2 dark:border-white/10 flex items-center justify-between" id="pagination-controls">
             <div class="text-sm text-accents-5">
                 Showing <span id="start-idx" class="font-medium text-foreground">0</span> to <span id="end-idx" class="font-medium text-foreground">0</span> of <span id="total-count" class="font-medium text-foreground">0</span> profiles
             </div>
@@ -500,7 +500,7 @@ sort($uniqueModes);
         </div>
 
         <!-- Tips Column -->
-        <div class="hidden lg:block space-y-4 border-l border-white/10 pl-6">
+        <div class="hidden lg:block space-y-4 border-l border-accents-2 dark:border-white/10 pl-6">
             <h3 class="text-sm font-bold text-foreground flex items-center gap-2">
                 <i data-lucide="lightbulb" class="w-4 h-4 text-yellow-500"></i>
                 <span data-i18n="hotspot_profiles.form.quick_tips">Quick Tips</span>

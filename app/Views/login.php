@@ -11,9 +11,8 @@ include ROOT.'/app/Views/layouts/header_public.php';
             <!-- Brand / Logo Area -->
             <div class="flex justify-center mb-6 sm:mb-8">
                 <div class="relative group">
-                    <!-- <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div> --> <!--SAYA TIDAK SUKA INI -->
-                     <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" class="relative h-10 sm:h-12 w-auto block dark:hidden transform transition-transform duration-300 group-hover:scale-105">
-                     <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="relative h-10 sm:h-12 w-auto hidden dark:block transform transition-transform duration-300 group-hover:scale-105">
+                     <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" class="relative h-10 sm:h-12 w-auto block dark:hidden">
+                     <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="relative h-10 sm:h-12 w-auto hidden dark:block">
                 </div>
             </div>
             
@@ -23,28 +22,28 @@ include ROOT.'/app/Views/layouts/header_public.php';
         <div class="card p-6 sm:p-8 relative overflow-hidden">
             <form action="/login" method="POST" class="space-y-4 relative z-10">
                 <div class="space-y-2">
-                    <label class="text-xs font-bold text-accents-5 uppercase tracking-wider ml-1" data-i18n="login.username">Username</label>
+                    <label for="login-username" class="form-label" data-i18n="login.username">Username</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                             <i data-lucide="user" class="h-4 w-4 text-accents-6"></i>
                         </div>
-                        <input type="text" name="username" class="form-input pl-10" placeholder="admin" required autocomplete="username" data-i18n-placeholder="login.username">
+                        <input type="text" id="login-username" name="username" class="form-input pl-10" placeholder="admin" required autocomplete="username" data-i18n-placeholder="login.username">
                     </div>
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-bold text-accents-5 uppercase tracking-wider ml-1" data-i18n="login.password">Password</label>
+                    <label for="login-password" class="form-label" data-i18n="login.password">Password</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                             <i data-lucide="key" class="h-4 w-4 text-accents-6"></i>
                         </div>
                         <input type="password" name="password" id="password" class="form-input pl-10 pr-10" placeholder="••••••••" required autocomplete="current-password" data-i18n-placeholder="login.password">
-                        <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-3 flex items-center text-accents-5 hover:text-foreground focus:outline-none cursor-pointer z-10">
+                        <button type="button" onclick="togglePassword()" aria-label="Toggle password visibility" class="absolute inset-y-0 right-3 flex items-center text-accents-5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:rounded cursor-pointer z-10">
                             <i id="eye-icon" data-lucide="eye" class="h-4 w-4"></i>
                             <i id="eye-off-icon" data-lucide="eye-off" class="h-4 w-4 hidden"></i>
                         </button>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary w-full h-10 shadow-lg hover:shadow-primary/20" data-i18n="login.sign_in">
+                <button type="submit" class="btn btn-primary w-full h-10" data-i18n="login.sign_in">
                     Sign In
                 </button>
             </form>

@@ -56,7 +56,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 <span data-i18n="dashboard.cpu_load">CPU Load</span>
                 <span class="font-bold"><?= $resource['cpu-load'] ?? 0 ?>%</span>
             </div>
-            <div class="h-2 w-full bg-accents-2 rounded-full overflow-hidden">
+            <div class="h-2 w-full bg-accents-2 rounded-full overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="System resource usage">
                 <div class="h-full bg-foreground" style="width: <?= $resource['cpu-load'] ?? 0 ?>%"></div>
             </div>
         </div>
@@ -66,7 +66,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 <span data-i18n="dashboard.memory">Memory</span>
                 <span class="text-accents-5"><?= FormatHelper::formatBytes($resource['free-memory'] ?? 0, 1) ?> <span data-i18n="dashboard.free">Free</span></span>
             </div>
-            <div class="h-2 w-full bg-accents-2 rounded-full overflow-hidden">
+            <div class="h-2 w-full bg-accents-2 rounded-full overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="System resource usage">
                 <?php
                     $totalMem = ($resource['total-memory'] ?? 1);
 $freeMem = ($resource['free-memory'] ?? 0);
@@ -81,7 +81,7 @@ $usedMemP = (($totalMem - $freeMem) / $totalMem) * 100;
                 <span data-i18n="dashboard.hdd">HDD</span>
                 <span class="text-accents-5"><?= FormatHelper::formatBytes($resource['free-hdd-space'] ?? 0, 1) ?> <span data-i18n="dashboard.free">Free</span></span>
             </div>
-             <div class="h-2 w-full bg-accents-2 rounded-full overflow-hidden">
+             <div class="h-2 w-full bg-accents-2 rounded-full overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="System resource usage">
                 <?php
     $totalHdd = ($resource['total-hdd-space'] ?? 1);
 $freeHdd = ($resource['free-hdd-space'] ?? 0);
@@ -103,7 +103,7 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
             <!-- Active Hotspot -->
             <div class="sub-card text-center group relative aspect-square flex flex-col justify-center items-center w-full max-w-[140px] mx-auto">
                  <a href="/<?= htmlspecialchars($session) ?>/hotspot/active" class="absolute inset-0 z-10" title="View Active Users"></a>
-                <div class="flex justify-center mb-2 text-blue-500 dark:text-blue-400 group-hover:scale-110 transition-transform">
+                <div class="flex justify-center mb-2 text-blue-500 dark:text-blue-400  transition-transform">
                      <i data-lucide="activity" class="w-6 h-6"></i>
                 </div>
                 <div class="text-2xl font-bold text-foreground"><?= $hotspot_active ?></div>
@@ -113,7 +113,7 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
             <!-- Users -->
             <div class="sub-card text-center group relative aspect-square flex flex-col justify-center items-center w-full max-w-[140px] mx-auto">
                  <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="absolute inset-0 z-10" title="Manage Users"></a>
-                <div class="flex justify-center mb-2 text-purple-500 dark:text-purple-400 group-hover:scale-110 transition-transform">
+                <div class="flex justify-center mb-2 text-purple-500 dark:text-purple-400  transition-transform">
                      <i data-lucide="users" class="w-6 h-6"></i>
                 </div>
                 <div class="text-2xl font-bold text-foreground"><?= htmlspecialchars($hotspot_users['count'] ?? 0) ?></div>
@@ -122,7 +122,7 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
 
             <!-- Income -->
             <div class="sub-card text-center col-span-2 group">
-                 <div class="flex justify-center mb-2 text-yellow-500 dark:text-yellow-400 group-hover:scale-110 transition-transform">
+                 <div class="flex justify-center mb-2 text-yellow-500 dark:text-yellow-400  transition-transform">
                      <i data-lucide="dollar-sign" class="w-6 h-6"></i>
                 </div>
                  <div class="text-2xl font-bold text-foreground">0</div>

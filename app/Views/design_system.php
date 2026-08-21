@@ -221,7 +221,7 @@
             </div>
 
             <div class="sub-card p-0 overflow-hidden">
-                <div class="p-4 border-b border-white/10">
+                <div class="p-4 border-b border-accents-2 dark:border-white/10">
                     <h4 class="font-semibold">Full Width Sub-Card</h4>
                 </div>
                 <div class="p-4">
@@ -326,7 +326,7 @@
                 </table>
             </div>
             
-            <div class="flex items-center justify-between pt-4 border-t border-white/10">
+            <div class="flex items-center justify-between pt-4 border-t border-accents-2 dark:border-white/10">
                  <div class="text-xs text-accents-5">Showing 1 to 3 of 12 results</div>
                  <div class="flex gap-2">
                      <button class="btn btn-secondary py-1 px-3 text-xs h-8">Previous</button>

@@ -714,5 +714,13 @@
 	},
 	"status_menu": {
 		"active": "Aktif"
+	},
+	"install": {
+		"permission_warning_title": "Peringatan Izin Direktori",
+		"permission_db_desc": "Folder <code>app/Database</code> harus writable (chmod 775/777).",
+		"permission_root_desc": "Root direktori harus writable untuk membuat file <code>.env</code>.",
+		"permission_fix_desc": "Silakan perbaiki izin folder di server Anda sebelum melanjutkan.",
+		"password_placeholder": "Min. 8 karakter",
+		"install_btn": "Install Kaiarasa"
 	}
 }

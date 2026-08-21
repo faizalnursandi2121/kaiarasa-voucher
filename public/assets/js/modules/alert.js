@@ -93,6 +93,9 @@ class AlertModule {
         if (!container) {
             container = document.createElement('div');
             container.id = 'kaiarasa-toast-container';
+            container.setAttribute('role', 'status');
+            container.setAttribute('aria-live', 'polite');
+            container.setAttribute('aria-atomic', 'false');
             document.body.appendChild(container);
         }
 

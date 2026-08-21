@@ -16,7 +16,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 </div>
 
 <?php if ($error) { ?>
-    <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center shadow-sm">
+    <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center dark:bg-red-900/20 dark:text-red-400 dark:border dark:border-red-500/20 shadow-sm">
         <i data-lucide="alert-circle" class="w-5 h-5 mr-3"></i>
         <?= htmlspecialchars($error) ?>
     </div>
@@ -26,7 +26,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     <!-- List (2/3) -->
     <div class="lg:col-span-2 space-y-4">
         <!-- Filter Bar -->
-        <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-card p-4 rounded-lg border border-accents-2 shadow-sm">
+        <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-accents-1 p-4 rounded-lg border border-accents-2 shadow-sm">
             <!-- Search -->
             <div class="relative w-full">
                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -114,7 +114,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             </table>
 
              <!-- Pagination -->
-            <div class="px-6 py-4 border-t border-white/10 flex items-center justify-between" id="pagination-controls">
+            <div class="px-6 py-4 border-t border-accents-2 dark:border-white/10 flex items-center justify-between" id="pagination-controls">
                 <div class="text-sm text-accents-5">
                     Showing <span id="start-idx" class="font-medium text-foreground">0</span> to <span id="end-idx" class="font-medium text-foreground">0</span> of <span id="total-count" class="font-medium text-foreground">0</span>
                 </div>
@@ -219,7 +219,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 <script>
-    class TableManager {
+    var TableManager = class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;

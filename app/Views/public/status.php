@@ -39,7 +39,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
                             </div>
                         </div>
                         
-                        <button type="submit" id="chk-btn" class="w-full btn btn-primary h-11 text-base font-bold shadow-lg hover:shadow-primary/20">
+                        <button type="submit" id="chk-btn" class="w-full btn btn-primary h-11 text-base font-bold shadow-lg ">
                             <span id="btn-text" data-i18n="status.check_now">Check Now</span>
                             <i id="btn-loader" data-lucide="loader-2" class="w-4 h-4 animate-spin hidden"></i>
                         </button>
@@ -95,13 +95,13 @@ include ROOT.'/app/Views/layouts/header_public.php';
                     if (d.status === 'locked') statusColor = 'bg-red-500/10 text-red-600 border-red-200 dark:border-red-800 dark:text-red-400';
 
                     const htmlContent = `
-                        <div class="text-left mt-6 relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl ring-1 ring-black/5 dark:ring-white/5">
+                        <div class="text-left mt-6 relative overflow-hidden rounded-2xl border border-accents-2 dark:border-white/10 bg-white/5 backdrop-blur-md shadow-2xl ring-1 ring-black/5 dark:ring-white/5">
                             <!-- Background Decoration -->
                             <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
                             <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
                             
                             <!-- Header -->
-                            <div class="relative p-5 md:p-6 border-b border-white/10 flex justify-between items-center bg-white/10 dark:bg-black/20">
+                            <div class="relative p-5 md:p-6 border-b border-accents-2 dark:border-white/10 flex justify-between items-center bg-white/10 dark:bg-black/20">
                                 <div>
                                     <span class="text-[10px] text-accents-5 font-bold uppercase tracking-widest block mb-0.5">${window.i18n.t('status.code')}</span>
                                     <span class="font-mono text-xl md:text-2xl font-black tracking-tighter text-foreground">${d.username}</span>
@@ -130,7 +130,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
                             <!-- Details Table -->
                             <div class="p-5 md:p-6 pt-2">
                                 <table class="w-full text-sm text-left">
-                                    <tbody class="divide-y divide-white/10">
+                                    <tbody class="divide-y divide-accents-2 dark:divide-white/10">
                                         <tr>
                                             <td class="py-3 text-accents-5 font-bold uppercase tracking-wide text-[10px]">${window.i18n.t('status.package')}</td>
                                             <td class="py-3 text-right font-bold text-foreground font-mono">${d.profile}</td>

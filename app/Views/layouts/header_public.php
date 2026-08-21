@@ -38,13 +38,12 @@ use App\Core\Hooks;
     <?php Hooks::doAction('kaiarasa_head'); ?>
 </head>
 <body class="bg-background text-foreground antialiased min-h-screen relative overflow-hidden font-sans selection:bg-accents-2 selection:text-foreground flex flex-col">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     
     <!-- Background Elements (Common) -->
     <div class="absolute inset-0 z-0 pointer-events-none">
         <!-- Subtle Grid Pattern -->
         <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMCwwLDAsMC4zKSIvPjwvc3ZnPg==')] dark:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
-        <div class="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-blue-500/20 dark:bg-blue-500/5 blur-[120px] animate-pulse" style="animation-duration: 4s;"></div>
-        <div class="absolute top-[30%] -right-[15%] w-[60vw] h-[60vw] rounded-full bg-purple-500/20 dark:bg-purple-500/5 blur-[100px] animate-pulse" style="animation-duration: 6s; animation-delay: 1s;"></div>
     </div>
 
     <!-- Top Right Controls (Pill Theme Toggle & Lang Switcher) -->
@@ -57,7 +56,7 @@ use App\Core\Hooks;
                 <i data-lucide="chevron-down" class="w-3 h-3 ml-2 opacity-50"></i>
             </button>
             <!-- Dropdown -->
-            <div id="lang-dropdown-public" class="hidden absolute right-0 mt-2 w-32 bg-background/95 backdrop-blur-2xl border border-white/10 rounded-xl shadow-2xl py-1 z-50 transform origin-top-right transition-all duration-200" onmouseleave="closeMenu('lang-dropdown-public')">
+            <div id="lang-dropdown-public" class="hidden absolute right-0 mt-2 w-32 bg-background/95 backdrop-blur-2xl border border-accents-2 dark:border-white/10 rounded-xl shadow-2xl py-1 z-50 transform origin-top-right transition-all duration-200" onmouseleave="closeMenu('lang-dropdown-public')">
                 <button onclick="changeLanguage('en')" class="w-full text-left px-4 py-2 text-xs font-medium text-accents-5 hover:text-foreground hover:bg-white/5 flex items-center group">
                     <span class="mr-2 text-lg">🇺🇸</span> English
                 </button>

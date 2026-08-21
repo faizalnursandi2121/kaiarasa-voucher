@@ -64,7 +64,7 @@ foreach ($languages as $lang) {
                     <?php if (isset($_SESSION['user_id'])) { ?>
                         <div class="pill-divider"></div>
                         <a href="/logout" class="p-1.5 rounded-lg text-accents-5 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all ml-0.5" title="Logout">
-                            <i data-lucide="log-out" class="w-4 h-4 !text-black dark:!text-white" stroke-width="2.5"></i>
+                            <i data-lucide="log-out" class="w-4 h-4 text-foreground dark:text-foreground" stroke-width="2.5"></i>
                         </a>
                     <?php } ?>
                 </div>
@@ -81,7 +81,7 @@ foreach ($languages as $lang) {
                     </div>
 
                     <button type="button" class="p-2 rounded-lg bg-accents-1 text-accents-5 hover:text-foreground transition-colors group" onclick="toggleMenu('mobile-navbar-menu', this)">
-                        <i data-lucide="menu" class="w-5 h-5 !text-black dark:!text-white transition-transform duration-300" stroke-width="2.5"></i>
+                        <i data-lucide="menu" class="w-5 h-5 text-foreground dark:text-foreground transition-transform duration-300" stroke-width="2.5"></i>
                     </button>
                 </div>
             </div>
@@ -95,11 +95,11 @@ foreach ($languages as $lang) {
             <?php if (isset($_SESSION['user_id'])) { ?>
             <div class="flex flex-col gap-1">
                 <a href="/" data-app-nav data-nav-path="/" data-on="bg-foreground/5 text-foreground font-bold" data-off="text-accents-5 hover:bg-accents-1" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= ($uri == '/' || $uri == '/home') ? 'bg-foreground/5 text-foreground font-bold' : 'text-accents-5 hover:bg-accents-1' ?>">
-                    <i data-lucide="home" class="w-5 h-5 !text-black dark:!text-white" stroke-width="2.5"></i>
+                    <i data-lucide="home" class="w-5 h-5 text-foreground dark:text-foreground" stroke-width="2.5"></i>
                     <span>Home</span>
                 </a>
                 <a href="/settings" data-app-nav data-nav-path="/settings" data-on="bg-foreground/5 text-foreground font-bold" data-off="text-accents-5 hover:bg-accents-1" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= (strpos($uri, '/settings') === 0) ? 'bg-foreground/5 text-foreground font-bold' : 'text-accents-5 hover:bg-accents-1' ?>">
-                    <i data-lucide="settings" class="w-5 h-5 !text-black dark:!text-white" stroke-width="2.5"></i>
+                    <i data-lucide="settings" class="w-5 h-5 text-foreground dark:text-foreground" stroke-width="2.5"></i>
                     <span>Settings</span>
                 </a>
             </div>
@@ -124,7 +124,7 @@ foreach ($languages as $lang) {
                 <?php if (isset($_SESSION['user_id'])) { ?>
                 <div class="pt-2 border-t border-accents-2">
                     <a href="/logout" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-red-500/10 text-red-600 font-bold hover:bg-red-500/20 transition-all">
-                        <i data-lucide="log-out" class="w-5 h-5 !text-black dark:!text-white" stroke-width="2.5"></i>
+                        <i data-lucide="log-out" class="w-5 h-5 text-foreground dark:text-foreground" stroke-width="2.5"></i>
                         <span>Logout System</span>
                     </a>
                 </div>
