@@ -11,8 +11,8 @@ include ROOT.'/app/Views/layouts/header_public.php';
             <!-- Brand / Logo Area -->
             <div class="flex justify-center mb-6 sm:mb-8">
                 <div class="relative group">
-                     <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" class="relative h-10 sm:h-12 w-auto block dark:hidden">
-                     <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="relative h-10 sm:h-12 w-auto hidden dark:block">
+                     <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" width="120" height="32" class="relative h-10 sm:h-12 w-auto block dark:hidden">
+                     <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" width="120" height="32" class="relative h-10 sm:h-12 w-auto hidden dark:block">
                 </div>
             </div>
             

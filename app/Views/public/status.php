@@ -12,8 +12,8 @@ include ROOT.'/app/Views/layouts/header_public.php';
             <!-- Brand -->
             <div class="flex justify-center">
                 <div class="relative group">
-                     <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" class="relative h-12 w-auto block dark:hidden transform transition-transform duration-300 group-hover:scale-105">
-                     <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="relative h-12 w-auto hidden dark:block transform transition-transform duration-300 group-hover:scale-105">
+                     <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" width="120" height="32" class="relative h-12 w-auto block dark:hidden transform transition-transform duration-300 group-hover:scale-105">
+                     <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" width="120" height="32" class="relative h-12 w-auto hidden dark:block transform transition-transform duration-300 group-hover:scale-105">
                 </div>
             </div>
 

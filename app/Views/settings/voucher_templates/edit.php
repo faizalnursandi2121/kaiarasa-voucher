@@ -51,7 +51,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 <span class="text-xs font-mono font-medium text-accents-5 whitespace-nowrap" data-i18n="settings.html_source">HTML Source</span>
                 
                 <!-- Scrollable Toolbar -->
-                <div class="flex-1 flex gap-2 overflow-x-auto no-scrollbar mask-fade-right py-1 px-1">
+                <div class="flex-1 flex gap-2 overflow-x-auto no-scrollbar  py-1 px-1">
                      <div class="flex gap-2 whitespace-nowrap">
                          <!-- Help Button -->
                          <button type="button" onclick="toggleDocs()" class="text-xs px-2 py-1 bg-accents-2 hover:bg-accents-3 text-accents-8 rounded transition-colors flex items-center gap-1">

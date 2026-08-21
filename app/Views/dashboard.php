@@ -7,7 +7,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
     <div>
-        <h1 class="text-2xl font-bold tracking-tight" data-i18n="common.dashboard">Dashboard</h1>
+        <h1 class="text-3xl font-bold tracking-tight" data-i18n="common.dashboard">Dashboard</h1>
         <p class="text-accents-5"><span data-i18n="common.session">Session</span>: <strong class="text-foreground"><?= $session ?></strong></p>
     </div>
 </div>
@@ -72,7 +72,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 $freeMem = ($resource['free-memory'] ?? 0);
 $usedMemP = (($totalMem - $freeMem) / $totalMem) * 100;
 ?>
-                <div class="h-full bg-blue-600 dark:bg-blue-500" style="width:<?= $usedMemP ?>%"></div>
+                <div class="h-full bg-foreground" style="width:<?= $usedMemP ?>%"></div>
             </div>
         </div>
 
@@ -103,7 +103,7 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
             <!-- Active Hotspot -->
             <div class="sub-card text-center group relative aspect-square flex flex-col justify-center items-center w-full max-w-[140px] mx-auto">
                  <a href="/<?= htmlspecialchars($session) ?>/hotspot/active" class="absolute inset-0 z-10" title="View Active Users"></a>
-                <div class="flex justify-center mb-2 text-blue-500 dark:text-blue-400  transition-transform">
+                <div class="flex justify-center mb-2 text-foreground  transition-transform">
                      <i data-lucide="activity" class="w-6 h-6"></i>
                 </div>
                 <div class="text-2xl font-bold text-foreground"><?= $hotspot_active ?></div>
@@ -113,7 +113,7 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
             <!-- Users -->
             <div class="sub-card text-center group relative aspect-square flex flex-col justify-center items-center w-full max-w-[140px] mx-auto">
                  <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="absolute inset-0 z-10" title="Manage Users"></a>
-                <div class="flex justify-center mb-2 text-purple-500 dark:text-purple-400  transition-transform">
+                <div class="flex justify-center mb-2 text-foreground  transition-transform">
                      <i data-lucide="users" class="w-6 h-6"></i>
                 </div>
                 <div class="text-2xl font-bold text-foreground"><?= htmlspecialchars($hotspot_users['count'] ?? 0) ?></div>
@@ -122,10 +122,10 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
 
             <!-- Income -->
             <div class="sub-card text-center col-span-2 group">
-                 <div class="flex justify-center mb-2 text-yellow-500 dark:text-yellow-400  transition-transform">
+                 <div class="flex justify-center mb-2 text-foreground  transition-transform">
                      <i data-lucide="dollar-sign" class="w-6 h-6"></i>
                 </div>
-                 <div class="text-2xl font-bold text-foreground">0</div>
+                 <div class="text-2xl font-bold text-foreground"><?= htmlspecialchars($income_today ?? 0) ?></div>
                 <div class="text-xs text-accents-5 uppercase tracking-wide font-semibold mt-1" data-i18n="dashboard.income_today">Income Today</div>
             </div>
         </div>
@@ -217,7 +217,7 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
                     },
                     y: {
                         border: { display: false },
-                        grid: { color: 'rgba(128, 128, 128, 0.1)' },
+                        grid: { color: getComputedStyle(document.documentElement).getPropertyValue('--accents-2').trim() || 'rgba(128,128,128,0.1)' },
                         ticks: {
                             callback: function(value) {
                                 return formatBits(value);

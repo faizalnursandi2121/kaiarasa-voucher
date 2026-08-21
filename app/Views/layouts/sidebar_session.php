@@ -120,8 +120,8 @@ $getInitials = function ($name) {
             <div class="relative w-full h-10 flex items-center justify-center">
                 <!-- Brand (Slides out to the Left) -->
                 <div class="flex items-center gap-2 font-bold text-2xl tracking-tighter transition-all duration-500 ease-in-out group-hover:-translate-x-full group-hover:opacity-0">
-                    <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" class="h-10 w-auto block dark:hidden">
-                    <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="h-10 w-auto hidden dark:block">
+                    <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" width="120" height="32" class="h-10 w-auto block dark:hidden">
+                    <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" width="120" height="32" class="h-10 w-auto hidden dark:block">
                 </div>
 
                 <!-- Premium Control Pill (Slides in from the Right to replace Brand) -->

@@ -69,7 +69,7 @@ use App\Core\Hooks;
         <!-- Theme Toggle Pill -->
         <div class="h-9 p-1 bg-accents-2/50 backdrop-blur-md border border-accents-2 rounded-full flex items-center relative" id="theme-pill">
             <!-- Gliding Background -->
-            <div class="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-background rounded-full shadow-sm transition-all duration-300 ease-spring" id="theme-glider" style="left: 4px;"></div>
+            <div class="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-background rounded-full shadow-sm transition-all duration-300 ease-in-out" id="theme-glider" style="left: 4px;"></div>
             
             <button onclick="setTheme('light')" class="relative z-10 w-8 h-full flex items-center justify-center text-accents-5 hover:text-foreground transition-colors rounded-full" id="btn-light">
                 <i data-lucide="sun" class="w-4 h-4"></i>

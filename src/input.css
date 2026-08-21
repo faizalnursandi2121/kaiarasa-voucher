@@ -432,7 +432,7 @@ div.swal2-cancel {
     position: fixed;
     top: 5rem;
     right: 1.5rem;
-    z-index: 9999;
+    z-index: 70;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -607,6 +607,11 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   border-color: var(--foreground);
 }
 
+@page {
+    size: auto;
+    margin: 5mm;
+}
+
 @media print {
     /* Hide Everything by default */
     .no-print,
@@ -691,4 +696,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 /* Skip to Main Content */
 .skip-link {
     @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:btn focus:btn-primary;
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }

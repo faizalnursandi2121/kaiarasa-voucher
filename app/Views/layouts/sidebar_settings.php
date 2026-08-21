@@ -24,7 +24,7 @@ $menu = [
         <div class="relative py-2 flex items-start gap-2">
             
             <!-- Menu Container (Toggles between flex-row/scroll and grid) -->
-            <div id="sub-navbar-menu" class="flex-1 flex flex-row items-center overflow-x-auto no-scrollbar mask-fade-right gap-2 transition-all duration-300">
+            <div id="sub-navbar-menu" class="flex-1 flex flex-row items-center overflow-x-auto no-scrollbar  gap-2 transition-all duration-300">
                 <?php foreach ($menu as $item) {
                     $active = isActive($item['url'], $uri);
                     ?>
@@ -62,12 +62,12 @@ $menu = [
                 
                 if (isExpanded) {
                     // Expand: Grid Layout
-                    menu.classList.remove('flex-row', 'overflow-x-auto', 'whitespace-nowrap', 'mask-fade-right', 'items-center');
+                    menu.classList.remove('flex-row', 'overflow-x-auto', 'whitespace-nowrap', '', 'items-center');
                     menu.classList.add('grid', 'grid-cols-2', 'sm:grid-cols-3', 'md:grid-cols-4', 'lg:grid-cols-5', 'gap-2', 'pb-4');
                     icon.style.transform = 'rotate(180deg)';
                 } else {
                     // Collapse: Scroll Layout
-                    menu.classList.add('flex-row', 'overflow-x-auto', 'whitespace-nowrap', 'mask-fade-right', 'items-center');
+                    menu.classList.add('flex-row', 'overflow-x-auto', 'whitespace-nowrap', '', 'items-center');
                     menu.classList.remove('grid', 'grid-cols-2', 'sm:grid-cols-3', 'md:grid-cols-4', 'lg:grid-cols-5', 'gap-2', 'pb-4');
                     icon.style.transform = 'rotate(0deg)';
                     

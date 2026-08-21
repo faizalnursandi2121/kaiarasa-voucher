@@ -5,7 +5,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
     <div>
-        <h1 class="text-2xl font-bold tracking-tight" data-i18n="security.walled_garden.title">Walled Garden</h1>
+        <h1 class="text-3xl font-bold tracking-tight" data-i18n="security.walled_garden.title">Walled Garden</h1>
         <p class="text-accents-5" data-i18n="security.walled_garden.subtitle" data-i18n-params='{"name": "<?= htmlspecialchars($session) ?>"}'>Manage allowed destinations (bypass without login) for: <span class="text-foreground font-medium"><?= htmlspecialchars($session) ?></span></p>
     </div>
     <div class="flex gap-2">

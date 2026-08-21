@@ -7,8 +7,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php'; ?>
 <div class="w-full max-w-4xl mx-auto py-8 md:py-16 px-4 sm:px-6 text-center">
     <div class="mb-8 flex justify-center">
         <div class="w-20 h-20 sm:w-24 sm:h-24 bg-transparent rounded-full flex items-center justify-center">
-            <img src="/assets/img/favicon-baru.png" alt="Kaiarasa Logo" class="w-full h-full object-contain block dark:hidden">
-            <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="w-full h-full object-contain hidden dark:block">
+            <img src="/assets/img/favicon-baru.png" alt="Kaiarasa Logo" width="80" height="80" class="w-full h-full object-contain block dark:hidden">
+            <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" width="120" height="32" class="w-full h-full object-contain hidden dark:block">
         </div>
     </div>
     

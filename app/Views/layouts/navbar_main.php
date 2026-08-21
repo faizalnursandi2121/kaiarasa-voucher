@@ -13,8 +13,8 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
             <!-- Brand & Desktop Nav -->
             <div class="flex items-center gap-8">
                 <a href="/" class="flex items-center gap-2 group">
-                    <img src="/assets/img/logo-sage.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" class="h-6 w-auto block dark:hidden transition-transform group-hover:scale-110">
-                    <img src="/assets/img/logo-white.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" class="h-6 w-auto hidden dark:block transition-transform group-hover:scale-110">
+                    <img src="/assets/img/logo-sage.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" width="120" height="32" class="h-6 w-auto block dark:hidden transition-transform group-hover:scale-110">
+                    <img src="/assets/img/logo-white.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" width="120" height="32" class="h-6 w-auto hidden dark:block transition-transform group-hover:scale-110">
                 </a>
 
                 <!-- Desktop Navigation Links (Hidden on Mobile) -->

@@ -25,7 +25,7 @@
                 <p class="text-sm text-accents-5">Used for page titles.</p>
             </div>
             <div>
-                <h3 class="text-2xl font-bold tracking-tight">Heading 3 (text-2xl)</h3>
+                <h3 class="text-3xl font-bold tracking-tight">Heading 3 (text-2xl)</h3>
                 <p class="text-sm text-accents-5">Used for section headers.</p>
             </div>
             <div>
@@ -368,11 +368,12 @@
                 </button>
             </div>
         </div>
+    </section>
     <!-- Custom Stacking Toasts -->
     <section class="mb-12">
         <h2 class="text-xl font-semibold mb-4 border-b border-accents-2 pb-2">Stacking Toasts (Custom Helper)</h2>
         <div class="card space-y-4">
-            <p class="text-sm text-accents-5 mb-4">Premium non-disruptive notifications that stack from the bottom-right.</p>
+            <p class="text-sm text-accents-5 mb-4">Premium non-disruptive notifications that stack from the top-right below the navbar.</p>
             
             <div class="flex flex-wrap gap-4 items-center">
                 <button onclick="Kaiarasa.toast('success', 'Operation Successful', 'Your changes have been saved.')" class="btn btn-primary bg-emerald-500 hover:bg-emerald-600 border-none text-white">
