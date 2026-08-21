@@ -25,7 +25,7 @@ class SiteConfig
         return getenv('APP_KEY') ?: 'kaiarasa_official_secret_key_32bytes';
     }
 
-    const IS_DEV = true; // Still useful for code logic not relying on env yet, or can be refactored too.
+    const IS_DEV = false; // Set to true only for local development.
 
     /**
      * Get the formatted page title

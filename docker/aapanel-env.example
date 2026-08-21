@@ -1,8 +1,8 @@
 VERSION=latest
-CONTAINER_NAME=mivo
+CONTAINER_NAME=kaiarasa
 HOST_IP=0.0.0.0
 APP_PORT=8085
-APP_PATH=/www/dk_project/mivo
+APP_PATH=/www/dk_project/kaiarasa
 APP_ENV=production
 APP_DEBUG=false
 TZ=Asia/Jakarta
