@@ -1,22 +1,22 @@
 <?php
 $title = 'Hotspot Cookies';
 require_once ROOT.'/app/Views/layouts/header_main.php';
+
+use App\Helpers\LanguageHelper;
 ?>
 
-<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-    <div>
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="cookies.title">Hotspot Cookies</h1>
-        <p class="text-accents-5"><span data-i18n="cookies.subtitle">Active authentication cookies for:</span> <span class="text-foreground font-medium"><?= htmlspecialchars($session) ?></span></p>
-    </div>
-    <div class="flex gap-2">
-         <button onclick="location.reload()" class="btn btn-secondary">
-            <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i> <span data-i18n="reports.refresh">Refresh</span>
-        </button>
-        <a href="/<?= htmlspecialchars($session) ?>/dashboard" class="btn btn-secondary">
-            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> <span data-i18n="common.dashboard">Dashboard</span>
-        </a>
-    </div>
-</div>
+<?php
+$page_title_key = 'cookies.title';
+$page_title = 'Hotspot Cookies';
+$page_desc_key = 'cookies.subtitle';
+$page_desc = 'Active authentication cookies for: ' . htmlspecialchars($session);
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('sidebar.hotspot', 'Hotspot'), 'href' => null],
+    ['label' => LanguageHelper::t('hotspot_menu.cookies', 'Cookies'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
 <?php if (isset($error) && $error) { ?>
     <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center dark:bg-red-900/20 dark:text-red-400 dark:border dark:border-red-500/20">
@@ -25,17 +25,25 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     </div>
 <?php } ?>
 
-<div class="space-y-4">
-    <!-- Filter Bar -->
-    <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-        <!-- Search -->
-        <div class="relative w-full md:w-64">
-             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i data-lucide="search" class="h-4 w-4 text-accents-5"></i>
-            </div>
-            <input type="text" id="global-search" class="form-input pl-10 w-full" placeholder="Search user, mac..." data-i18n="common.table.search_placeholder">
+<?php
+$toolbar_html = '
+    <div class="relative w-full md:w-64">
+         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i data-lucide="search" class="h-4 w-4 text-accents-5"></i>
         </div>
+        <input type="text" id="global-search" class="form-input pl-10 w-full" placeholder="Search user, mac..." data-i18n="common.table.search_placeholder">
     </div>
+    <div class="page-toolbar-right">
+        <button onclick="location.reload()" class="btn btn-secondary">' .
+    '<i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i> <span data-i18n="reports.refresh">Refresh</span>' .
+    '</button>';
+$toolbar_html .= '
+    </div>
+';
+?>
+<div class="page-toolbar">
+<?php echo $toolbar_html; ?>
+</div>
 
     <div class="table-container">
         <table class="table-glass" id="cookies-table">
@@ -97,10 +105,9 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             </div>
         </div>
     </div>
-</div>
 
 <script>
-    var TableManager = class TableManager {
+    window.TableManager = window.TableManager || class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;

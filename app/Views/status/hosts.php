@@ -2,6 +2,8 @@
 $title = 'Hotspot Hosts';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 
+use App\Helpers\LanguageHelper;
+
 // Filter Data
 $uniqueServers = [];
 if (! empty($items)) {
@@ -15,17 +17,18 @@ if (! empty($items)) {
 sort($uniqueServers);
 ?>
 
-<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-    <div>
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="hotspot_hosts.title">Hotspot Hosts</h1>
-        <p class="text-accents-5"><span data-i18n="hotspot_hosts.subtitle">Devices connected to the hotspot network for:</span> <span class="text-foreground font-medium"><?= htmlspecialchars($session) ?></span></p>
-    </div>
-    <div class="flex gap-2">
-        <a href="/<?= htmlspecialchars($session) ?>/dashboard" class="btn btn-secondary">
-            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> <span data-i18n="common.dashboard">Dashboard</span>
-        </a>
-    </div>
-</div>
+<?php
+$page_title_key = 'hotspot_hosts.title';
+$page_title = 'Hotspot Hosts';
+$page_desc_key = 'hotspot_hosts.subtitle';
+$page_desc = 'Devices connected to the hotspot network for: ' . htmlspecialchars($session);
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('sidebar.status', 'Status'), 'href' => null],
+    ['label' => LanguageHelper::t('hotspot_menu.hosts', 'Hosts'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
 <?php if ($error) { ?>
     <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center dark:bg-red-900/20 dark:text-red-400 dark:border dark:border-red-500/20">
@@ -34,28 +37,29 @@ sort($uniqueServers);
     </div>
 <?php } ?>
 
-<div class="space-y-4">
-    <!-- Filter Bar -->
-    <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-        <!-- Search -->
-        <div class="relative w-full md:w-64">
-             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i data-lucide="search" class="h-4 w-4 text-accents-5"></i>
-            </div>
-            <input type="text" id="global-search" class="form-input pl-10 w-full" placeholder="Search mac, ip, comment...">
+<?php
+$toolbar_html = '
+    <div class="relative w-full md:w-64">
+         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i data-lucide="search" class="h-4 w-4 text-accents-5"></i>
         </div>
-         <!-- Dropdowns -->
-        <div class="flex gap-2 w-full md:w-auto">
-            <div class="w-40">
-                <select id="filter-server" class="custom-select" data-search="true">
-                    <option value="" data-i18n="hotspot_active.filter_server">All Servers</option>
-                    <?php foreach ($uniqueServers as $s) { ?>
-                        <option value="<?= htmlspecialchars($s) ?>"><?= htmlspecialchars($s) ?></option>
-                    <?php } ?>
-                </select>
-            </div>
+        <input type="text" id="global-search" class="form-input pl-10 w-full" placeholder="Search mac, ip, comment...">
+    </div>
+    <div class="page-toolbar-right">
+        <div class="w-40">
+            <select id="filter-server" class="custom-select" data-search="true">
+                <option value="" data-i18n="hotspot_active.filter_server">All Servers</option>';
+foreach ($uniqueServers as $s) {
+    $toolbar_html .= '<option value="' . htmlspecialchars($s) . '">' . htmlspecialchars($s) . '</option>';
+}
+$toolbar_html .= '</select>
         </div>
     </div>
+';
+?>
+<div class="page-toolbar">
+<?php echo $toolbar_html; ?>
+</div>
 
     <div class="table-container">
         <table class="table-glass" id="hosts-table">
@@ -115,11 +119,10 @@ sort($uniqueServers);
             </div>
         </div>
     </div>
-</div>
 
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 <script>
-    var TableManager = class TableManager {
+    window.TableManager = window.TableManager || class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;
@@ -234,7 +237,7 @@ sort($uniqueServers);
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         if (typeof CustomSelect !== 'undefined') {
             document.querySelectorAll('.custom-select').forEach(s => new CustomSelect(s));
         }

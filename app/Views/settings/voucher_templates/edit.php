@@ -421,7 +421,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     }
 
     // Init
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         initEditor();
         updatePreview();
     });

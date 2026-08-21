@@ -102,8 +102,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 <!-- Print Script -->
 <script>
-    let selectedTemplate = '<?= htmlspecialchars($defaultTemplate ?? 'default') ?>';
-    document.addEventListener('DOMContentLoaded', () => {
+    var selectedTemplate = '<?= htmlspecialchars($defaultTemplate ?? 'default') ?>';
+    window.whenReady(() => {
         const sel = document.getElementById('qp-template-select');
         if (sel) selectedTemplate = sel.value;
     });

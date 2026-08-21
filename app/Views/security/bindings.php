@@ -2,6 +2,8 @@
 $title = 'IP Bindings';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 
+use App\Helpers\LanguageHelper;
+
 // Filter Data
 $uniqueTypes = [];
 if (! empty($items)) {
@@ -13,17 +15,17 @@ if (! empty($items)) {
 sort($uniqueTypes);
 ?>
 
-<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-    <div>
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="security.bindings.title">IP Bindings</h1>
-        <p class="text-accents-5" data-i18n="security.bindings.subtitle" data-i18n-params='{"name": "<?= htmlspecialchars($session) ?>"}'>Manage IP bindings (bypass/blocked) for: <span class="text-foreground font-medium"><?= htmlspecialchars($session) ?></span></p>
-    </div>
-    <div class="flex gap-2">
-        <a href="/<?= htmlspecialchars($session) ?>/dashboard" class="btn btn-secondary" data-i18n="common.dashboard">
-            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Dashboard
-        </a>
-    </div>
-</div>
+<?php
+$page_title_key = 'security.bindings.title';
+$page_title = 'IP Bindings';
+$page_desc = 'Manage IP bindings (bypass/blocked) for: ' . htmlspecialchars($session);
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('sidebar.security', 'Security'), 'href' => null],
+    ['label' => LanguageHelper::t('hotspot_menu.bindings', 'IP Bindings'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
 <?php if ($error) { ?>
     <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center dark:bg-red-900/20 dark:text-red-400 dark:border dark:border-red-500/20 shadow-sm">
@@ -221,7 +223,7 @@ sort($uniqueTypes);
 
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
 <script>
-    var TableManager = class TableManager {
+    window.TableManager = window.TableManager || class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;
@@ -335,7 +337,7 @@ sort($uniqueTypes);
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window.whenReady(() => {
         if (typeof CustomSelect !== 'undefined') {
             document.querySelectorAll('.custom-select').forEach(s => new CustomSelect(s));
         }

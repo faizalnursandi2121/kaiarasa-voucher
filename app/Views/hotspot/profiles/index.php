@@ -2,6 +2,8 @@
 $title = 'User Profiles';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 
+use App\Helpers\LanguageHelper;
+
 // Prepare Filters Data
 $uniqueModes = [];
 if (! empty($profiles)) {
@@ -15,20 +17,18 @@ if (! empty($profiles)) {
 sort($uniqueModes);
 ?>
 
-<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-    <div>
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="hotspot_profiles.title">User Profiles</h1>
-        <p class="text-accents-5"><span data-i18n="hotspot_profiles.subtitle">Manage hotspot rate limits and pricing for session</span> <span class="text-foreground font-medium"><?= htmlspecialchars($session) ?></span></p>
-    </div>
-    <div class="flex gap-2">
-        <a href="/<?= htmlspecialchars($session) ?>/dashboard" class="btn btn-secondary">
-            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> <span data-i18n="common.dashboard">Dashboard</span>
-        </a>
-        <button onclick="openProfileModal('add')" class="btn btn-primary">
-            <i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="hotspot_profiles.add_profile">Add Profile</span>
-        </button>
-    </div>
-</div>
+<?php
+$page_title_key = 'hotspot_profiles.title';
+$page_title = 'User Profiles';
+$page_desc_key = 'hotspot_profiles.subtitle';
+$page_desc = 'Manage hotspot rate limits and pricing for session: ' . htmlspecialchars($session);
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('sidebar.hotspot', 'Hotspot'), 'href' => null],
+    ['label' => LanguageHelper::t('hotspot_menu.profiles', 'User Profiles'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
 <?php if (isset($error)) { ?>
     <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center dark:bg-red-900/20 dark:text-red-400 dark:border dark:border-red-500/20">
@@ -37,30 +37,33 @@ sort($uniqueModes);
     </div>
 <?php } ?>
 
-<!-- Filters & Table -->
-<div class="space-y-4">
-    <!-- Filter Bar -->
-    <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-        <!-- Search -->
-        <div class="input-group md:w-64 z-10">
-            <div class="input-icon">
-                <i data-lucide="search" class="h-4 w-4"></i>
-            </div>
-            <input type="text" id="global-search" class="form-input-search w-full" placeholder="Search profile...">
+<?php
+$toolbar_html = '
+    <div class="input-group md:w-64 z-10">
+        <div class="input-icon">
+            <i data-lucide="search" class="h-4 w-4"></i>
         </div>
-
-        <!-- Dropdowns -->
-        <div class="flex gap-2 w-full md:w-auto">
-            <div class="w-48">
-                <select id="filter-mode" class="custom-select form-filter" data-search="true">
-                    <option value="" data-i18n="hotspot_profiles.all_modes">All Expired Modes</option>
-                    <?php foreach ($uniqueModes as $m) { ?>
-                        <option value="<?= htmlspecialchars($m) ?>"><?= htmlspecialchars($m) ?></option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
+        <input type="text" id="global-search" class="form-input-search w-full" placeholder="Search profile...">
     </div>
+    <div class="page-toolbar-right">
+        <div class="w-48">
+            <select id="filter-mode" class="custom-select form-filter" data-search="true">
+                <option value="" data-i18n="hotspot_profiles.all_modes">All Expired Modes</option>';
+foreach ($uniqueModes as $m) {
+    $toolbar_html .= '<option value="' . htmlspecialchars($m) . '">' . htmlspecialchars($m) . '</option>';
+}
+$toolbar_html .= '</select>
+        </div>
+        <button onclick="openProfileModal(\'add\')" class="btn btn-primary">' .
+    '<i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="hotspot_profiles.add_profile">Add Profile</span>' .
+    '</button>';
+$toolbar_html .= '
+    </div>
+';
+?>
+<div class="page-toolbar">
+<?php echo $toolbar_html; ?>
+</div>
 
     <div class="table-container">
         <table class="table-glass" id="profiles-table">
@@ -174,10 +177,9 @@ sort($uniqueModes);
             </div>
         </div>
     </div>
-</div>
 
 <script>
-    var TableManager = class TableManager {
+    window.TableManager = window.TableManager || class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;
@@ -222,20 +224,21 @@ sort($uniqueModes);
         }
 
         setupListeners() {
-            document.getElementById('global-search').addEventListener('input', (e) => {
+            const searchInput = document.getElementById('global-search');
+            if (searchInput) searchInput.addEventListener('input', (e) => {
                 this.filters.search = e.target.value.toLowerCase();
                 this.currentPage = 1;
                 this.update();
             });
 
-            this.elements.prevBtn.addEventListener('click', () => {
+            if (this.elements.prevBtn) this.elements.prevBtn.addEventListener('click', () => {
                 if (this.currentPage > 1) {
                     this.currentPage--;
                     this.render();
                 }
             });
 
-            this.elements.nextBtn.addEventListener('click', () => {
+            if (this.elements.nextBtn) this.elements.nextBtn.addEventListener('click', () => {
                 const maxPage = Math.ceil(this.filteredRows.length / this.itemsPerPage);
                 if (this.currentPage < maxPage) {
                     this.currentPage++;
@@ -243,7 +246,8 @@ sort($uniqueModes);
                 }
             });
             
-            document.getElementById('filter-mode').addEventListener('change', (e) => {
+            const filterMode = document.getElementById('filter-mode');
+            if (filterMode) filterMode.addEventListener('change', (e) => {
                 this.filters.mode = e.target.value;
                 this.currentPage = 1;
                 this.update();
@@ -312,18 +316,12 @@ sort($uniqueModes);
         }
     };
 
-    window.whenReady(() => {
-        if (typeof CustomSelect !== 'undefined') {
-            document.querySelectorAll('.custom-select').forEach(select => {
-                new CustomSelect(select);
-            });
-        }
-        
-        const rows = document.querySelectorAll('.table-row-item');
-        new TableManager(rows, 10);
-    }); 
-
-    function openProfileModal(mode, btn = null) {
+    // IMPORTANT: Define global onclick handlers (openProfileModal) BEFORE the
+    // whenReady() call below. During SPA navigation document.readyState is
+    // already 'complete', so whenReady() runs its callback synchronously.
+    // If openProfileModal were defined after whenReady(), it would not yet
+    // be assigned to window when the user clicks Add -> ReferenceError.
+    window.openProfileModal = function(mode, btn = null) {
         const template = document.getElementById('profile-form-template').innerHTML;
         
         let title = window.i18n ? window.i18n.t('hotspot_profiles.form.add_title') : 'Add Profile';
@@ -400,6 +398,20 @@ sort($uniqueModes);
 
         Kaiarasa.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
     }
+
+    // DOM-dependent initialization (CustomSelect + TableManager).
+    // Kept AFTER global handler definitions so onclick handlers are always
+    // available, even when whenReady() runs synchronously during SPA navigation.
+    window.whenReady(() => {
+        if (typeof CustomSelect !== 'undefined') {
+            document.querySelectorAll('.custom-select').forEach(select => {
+                new CustomSelect(select);
+            });
+        }
+        
+        const rows = document.querySelectorAll('.table-row-item');
+        new TableManager(rows, 10);
+    });
 </script>
 
 <template id="profile-form-template">

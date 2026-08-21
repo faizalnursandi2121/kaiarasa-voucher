@@ -3,6 +3,7 @@
 use App\Helpers\FormatHelper;
 use App\Helpers\HotspotHelper;
 use App\Helpers\ViewHelper;
+use App\Helpers\LanguageHelper;
 
 $title = 'Hotspot Users';
 require_once ROOT.'/app/Views/layouts/header_main.php';
@@ -31,32 +32,18 @@ if (! isset($servers)) {
 sort($uniqueComments);
 ?>
 
-<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-    <div>
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="hotspot_users.title">Hotspot Users</h1>
-        <p class="text-accents-5"><span data-i18n="hotspot_users.subtitle">Manage vouchers and user accounts for session</span>: <span class="text-foreground font-medium"><?= htmlspecialchars($session) ?></span></p>
-    </div>
-    <div class="flex gap-2 flex-wrap items-center">
-        <!-- Template Selector -->
-        <div class="flex items-center gap-2">
-            <label class="text-sm text-accents-5 whitespace-nowrap" data-i18n="settings.template_name">Template</label>
-            <select id="hu-template-select" class="form-input text-sm w-44" onchange="onTemplateChange(this.value)">
-                <option value="default" data-i18n="quick_print.default_thermal" <?= ($defaultTemplate ?? 'default') === 'default' ? 'selected' : '' ?>>Default Thermal</option>
-                <?php if (! empty($templates)) { ?>
-                    <?php foreach ($templates as $t) { ?>
-                        <option value="<?= htmlspecialchars($t['id']) ?>" <?= ($defaultTemplate ?? 'default') === (string) $t['id'] ? 'selected' : '' ?>><?= htmlspecialchars($t['name']) ?></option>
-                    <?php } ?>
-                <?php } ?>
-            </select>
-        </div>
-        <a href="/<?= htmlspecialchars($session) ?>/dashboard" class="btn btn-secondary">
-            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> <span data-i18n="common.dashboard">Dashboard</span>
-        </a>
-        <button onclick="openUserModal('add')" class="btn btn-primary">
-            <i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="hotspot_users.add_user">Add User</span>
-        </button>
-    </div>
-</div>
+<?php
+$page_title_key = 'hotspot_users.title';
+$page_title = 'Hotspot Users';
+$page_desc_key = 'hotspot_users.subtitle';
+$page_desc = 'Manage vouchers and user accounts for session: ' . htmlspecialchars($session);
+$breadcrumbs = [
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('sidebar.hotspot', 'Hotspot'), 'href' => null],
+    ['label' => LanguageHelper::t('hotspot_menu.users', 'Users'), 'href' => null],
+];
+require_once ROOT.'/app/Views/layouts/page_header.php';
+?>
 
 <?php if ($error) { ?>
     <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center dark:bg-red-900/20 dark:text-red-400 dark:border dark:border-red-500/20">
@@ -77,40 +64,42 @@ sort($uniqueComments);
     </button>
 </div>
 
-<!-- Filters & Table -->
-<div class="space-y-4">
-    <!-- Filter Bar -->
-    <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-        <!-- Search -->
-        <div class="input-group md:w-64 z-10">
-            <div class="input-icon">
-                <i data-lucide="search" class="h-4 w-4"></i>
-            </div>
-            <input type="text" id="global-search" class="form-input-search w-full" placeholder="Search user..." data-i18n="common.table.search_placeholder">
+<?php
+$toolbar_html = '
+    <div class="input-group md:w-64 z-10">
+        <div class="input-icon">
+            <i data-lucide="search" class="h-4 w-4"></i>
         </div>
-
-        <!-- Dropdowns -->
-        <div class="flex gap-2 w-full md:w-auto">
-            <div class="w-40">
-                <select id="filter-profile" class="custom-select form-filter" data-search="true">
-                    <option value="" data-i18n="common.all_profiles">All Profiles</option>
-                    <?php foreach ($uniqueProfiles as $p) { ?>
-                        <option value="<?= htmlspecialchars($p) ?>"><?= htmlspecialchars($p) ?></option>
-                    <?php } ?>
-                </select>
-            </div>
-            <div class="w-40">
-                <select id="filter-comment" class="custom-select form-filter" data-search="true">
-                    <option value="" data-i18n="common.all_comments">All Comments</option>
-                    <?php foreach ($uniqueComments as $c) { ?>
-                        <option value="<?= htmlspecialchars($c) ?>"><?= htmlspecialchars($c) ?></option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
+        <input type="text" id="global-search" class="form-input-search w-full" placeholder="Search user..." data-i18n="common.table.search_placeholder">
     </div>
+    <div class="page-toolbar-right">
+        <div class="w-40">
+            <select id="filter-profile" class="custom-select form-filter" data-search="true">
+                <option value="" data-i18n="common.all_profiles">All Profiles</option>';
+foreach ($uniqueProfiles as $p) {
+    $toolbar_html .= '<option value="' . htmlspecialchars($p) . '">' . htmlspecialchars($p) . '</option>';
+}
+$toolbar_html .= '</select>
+        </div>
+        <div class="w-40">
+            <select id="filter-comment" class="custom-select form-filter" data-search="true">
+                <option value="" data-i18n="common.all_comments">All Comments</option>';
+foreach ($uniqueComments as $c) {
+    $toolbar_html .= '<option value="' . htmlspecialchars($c) . '">' . htmlspecialchars($c) . '</option>';
+}
+$toolbar_html .= '</select>
+        </div>
+        <button onclick="openUserModal(\'add\')" class="btn btn-primary">' .
+    '<i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="hotspot_users.add_user">Add User</span>' .
+    '</button>';
+$toolbar_html .= '
+    </div>
+';
+?>
+<div class="page-toolbar">
+<?php echo $toolbar_html; ?>
+</div>
 
-    <!-- Table Container -->
     <!-- Table Container -->
     <div class="table-container">
         <table class="table-glass" id="users-table">
@@ -235,7 +224,6 @@ sort($uniqueComments);
             </div>
         </div>
     </div>
-</div>
 
 <!-- Add/Edit User Template -->
 <template id="user-form-template">
@@ -367,7 +355,7 @@ sort($uniqueComments);
 </template>
 
 <script>
-    var TableManager = class TableManager {
+    window.TableManager = window.TableManager || class TableManager {
         constructor(rows, itemsPerPage = 10) {
             this.allRows = Array.from(rows);
             this.filteredRows = this.allRows;
@@ -422,14 +410,16 @@ sort($uniqueComments);
                 }
             });
             
-            // Filters
-            document.getElementById('filter-profile').addEventListener('change', (e) => {
+            // Filters (null-check for SPA cross-page TableManager reuse)
+            const filterProfile = document.getElementById('filter-profile');
+            if (filterProfile) filterProfile.addEventListener('change', (e) => {
                 this.filters.profile = e.target.value;
                 this.currentPage = 1;
                 this.update();
             });
             
-            document.getElementById('filter-comment').addEventListener('change', (e) => {
+            const filterComment = document.getElementById('filter-comment');
+            if (filterComment) filterComment.addEventListener('change', (e) => {
                 this.filters.comment = e.target.value;
                 this.currentPage = 1;
                 this.update();
@@ -476,29 +466,31 @@ sort($uniqueComments);
             const start = (this.currentPage - 1) * this.itemsPerPage;
             const end = Math.min(start + this.itemsPerPage, total);
             
-            // Update Text
-            if (window.i18n) {
+            // Update Text (null-check for SPA cross-page TableManager reuse)
+            const paginationText = document.getElementById('pagination-text');
+            if (window.i18n && paginationText) {
                 const text = window.i18n.t('common.table.showing', {
                     start: total === 0 ? 0 : start + 1,
                     end: end,
                     total: total
                 });
-                document.getElementById('pagination-text').textContent = text;
-            } else {
+                paginationText.textContent = text;
+            } else if (paginationText) {
                  // Fallback
-                 const el = document.getElementById('pagination-text');
-                 el.innerHTML = `Showing <span class="font-medium text-foreground">${total === 0 ? 0 : start + 1}</span> to <span class="font-medium text-foreground">${end}</span> of <span class="font-medium text-foreground">${total}</span> users`;
+                 paginationText.innerHTML = `Showing <span class="font-medium text-foreground">${total === 0 ? 0 : start + 1}</span> to <span class="font-medium text-foreground">${end}</span> of <span class="font-medium text-foreground">${total}</span> users`;
             }
             
             // Clear & Append Rows
-            this.elements.body.innerHTML = '';
-            
-            const pageRows = this.filteredRows.slice(start, end);
-            pageRows.forEach(row => this.elements.body.appendChild(row));
+            if (this.elements.body) {
+                this.elements.body.innerHTML = '';
+                
+                const pageRows = this.filteredRows.slice(start, end);
+                pageRows.forEach(row => this.elements.body.appendChild(row));
+            }
             
             // Update Buttons
-            this.elements.prevBtn.disabled = this.currentPage === 1;
-            this.elements.nextBtn.disabled = this.currentPage === maxPage || total === 0;
+            if (this.elements.prevBtn) this.elements.prevBtn.disabled = this.currentPage === 1;
+            if (this.elements.nextBtn) this.elements.nextBtn.disabled = this.currentPage === maxPage || total === 0;
 
             if (this.elements.pageNumbers) {
                  const pageText = window.i18n ? window.i18n.t('common.page_of', {current: this.currentPage, total: maxPage}) : `Page ${this.currentPage} of ${maxPage}`;
@@ -509,12 +501,13 @@ sort($uniqueComments);
             if (typeof lucide !== 'undefined') lucide.createIcons();
             
             // Reset "Select All"
-            document.getElementById('select-all').checked = false;
+            const selectAllEl = document.getElementById('select-all');
+            if (selectAllEl) selectAllEl.checked = false;
         }
     };
 
     // --- Modal Logic ---
-    function openUserModal(mode, btn = null) {
+    window.openUserModal = function(mode, btn = null) {
         const template = document.getElementById('user-form-template').innerHTML;
         
         let title = window.i18n ? window.i18n.t('hotspot_users.add_user') : 'Add User';
@@ -636,17 +629,20 @@ sort($uniqueComments);
     });
 
     // Actions
-    let selectedTemplate = '<?= htmlspecialchars($defaultTemplate ?? 'default') ?>';
-    document.addEventListener('DOMContentLoaded', () => {
+    // Use var (not let) to allow re-declaration during SPA navigation
+    var selectedTemplate = '<?= htmlspecialchars($defaultTemplate ?? 'default') ?>';
+    // Use whenReady (not DOMContentLoaded) so this also runs during SPA
+    // navigation where DOMContentLoaded has already fired.
+    window.whenReady(() => {
         const sel = document.getElementById('hu-template-select');
         if (sel) selectedTemplate = sel.value;
     });
 
-    function onTemplateChange(val) {
+    window.onTemplateChange = function(val) {
         selectedTemplate = val;
     }
 
-    function printUser(id) {
+    window.printUser = function(id) {
         const width = 400; const height = 600;
         const left = (window.innerWidth - width) / 2;
         const top = (window.innerHeight - height) / 2;
@@ -658,7 +654,7 @@ sort($uniqueComments);
         window.open(url, `PrintUser`, `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
     }
     
-    function printSelected() {
+    window.printSelected = function() {
         const selected = Array.from(document.querySelectorAll('.user-checkbox:checked')).map(cb => cb.value);
         if (selected.length === 0) return Kaiarasa.alert('info', 'No selection', window.i18n ? window.i18n.t('hotspot_users.no_users_selected') : "No users selected.");
         
@@ -674,7 +670,7 @@ sort($uniqueComments);
         window.open(url, `PrintBatch`, `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
     }
     
-    function deleteSelected() {
+    window.deleteSelected = function() {
         const selected = Array.from(document.querySelectorAll('.user-checkbox:checked')).map(cb => cb.value);
         if (selected.length === 0) return Kaiarasa.alert('info', 'No selection', window.i18n ? window.i18n.t('hotspot_users.no_users_selected') : "Please select at least one user.");
         
