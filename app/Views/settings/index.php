@@ -43,9 +43,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                     </div>
                     <h3 class="text-lg font-medium mb-2">No routers configured</h3>
                     <p class="text-accents-5 mb-6 max-w-sm mx-auto">Connect your first MikroTik router to start managing hotspots and vouchers.</p>
-                    <button onclick="openRouterModal('add')" class="btn btn-primary">
-                        <i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="routers.add_router_title">Connect Router</span>
-                    </button>
                 </div>
             <?php } else { ?>
                 <div class="table-container">
@@ -115,13 +112,10 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                             <?php } ?>
                         </tbody>
                     </table>
-                    <div class="bg-accents-1 px-4 py-3 border-t border-accents-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 sm:px-6">
+                    <div class="bg-accents-1 px-4 py-3 border-t border-accents-2 sm:px-6">
                          <div class="text-sm text-accents-5">
                             Showing all <?= count($routers) ?> stored sessions
                          </div>
-                          <button onclick="openRouterModal('add')" class="btn btn-primary btn-sm w-full sm:w-auto justify-center">
-                            <i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="routers.add_router_title">Add New</span>
-                          </button>
                     </div>
                 </div>
             <?php } ?>
