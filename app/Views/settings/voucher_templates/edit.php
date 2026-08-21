@@ -68,6 +68,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                          <button type="button" onclick="insertVar('{{dns_name}}')" class="text-xs px-2 py-1 bg-background border border-accents-2 rounded hover:bg-accents-2 transition-colors">{{dns_name}}</button>
                          <button type="button" onclick="insertVar('{{login_url}}')" class="text-xs px-2 py-1 bg-background border border-accents-2 rounded hover:bg-accents-2 transition-colors">{{login_url}}</button>
                          <button type="button" onclick="insertVar('{{qrcode}}')" class="text-xs px-2 py-1 bg-background border border-accents-2 rounded hover:bg-accents-2 transition-colors" title="Insert QR Code">{{qrcode}}</button>
+                         <button type="button" onclick="insertVar('{{logo }}')" class="text-xs px-2 py-1 bg-background border border-accents-2 rounded hover:bg-accents-2 transition-colors" title="Insert Logo (add id=YOUR_LOGO_ID)">{{logo}}</button>
                      </div>
                 </div>
             </div>
@@ -186,6 +187,29 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         <p>{{qrcode size=200 padding=10 rounded=15}}</p>
                         <p>{{qrcode fg=#000 bg=#fff}}</p>
                     </div>
+                </div>
+
+                <h3 class="text-sm font-bold uppercase text-accents-5 mb-2" data-i18n="settings.logos_section">Logos</h3>
+                <div class="p-4 rounded bg-accents-1 border border-accents-2 space-y-4">
+                    <p class="text-sm text-accents-6" data-i18n="settings.logo_var_desc">Display a logo from the Logo library by its ID. Upload logos in Settings &rarr; Logos, copy the ID, then use it here.</p>
+                    
+                    <h4 class="text-xs font-bold uppercase text-accents-5 mb-1" data-i18n="settings.logo_var_syntax">Syntax</h4>
+                    <div class="bg-background p-2 rounded border border-accents-2 font-mono text-xs">
+                        <p>{{logo id=<span class="text-primary">YOUR_LOGO_ID</span>}}</p>
+                    </div>
+                    <p class="text-xs text-accents-5" data-i18n="settings.logo_var_note">The <code>id</code> attribute is required. Find the ID in Settings &rarr; Logos (click the # icon to copy).</p>
+
+                    <hr class="border-accents-2 my-3">
+
+                    <h4 class="text-xs font-bold uppercase text-accents-5 mb-1" data-i18n="settings.logo_in_qr">Logo inside QR Code</h4>
+                    <p class="text-sm text-accents-6" data-i18n="settings.logo_in_qr_desc">Add a <code>logo</code> attribute to the QR code tag to embed a logo in its center (20% of QR size).</p>
+                    <div class="bg-background p-2 rounded border border-accents-2 space-y-1 font-mono text-xs">
+                        <p>{{qrcode size=150 logo=<span class="text-primary">YOUR_LOGO_ID</span>}}</p>
+                    </div>
+
+                    <a href="/settings/logos" class="inline-flex items-center gap-1 text-sm text-primary hover:underline mt-2">
+                        <i data-lucide="image" class="w-4 h-4"></i> <span data-i18n="settings.logo_manage_link">Manage Logos</span>
+                    </a>
                 </div>
             </div>
         </div>

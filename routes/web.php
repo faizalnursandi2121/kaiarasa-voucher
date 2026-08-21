@@ -74,6 +74,7 @@ $router->group(['middleware' => 'auth'], function ($router) {
     $router->get('/settings/voucher-templates/edit/{id}', [VoucherTemplateController::class, 'edit']);
     $router->post('/settings/voucher-templates/update', [VoucherTemplateController::class, 'update']);
     $router->post('/settings/voucher-templates/delete', [VoucherTemplateController::class, 'delete']);
+    $router->post('/settings/voucher-templates/set-default', [VoucherTemplateController::class, 'setDefault']);
 
     // Logo Management
     $router->get('/settings/logos', [SettingsController::class, 'logos']);
@@ -139,9 +140,8 @@ $router->group(['middleware' => 'auth'], function ($router) {
         $router->get('/{session}/traffic/interfaces', [TrafficController::class, 'getInterfaces']);
 
         // Reports
-        $router->get('/{session}/reports/selling', [ReportController::class, 'index']);
-        $router->get('/{session}/reports/selling/export/{type}', [ReportController::class, 'sellingExport']);
-        $router->get('/{session}/reports/resume', [ReportController::class, 'resume']);
+        $router->get('/{session}/reports/financial', [ReportController::class, 'index']);
+        $router->get('/{session}/reports/financial/export/{type}', [ReportController::class, 'sellingExport']);
         $router->get('/{session}/reports/user-log', [LogController::class, 'index']);
 
         // System Tools

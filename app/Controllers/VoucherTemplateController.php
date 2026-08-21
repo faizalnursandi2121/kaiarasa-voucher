@@ -7,6 +7,7 @@ use App\Core\Middleware;
 use App\Helpers\FlashHelper;
 use App\Helpers\TemplateHelper;
 use App\Models\Logo;
+use App\Models\Setting;
 use App\Models\VoucherTemplateModel;
 
 class VoucherTemplateController extends Controller
@@ -21,8 +22,13 @@ class VoucherTemplateController extends Controller
         $templateModel = new VoucherTemplateModel;
         $templates = $templateModel->getAll();
 
+        // Fetch current default template
+        $settingModel = new Setting;
+        $defaultTemplate = $settingModel->get('default_voucher_template', 'default');
+
         $data = [
             'templates' => $templates,
+            'defaultTemplate' => $defaultTemplate,
         ];
 
         return $this->view('settings/voucher_templates/index', $data);
@@ -147,6 +153,22 @@ class VoucherTemplateController extends Controller
         $templateModel->delete($id);
 
         FlashHelper::set('success', 'toasts.template_deleted', 'toasts.template_deleted_desc', [], true);
+        header('Location: /settings/voucher-templates');
+        exit;
+    }
+
+    public function setDefault()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return;
+        }
+
+        $id = $_POST['id'] ?? 'default';
+
+        $settingModel = new Setting;
+        $settingModel->set('default_voucher_template', $id);
+
+        FlashHelper::set('success', 'toasts.default_template_set', 'toasts.default_template_set_desc', [], true);
         header('Location: /settings/voucher-templates');
         exit;
     }

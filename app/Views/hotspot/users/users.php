@@ -36,7 +36,19 @@ sort($uniqueComments);
         <h1 class="text-2xl font-bold tracking-tight" data-i18n="hotspot_users.title">Hotspot Users</h1>
         <p class="text-accents-5"><span data-i18n="hotspot_users.subtitle">Manage vouchers and user accounts for session</span>: <span class="text-foreground font-medium"><?= htmlspecialchars($session) ?></span></p>
     </div>
-    <div class="flex gap-2">
+    <div class="flex gap-2 flex-wrap items-center">
+        <!-- Template Selector -->
+        <div class="flex items-center gap-2">
+            <label class="text-sm text-accents-5 whitespace-nowrap" data-i18n="settings.template_name">Template</label>
+            <select id="hu-template-select" class="form-input text-sm w-44" onchange="onTemplateChange(this.value)">
+                <option value="default" data-i18n="quick_print.default_thermal" <?= ($defaultTemplate ?? 'default') === 'default' ? 'selected' : '' ?>>Default Thermal</option>
+                <?php if (! empty($templates)) { ?>
+                    <?php foreach ($templates as $t) { ?>
+                        <option value="<?= htmlspecialchars($t['id']) ?>" <?= ($defaultTemplate ?? 'default') === (string) $t['id'] ? 'selected' : '' ?>><?= htmlspecialchars($t['name']) ?></option>
+                    <?php } ?>
+                <?php } ?>
+            </select>
+        </div>
         <a href="/<?= htmlspecialchars($session) ?>/dashboard" class="btn btn-secondary">
             <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> <span data-i18n="common.dashboard">Dashboard</span>
         </a>
@@ -624,12 +636,26 @@ sort($uniqueComments);
     });
 
     // Actions
+    let selectedTemplate = '<?= htmlspecialchars($defaultTemplate ?? 'default') ?>';
+    document.addEventListener('DOMContentLoaded', () => {
+        const sel = document.getElementById('hu-template-select');
+        if (sel) selectedTemplate = sel.value;
+    });
+
+    function onTemplateChange(val) {
+        selectedTemplate = val;
+    }
+
     function printUser(id) {
         const width = 400; const height = 600;
         const left = (window.innerWidth - width) / 2;
         const top = (window.innerHeight - height) / 2;
         const session = '<?= htmlspecialchars($session) ?>';
-        window.open(`/${session}/hotspot/print/${encodeURIComponent(id)}`, `PrintUser`, `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
+        let url = `/${session}/hotspot/print/${encodeURIComponent(id)}`;
+        if (selectedTemplate !== 'default') {
+            url += `?template=${selectedTemplate}`;
+        }
+        window.open(url, `PrintUser`, `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
     }
     
     function printSelected() {
@@ -641,7 +667,11 @@ sort($uniqueComments);
         const top = (window.innerHeight - height) / 2;
         const session = '<?= htmlspecialchars($session) ?>';
         const ids = selected.map(id => encodeURIComponent(id)).join(',');
-        window.open(`/${session}/hotspot/print-batch?ids=${ids}`, `PrintBatch`, `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
+        let url = `/${session}/hotspot/print-batch?ids=${ids}`;
+        if (selectedTemplate !== 'default') {
+            url += `&template=${selectedTemplate}`;
+        }
+        window.open(url, `PrintBatch`, `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
     }
     
     function deleteSelected() {

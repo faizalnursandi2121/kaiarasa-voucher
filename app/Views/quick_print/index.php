@@ -6,13 +6,25 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 <div class="space-y-6">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between flex-wrap gap-4">
         <div>
             <h1 class="text-2xl font-bold tracking-tight text-foreground" data-i18n="quick_print.title">Quick Print</h1>
             <p class="text-accents-5" data-i18n="quick_print.subtitle">Instant voucher generation and printing.</p>
         </div>
         <div class="flex items-center gap-3">
-             <a href="/<?= htmlspecialchars($session) ?>/quick-print/manage" class="hidden sm:flex items-center gap-2 btn btn-secondary">
+            <!-- Template Selector -->
+            <div class="flex items-center gap-2">
+                <label class="text-sm text-accents-5 whitespace-nowrap" data-i18n="settings.template_name">Template</label>
+                <select id="qp-template-select" class="form-input text-sm w-48" onchange="onTemplateChange(this.value)">
+                    <option value="default" data-i18n="quick_print.default_thermal" <?= ($defaultTemplate ?? 'default') === 'default' ? 'selected' : '' ?>>Default Thermal</option>
+                    <?php if (! empty($templates)) { ?>
+                        <?php foreach ($templates as $t) { ?>
+                            <option value="<?= htmlspecialchars($t['id']) ?>" <?= ($defaultTemplate ?? 'default') === (string) $t['id'] ? 'selected' : '' ?>><?= htmlspecialchars($t['name']) ?></option>
+                        <?php } ?>
+                    <?php } ?>
+                </select>
+            </div>
+            <a href="/<?= htmlspecialchars($session) ?>/quick-print/manage" class="hidden sm:flex items-center gap-2 btn btn-secondary">
                 <i data-lucide="settings" class="w-4 h-4"></i>
                 <span data-i18n="quick_print.manage">Manage Packages</span>
             </a>
@@ -90,6 +102,16 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 <!-- Print Script -->
 <script>
+    let selectedTemplate = '<?= htmlspecialchars($defaultTemplate ?? 'default') ?>';
+    document.addEventListener('DOMContentLoaded', () => {
+        const sel = document.getElementById('qp-template-select');
+        if (sel) selectedTemplate = sel.value;
+    });
+
+    function onTemplateChange(val) {
+        selectedTemplate = val;
+    }
+
     function printPackage(id, name) {
         // Open print window
         const width = 400;
@@ -97,7 +119,10 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         const left = (window.innerWidth - width) / 2;
         const top = (window.innerHeight - height) / 2;
         
-        const url = `/<?= htmlspecialchars($session) ?>/quick-print/print/${id}`;
+        let url = `/<?= htmlspecialchars($session) ?>/quick-print/print/${id}`;
+        if (selectedTemplate !== 'default') {
+            url += `?template=${selectedTemplate}`;
+        }
         
         window.open(url, `Print_${name}`, `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
     }

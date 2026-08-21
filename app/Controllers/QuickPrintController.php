@@ -10,6 +10,7 @@ use App\Libraries\RouterOSAPI;
 use App\Models\Config;
 use App\Models\Logo;
 use App\Models\QuickPrintModel;
+use App\Models\Setting;
 use App\Models\VoucherTemplateModel;
 
 class QuickPrintController extends Controller
@@ -32,9 +33,19 @@ class QuickPrintController extends Controller
         // For now, we assume ID exists as per migration plan.
         $packages = $routerId ? $qpModel->getAllByRouterId($routerId) : [];
 
+        // Fetch voucher templates for the selector
+        $tplModel = new VoucherTemplateModel;
+        $templates = $tplModel->getAll();
+
+        // Fetch default template from settings
+        $settingModel = new Setting;
+        $defaultTemplate = $settingModel->get('default_voucher_template', 'default');
+
         $data = [
             'session' => $session,
             'packages' => $packages,
+            'templates' => $templates,
+            'defaultTemplate' => $defaultTemplate,
         ];
 
         // Note: View will be 'quick_print/index'
@@ -229,11 +240,21 @@ class QuickPrintController extends Controller
         }
 
         if ($API->connect($creds['ip'], $creds['user'], $password_router)) {
+            // Build a report-friendly comment: p:{price} [QP] {date}
+            // This ensures the Selling Report and Resume Report can detect price and date.
+            $price = intval($package['price'] ?? 0);
+            $dateStr = date('Y-m-d');
+            $qpComment = 'p:'.$price.' [QP] '.$dateStr;
+            // Append original package comment if set
+            if (! empty($package['comment'])) {
+                $qpComment .= ' '.$package['comment'];
+            }
+
             $userData = [
                 'name' => $username,
                 'password' => $password,
                 'profile' => $package['profile'],
-                'comment' => $package['comment'].' [QP]', // Mark as QuickPrint
+                'comment' => $qpComment, // Report-friendly comment
             ];
 
             // Limits

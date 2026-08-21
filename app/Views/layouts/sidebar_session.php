@@ -41,7 +41,7 @@ foreach ($securityPages as $page) {
 }
 
 // Reports Group Active Check
-$reportsPages = ['/reports/resume', '/reports/selling', '/reports/user-log'];
+$reportsPages = ['/reports/financial', '/reports/user-log'];
 $isReportsActive = false;
 foreach ($reportsPages as $page) {
     if (strpos($uri, $page) !== false) {
@@ -325,11 +325,8 @@ foreach ($languages as $lang) {
                 </button>
                 
                 <div id="reports-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isReportsActive ? '500px' : '0px' ?>">
-                    <a href="/<?= htmlspecialchars($session) ?>/reports/resume" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/resume') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="reports_menu.resume"><?= LanguageHelper::t('reports_menu.resume', 'Resume') ?></span>
-                    </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/reports/selling" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/selling') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="reports_menu.selling"><?= LanguageHelper::t('reports_menu.selling', 'Selling Report') ?></span>
+                    <a href="/<?= htmlspecialchars($session) ?>/reports/financial" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/financial') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <span data-i18n="reports_menu.financial"><?= LanguageHelper::t('reports_menu.financial', 'Financial Report') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/reports/user-log" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="reports_menu.user_log"><?= LanguageHelper::t('reports_menu.user_log', 'User Log') ?></span>

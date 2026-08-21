@@ -9,6 +9,7 @@ use App\Helpers\HotspotHelper;
 use App\Libraries\RouterOSAPI;
 use App\Models\Config;
 use App\Models\Logo;
+use App\Models\Setting;
 use App\Models\VoucherTemplateModel;
 
 class HotspotController extends Controller
@@ -57,11 +58,21 @@ class HotspotController extends Controller
             exit;
         }
 
+        // Fetch voucher templates for the selector
+        $tplModel = new VoucherTemplateModel;
+        $templates = $tplModel->getAll();
+
+        // Fetch default template from settings
+        $settingModel = new Setting;
+        $defaultTemplate = $settingModel->get('default_voucher_template', 'default');
+
         $data = [
             'session' => $session,
             'users' => $users,
             'servers' => $servers,
             'error' => $error,
+            'templates' => $templates,
+            'defaultTemplate' => $defaultTemplate,
         ];
 
         return $this->view('hotspot/users/users', $data);
