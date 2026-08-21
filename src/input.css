@@ -447,20 +447,20 @@ div.swal2-cancel {
 .text-question { color: #8b5cf6; }
 
 /* Custom Premium Stacking Toasts */
-#mivo-toast-container {
+#kaiarasa-toast-container {
     position: fixed;
-    bottom: 1.5rem;
+    top: 5rem;
     right: 1.5rem;
     z-index: 9999;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: 0.75rem;
     pointer-events: none;
     max-width: 400px;
     width: calc(100% - 3rem);
 }
 
-.mivo-toast {
+.kaiarasa-toast {
     pointer-events: auto;
     background-color: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(12px);
@@ -478,30 +478,30 @@ div.swal2-cancel {
     overflow: hidden;
 }
 
-.dark .mivo-toast {
+.dark .kaiarasa-toast {
     background-color: rgba(0, 0, 0, 0.7);
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-.mivo-toast-content {
+.kaiarasa-toast-content {
     flex: 1;
     min-width: 0;
 }
 
-.mivo-toast-title {
+.kaiarasa-toast-title {
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--foreground);
     line-height: 1.25;
 }
 
-.mivo-toast-message {
+.kaiarasa-toast-message {
     font-size: 0.75rem;
     color: var(--accents-5);
     margin-top: 0.125rem;
 }
 
-.mivo-toast-close {
+.kaiarasa-toast-close {
     padding: 0.25rem;
     margin: -0.25rem;
     border-radius: 0.375rem;
@@ -510,12 +510,12 @@ div.swal2-cancel {
     cursor: pointer;
 }
 
-.mivo-toast-close:hover {
+.kaiarasa-toast-close:hover {
     background-color: var(--accents-2);
     color: var(--foreground);
 }
 
-.mivo-toast-progress {
+.kaiarasa-toast-progress {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -536,7 +536,7 @@ div.swal2-cancel {
     }
 }
 
-.mivo-toast-fade-out {
+.kaiarasa-toast-fade-out {
     transform: translateX(100%);
     opacity: 0;
 }

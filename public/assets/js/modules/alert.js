@@ -89,10 +89,10 @@ class AlertModule {
      * Show a stacking toast notification.
      */
     toast(type, title, message = '', duration = 5000) {
-        let container = document.getElementById('mivo-toast-container');
+        let container = document.getElementById('kaiarasa-toast-container');
         if (!container) {
             container = document.createElement('div');
-            container.id = 'mivo-toast-container';
+            container.id = 'kaiarasa-toast-container';
             document.body.appendChild(container);
         }
 
@@ -106,20 +106,20 @@ class AlertModule {
         const config = typeMap[type] || typeMap['info'];
         
         const toast = document.createElement('div');
-        toast.className = `mivo-toast ${config.color}`;
+        toast.className = `kaiarasa-toast ${config.color}`;
         
         toast.innerHTML = `
-            <div class="mivo-toast-icon">
+            <div class="kaiarasa-toast-icon">
                 <i data-lucide="${config.icon}" class="w-5 h-5"></i>
             </div>
-            <div class="mivo-toast-content">
-                <div class="mivo-toast-title">${title}</div>
-                ${message ? `<div class="mivo-toast-message">${message}</div>` : ''}
+            <div class="kaiarasa-toast-content">
+                <div class="kaiarasa-toast-title">${title}</div>
+                ${message ? `<div class="kaiarasa-toast-message">${message}</div>` : ''}
             </div>
-            <button class="mivo-toast-close">
+            <button class="kaiarasa-toast-close">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
-            <div class="mivo-toast-progress"></div>
+            <div class="kaiarasa-toast-progress"></div>
         `;
 
         container.appendChild(toast);
@@ -127,7 +127,7 @@ class AlertModule {
 
         // Close logic
         const closeToast = () => {
-            toast.classList.add('mivo-toast-fade-out');
+            toast.classList.add('kaiarasa-toast-fade-out');
             setTimeout(() => {
                 toast.remove();
                 if (container.children.length === 0) container.remove();
