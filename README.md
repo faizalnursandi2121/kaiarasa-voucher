@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="public/assets/img/logo.png" alt="MIVO Logo" width="200" />
+  <img src="public/assets/img/logo-sage.webp" alt="Kaiarasa Logo" width="200" />
 </p>
 
-# MIVO (Mikrotik Voucher)
+# Kaiarasa (Voucher Management)
 
 > **Modern. Lightweight. Efficient.**
 
-MIVO is a next-generation **Mikrotik Voucher Management System** with a modern MVC architecture, designed to run efficiently on low-end devices like STB (Set Top Boxes) and Android, while providing a premium user experience on desktop.
+Kaiarasa is a next-generation **Voucher Management System** with a modern MVC architecture, designed to run efficiently on low-end devices like STB (Set Top Boxes) and Android, while providing a premium user experience on desktop.
 
 ![Status](https://img.shields.io/badge/Status-Beta-orange) ![PHP](https://img.shields.io/badge/PHP-8.0+-777BB4) ![License](https://img.shields.io/badge/License-MIT-green)
 
@@ -30,13 +30,13 @@ MIVO is a next-generation **Mikrotik Voucher Management System** with a modern M
 
 1.  **Install via Composer**
     ```bash
-    composer create-project mivodev/mivo
+    composer create-project kaiarasa/kaiarasa
     cd mivo
     ```
 
     > **Alternative (Docker):**
     > ```bash
-    > docker pull mivodev/mivo
+    > docker pull kaiarasa/kaiarasa
     > ```
     > *See [DOCKER_README.md](DOCKER_README.md) for more tags.*
 
@@ -73,7 +73,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Support the Project
 
-If you find MIVO useful, please consider supporting its development. Your contribution helps keep the project alive!
+If you find Kaiarasa useful, please consider supporting its development. Your contribution helps keep the project alive!
 
 [![SociaBuzz Tribe](https://img.shields.io/badge/SociaBuzz-Tribe-green?style=for-the-badge&logo=sociabuzz&logoColor=white)](https://sociabuzz.com/dyzulkdev/tribe)
 
@@ -83,4 +83,4 @@ If you find MIVO useful, please consider supporting its development. Your contri
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ---
-*Created by MivoDev*
+*Created by Kaiarasa*

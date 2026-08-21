@@ -6,9 +6,9 @@ require_once ROOT.'/app/Views/layouts/header_main.php'; ?>
 <div id="app-dynamic" class="contents">
 <div class="w-full max-w-4xl mx-auto py-8 md:py-16 px-4 sm:px-6 text-center">
     <div class="mb-8 flex justify-center">
-        <div class="h-16 w-16 bg-transparent rounded-full flex items-center justify-center">
-            <img src="/assets/img/logo-m.svg" alt="Mivo Logo" class="h-16 w-auto block dark:hidden">
-            <img src="/assets/img/logo-m-dark.svg" alt="Mivo Logo" class="h-16 w-auto hidden dark:block">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 bg-transparent rounded-full flex items-center justify-center">
+            <img src="/assets/img/favicon-baru.png" alt="Kaiarasa Logo" class="w-full h-full object-contain block dark:hidden">
+            <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="w-full h-full object-contain hidden dark:block">
         </div>
     </div>
     

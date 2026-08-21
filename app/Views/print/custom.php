@@ -51,7 +51,7 @@
                 '{{dns_name}}' => $u['dns_name'],
                 '{{login_url}}' => $u['login_url'],
                 '{{num}}' => ($index + 1),
-                '{{logo}}' => '<img src="/assets/img/logo.png" style="height:30px;border:0;">', // Default Logo placeholder
+                '{{logo}}' => '<img src="/assets/img/logo-sage.webp" style="height:30px;border:0;">', // Default Logo placeholder
             ];
 
             // 1. Handle {{logo id=...}}

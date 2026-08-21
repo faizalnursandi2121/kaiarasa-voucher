@@ -256,12 +256,12 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     let cmView = null;
 
     function initEditor() {
-        if (typeof MivoEditor === 'undefined') {
+        if (typeof KaiarasaEditor === 'undefined') {
             console.error('CodeMirror bundle not loaded yet.');
             return;
         }
 
-        cmView = MivoEditor.init({
+        cmView = KaiarasaEditor.init({
             parent: container,
             initialValue: textarea.value,
             dark: isDark,
@@ -300,10 +300,10 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         '{{timelimit}}': ' 3 Hours',
         '{{datalimit}}': '500 MB',
         '{{profile}}': 'General',
-        '{{comment}}': 'mivo',
-        '{{hotspotname}}': 'Mivo Hotspot',
+        '{{comment}}': 'kaiarasa',
+        '{{hotspotname}}': 'Kaiarasa Hotspot',
         '{{num}}': '1',
-        '{{logo}}': '<img src="/assets/img/logo.png" style="height:30px;border:0;">', // Default placeholder
+        '{{logo}}': '<img src="/assets/img/logo-sage.webp" style="height:30px;border:0;">', // Default placeholder
         '{{dns_name}}': 'hotspot.mivo', 
         '{{login_url}}': 'http://hotspot.mivo/login',
     };

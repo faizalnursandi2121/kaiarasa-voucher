@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mivodev/mivo/main/public/assets/img/logo.png" alt="MIVO Logo" width="200" />
+  <img src="https://raw.githubusercontent.com/kaiarasa/kaiarasa/main/public/assets/img/logo-sage.webp" alt="Kaiarasa Logo" width="200" />
 </p>
 
-# MIVO (Mikrotik Voucher) Docker Image
+# Kaiarasa Docker Image
 
 > **Modern. Lightweight. Efficient.**
 
-MIVO is a next-generation **Mikrotik Voucher Management System** with a modern MVC architecture, designed to run efficiently on low-end devices like STB (Set Top Boxes) and Android, while providing a premium user experience on desktop.
+Kaiarasa is a next-generation **Voucher Management System** with a modern MVC architecture, designed to run efficiently on low-end devices like STB (Set Top Boxes) and Android, while providing a premium user experience on desktop.
 
 This Docker image is built on **Alpine Linux** and **Nginx**, optimized for high performance and low resource usage.
 
@@ -14,7 +14,7 @@ This Docker image is built on **Alpine Linux** and **Nginx**, optimized for high
 
 ## Quick Start
 
-Run MIVO in a single command:
+Run Kaiarasa in a single command:
 
 ```bash
 docker run -d \
@@ -22,9 +22,9 @@ docker run -d \
   -p 8080:80 \
   -e APP_KEY=base64:YOUR_GENERATED_KEY \
   -e APP_ENV=production \
-  -v mivo_data:/var/www/html/app/Database \
-  -v mivo_config:/var/www/html/.env \
-  mivodev/mivo:latest
+  -v kaiarasa_data:/var/www/html/app/Database \
+  -v kaiarasa_config:/var/www/html/.env \
+  kaiarasa/kaiarasa:latest
 ```
 
 Open your browser and navigate to `http://localhost:8080`.
@@ -39,7 +39,7 @@ For a more permanent setup, use `docker-compose.yml`:
 ```yaml
 services:
   mivo:
-    image: mivodev/mivo:latest
+    image: kaiarasa/kaiarasa:latest
     container_name: mivo
     restart: unless-stopped
     ports:
@@ -106,9 +106,9 @@ Persist your data by mounting these paths:
 
 ## Support the Project
 
-If you find MIVO useful, please consider supporting its development. Your contribution helps keep the project alive!
+If you find Kaiarasa useful, please consider supporting its development. Your contribution helps keep the project alive!
 
 [![SociaBuzz Tribe](https://img.shields.io/badge/SociaBuzz-Tribe-green?style=for-the-badge&logo=sociabuzz&logoColor=white)](https://sociabuzz.com/dyzulkdev/tribe)
 
 ---
-*Created by MivoDev*
+*Created by Kaiarasa*
