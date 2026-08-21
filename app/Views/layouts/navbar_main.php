@@ -13,9 +13,8 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
             <!-- Brand & Desktop Nav -->
             <div class="flex items-center gap-8">
                 <a href="/" class="flex items-center gap-2 group">
-                    <img src="/assets/img/logo-m.svg" alt="<?= SiteConfig::APP_NAME ?> Logo" class="h-6 w-auto block dark:hidden transition-transform group-hover:scale-110">
-                    <img src="/assets/img/logo-m-dark.svg" alt="<?= SiteConfig::APP_NAME ?> Logo" class="h-6 w-auto hidden dark:block transition-transform group-hover:scale-110">
-                    <span class="font-bold text-lg tracking-tight"><?= SiteConfig::APP_NAME ?></span>
+                    <img src="/assets/img/logo-sage.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" class="h-6 w-auto block dark:hidden transition-transform group-hover:scale-110">
+                    <img src="/assets/img/logo-white.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" class="h-6 w-auto hidden dark:block transition-transform group-hover:scale-110">
                 </a>
 
                 <!-- Desktop Navigation Links (Hidden on Mobile) -->
@@ -43,7 +42,7 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
 foreach ($languages as $lang) {
     $pathArg = isset($lang['path']) ? "', '".$lang['path'] : '';
     ?>
-                            <button onclick="Mivo.modules.I18n.loadLanguage('<?= $lang['code'] ?><?= $pathArg ?>')" class="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-accents-1 transition-colors text-accents-6 hover:text-foreground group/lang">
+                            <button onclick="Kaiarasa.modules.I18n.loadLanguage('<?= $lang['code'] ?><?= $pathArg ?>')" class="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-accents-1 transition-colors text-accents-6 hover:text-foreground group/lang">
                                 <span class="fi fi-<?= $lang['flag'] ?> rounded-sm shadow-sm transition-transform group-hover/lang:scale-110"></span>
                                 <span><?= $lang['name'] ?></span>
                             </button>
@@ -188,7 +187,7 @@ foreach ($languages as $lang) {
         try { if (window.lucide) lucide.createIcons(); } catch (e) {}
         try { if (window.i18n && window.i18n.applyTranslations) window.i18n.applyTranslations(); } catch (e) {}
         try {
-            var SelectCtor = window.Mivo && window.Mivo.components && window.Mivo.components.Select;
+            var SelectCtor = window.Kaiarasa && window.Kaiarasa.components && window.Kaiarasa.components.Select;
             if (SelectCtor) {
                 root.querySelectorAll('select.custom-select').forEach(function (el) {
                     if (!SelectCtor.get(el)) { new SelectCtor(el); }

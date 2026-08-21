@@ -82,10 +82,10 @@ foreach ($allSessions as $s) {
         break;
     }
 }
-// Determine label: Hotspot Name > IP Address > 'MIVO'
-$sessionLabel = $currentSessionDetails['hotspot_name'] ?? $currentSessionDetails['ip_address'] ?? 'MIVO';
+// Determine label: Hotspot Name > IP Address > 'Kaiarasa'
+$sessionLabel = $currentSessionDetails['hotspot_name'] ?? $currentSessionDetails['ip_address'] ?? 'Kaiarasa';
 if (empty($sessionLabel)) {
-    $sessionLabel = $currentSessionDetails['ip_address'] ?? 'MIVO';
+    $sessionLabel = $currentSessionDetails['ip_address'] ?? 'Kaiarasa';
 }
 
 // Helper for Session Initials (Kebab-friendly)
@@ -120,16 +120,15 @@ $getInitials = function ($name) {
             <div class="relative w-full h-10 flex items-center justify-center">
                 <!-- Brand (Slides out to the Left) -->
                 <div class="flex items-center gap-2 font-bold text-2xl tracking-tighter transition-all duration-500 ease-in-out group-hover:-translate-x-full group-hover:opacity-0">
-                    <img src="/assets/img/logo-m.svg" alt="MIVO Logo" class="h-10 w-auto block dark:hidden">
-                    <img src="/assets/img/logo-m-dark.svg" alt="MIVO Logo" class="h-10 w-auto hidden dark:block">
-                    <span>MIVO</span>
+                    <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" class="h-10 w-auto block dark:hidden">
+                    <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="h-10 w-auto hidden dark:block">
                 </div>
 
                 <!-- Premium Control Pill (Slides in from the Right to replace Brand) -->
                 <div class="absolute inset-0 hidden md:flex items-center justify-center transition-all duration-500 ease-in-out translate-x-full opacity-0 group-hover:translate-x-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto z-10">
                     <div class="control-pill scale-90 transition-transform hover:scale-100 shadow-lg bg-white/10 dark:bg-black/20 backdrop-blur-md">
                         <!-- Language Switcher -->
-                        <!-- Language Switcher (Mivo Component) -->
+                        <!-- Language Switcher (Kaiarasa Component) -->
                         <!-- Language Switcher -->
                         <div class="relative group/lang" onmouseleave="closeMenu('lang-dropdown-sidebar')">
                             <button type="button" class="pill-lang-btn" onclick="toggleMenu('lang-dropdown-sidebar', this)" title="Change Language">
@@ -141,7 +140,7 @@ $getInitials = function ($name) {
                                 $languages = LanguageHelper::getAvailableLanguages();
 foreach ($languages as $lang) {
     ?>
-                                <button onclick="Mivo.modules.I18n.loadLanguage('<?= $lang['code'] ?>')" class="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-accents-1 transition-colors text-accents-6 hover:text-foreground group/lang-item">
+                                <button onclick="Kaiarasa.modules.I18n.loadLanguage('<?= $lang['code'] ?>')" class="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-accents-1 transition-colors text-accents-6 hover:text-foreground group/lang-item">
                                     <span class="fi fi-<?= $lang['flag'] ?> rounded-sm shadow-sm transition-transform group-hover/lang-item:scale-110"></span>
                                     <span><?= $lang['name'] ?></span>
                                 </button>
@@ -411,7 +410,7 @@ foreach ($languages as $lang) {
             
             <?php if (isset($_SESSION['user_id'])) { ?>
             <!-- Logout (System) -->
-             <a href="/logout" class="group flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-white/10 hover:bg-red-500/10 hover:border-red-500/20 transition-all decoration-0 shadow-sm" title="Logout from Mivo">
+             <a href="/logout" class="group flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-white/10 hover:bg-red-500/10 hover:border-red-500/20 transition-all decoration-0 shadow-sm" title="Logout from Kaiarasa">
                 <div class="flex items-center gap-3">
                     <div class="p-1.5 rounded-lg bg-red-500/10 text-red-500 group-hover:bg-red-500/20 transition-colors">
                          <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -432,9 +431,8 @@ foreach ($languages as $lang) {
         <!-- Mobile Header (Visible only on small screens) -->
         <header class="h-16 flex items-center justify-between px-4 border-b border-accents-2 bg-background/80 backdrop-blur-md md:hidden z-20 sticky top-0">
              <div class="flex items-center gap-2">
-                <img src="/assets/img/logo-m.svg" class="h-6 w-auto block dark:hidden">
-                <img src="/assets/img/logo-m-dark.svg" class="h-6 w-auto hidden dark:block">
-                <span class="font-bold">MIVO</span>
+                <img src="/assets/img/logo-sage.webp" class="h-6 w-auto block dark:hidden">
+                <img src="/assets/img/logo-white.webp" class="h-6 w-auto hidden dark:block">
             </div>
             <div class="flex items-center gap-4">
                 <!-- Mobile Premium Control Pill -->
@@ -595,7 +593,7 @@ foreach ($languages as $lang) {
                 try { if (window.lucide) lucide.createIcons(); } catch (e) {}
                 try { if (window.i18n && window.i18n.applyTranslations) window.i18n.applyTranslations(); } catch (e) {}
                 try {
-                    var SelectCtor = window.Mivo && window.Mivo.components && window.Mivo.components.Select;
+                    var SelectCtor = window.Kaiarasa && window.Kaiarasa.components && window.Kaiarasa.components.Select;
                     if (SelectCtor) {
                         root.querySelectorAll('select.custom-select').forEach(function (el) {
                             if (!SelectCtor.get(el)) { new SelectCtor(el); }
