@@ -1,5 +1,5 @@
 /**
- * Mivo Component: Datatable
+ * Kaiarasa Component: Datatable
  * A simple, lightweight, client-side datatable.
  */
 class DataTable {
@@ -24,9 +24,9 @@ class DataTable {
         this.activeFilters = {}; 
         this.filteredRows = [...this.originalRows];
         
-        // Listen for language changes via Mivo
-        if (window.Mivo) {
-            window.Mivo.on('languageChanged', () => {
+        // Listen for language changes via Kaiarasa
+        if (window.Kaiarasa) {
+            window.Kaiarasa.on('languageChanged', () => {
                 this.reTranslate();
                 this.render();
             });
@@ -42,7 +42,7 @@ class DataTable {
 
     reTranslate() {
         if (!this.wrapper) return; // init() not run yet (e.g. languageChanged fires early)
-        const i18n = window.Mivo?.modules?.I18n || window.i18n;
+        const i18n = window.Kaiarasa?.modules?.I18n || window.i18n;
         if (!i18n) return;
 
         // Labels
@@ -60,8 +60,8 @@ class DataTable {
             if (allOption) {
                 allOption.text = i18n.t('common.table.all');
                 // Refresh custom select UI if needed
-                if (window.Mivo?.components?.Select) {
-                     const instance = window.Mivo.components.Select.get(perPageSelect.id || '');
+                if (window.Kaiarasa?.components?.Select) {
+                     const instance = window.Kaiarasa.components.Select.get(perPageSelect.id || '');
                      if (instance) instance.refresh();
                 }
             }
@@ -69,7 +69,7 @@ class DataTable {
     }
 
     init() {
-        const i18n = window.Mivo?.modules?.I18n || window.i18n;
+        const i18n = window.Kaiarasa?.modules?.I18n || window.i18n;
 
         // Wrapper
         this.wrapper = document.createElement('div');
@@ -119,9 +119,9 @@ class DataTable {
         controlsLeft.appendChild(perPageSelect);
         controlsLeft.appendChild(label);
         
-        // Init Custom Select using Mivo Component
-        if (window.Mivo?.components?.Select) {
-             new window.Mivo.components.Select(perPageSelect);
+        // Init Custom Select using Kaiarasa Component
+        if (window.Kaiarasa?.components?.Select) {
+             new window.Kaiarasa.components.Select(perPageSelect);
         }
 
         // Filters
@@ -206,8 +206,8 @@ class DataTable {
 
         container.appendChild(select);
         
-        if (window.Mivo?.components?.Select) {
-             new window.Mivo.components.Select(select);
+        if (window.Kaiarasa?.components?.Select) {
+             new window.Kaiarasa.components.Select(select);
         }
     }
 
@@ -239,7 +239,7 @@ class DataTable {
     }
 
     render() {
-        const i18n = window.Mivo?.modules?.I18n || window.i18n;
+        const i18n = window.Kaiarasa?.modules?.I18n || window.i18n;
         const totalItems = this.filteredRows.length;
         const totalPages = Math.ceil(totalItems / this.options.itemsPerPage);
         
@@ -313,9 +313,9 @@ class DataTable {
     }
 }
 
-// Register as Mivo Component
-if (window.Mivo) {
-    window.Mivo.registerComponent('Datatable', DataTable);
+// Register as Kaiarasa Component
+if (window.Kaiarasa) {
+    window.Kaiarasa.registerComponent('Datatable', DataTable);
     // Expose as window global for simpler backward compatibility if typically invoked via new SimpleDataTable()
     window.SimpleDataTable = DataTable;
 } else {

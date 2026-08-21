@@ -1,6 +1,6 @@
-# MIVO Installation Guide
+# Kaiarasa Installation Guide
 
-This guide covers installation on various platforms. MIVO is designed to be lightweight and runs on almost any PHP-capable server.
+This guide covers installation on various platforms. Kaiarasa is designed to be lightweight and runs on almost any PHP-capable server.
 
 ## General Requirements
 *   **PHP**: 8.0 or higher
@@ -10,7 +10,7 @@ This guide covers installation on various platforms. MIVO is designed to be ligh
 ---
 
 ## Docker (Recommended)
-The easiest way to run MIVO.
+The easiest way to run Kaiarasa.
 
 1.  **Build & Run**
     ```bash
@@ -21,9 +21,9 @@ The easiest way to run MIVO.
 2.  **Manual Pull (Alternative)**
     If you prefer to pull the image manually:
     ```bash
-    docker pull ghcr.io/mivodev/mivo:latest  # Stable
-    docker pull ghcr.io/mivodev/mivo:v1.0.0  # Specific Version
-    docker pull ghcr.io/mivodev/mivo:edge    # Bleeding Edge
+    docker pull ghcr.io/kaiarasa/kaiarasa:latest  # Stable
+    docker pull ghcr.io/kaiarasa/kaiarasa:v1.0.0  # Specific Version
+    docker pull ghcr.io/kaiarasa/kaiarasa:edge    # Bleeding Edge
     ```
 
 *Note: The database is persisted in `app/Database` via volumes.*
@@ -32,7 +32,7 @@ The easiest way to run MIVO.
 
 ## Apache / OpenLiteSpeed
 1.  **Document Root**: Set your web server's document root to the `public/` folder.
-2.  **Rewrite Rules**: Ensure `mod_rewrite` is enabled. MIVO includes a `.htaccess` file in `public/` that handles URL routing automatically.
+2.  **Rewrite Rules**: Ensure `mod_rewrite` is enabled. Kaiarasa includes a `.htaccess` file in `public/` that handles URL routing automatically.
 3.  **Permissions**: Ensure the web server user (e.g., `www-data`) has **write** access to:
     *   `app/Database/` (directory and file)
     *   `app/Config/` (if using installer)
@@ -77,13 +77,13 @@ server {
 ## STB / Android (Awebserver / Termux)
 
 ### Awebserver
-1.  Copy the MIVO files to `/htdocs`.
+1.  Copy the Kaiarasa files to `/htdocs`.
 2.  Point the document root to `public` if supported, or access via `http://localhost:8080/public`.
 3.  Ensure PHP version is compatible.
 
 ### Termux
 1.  Install PHP: `pkg install php`
-2.  Navigate to MIVO directory: `cd mivo`
+2.  Navigate to Kaiarasa directory: `cd kaiarasa`
 3.  Use the built-in server:
     ```bash
     php mivo serve --host=0.0.0.0 --port=8080
@@ -98,7 +98,7 @@ server {
 ## Shared Hosting (cPanel / DirectAdmin)
 Most shared hosting uses Apache or OpenLiteSpeed, which is fully compatible.
 
-1.  **Upload Files**: Upload the MIVO files to `public_html/mivo` (or a subdomain folder).
+1.  **Upload Files**: Upload the Kaiarasa files to `public_html/mivo` (or a subdomain folder).
 2.  **Point Domain**:
     *   **Recommended**: Go to "Domains" or "Subdomains" in cPanel and set the **Document Root** to point strictly to the `public/` folder (e.g., `public_html/mivo/public`).
     *   **Alternative**: If you cannot change Document Root, you can move contents of `public/` to the root `public_html` and move `app/`, `routes/`, etc. one level up (not recommended for security).
@@ -118,10 +118,10 @@ Most shared hosting uses Apache or OpenLiteSpeed, which is fully compatible.
 ---
 
 ## PaaS Cloud (Railway / Render / Heroku)
-**WARNING**: MIVO uses SQLite (File Database). Most PaaS cloud have **Ephemeral Filesytem** (Reset on restart).
+**WARNING**: Kaiarasa uses SQLite (File Database). Most PaaS cloud have **Ephemeral Filesytem** (Reset on restart).
 
 *   **Requirement**: You MUST mount a **Persistent Volume/Disk**.
-*   **Mount Path**: Mount your volume to `/var/www/html/app/Database` (or wherever you put MIVO).
+*   **Mount Path**: Mount your volume to `/var/www/html/app/Database` (or wherever you put Kaiarasa).
 *   **Docker**: Use the Docker deployment method, it works natively on these platforms.
 
 ---

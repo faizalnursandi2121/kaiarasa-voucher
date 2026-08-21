@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php
 
+use App\Config\SiteConfig;
 use App\Core\Hooks;
 
-?><?= $title ?? 'MIVO' ?></title>
+?><?= $title ?? SiteConfig::getTitle() ?></title>
     <!-- Tailwind CSS (Local) -->
     <link rel="stylesheet" href="/assets/css/styles.css">
     <script src="/assets/js/lucide.min.js"></script>
     <script src="/assets/js/sweetalert2.all.min.js" defer></script>
-    <script src="/assets/js/mivo.js" defer></script>
+    <script src="/assets/js/kaiarasa.js" defer></script>
     <script src="/assets/js/modules/alert.js" defer></script>
     <script src="/assets/js/modules/i18n.js" defer></script>
     <style>
@@ -33,7 +34,7 @@ use App\Core\Hooks;
             document.documentElement.classList.remove('dark');
         }
     </script>
-    <?php Hooks::doAction('mivo_head'); ?>
+    <?php Hooks::doAction('kaiarasa_head'); ?>
 </head>
 <body class="bg-background text-foreground antialiased min-h-screen relative overflow-hidden font-sans selection:bg-accents-2 selection:text-foreground flex flex-col">
     
@@ -157,14 +158,14 @@ use App\Core\Hooks;
             }
 
             // Language Init (Mock)
-            const currentLang = localStorage.getItem('mivo_lang') || 'en';
+            const currentLang = localStorage.getItem('kaiarasa_lang') || 'en';
             const langLabel = document.getElementById('current-lang-label');
             if(langLabel) langLabel.innerText = currentLang.toUpperCase();
             
             window.changeLanguage = (lang) => {
-                 localStorage.setItem('mivo_lang', lang);
+                 localStorage.setItem('kaiarasa_lang', lang);
                  // Also set cookie so PHP can render translations server-side (prevents FOUC)
-                 document.cookie = 'mivo_lang=' + lang + ';path=/;max-age=31536000;SameSite=Lax';
+                 document.cookie = 'kaiarasa_lang=' + lang + ';path=/;max-age=31536000;SameSite=Lax';
                  // Reload or use i18n module to reload
                  location.reload(); 
             };

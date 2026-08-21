@@ -11,8 +11,8 @@ class Config
 
     public function __construct()
     {
-        // MIVO Standalone Config Path
-        // Points to /include/config.php within the MIVO directory
+        // Kaiarasa Standalone Config Path
+        // Points to /include/config.php within the Kaiarasa directory
         $this->configPath = ROOT.'/include/config.php';
     }
 

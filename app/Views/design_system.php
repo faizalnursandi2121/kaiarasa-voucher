@@ -4,7 +4,7 @@
     <div class="flex items-center justify-between mb-8">
         <div>
             <h1 class="text-3xl font-bold tracking-tight">Design System</h1>
-            <p class="text-accents-5">Component library and style guide for Mivo.</p>
+            <p class="text-accents-5">Component library and style guide for Kaiarasa.</p>
         </div>
         <div class="flex gap-2">
             <button onclick="document.documentElement.classList.remove('dark')" class="btn bg-gray-200 text-gray-800">Light</button>
@@ -340,28 +340,28 @@
     <section class="mb-12">
         <h2 class="text-xl font-semibold mb-4 border-b border-accents-2 pb-2">Alerts & Confirmations (JS Helper)</h2>
         <div class="card space-y-4">
-            <p class="text-sm text-accents-5 mb-4">You can trigger standardized premium alerts using the global <code>Mivo</code> helper.</p>
+            <p class="text-sm text-accents-5 mb-4">You can trigger standardized premium alerts using the global <code>Kaiarasa</code> helper.</p>
             
             <div class="flex flex-wrap gap-4 items-center">
-                <button onclick="Mivo.alert('success', 'Operation Successful', 'Data has been saved to the database.')" class="btn btn-secondary">
+                <button onclick="Kaiarasa.alert('success', 'Operation Successful', 'Data has been saved to the database.')" class="btn btn-secondary">
                     Success Alert
                 </button>
-                <button onclick="Mivo.alert('error', 'Operation Failed', 'There was a connection error.')" class="btn btn-secondary text-red-500">
+                <button onclick="Kaiarasa.alert('error', 'Operation Failed', 'There was a connection error.')" class="btn btn-secondary text-red-500">
                     Error Alert
                 </button>
-                <button onclick="Mivo.alert('warning', 'Low Storage', 'Please check your disk space.')" class="btn btn-secondary text-yellow-500">
+                <button onclick="Kaiarasa.alert('warning', 'Low Storage', 'Please check your disk space.')" class="btn btn-secondary text-yellow-500">
                     Warning Alert
                 </button>
-                <button onclick="Mivo.alert('info', 'System Update', 'New features are available.')" class="btn btn-secondary text-blue-500">
+                <button onclick="Kaiarasa.alert('info', 'System Update', 'New features are available.')" class="btn btn-secondary text-blue-500">
                     Info Alert
                 </button>
             </div>
 
             <div class="pt-4 border-t border-accents-2 mt-4">
                 <h3 class="font-medium text-lg mb-2">Confirmation Example</h3>
-                <button onclick="Mivo.confirm('Delete Item?', 'Are you sure? This cannot be undone.', 'Yes, Delete', 'Keep it').then((result) => {
+                <button onclick="Kaiarasa.confirm('Delete Item?', 'Are you sure? This cannot be undone.', 'Yes, Delete', 'Keep it').then((result) => {
                     if (result.isConfirmed) {
-                        Mivo.alert('success', 'Deleted!', 'The item has been removed.');
+                        Kaiarasa.alert('success', 'Deleted!', 'The item has been removed.');
                     }
                 })" class="btn btn-danger">
                     Trigger Confirmation
@@ -375,16 +375,16 @@
             <p class="text-sm text-accents-5 mb-4">Premium non-disruptive notifications that stack from the bottom-right.</p>
             
             <div class="flex flex-wrap gap-4 items-center">
-                <button onclick="Mivo.toast('success', 'Operation Successful', 'Your changes have been saved.')" class="btn btn-primary bg-emerald-500 hover:bg-emerald-600 border-none text-white">
+                <button onclick="Kaiarasa.toast('success', 'Operation Successful', 'Your changes have been saved.')" class="btn btn-primary bg-emerald-500 hover:bg-emerald-600 border-none text-white">
                     Success Toast
                 </button>
-                <button onclick="Mivo.toast('error', 'Update Failed', 'An unexpected error occurred.')" class="btn btn-primary bg-red-500 hover:bg-red-600 border-none text-white">
+                <button onclick="Kaiarasa.toast('error', 'Update Failed', 'An unexpected error occurred.')" class="btn btn-primary bg-red-500 hover:bg-red-600 border-none text-white">
                     Error Toast
                 </button>
-                <button onclick="Mivo.toast('warning', 'Low Resources', 'Disk space is running low.')" class="btn btn-primary bg-amber-500 hover:bg-amber-600 border-none text-white">
+                <button onclick="Kaiarasa.toast('warning', 'Low Resources', 'Disk space is running low.')" class="btn btn-primary bg-amber-500 hover:bg-amber-600 border-none text-white">
                     Warning Toast
                 </button>
-                <button onclick="Mivo.toast('info', 'System Update', 'New features are available.')" class="btn btn-primary bg-blue-500 hover:bg-blue-600 border-none text-white">
+                <button onclick="Kaiarasa.toast('info', 'System Update', 'New features are available.')" class="btn btn-primary bg-blue-500 hover:bg-blue-600 border-none text-white">
                     Info Toast
                 </button>
             </div>

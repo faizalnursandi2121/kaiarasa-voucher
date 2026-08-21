@@ -1,11 +1,11 @@
 {
-    "name": "mivodev/mivo",
-    "description": "MIVO - Modern Mikrotik Voucher Management System",
+    "name": "kaiarasa/kaiarasa",
+    "description": "Kaiarasa - Voucher Management System",
     "type": "project",
     "license": "MIT",
     "authors": [
         {
-            "name": "MivoDev",
+            "name": "Kaiarasa",
             "email": "mivo@dev.dyzulk.com"
         }
     ],

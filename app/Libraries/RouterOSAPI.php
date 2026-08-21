@@ -4,9 +4,9 @@ namespace App\Libraries;
 
 /*****************************
  *
- * RouterOS PHP API class v1.6 (Ported to MIVO)
+ * RouterOS PHP API class v1.6 (Ported to Kaiarasa)
  * Original Author: Denis Basta
- * Ported by: MIVO Team
+ * Ported by: Kaiarasa Team
  *
  ******************************/
 

@@ -67,7 +67,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                                     <button onclick="openCorsModal(this.closest('tr'))" class="btn-icon" title="Edit">
                                         <i data-lucide="edit-2" class="w-4 h-4"></i>
                                     </button>
-                                    <form action="/settings/api-cors/delete" method="POST" onsubmit="event.preventDefault(); Mivo.confirm(window.i18n ? window.i18n.t('settings.cors_rule_deleted') : 'Delete CORS Rule?', 'Are you sure you want to delete the CORS rule for <?= htmlspecialchars($rule['origin']) ?>?', 'Delete', 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
+                                    <form action="/settings/api-cors/delete" method="POST" onsubmit="event.preventDefault(); Kaiarasa.confirm(window.i18n ? window.i18n.t('settings.cors_rule_deleted') : 'Delete CORS Rule?', 'Are you sure you want to delete the CORS rule for <?= htmlspecialchars($rule['origin']) ?>?', 'Delete', 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
                                         <input type="hidden" name="id" value="<?= $rule['id'] ?>">
                                         <button type="submit" class="btn-icon-danger" title="Delete">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -125,7 +125,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             }
         };
 
-        Mivo.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn);
+        Kaiarasa.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn);
     }
 </script>
 

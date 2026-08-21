@@ -147,7 +147,7 @@ sort($uniqueModes);
                                 <button onclick="openProfileModal('edit', this)" class="btn bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 border-transparent h-8 px-2 rounded transition-colors" title="Edit">
                                     <i data-lucide="edit-2" class="w-4 h-4"></i>
                                 </button>
-                                <form action="/<?= htmlspecialchars($session) ?>/hotspot/profile/delete" method="POST" onsubmit="event.preventDefault(); Mivo.confirm(window.i18n ? window.i18n.t('hotspot_profiles.title') : 'Delete Profile?', window.i18n ? window.i18n.t('common.confirm_delete') : 'Are you sure you want to delete profile <?= $profile['name'] ?>?', window.i18n ? window.i18n.t('common.delete') : 'Delete', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
+                                <form action="/<?= htmlspecialchars($session) ?>/hotspot/profile/delete" method="POST" onsubmit="event.preventDefault(); Kaiarasa.confirm(window.i18n ? window.i18n.t('hotspot_profiles.title') : 'Delete Profile?', window.i18n ? window.i18n.t('common.confirm_delete') : 'Are you sure you want to delete profile <?= $profile['name'] ?>?', window.i18n ? window.i18n.t('common.delete') : 'Delete', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
                                     <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
                                     <input type="hidden" name="id" value="<?= $profile['.id'] ?>">
                                     <button type="submit" class="btn bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/20 dark:hover:bg-red-900/40 border-transparent h-8 px-2 rounded transition-colors" title="Delete">
@@ -398,7 +398,7 @@ sort($uniqueModes);
              }
         };
 
-        Mivo.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
+        Kaiarasa.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
     }
 </script>
 

@@ -59,7 +59,7 @@ class Console
     private function printBanner()
     {
         echo "\n";
-        echo self::COLOR_BOLD.'  MIVO Helper '.self::COLOR_RESET.self::COLOR_GRAY.SiteConfig::APP_VERSION.self::COLOR_RESET."\n\n";
+        echo self::COLOR_BOLD.'  Kaiarasa Helper '.self::COLOR_RESET.self::COLOR_GRAY.SiteConfig::APP_VERSION.self::COLOR_RESET."\n\n";
     }
 
     private function commandServe($args)
@@ -185,7 +185,7 @@ class Console
 
     private function commandInstall($args)
     {
-        echo self::COLOR_BLUE.'=== MIVO Installer ==='.self::COLOR_RESET."\n";
+        echo self::COLOR_BLUE.'=== Kaiarasa Installer ==='.self::COLOR_RESET."\n";
 
         // 1. Database Migration
         echo "Setting up database...\n";
@@ -207,7 +207,7 @@ class Console
 
         if (file_exists($envPath)) {
             $envIds = parse_ini_file($envPath);
-            if (! empty($envIds['APP_KEY']) && $envIds['APP_KEY'] !== 'mivo_official_secret_key_32bytes') {
+            if (! empty($envIds['APP_KEY']) && $envIds['APP_KEY'] !== 'kaiarasa_official_secret_key_32bytes') {
                 $keyExists = true;
             }
         }
@@ -271,7 +271,7 @@ class Console
         echo "  php mivo [command] [options]\n\n";
 
         echo self::COLOR_YELLOW.'Available commands:'.self::COLOR_RESET."\n";
-        echo '  '.self::COLOR_GREEN.'install      '.self::COLOR_RESET."    Install MIVO (Setup DB & Admin)\n";
+        echo '  '.self::COLOR_GREEN.'install      '.self::COLOR_RESET."    Install Kaiarasa (Setup DB & Admin)\n";
         echo '  '.self::COLOR_GREEN.'serve        '.self::COLOR_RESET."    Start the development server\n";
         echo '  '.self::COLOR_GREEN.'key:generate '.self::COLOR_RESET."    Set the application key\n";
         echo '  '.self::COLOR_GREEN.'admin:reset  '.self::COLOR_RESET."    Reset admin password (default: admin)\n";

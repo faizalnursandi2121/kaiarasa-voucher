@@ -47,7 +47,7 @@ class PublicStatusController extends Controller
         if (empty($session)) {
             $headers = getallheaders();
             // Handle case-insensitivity of headers
-            $session = $headers['X-Mivo-Session'] ?? ($headers['x-mivo-session'] ?? '');
+            $session = $headers['X-Kaiarasa-Session'] ?? ($headers['x-kaiarasa-session'] ?? '');
         }
 
         // Code: Can be in URL or Body

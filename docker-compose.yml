@@ -3,7 +3,7 @@ version: '3.8'
 services:
   app:
     build: .
-    container_name: mivo_app
+    container_name: kaiarasa_app
     restart: unless-stopped
     ports:
       - "8080:80"

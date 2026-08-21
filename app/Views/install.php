@@ -1,5 +1,5 @@
 <?php
-$title = 'Install MIVO - Setup';
+$title = 'Install Kaiarasa - Setup';
 include ROOT.'/app/Views/layouts/header_public.php';
 ?>
     <!-- Install Container -->
@@ -11,11 +11,11 @@ include ROOT.'/app/Views/layouts/header_public.php';
             <div class="flex justify-center mb-6 sm:mb-8">
                 <div class="relative group">
                     <!-- <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div> -->
-                     <img src="/assets/img/logo-m.svg" alt="MIVO Logo" class="relative h-10 sm:h-12 w-auto block dark:hidden transform transition-transform duration-300 group-hover:scale-105">
-                     <img src="/assets/img/logo-m-dark.svg" alt="MIVO Logo" class="relative h-10 sm:h-12 w-auto hidden dark:block transform transition-transform duration-300 group-hover:scale-105">
+                     <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" class="relative h-10 sm:h-12 w-auto block dark:hidden transform transition-transform duration-300 group-hover:scale-105">
+                     <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="relative h-10 sm:h-12 w-auto hidden dark:block transform transition-transform duration-300 group-hover:scale-105">
                 </div>
             </div>
-            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">Welcome to MIVO</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">Welcome to Kaiarasa</h1>
             <p class="text-accents-5 text-sm">System Installation & Setup</p>
         </div>
 
@@ -81,7 +81,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
                 <div class="pt-2">
                     <button type="submit" class="w-full btn btn-primary h-10 shadow-lg hover:shadow-primary/20">
-                        Install MIVO
+                        Install Kaiarasa
                     </button>
                 </div>
             </form>

@@ -7,7 +7,7 @@ use App\Core\Hooks;
 $hotspotname = isset($hotspotname) ? $hotspotname : SiteConfig::APP_NAME;
 $themecolor = isset($themecolor) ? $themecolor : '#000000';
 $theme = 'light'; // Default theme
-$title = isset($title) ? $title : SiteConfig::APP_NAME;
+$title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +71,7 @@ $title = isset($title) ? $title : SiteConfig::APP_NAME;
             }
         };
     </script>
-    <script src="/assets/js/mivo.js" defer></script>
+    <script src="/assets/js/kaiarasa.js" defer></script>
     <script src="/assets/js/modules/updater.js" defer></script>
     <script src="/assets/js/components/select.js" defer></script>
     <script src="/assets/js/components/datatable.js" defer></script>
@@ -129,7 +129,7 @@ $title = isset($title) ? $title : SiteConfig::APP_NAME;
 
     </style>
     
-    <?php Hooks::doAction('mivo_head'); ?>
+    <?php Hooks::doAction('kaiarasa_head'); ?>
 </head>
 <body class="flex flex-col min-h-screen bg-background text-foreground anti-aliased relative">
     <!-- Background Elements (Global Sci-Fi Grid) -->

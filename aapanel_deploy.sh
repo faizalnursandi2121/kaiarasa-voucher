@@ -1,5 +1,5 @@
 #!/bin/bash
-# aaPanel Webhook Deployment Script for Mivo
+# aaPanel Webhook Deployment Script for Kaiarasa
 # Path: /www/wwwroot/<your_project_path>
 
 PROJECT_PATH="/www/wwwroot/<your_project_path>"
@@ -55,7 +55,7 @@ fi
 echo "Step 4: Setting permissions..."
 chown -R www:www .
 chmod -R 755 .
-chmod +x mivo
+chmod +x kaiarasa
 chmod -R 755 public
 
 # Ensure Database directory is writable

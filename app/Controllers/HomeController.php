@@ -29,7 +29,7 @@ class HomeController extends Controller
 
     public function designSystem()
     {
-        $data = ['title' => 'MIVO - Design System'];
+        $data = ['title' => 'Kaiarasa - Design System'];
         $this->view('design_system', $data);
     }
 

@@ -1,7 +1,7 @@
 {
-  "name": "mivo",
+  "name": "kaiarasa",
   "version": "1.2.3",
-  "description": "This is a complete rewrite of Mivo using a modern MVC architecture.\r It runs on a lightweight custom core designed for performance on low-end devices (STB/Android).",
+  "description": "Kaiarasa - Voucher Management System. A modern, lightweight MikroTik Hotspot Voucher Manager built for performance and simplicity.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

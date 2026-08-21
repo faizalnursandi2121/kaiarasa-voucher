@@ -1,6 +1,6 @@
-# Contributing to MIVO
+# Contributing to Kaiarasa
 
-First off, thank you for considering contributing to MIVO. It is people like you that make MIVO such a great tool.
+First off, thank you for considering contributing to Kaiarasa. It is people like you that make Kaiarasa such a great tool.
 
 ## Code of Conduct
 
@@ -10,7 +10,7 @@ By participating in this project, you are expected to uphold our Code of Conduct
 
 ### Reporting Bugs
 
-This section guides you through submitting a bug report for MIVO. Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports.
+This section guides you through submitting a bug report for Kaiarasa. Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports.
 
 - **Use a clear and descriptive title** for the issue to identify the problem.
 - **Describe the exact steps to reproduce the problem** in as many details as possible.
@@ -21,7 +21,7 @@ This section guides you through submitting a bug report for MIVO. Following thes
 
 ### Suggesting Enhancements
 
-This section guides you through submitting an enhancement suggestion for MIVO, including completely new features and minor improvements to existing functionality.
+This section guides you through submitting an enhancement suggestion for Kaiarasa, including completely new features and minor improvements to existing functionality.
 
 - **Use a clear and descriptive title** for the issue to identify the suggestion.
 - **Provide a step-by-step description of the suggested enhancement** in as many details as possible.
@@ -32,10 +32,10 @@ This section guides you through submitting an enhancement suggestion for MIVO, i
 
 The process described here has several goals:
 
-- Maintain MIVO's quality.
+- Maintain Kaiarasa's quality.
 - Fix problems that are important to users.
-- Engage the community in working toward the best possible MIVO.
-- Enable a sustainable system for MIVO's maintainers to review contributions.
+- Engage the community in working toward the best possible Kaiarasa.
+- Enable a sustainable system for Kaiarasa's maintainers to review contributions.
 
 Please follow these steps to have your contribution considered by the maintainers:
 

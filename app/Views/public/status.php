@@ -12,8 +12,8 @@ include ROOT.'/app/Views/layouts/header_public.php';
             <!-- Brand -->
             <div class="flex justify-center">
                 <div class="relative group">
-                     <img src="/assets/img/logo-m.svg" alt="MIVO Logo" class="relative h-12 w-auto block dark:hidden transform transition-transform duration-300 group-hover:scale-105">
-                     <img src="/assets/img/logo-m-dark.svg" alt="MIVO Logo" class="relative h-12 w-auto hidden dark:block transform transition-transform duration-300 group-hover:scale-105">
+                     <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" class="relative h-12 w-auto block dark:hidden transform transition-transform duration-300 group-hover:scale-105">
+                     <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="relative h-12 w-auto hidden dark:block transform transition-transform duration-300 group-hover:scale-105">
                 </div>
             </div>
 
@@ -153,12 +153,12 @@ include ROOT.'/app/Views/layouts/header_public.php';
                         </div>
                     `;
 
-                    Mivo.alert('success', window.i18n.t('status.details_title'), htmlContent, {
+                    Kaiarasa.alert('success', window.i18n.t('status.details_title'), htmlContent, {
                         customClass: { popup: 'w-full max-w-md' } // Override width only, others merged
                     });
 
                 } else {
-                    Mivo.alert('error', 
+                    Kaiarasa.alert('error', 
                         window.i18n.t('status.not_found_title'), 
                         json.message && json.message !== 'Voucher Not Found' ? json.message : window.i18n.t('status.not_found_desc'),
                         {

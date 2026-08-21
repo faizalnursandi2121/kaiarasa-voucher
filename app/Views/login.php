@@ -1,5 +1,5 @@
 <?php
-$title = 'MIVO Login';
+$title = 'Kaiarasa Login';
 include ROOT.'/app/Views/layouts/header_public.php';
 ?>
 
@@ -12,8 +12,8 @@ include ROOT.'/app/Views/layouts/header_public.php';
             <div class="flex justify-center mb-6 sm:mb-8">
                 <div class="relative group">
                     <!-- <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div> --> <!--SAYA TIDAK SUKA INI -->
-                     <img src="/assets/img/logo-m.svg" alt="MIVO Logo" class="relative h-10 sm:h-12 w-auto block dark:hidden transform transition-transform duration-300 group-hover:scale-105">
-                     <img src="/assets/img/logo-m-dark.svg" alt="MIVO Logo" class="relative h-10 sm:h-12 w-auto hidden dark:block transform transition-transform duration-300 group-hover:scale-105">
+                     <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" class="relative h-10 sm:h-12 w-auto block dark:hidden transform transition-transform duration-300 group-hover:scale-105">
+                     <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" class="relative h-10 sm:h-12 w-auto hidden dark:block transform transition-transform duration-300 group-hover:scale-105">
                 </div>
             </div>
             
@@ -28,7 +28,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                             <i data-lucide="user" class="h-4 w-4 text-accents-6"></i>
                         </div>
-                        <input type="text" name="username" class="form-input pl-10" placeholder="mivo" required autocomplete="username" data-i18n-placeholder="login.username">
+                        <input type="text" name="username" class="form-input pl-10" placeholder="admin" required autocomplete="username" data-i18n-placeholder="login.username">
                     </div>
                 </div>
                 <div class="space-y-2">

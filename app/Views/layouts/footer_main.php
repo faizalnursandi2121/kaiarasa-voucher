@@ -115,7 +115,7 @@ if (isset($session) && ! empty($session)) { ?>
                     }
 
                     // Use Toasts for all flash notifications
-                    Mivo.toast(type, title, message);
+                    Kaiarasa.toast(type, title, message);
                 };
 
                 if (window.i18n && window.i18n.ready) {
@@ -247,7 +247,7 @@ if (isset($session) && ! empty($session)) { ?>
             const title = message.includes('Reboot') ? 'Reboot Router?' : 'Shutdown Router?';
             const okText = message.includes('Reboot') ? 'Reboot' : 'Shutdown';
             
-            const confirmed = await Mivo.confirm(title, message, okText, 'Cancel');
+            const confirmed = await Kaiarasa.confirm(title, message, okText, 'Cancel');
             if (!confirmed) return;
 
             try {
@@ -255,12 +255,12 @@ if (isset($session) && ! empty($session)) { ?>
                 const data = await res.json();
                 
                 if (data.success) {
-                    Mivo.toast('success', title.replace('?', ''), 'The command has been sent to the router.');
+                    Kaiarasa.toast('success', title.replace('?', ''), 'The command has been sent to the router.');
                 } else {
-                    Mivo.alert('error', 'Action Failed', data.error || 'Unknown error occurred.');
+                    Kaiarasa.alert('error', 'Action Failed', data.error || 'Unknown error occurred.');
                 }
             } catch (err) {
-                Mivo.toast('error', 'Connection Error', 'Failed to reach the server.');
+                Kaiarasa.toast('error', 'Connection Error', 'Failed to reach the server.');
             }
         }
 
@@ -288,6 +288,6 @@ if (isset($session) && ! empty($session)) { ?>
             }, 300); // 300ms delay to prevent accidental closure
         }
     </script>
-    <?php Hooks::doAction('mivo_footer'); ?>
+    <?php Hooks::doAction('kaiarasa_footer'); ?>
 </body>
 </html>

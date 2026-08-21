@@ -97,7 +97,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                                      <button onclick="openRouterModal('edit', this)" class="btn btn-secondary btn-sm h-8 px-3" title="Edit">
                                         <i data-lucide="edit-2" class="w-4 h-4"></i>
                                     </button>
-                                    <form action="/settings/delete" method="POST" onsubmit="event.preventDefault(); Mivo.confirm('Disconnect Router?', 'Are you sure you want to disconnect <?= htmlspecialchars($router['session_name']) ?>?', 'Disconnect', 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
+                                    <form action="/settings/delete" method="POST" onsubmit="event.preventDefault(); Kaiarasa.confirm('Disconnect Router?', 'Are you sure you want to disconnect <?= htmlspecialchars($router['session_name']) ?>?', 'Disconnect', 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
                                         <input type="hidden" name="id" value="<?= $router['id'] ?>">
                                         <button type="submit" class="btn hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 border border-transparent h-8 px-2" title="Delete">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -265,7 +265,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     const ssl = form.querySelector('#ssl')?.checked ? 1 : 0;
 
                     if (!ip || !user) {
-                        Mivo.toast('warning', 'Missing Details', 'IP Address and Username are required');
+                        Kaiarasa.toast('warning', 'Missing Details', 'IP Address and Username are required');
                         checkBtn.innerHTML = originalHTML;
                         checkBtn.disabled = false;
                         if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -281,7 +281,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         const data = await response.json();
 
                         if (!data.success || !data.interfaces) {
-                            Mivo.toast('error', 'Fetch Failed', data.error || 'Check credentials');
+                            Kaiarasa.toast('error', 'Fetch Failed', data.error || 'Check credentials');
                         } else {
                             ifaceSelect.innerHTML = '';
                             data.interfaces.forEach(iface => {
@@ -291,14 +291,14 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                                 ifaceSelect.appendChild(opt);
                             });
                             
-                            if (window.Mivo && window.Mivo.components.Select) {
-                                const instance = window.Mivo.components.Select.get(ifaceSelect);
+                            if (window.Kaiarasa && window.Kaiarasa.components.Select) {
+                                const instance = window.Kaiarasa.components.Select.get(ifaceSelect);
                                 if (instance) instance.refresh();
                             }
-                            Mivo.toast('success', 'Success', 'Interfaces loaded');
+                            Kaiarasa.toast('success', 'Success', 'Interfaces loaded');
                         }
                     } catch (err) {
-                        Mivo.toast('error', 'Error', 'Connection failed');
+                        Kaiarasa.toast('error', 'Error', 'Connection failed');
                     } finally {
                         checkBtn.innerHTML = originalHTML;
                         checkBtn.disabled = false;
@@ -346,8 +346,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                  // Handle Interface Select
                  const currentIface = row.dataset.iface || 'ether1';
                  ifaceSelect.innerHTML = `<option value="${currentIface}" selected>${currentIface}</option>`;
-                 if (window.Mivo && window.Mivo.components.Select) {
-                    const instance = window.Mivo.components.Select.get(ifaceSelect);
+                 if (window.Kaiarasa && window.Kaiarasa.components.Select) {
+                    const instance = window.Kaiarasa.components.Select.get(ifaceSelect);
                     if (instance) instance.refresh();
                  }
 
@@ -357,19 +357,19 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
              }
         };
 
-        Mivo.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
+        Kaiarasa.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
     }
 </script>
 
 <?php if (! empty($open_add_modal)) { ?>
 <script>
     // Auto-open the "Add Router" modal when reached via /settings/add.
-    // Wait until Mivo, window.i18n AND its translations are ready, otherwise
+    // Wait until Kaiarasa, window.i18n AND its translations are ready, otherwise
     // the modal title/buttons would render as raw keys (e.g. routers.add_router_title).
     (function () {
         var tries = 0;
         var timer = setInterval(function () {
-            if (window.Mivo && window.i18n && window.i18n.isLoaded && typeof openRouterModal === 'function') {
+            if (window.Kaiarasa && window.i18n && window.i18n.isLoaded && typeof openRouterModal === 'function') {
                 clearInterval(timer);
                 setTimeout(function () {
                     openRouterModal('add');

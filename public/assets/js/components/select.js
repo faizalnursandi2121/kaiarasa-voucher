@@ -1,5 +1,5 @@
 /**
- * Mivo Component: Select
+ * Kaiarasa Component: Select
  * Standardized Custom Select for Forms, Filters, and Navigation.
  */
 class CustomSelect {
@@ -241,9 +241,9 @@ class CustomSelect {
     }
 }
 
-// Register to Mivo Framework
-if (window.Mivo) {
-    window.Mivo.registerComponent('Select', CustomSelect);
+// Register to Kaiarasa Framework
+if (window.Kaiarasa) {
+    window.Kaiarasa.registerComponent('Select', CustomSelect);
     
     // Auto-init on load
     document.addEventListener('DOMContentLoaded', () => {

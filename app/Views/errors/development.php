@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Error - MIVO</title>
+    <title>System Error - Kaiarasa</title>
     <!-- Tailwind CSS (Local) -->
     <link rel="stylesheet" href="/assets/css/styles.css">
     <script src="/assets/js/lucide.min.js"></script>
@@ -46,7 +46,7 @@
                 <!-- Branding -->
                 <div class="flex items-center gap-2">
                     <div class="bg-foreground text-background font-black text-lg px-2 py-0.5 rounded leading-tight">
-                        MIVO
+                        Kaiarasa
                     </div>
                 </div>
                 
@@ -178,7 +178,7 @@
     <!-- Isolated Footer -->
     <div class="dev-layout-footer border-t border-accents-2 bg-background py-6 text-center flex-none">
         <p class="text-sm text-accents-4 font-medium flex items-center justify-center gap-2">
-            MIVO Debugger <span class="w-1 h-1 rounded-full bg-accents-3"></span> Environment: <span class="text-foreground font-semibold">Development</span>
+            Kaiarasa Debugger <span class="w-1 h-1 rounded-full bg-accents-3"></span> Environment: <span class="text-foreground font-semibold">Development</span>
         </p>
     </div>
 

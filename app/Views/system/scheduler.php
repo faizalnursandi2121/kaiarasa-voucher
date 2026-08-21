@@ -82,7 +82,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                                 <button onclick="openSchedulerModal('edit', this)" class="btn-icon" title="Edit">
                                     <i data-lucide="edit-2" class="w-4 h-4"></i>
                                 </button>
-                                <form action="/<?= $session ?>/system/scheduler/delete" method="POST" onsubmit="event.preventDefault(); Mivo.confirm(window.i18n ? window.i18n.t('system_tools.delete_task') : 'Delete Task?', window.i18n ? window.i18n.t('common.confirm_delete') : 'Are you sure you want to delete task <?= htmlspecialchars($task['name']) ?>?', window.i18n ? window.i18n.t('common.delete') : 'Delete', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
+                                <form action="/<?= $session ?>/system/scheduler/delete" method="POST" onsubmit="event.preventDefault(); Kaiarasa.confirm(window.i18n ? window.i18n.t('system_tools.delete_task') : 'Delete Task?', window.i18n ? window.i18n.t('common.confirm_delete') : 'Are you sure you want to delete task <?= htmlspecialchars($task['name']) ?>?', window.i18n ? window.i18n.t('common.delete') : 'Delete', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
                                     <input type="hidden" name="id" value="<?= $task['.id'] ?>">
                                     <button type="submit" class="btn-icon-danger" title="Delete">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -260,7 +260,7 @@ function openSchedulerModal(mode, btn = null) {
          }
     };
 
-    Mivo.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn);
+    Kaiarasa.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn);
 }
 
     window.whenReady(() => {

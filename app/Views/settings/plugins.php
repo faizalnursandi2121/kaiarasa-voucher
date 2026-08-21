@@ -85,7 +85,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                                         const title = window.i18n ? window.i18n.t('settings.delete_plugin') : 'Delete Plugin?';
                                         const msg = window.i18n ? window.i18n.t('settings.delete_plugin_confirm', {name: '<?= htmlspecialchars($plugin['name']) ?>'}) : 'Delete this plugin?';
                                         
-                                        Mivo.confirm(title, msg, window.i18n ? window.i18n.t('common.delete') : 'Delete', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { 
+                                        Kaiarasa.confirm(title, msg, window.i18n ? window.i18n.t('common.delete') : 'Delete', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { 
                                             if(res) this.submit(); 
                                         });">
                                         <input type="hidden" name="plugin_id" value="<?= htmlspecialchars($plugin['id']) ?>">
@@ -117,7 +117,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             </form>
         `;
 
-        Mivo.modal.form(title, html, window.i18n ? window.i18n.t('common.install') : 'Install', () => {
+        Kaiarasa.modal.form(title, html, window.i18n ? window.i18n.t('common.install') : 'Install', () => {
              const form = document.getElementById('upload-plugin-form');
              if (form.reportValidity()) {
                  form.submit();

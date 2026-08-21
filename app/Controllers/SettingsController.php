@@ -105,7 +105,7 @@ class SettingsController extends Controller
             $db = Database::getInstance();
             $hash = password_hash($newPassword, PASSWORD_DEFAULT);
             // Assuming we are updating the default 'admin' user or the currently logged in user
-            // Original Mivo usually has one main user. Let's update 'admin' for now.
+            // Original Kaiarasa usually has one main user. Let's update 'admin' for now.
             $db->query("UPDATE users SET password = ? WHERE username = 'admin'", [$hash]);
             FlashHelper::set('success', 'toasts.password_updated', 'toasts.password_updated_desc', [], true);
         }
@@ -177,7 +177,7 @@ class SettingsController extends Controller
 
     public function backup()
     {
-        $backupName = 'mivo_backup_'.date('d-m-Y').'.mivo';
+        $backupName = 'kaiarasa_backup_'.date('d-m-Y').'.kaiarasa';
         $json = [];
 
         // Backup Settings
@@ -550,7 +550,7 @@ class SettingsController extends Controller
             // 2. Find plugin.php
             // 3. Move to plugins dir.
 
-            $tempExtract = sys_get_temp_dir().'/mivo_plugin_'.uniqid();
+            $tempExtract = sys_get_temp_dir().'/kaiarasa_plugin_'.uniqid();
             if (! mkdir($tempExtract, 0755, true)) {
                 FlashHelper::set('error', 'toasts.upload_failed', 'Failed to create temp dir', [], true);
                 header('Location: /settings/plugins');

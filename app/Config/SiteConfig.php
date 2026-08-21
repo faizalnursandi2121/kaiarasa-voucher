@@ -4,25 +4,25 @@ namespace App\Config;
 
 class SiteConfig
 {
-    const APP_NAME = 'MIVO';
+    const APP_NAME = 'Kaiarasa';
 
     const APP_VERSION = 'v1.2.3';
 
-    const APP_FULL_NAME = 'MIVO - Mikrotik Voucher';
+    const APP_FULL_NAME = 'Kaiarasa - Voucher Management';
 
-    const CREDIT_NAME = 'MivoDev';
+    const CREDIT_NAME = 'Kaiarasa';
 
-    const CREDIT_URL = 'https://github.com/mivodev';
+    const CREDIT_URL = 'https://github.com/kaiarasa';
 
     const YEAR = '2026';
 
-    const REPO_URL = 'https://github.com/mivodev/mivo';
+    const REPO_URL = 'https://github.com/kaiarasa/kaiarasa';
 
     // Security Keys
     // Fetched from .env or fallback to default
     public static function getSecretKey()
     {
-        return getenv('APP_KEY') ?: 'mivo_official_secret_key_32bytes';
+        return getenv('APP_KEY') ?: 'kaiarasa_official_secret_key_32bytes';
     }
 
     const IS_DEV = true; // Still useful for code logic not relying on env yet, or can be refactored too.
@@ -32,7 +32,7 @@ class SiteConfig
      */
     public static function getTitle($page = '')
     {
-        return empty($page) ? self::APP_NAME : $page.' | '.self::APP_NAME;
+        return empty($page) ? self::APP_FULL_NAME : $page.' | '.self::APP_FULL_NAME;
     }
 
     /**

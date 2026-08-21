@@ -1,5 +1,5 @@
 /**
- * Mivo Module: Alert
+ * Kaiarasa Module: Alert
  * Wraps SweetAlert2 and provides Toast notifications.
  */
 class AlertModule {
@@ -186,14 +186,14 @@ class AlertModule {
                     didOpenFn(popup);
                 }
 
-                // Initialize Custom Selects using Mivo Component if available
-                if (popup && window.Mivo && window.Mivo.components.Select) {
+                // Initialize Custom Selects using Kaiarasa Component if available
+                if (popup && window.Kaiarasa && window.Kaiarasa.components.Select) {
                      const selects = popup.querySelectorAll('select');
                      selects.forEach(el => {
                          if (!el.classList.contains('custom-select')) {
                              el.classList.add('custom-select');
                          }
-                         new window.Mivo.components.Select(el); 
+                         new window.Kaiarasa.components.Select(el); 
                      });
                 }
 
@@ -208,17 +208,17 @@ class AlertModule {
 }
 
 // Register Module
-if (window.Mivo) {
+if (window.Kaiarasa) {
     const alertModule = new AlertModule();
-    window.Mivo.registerModule('Alert', alertModule);
+    window.Kaiarasa.registerModule('Alert', alertModule);
     
-    // Add Aliases to Mivo object for easy access (Mivo.alert(...))
+    // Add Aliases to Kaiarasa object for easy access  (Kaiarasa.alert(...))
     // This maintains backward compatibility with the old object literal style
-    window.Mivo.alert = (type, title, msg, opts) => alertModule.fire(type, title, msg, opts);
-    window.Mivo.confirm = (t, m, c, cx) => alertModule.confirm(t, m, c, cx);
-    window.Mivo.toast = (t, ti, m, d) => alertModule.toast(t, ti, m, d);
-    // Aliases for Mivo.modal call style
-    window.Mivo.modal = {
+    window.Kaiarasa.alert = (type, title, msg, opts) => alertModule.fire(type, title, msg, opts);
+    window.Kaiarasa.confirm = (t, m, c, cx) => alertModule.confirm(t, m, c, cx);
+    window.Kaiarasa.toast = (t, ti, m, d) => alertModule.toast(t, ti, m, d);
+    // Aliases for Kaiarasa.modal call style
+    window.Kaiarasa.modal = {
         form: (t, h, c, p, o, cc) => alertModule.form(t, h, c, p, o, cc)
     };
     // Wait, modal was nested. Let's expose the form method carefully or keep it on the module.

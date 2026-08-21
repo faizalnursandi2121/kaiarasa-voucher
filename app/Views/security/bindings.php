@@ -109,7 +109,7 @@ sort($uniqueTypes);
                             <td class="text-sm text-accents-5 italic"><?= htmlspecialchars($item['comment'] ?? '-') ?></td>
                             <td class="text-right text-sm font-medium">
                                 <div class="flex justify-end">
-                                    <form action="/<?= htmlspecialchars($session) ?>/hotspot/bindings/remove" method="POST" onsubmit="event.preventDefault(); Mivo.confirm('Remove Binding?', 'Are you sure you want to remove the binding for <?= htmlspecialchars($item['mac-address'] ?? '') ?>?', 'Remove', 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
+                                    <form action="/<?= htmlspecialchars($session) ?>/hotspot/bindings/remove" method="POST" onsubmit="event.preventDefault(); Kaiarasa.confirm('Remove Binding?', 'Are you sure you want to remove the binding for <?= htmlspecialchars($item['mac-address'] ?? '') ?>?', 'Remove', 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
                                         <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
                                         <input type="hidden" name="id" value="<?= $item['.id'] ?>">
                                         <button type="submit" class="btn btn-icon-sm hover:bg-red-50 text-accents-5 hover:text-red-600 transition-colors" title="Remove">

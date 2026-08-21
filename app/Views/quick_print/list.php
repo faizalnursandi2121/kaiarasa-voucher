@@ -79,7 +79,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         <td class="text-right text-sm">
                             <div class="flex items-center justify-end gap-2 table-actions-reveal">
                                 <!-- Simple Delete Form -->
-                                <form action="/<?= htmlspecialchars($session) ?>/quick-print/delete" method="POST" onsubmit="event.preventDefault(); Mivo.confirm(window.i18n ? window.i18n.t('quick_print.delete_package') : 'Delete Package?', window.i18n ? window.i18n.t('common.confirm_delete') : 'Are you sure you want to delete this Quick Print package?', window.i18n ? window.i18n.t('common.delete') : 'Delete', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { if(res) this.submit(); });">
+                                <form action="/<?= htmlspecialchars($session) ?>/quick-print/delete" method="POST" onsubmit="event.preventDefault(); Kaiarasa.confirm(window.i18n ? window.i18n.t('quick_print.delete_package') : 'Delete Package?', window.i18n ? window.i18n.t('common.confirm_delete') : 'Are you sure you want to delete this Quick Print package?', window.i18n ? window.i18n.t('common.delete') : 'Delete', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { if(res) this.submit(); });">
                                     <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
                                     <input type="hidden" name="id" value="<?= htmlspecialchars($pkg['id']) ?>">
                                     <button type="submit" class="btn-icon-danger" title="Delete">
@@ -406,7 +406,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         }
         
         // Pass callbacks to helper
-        Mivo.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn);
+        Kaiarasa.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn);
     }
     
     window.whenReady(() => {

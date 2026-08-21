@@ -1,12 +1,12 @@
 /**
- * Mivo Update Checker
+ * Kaiarasa Update Checker
  * Checks GitHub for latest release and notifies user.
  * Caches result for 24 hours to avoid rate limits.
  */
 document.addEventListener('DOMContentLoaded', () => {
-    const REPO = 'mivodev/mivo';
+    const REPO = 'kaiarasa/kaiarasa';
     const CHECK_INTERVAL = 24 * 60 * 60 * 1000; // 24 Hours
-    const CACHE_KEY = 'mivo_update_cache';
+    const CACHE_KEY = 'kaiarasa_update_cache';
     
     // UI Elements
     const badge = document.getElementById('update-badge');
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!badge || !content) return;
 
     // Current Version from PHP (injected in footer)
-    const currentVersion = window.MIVO_VERSION || 'v0.0.0';
+    const currentVersion = window.KAIARASA_VERSION || 'v0.0.0';
 
     const checkUpdate = async () => {
         try {

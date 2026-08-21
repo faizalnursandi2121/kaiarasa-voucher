@@ -16,9 +16,8 @@ Thumbs.db
 
 # Build Artifacts & Deployments
 /deploy_package.tar.gz
-/mivo_backup_*.mivo
-/mivo-*.zip
-mivo-v1.0.0.zip
+/kaiarasa_backup_*.kaiarasa
+/kaiarasa-*.zip
 
 # Secrets and Environment
 .env

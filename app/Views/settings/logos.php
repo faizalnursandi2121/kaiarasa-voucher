@@ -94,7 +94,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             navigator.clipboard.writeText(text).then(() => {
                 const title = window.i18n ? window.i18n.t('settings.id_copied') : 'ID Copied';
                 const desc = window.i18n ? window.i18n.t('settings.logo_id_copied_desc', {id: text}) : `Logo ID <strong>${text}</strong> copied to clipboard.`;
-                Mivo.alert('success', title, desc);
+                Kaiarasa.alert('success', title, desc);
             });
         }
 
@@ -105,7 +105,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
                     const logoId = this.querySelector('input[name="id"]').value;
-                    Mivo.confirm(
+                    Kaiarasa.confirm(
                         window.i18n ? window.i18n.t('settings.delete_logo_title') : 'Delete Logo?', 
                         window.i18n ? window.i18n.t('settings.delete_logo_confirm', {id: logoId}) : `Are you sure you want to delete logo <strong>${logoId}</strong>?`,
                         window.i18n ? window.i18n.t('common.delete') : 'Yes, Delete',

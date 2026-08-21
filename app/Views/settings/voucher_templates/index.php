@@ -144,7 +144,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const templateName = this.querySelector('input[name="template_name"]').value;
-                Mivo.confirm(
+                Kaiarasa.confirm(
                     window.i18n ? window.i18n.t('settings.delete_template_title') : 'Delete Template?', 
                     window.i18n ? window.i18n.t('settings.delete_template_confirm', {name: templateName}) : `Are you sure you want to delete <strong>${templateName}</strong>?`,
                     window.i18n ? window.i18n.t('common.delete') : 'Yes, Delete',

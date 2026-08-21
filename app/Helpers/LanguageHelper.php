@@ -23,7 +23,7 @@ class LanguageHelper
             return self::$currentLang;
         }
 
-        $lang = $_COOKIE['mivo_lang'] ?? 'en';
+        $lang = $_COOKIE['kaiarasa_lang'] ?? 'en';
         $langFile = ROOT.'/public/lang/'.$lang.'.json';
 
         // Fallback to English if the language file doesn't exist

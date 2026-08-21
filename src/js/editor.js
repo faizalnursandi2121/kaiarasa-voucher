@@ -27,7 +27,7 @@ const htmlLinter = linter(view => {
 })
 
 // Expose to window for easy integration in PHP views
-window.MivoEditor = {
+window.KaiarasaEditor = {
     init: (options) => {
         const { parent, initialValue, onChange, dark } = options;
         
@@ -70,5 +70,5 @@ window.MivoEditor = {
     
     // Helper to toggle theme without re-init if needed
     // For simplicity now, we re-init or just use the initial state.
-    // In Mivo, most pages reload or can be handled via state updates.
+    // In Kaiarasa, most pages reload or can be handled via state updates.
 };

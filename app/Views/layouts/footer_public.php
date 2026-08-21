@@ -40,13 +40,13 @@
                     // Only use Modal (Swal) for specific heavy warnings or questions if needed
                     // Use Toasts for standard notifications
                     if (['success', 'info', 'error', 'warning'].includes(type)) {
-                        if (window.Mivo && window.Mivo.toast) {
-                             Mivo.toast(type, title, message);
+                        if (window.Kaiarasa && window.Kaiarasa.toast) {
+                             Kaiarasa.toast(type, title, message);
                         }
                     } else {
                         // For questions or other types, use Modal Alert
-                        if (window.Mivo && window.Mivo.alert) {
-                            Mivo.alert(type || 'info', title, message);
+                        if (window.Kaiarasa && window.Kaiarasa.alert) {
+                            Kaiarasa.alert(type || 'info', title, message);
                         } else if (typeof Swal !== 'undefined') {
                             Swal.fire(title, message, type);
                         }

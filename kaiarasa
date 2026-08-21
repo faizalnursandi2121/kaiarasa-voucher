@@ -2,8 +2,8 @@
 <?php
 
 /**
- * MIVO CLI Tool
- * A lightweight Artisan-like command line interface for MIVO.
+ * Kaiarasa CLI Tool
+ * A lightweight Artisan-like command line interface for Kaiarasa.
  */
 
 // Ensure we are running in CLI mode

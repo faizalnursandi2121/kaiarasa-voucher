@@ -1,8 +1,8 @@
 /**
- * Mivo JS Core "The Kernel"
+ * Kaiarasa JS Core "The Kernel"
  * Central management for Modules (Services) and Components (UI).
  */
-class MivoCore {
+class KaiarasaCore {
     constructor() {
         this.modules = {};
         this.components = {};
@@ -24,7 +24,7 @@ class MivoCore {
      */
     registerModule(name, instance) {
         this.modules[name] = instance;
-        console.debug(`[Mivo] Module '${name}' registered.`);
+        console.debug(`[Kaiarasa] Module '${name}' registered.`);
     }
 
     /**
@@ -34,7 +34,7 @@ class MivoCore {
      */
     registerComponent(name, classRef) {
         this.components[name] = classRef;
-        console.debug(`[Mivo] Component '${name}' registered.`);
+        console.debug(`[Kaiarasa] Component '${name}' registered.`);
     }
 
     /**
@@ -74,13 +74,13 @@ class MivoCore {
      */
     emit(eventName, data) {
         this.events.dispatchEvent(new CustomEvent(eventName, { detail: data }));
-        console.debug(`[Mivo] Event emitted: ${eventName}`, data);
+        console.debug(`[Kaiarasa] Event emitted: ${eventName}`, data);
     }
 
     init() {
         if (this.isReady) return;
         this.isReady = true;
-        console.log('[Mivo] Framework initialized.');
+        console.log('[Kaiarasa] Framework initialized.');
         
         // Dispatch ready event for external scripts
         this.emit('ready', { timestamp: Date.now() });
@@ -88,4 +88,4 @@ class MivoCore {
 }
 
 // Global Singleton
-window.Mivo = new MivoCore();
+window.Kaiarasa = new KaiarasaCore();

@@ -208,7 +208,7 @@ sort($uniqueComments);
                                 <button onclick="openUserModal('edit', this)" class="btn-icon inline-flex items-center justify-center" title="Edit">
                                     <i data-lucide="edit-2" class="w-4 h-4"></i>
                                 </button>
-                                <form action="/<?= htmlspecialchars($session) ?>/hotspot/delete" method="POST" onsubmit="event.preventDefault(); Mivo.confirm('Delete User?', 'Are you sure you want to delete user <?= htmlspecialchars($name) ?>?', 'Delete', 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
+                                <form action="/<?= htmlspecialchars($session) ?>/hotspot/delete" method="POST" onsubmit="event.preventDefault(); Kaiarasa.confirm('Delete User?', 'Are you sure you want to delete user <?= htmlspecialchars($name) ?>?', 'Delete', 'Cancel').then(res => { if(res) this.submit(); });" class="inline">
                                     <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
                                     <input type="hidden" name="id" value="<?= $id ?>">
                                     <button type="submit" class="btn-icon-danger" title="Delete">
@@ -588,7 +588,7 @@ sort($uniqueComments);
              }
         };
 
-        Mivo.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
+        Kaiarasa.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
     }
 
     window.whenReady(() => {
@@ -660,7 +660,7 @@ sort($uniqueComments);
     
     function printSelected() {
         const selected = Array.from(document.querySelectorAll('.user-checkbox:checked')).map(cb => cb.value);
-        if (selected.length === 0) return Mivo.alert('info', 'No selection', window.i18n ? window.i18n.t('hotspot_users.no_users_selected') : "No users selected.");
+        if (selected.length === 0) return Kaiarasa.alert('info', 'No selection', window.i18n ? window.i18n.t('hotspot_users.no_users_selected') : "No users selected.");
         
         const width = 800; const height = 600;
         const left = (window.innerWidth - width) / 2;
@@ -676,12 +676,12 @@ sort($uniqueComments);
     
     function deleteSelected() {
         const selected = Array.from(document.querySelectorAll('.user-checkbox:checked')).map(cb => cb.value);
-        if (selected.length === 0) return Mivo.alert('info', 'No selection', window.i18n ? window.i18n.t('hotspot_users.no_users_selected') : "Please select at least one user.");
+        if (selected.length === 0) return Kaiarasa.alert('info', 'No selection', window.i18n ? window.i18n.t('hotspot_users.no_users_selected') : "Please select at least one user.");
         
         const title = window.i18n ? window.i18n.t('common.delete') : 'Delete Users?';
         const msg = window.i18n ? window.i18n.t('common.confirm_delete') : `Are you sure you want to delete ${selected.length} users?`;
         
-        Mivo.confirm(title, msg, window.i18n.t('common.delete'), window.i18n.t('common.cancel')).then(res => {
+        Kaiarasa.confirm(title, msg, window.i18n.t('common.delete'), window.i18n.t('common.cancel')).then(res => {
             if (!res) return;
             const form = document.createElement('form');
             form.method = 'POST';

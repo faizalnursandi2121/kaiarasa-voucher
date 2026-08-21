@@ -1,8 +1,8 @@
-MIVO is a Modern, Lightweight, and Efficient. Built for low-end devices with premium UX.
+Kaiarasa is a Modern, Lightweight, and Efficient. Built for low-end devices with premium UX.
 
 ## Installation
 For the best experience, we recommend using **Docker**.
-[Read the full Docker Installation Guide](https://mivodev.github.io/docs/guide/docker)
+[Read the full Docker Installation Guide](https://kaiarasa.github.io/docs/guide/docker)
 
 ## Notes
 - Ensure your server runs **PHP 8.0+** with `sqlite3` extension enabled.

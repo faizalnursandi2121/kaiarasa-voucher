@@ -47,7 +47,7 @@ async function run() {
         const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
         const prompt = `
-            You are a release note generator for a software project named 'Mivo'.
+            You are a release note generator for a software project named 'Kaiarasa'.
             
             Here are the commits for the new version ${VERSION_TAG}:
             ${commits}

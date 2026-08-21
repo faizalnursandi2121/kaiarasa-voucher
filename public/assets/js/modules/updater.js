@@ -1,16 +1,16 @@
 /**
- * Mivo Module: Updater
+ * Kaiarasa Module: Updater
  * Handles version checking and update notifications.
  */
 class UpdaterModule {
     constructor() {
-        this.repo = 'mivodev/mivo';
-        this.cacheKey = 'mivo_update_data';
+        this.repo = 'kaiarasa/kaiarasa';
+        this.cacheKey = 'kaiarasa_update_data';
         this.ttl = 24 * 60 * 60 * 1000; // 24 hours
         
-        // Wait for Mivo core to be ready
-        if (window.Mivo) {
-            window.Mivo.on('ready', () => this.init());
+        // Wait for Kaiarasa core to be ready
+        if (window.Kaiarasa) {
+            window.Kaiarasa.on('ready', () => this.init());
         }
     }
 
@@ -51,7 +51,7 @@ class UpdaterModule {
             this.setCache(version, url);
             this.checkUpdate(version, url);
         } catch (error) {
-            console.error('[Mivo] Update check failed:', error);
+            console.error('[Kaiarasa] Update check failed:', error);
         }
     }
 
@@ -107,6 +107,6 @@ class UpdaterModule {
 }
 
 // Register Module
-if (window.Mivo) {
-    window.Mivo.registerModule('Updater', new UpdaterModule());
+if (window.Kaiarasa) {
+    window.Kaiarasa.registerModule('Updater', new UpdaterModule());
 }

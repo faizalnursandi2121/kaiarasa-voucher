@@ -347,8 +347,8 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
         };
 
         // Listen for language changes
-        if (window.Mivo) {
-            window.Mivo.on('languageChanged', updateChartLabels);
+        if (window.Kaiarasa) {
+            window.Kaiarasa.on('languageChanged', updateChartLabels);
         }
         window.addEventListener('languageChanged', updateChartLabels);
         
@@ -360,7 +360,7 @@ $usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
             if (trafficInterval) clearInterval(trafficInterval);
             try { chart.destroy(); } catch (e) {}
             window.removeEventListener('languageChanged', updateChartLabels);
-            if (window.Mivo) window.Mivo.off('languageChanged', updateChartLabels);
+            if (window.Kaiarasa) window.Kaiarasa.off('languageChanged', updateChartLabels);
         };
     });
 </script>

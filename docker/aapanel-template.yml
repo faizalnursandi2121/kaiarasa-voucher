@@ -1,18 +1,18 @@
 version: '3.8'
 
 services:
-  mivo:
-    image: ghcr.io/mivodev/mivo:${VERSION:-latest}
-    container_name: ${CONTAINER_NAME:-mivo}
+  kaiarasa:
+    image: ghcr.io/kaiarasa/kaiarasa:${VERSION:-latest}
+    container_name: ${CONTAINER_NAME:-kaiarasa}
     restart: unless-stopped
     ports:
       - "${HOST_IP:-0.0.0.0}:${APP_PORT:-8085}:80"
     volumes:
       # Database & Sessions
-      - ${APP_PATH:-.}/mivo_data:/var/www/html/app/Database
+      - ${APP_PATH:-.}/kaiarasa_data:/var/www/html/app/Database
       
       # Custom Logos
-      - ${APP_PATH:-.}/mivo_logos:/var/www/html/public/assets/img/logos
+      - ${APP_PATH:-.}/kaiarasa_logos:/var/www/html/public/assets/img/logos
       
       # Environment file (Optional - mapped from host)
       # - ${APP_PATH:-.}/.env:/var/www/html/.env
@@ -29,8 +29,8 @@ services:
           memory: ${MEMORY_LIMIT:-512M}
 
     networks:
-      - mivo_net
+      - kaiarasa_net
 
 networks:
-  mivo_net:
+  kaiarasa_net:
     driver: bridge

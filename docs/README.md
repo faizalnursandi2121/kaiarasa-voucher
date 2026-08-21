@@ -1,1 +1,1 @@
-Documentation has moved to https://mivodev.github.io
+Documentation has moved to https://kaiarasa.github.io

@@ -1,10 +1,10 @@
 /**
- * Mivo Module: I18n
+ * Kaiarasa Module: I18n
  * Internationalization support.
  */
 class I18n {
     constructor() {
-        this.currentLang = localStorage.getItem('mivo_lang') || 'en';
+        this.currentLang = localStorage.getItem('kaiarasa_lang') || 'en';
         this.translations = {};
         this.isLoaded = false;
         
@@ -29,15 +29,15 @@ class I18n {
             
             this.translations = await response.json();
             this.currentLang = lang;
-            localStorage.setItem('mivo_lang', lang);
+            localStorage.setItem('kaiarasa_lang', lang);
             // Also set cookie so PHP can render translations server-side (prevents FOUC)
             document.cookie = 'mivo_lang=' + lang + ';path=/;max-age=31536000;SameSite=Lax';
             
             this.applyTranslations();
             
-            // Dispatch via Mivo Event Bus
-            if (window.Mivo) {
-                window.Mivo.emit('languageChanged', { lang });
+            // Dispatch via Kaiarasa Event Bus
+            if (window.Kaiarasa) {
+                window.Kaiarasa.emit('languageChanged', { lang });
             }
             
             // Legacy Event for compatibility
@@ -119,11 +119,11 @@ class I18n {
 }
 
 // Register Module
-if (window.Mivo) {
-    window.Mivo.registerModule('I18n', new I18n());
+if (window.Kaiarasa) {
+    window.Kaiarasa.registerModule('I18n', new I18n());
     // Alias for global usage if needed
-    window.i18n = window.Mivo.modules.I18n; 
+    window.i18n = window.Kaiarasa.modules.I18n; 
 } else {
-    // Fallback if Mivo not loaded
+    // Fallback if Kaiarasa not loaded
     window.i18n = new I18n();
 }

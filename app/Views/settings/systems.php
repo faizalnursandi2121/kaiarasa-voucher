@@ -110,7 +110,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                             <div class="w-full">
                                 <input type="file" name="backup_file" accept=".mivo" class="form-control-file" required>
                             </div>
-                            <button type="submit" class="btn btn-primary w-full sm:w-auto mt-2 sm:mt-0" onclick="event.preventDefault(); Mivo.confirm(window.i18n ? window.i18n.t('settings.restore_data') : 'Restore Data?', window.i18n ? window.i18n.t('settings.warning_restore') : 'WARNING: This will restore settings from the file and may overwrite existing data. Continue?', window.i18n ? window.i18n.t('settings.restore') : 'Restore', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { if(res) this.closest('form').submit(); });">
+                            <button type="submit" class="btn btn-primary w-full sm:w-auto mt-2 sm:mt-0" onclick="event.preventDefault(); Kaiarasa.confirm(window.i18n ? window.i18n.t('settings.restore_data') : 'Restore Data?', window.i18n ? window.i18n.t('settings.warning_restore') : 'WARNING: This will restore settings from the file and may overwrite existing data. Continue?', window.i18n ? window.i18n.t('settings.restore') : 'Restore', window.i18n ? window.i18n.t('common.cancel') : 'Cancel').then(res => { if(res) this.closest('form').submit(); });">
                                 <span data-i18n="settings.restore">Restore</span>
                             </button>
                             </form>
