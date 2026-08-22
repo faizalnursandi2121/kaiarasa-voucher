@@ -37,7 +37,7 @@ use App\Core\Hooks;
     </script>
     <?php Hooks::doAction('kaiarasa_head'); ?>
 </head>
-<body class="bg-background text-foreground antialiased min-h-screen relative overflow-hidden font-sans selection:bg-accents-2 selection:text-foreground flex flex-col">
+<body class="bg-background text-foreground antialiased min-h-screen relative overflow-x-hidden font-sans selection:bg-accents-2 selection:text-foreground flex flex-col">
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
     <!-- Background Elements (Common) -->
