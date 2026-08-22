@@ -7,15 +7,16 @@ include ROOT.'/app/Views/layouts/header_public.php';
      bg full-page (sage solid, tanpa foto) · brand kiri · kartu 600px kanan.
      Nilai spasi mengikuti skala Metronic (mb-11=2.75rem, p-20=5rem, dst). -->
 
-<main class="flex-grow flex flex-col lg:flex-row w-full bg-[#5f7f67] dark:bg-[#33453a]">
+<main class="flex-grow flex flex-col lg:flex-row w-full bg-[#5f7f67] dark:bg-[#2e4034]"
+      style="background-image:
+        radial-gradient(ellipse 80% 60% at 15% 10%, rgba(146,170,150,.40), transparent 60%),
+        radial-gradient(ellipse 70% 55% at 85% 90%, rgba(24,44,32,.55), transparent 60%),
+        linear-gradient(160deg, #6b8b73 0%, #5f7f67 45%, #47614d 100%);">
 
     <!-- ===== KIRI: brand (Metronic: d-flex flex-center w-lg-50 pt-15 px-10) ===== -->
     <section class="lg:w-1/2 flex items-center justify-center pt-15 px-10 lg:pt-0 lg:pb-15">
         <div class="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <img src="/assets/img/logo-white.webp" alt="Kaiarasa" class="h-11 w-auto mb-7">
-            <h2 class="text-white font-normal text-2xl lg:text-[28px] leading-snug m-0">
-                Hotspot Voucher Management
-            </h2>
+            <img src="/assets/img/logo-white.webp" alt="Kaiarasa" class="h-20 w-auto mb-7 drop-shadow-lg">
         </div>
     </section>
 
@@ -36,10 +37,9 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
                 <form action="/login" method="POST" class="w-full">
 
-                    <!-- Heading (Metronic: text-center mb-11, h1 fw-bolder mb-3, sub fs-6 fw-semibold) -->
+                    <!-- Heading (Metronic: text-center mb-11, h1 fw-bolder) -->
                     <div class="text-center mb-11">
-                        <h1 class="text-[22px] font-bold tracking-tight text-black/90 dark:text-white/95 mb-3">Masuk ke MIVO</h1>
-                        <div class="text-black/50 dark:text-white/50 font-semibold text-[15px]">MikroTik Hotspot Manager</div>
+                        <h1 data-i18n="login.sign_in" class="text-[22px] font-bold tracking-tight text-black/90 dark:text-white/95">Sign In</h1>
                     </div>
 
                     <!-- Username (Metronic: fv-row mb-8, input form-control besar radius .95rem) -->
