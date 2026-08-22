@@ -89,6 +89,19 @@ include ROOT.'/app/Views/layouts/header_public.php';
         border-color: rgba(255, 255, 255, .55);
         color: #fff;
     }
+
+    /* Theme toggle: glider selalu putih solid + ikon aktif gelap,
+       supaya tidak ada ikon putih yang hilang tertimpa glider */
+    .fixed.top-4.right-4 #theme-glider {
+        background: #ffffff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .18);
+    }
+    .fixed.top-4.right-4 #theme-pill button {
+        color: rgba(255, 255, 255, .85);
+    }
+    .fixed.top-4.right-4 #theme-pill button.text-foreground {
+        color: #1c2420 !important;
+    }
 </style>
 
 <script>
