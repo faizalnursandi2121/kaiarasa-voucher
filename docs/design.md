@@ -10,6 +10,7 @@ mengikuti dokumen ini. Referensi proporsi: Metronic demo18 (pola saja, tanpa ass
 |---|---|---|
 | accent | #5f7f67 | tombol primer, link aktif, indikator online |
 | accent-light | #92aa96 | hover state, highlight sekunder |
+| accent-hover | #6b8b73 | hover state tombol primer |
 
 ### Netral (abu-abu hangat)
 | Token | Hex | Pemakaian |
@@ -21,12 +22,43 @@ mengikuti dokumen ini. Referensi proporsi: Metronic demo18 (pola saja, tanpa ass
 | bg | #fafaf8 | latar halaman (light) |
 | border | rgba(28,36,32,.10) | border kartu/input |
 
+### Netral (dark)
+| Token | Hex/RGBA |
+|---|---|
+| surface-dark | #1a1c19 |
+| bg-dark | #121412 |
+| ink-dark (teks utama) | #e9ebe7 |
+| border-dark | rgba(255,255,255,.08) |
+
+Nilai ini yang dipakai di seluruh mapping Tailwind (`dark:`).
+
 ### Semantik
 | Makna | Light | Dark |
 |---|---|---|
 | success/online | #10b981 | #34d399 |
 | warning/error-api | #f59e0b | #fbbf24 |
 | danger/offline | #dc2626 | #ef4444 |
+
+Catatan: teks error API pada kartu monitoring memakai warning (amber) bila router masih reachable tapi API gagal, dan danger (merah) hanya bila router benar-benar tidak dapat dihubungi.
+
+### CSS Variables
+```css
+:root {
+  --accent: #5f7f67;
+  --accent-light: #92aa96;
+  --accent-hover: #6b8b73;
+  --ink: #1c2420;
+  --surface: #ffffff;
+  --bg: #fafaf8;
+  --border: rgba(28,36,32,.10);
+}
+.dark {
+  --surface: #1a1c19;
+  --bg: #121412;
+  --ink: #e9ebe7;
+  --border: rgba(255,255,255,.08);
+}
+```
 
 ### Dark mode
 Aktif via class `dark` pada `<html>` (mekanisme existing: localStorage.theme).
@@ -41,11 +73,13 @@ Semua warna netral dibalik; accent tetap sama.
 
 Skala: h1 22px/600 · h2 17px/600 · body 13px/400 · label 11px/600 uppercase tracking .06em · micro 10px
 
+Inter belum dimuat di codebase saat ini (yang ada Geist) — penerapan Inter wajib menyertakan @font-face/CDN + update `fontFamily.sans` di `tailwind.config.js`.
+
 ## 3. Spasi & Bentuk
 
 - Spacing: kelipatan 4px
-- Radius: card 16px · input/button 12px · badge 999px
-- Border default 1px solid var(--border)
+- Radius: card 16px · input/button 12px · menu item/elemen kecil 10px · badge 999px
+- Border default 1px solid rgba(28,36,32,.10), dark: rgba(255,255,255,.08)
 - Elevation maksimal DUA level: (1) border saja, (2) shadow lembut `0 8px 24px rgba(0,0,0,.14)`
 
 ## 4. Aturan Anti-Slop (wajib)
@@ -76,7 +110,7 @@ label: 11px/600 uppercase di atas input, margin-bottom 8px
 
 ### Badge Status
 badge-online: dot #10b981 + teks, bg rgba(16,185,129,.10), radius 999
-badge-offline: dot #dc2626, bg rgba(220,38,38,.08)
+badge-offline: dot #dc2626, bg rgba(220,38,38,.10)
 badge-warning: dot #f59e0b, bg rgba(245,158,11,.10)
 ukuran: font 11px/600, padding 4px 10px
 
@@ -93,7 +127,9 @@ Header: 11px/600 uppercase ink-50, border-bottom. Baris: 13px, hover bg rgba(ink
 
 | Kebutuhan | Class |
 |---|---|
-| Card | `rounded-2xl border border-black/[.07] dark:bg-[#1a1c19] p-5` |
+| Card | `rounded-2xl border border-[rgba(28,36,32,.10)] dark:border-white/[.08] dark:bg-[#1a1c19] p-5` |
 | Primary btn | `bg-[#5f7f67] hover:bg-[#6b8b73] text-white rounded-xl h-10 px-4 text-[13px] font-semibold` |
+| Secondary btn | `inline-flex items-center rounded-xl h-10 px-4 text-[13px] font-semibold border border-[rgba(28,36,32,.10)] dark:border-white/[.08]` |
+| Input focus | `focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[rgba(95,127,103,.20)] outline-none` |
 | Badge online | `inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-600` |
-| Label form | `block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2` |
+| Label form | `block text-[11px] font-semibold uppercase tracking-[.06em] opacity-60 mb-2` |
