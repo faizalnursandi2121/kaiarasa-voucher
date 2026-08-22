@@ -1,6 +1,4 @@
 <?php
-use App\Config\SiteConfig;
-
 require_once ROOT.'/app/Views/layouts/header_main.php';
 ?>
 
@@ -15,7 +13,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             </p>
         </div>
         <button type="button" id="btn-refresh"
-            class="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 h-10 px-4 text-[13px] font-semibold hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
+            class="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 h-10 px-4 text-[13px] font-semibold hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
             <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh
         </button>
     </div>
@@ -62,6 +60,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     var grid = document.getElementById('router-grid');
     var refreshBtn = document.getElementById('btn-refresh');
     var REFRESH_MS = 60000;
+    var inFlight = false;
 
     function esc(s) {
         return String(s ?? '').replace(/[&<>"']/g, function (c) {
@@ -91,6 +90,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         +(r.status === 'online'
             ? 'bg-[#5f7f67] hover:bg-[#6b8b73] text-white'
             : 'border border-black/10 dark:border-white/10 opacity-60 pointer-events-none')
+        + (r.status === 'online' ? '' : ' aria-disabled="true" tabindex="-1"')
         +' transition-colors">Buka Dashboard</a>'
         +'</div>';
     }
@@ -116,6 +116,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     }
 
     function load(force) {
+        if (inFlight) return;
+        inFlight = true;
         refreshBtn.disabled = true;
         fetch('/api/routers/health' + (force ? '?refresh=1' : ''), { headers: { 'Accept': 'application/json' } })
             .then(function (res) { return res.json(); })
@@ -123,7 +125,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             .catch(function () {
                 document.getElementById('last-updated').textContent = 'gagal memuat — coba Refresh';
             })
-            .finally(function () { refreshBtn.disabled = false; });
+            .finally(function () { inFlight = false; refreshBtn.disabled = false; });
     }
 
     refreshBtn.addEventListener('click', function () { load(true); });
