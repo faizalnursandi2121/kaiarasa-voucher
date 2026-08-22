@@ -160,3 +160,69 @@ dua halaman agar pola desain teruji sebelum diperluas.
   API error, cache hit vs miss (response <100ms saat hit), polling 60 detik.
 - Visual: light & dark mode semua state; bandingkan dengan referensi Metronic hanya
   dari sisi proporsi/anatomi.
+
+---
+
+# AMANDEMEN — Home v2 (NOIC Dashboard, 2026-08-22)
+
+Revisi desain home berdasarkan mockup final pemilik (ui home.png).
+Login selesai sesuai §3; bagian §4 (home) DIGANTI dengan berikut:
+
+## H1. Struktur halaman (tanpa sidebar)
+
+Sidebar TIDAK ADA di home — sidebar adalah identitas konteks session/dashboard.
+Shell: header global + konten penuh.
+
+1. **Header**: logo Kaiarasa · global search ("Search router, IP address, location…")
+   · tombol [+ Add Router] · user menu (Admin/Super Admin)
+2. **Tile navigasi** (5 ikon besar): Network Overview (aktif/hijau solid) · Routers ·
+   Logs (COMING SOON, non-aktif) · Alerts (COMING SOON, non-aktif) · Settings
+3. **4 kartu statistik**: Total Routers · Online (+%) · Offline (+%) · Connecting (+%)
+   — masing-masing ikon lingkaran berwarna + menu ⋮
+4. **Router Status Table** (widget inti): toolbar Search/Filters/Refresh;
+   kolom Status(dot+label) · Router Name(+lokasi) · IP(mono) · CPU(% + bar) ·
+   Uptime · Last Seen("12s ago") · Actions(tombol **Open**) ;
+   footer pagination (#23). Baris diklik = buka dashboard.
+5. **Kolom kanan**: Network Availability (area chart 24 jam + Avg Uptime/Downtime/
+   Incidents) · Recent Activity (timeline event)
+6. **Baris bawah**: Status Distribution (donut) · Top Router by CPU (bar) ·
+   System Health (API/Database/Last Backup)
+
+## H2. Status router: 4 nilai
+
+online · offline · error(API gagal, reachable) · **connecting** (probe sedang berjalan)
+
+## H3. Backend baru: ingatan historis
+
+Tabel baru:
+- `router_probe_logs`: router_id, checked_at, status, cpu_load, uptime, response_ms
+  — 1 baris per router per siklus probe; retensi 7 hari (auto-prune)
+- `router_events`: router_id, event_type (connected|went_offline|high_cpu), created_at
+  — hanya ditulis saat STATUS BERUBAH / ambang CPU terlewati
+
+Endpoint baru (auth):
+- GET /api/routers/history?hours=24  → bucket per jam utk area chart + avg uptime +
+  total downtime + incidents count
+- GET /api/routers/events?limit=10   → recent activity feed
+
+Perubahan existing:
+- RouterHealthService: tulis probe_log tiap siklus + deteksi transisi → insert events;
+  field last_seen dihitung dari log; status 'connecting' diset sisi frontend saat
+  request probe masih berjalan.
+
+## H4. Chart library: ApexCharts (FINAL)
+
+- Di-vendor lokal: public/assets/js/vendor/apexcharts.min.js (MIT) — BUKAN CDN
+- Dipakai untuk: area availability, donut distribution, top-CPU horizontal bars
+- Chart.js existing TIDAK dihapus (dipakai komponen lain); jangan tambah duplikat fungsi
+
+## H5. Aksi tabel
+
+Tombol **Open** per baris → dashboard session terkait. Tanpa hapus di home
+(destruktif tetap di Settings). Klik area baris juga membuka dashboard.
+
+## H6. Global search
+
+Mencari lintas: session_name, hotspot_name, ip_address, description(lokasi).
+Implementasi: filter client-side atas data health (cukup utk ratusan router);
+belum perlu endpoint search terpisah.
