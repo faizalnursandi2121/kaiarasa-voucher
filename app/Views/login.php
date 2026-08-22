@@ -14,14 +14,14 @@ include ROOT.'/app/Views/layouts/header_public.php';
         linear-gradient(160deg, #6b8b73 0%, #5f7f67 45%, #47614d 100%);">
 
     <!-- ===== KIRI: brand (Metronic: d-flex flex-center w-lg-50 pt-15 px-10) ===== -->
-    <section class="lg:w-1/2 flex items-center justify-center pt-15 px-10 lg:pt-0 lg:pb-15">
+    <section class="lg:w-1/2 flex items-center justify-center pt-[3.75rem] px-10 lg:pt-0 lg:pb-[3.75rem]">
         <div class="flex flex-col items-center lg:items-start text-center lg:text-left">
             <img src="/assets/img/logo-white.webp" alt="Kaiarasa" class="h-20 w-auto mb-7 drop-shadow-lg">
         </div>
     </section>
 
     <!-- ===== KANAN: kartu form (Metronic: p-12 p-lg-20 justify-end → card w-md-600px p-20 rounded-4) ===== -->
-    <section class="lg:flex-column-fluid flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
+    <section class="flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
         <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[600px] p-8 md:p-14 lg:p-20 shadow-[0_8px_24px_rgba(0,0,0,.08)]">
 
             <!-- Wrapper dalam (Metronic: px-lg-10 pb-15 pb-lg-20) -->
