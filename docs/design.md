@@ -105,7 +105,7 @@ Header kartu: title kiri (13px/600), action kanan (icon button ghost). Card: bg 
 
 ### Input
 bg rgba(ink,.04); border 1px border; radius 12px; h-44px; padding-x 14px;
-focus: border #5f7f67 + ring 3px rgba(95,127,103,.12)
+focus: border #5f7f67 + ring 3px rgba(95,127,103,.20)
 label: 11px/600 uppercase di atas input, margin-bottom 8px
 
 ### Badge Status
@@ -131,5 +131,7 @@ Header: 11px/600 uppercase ink-50, border-bottom. Baris: 13px, hover bg rgba(ink
 | Primary btn | `bg-[#5f7f67] hover:bg-[#6b8b73] text-white rounded-xl h-10 px-4 text-[13px] font-semibold` |
 | Secondary btn | `inline-flex items-center rounded-xl h-10 px-4 text-[13px] font-semibold border border-[rgba(28,36,32,.10)] dark:border-white/[.08]` |
 | Input focus | `focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[rgba(95,127,103,.20)] outline-none` |
-| Badge online | `inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-600` |
+| Badge online | `inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-600 (teks lebih gelap dari token #10b981 demi kontras)` |
 | Label form | `block text-[11px] font-semibold uppercase tracking-[.06em] opacity-60 mb-2` |
+
+Untuk dark mode, badge/teks semantik memakai pasangan dark dari §1 (#34d399 / #fbbf24 / #ef4444).
