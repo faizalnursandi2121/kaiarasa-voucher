@@ -33,6 +33,14 @@ class RouterHealthService
         $this->detectTransitions($results);
         $this->pruneHistory();
 
+        // last_seen dihitung SETELAH semua probe tersimpan agar siklus
+        // sekarang ikut terhitung.
+        foreach ($results as &$row) {
+            $lastSeen = $this->getLastSeen((int) $row['id']);
+            $row['last_seen'] = $lastSeen !== null ? date('c', strtotime($lastSeen)) : null;
+        }
+        unset($row);
+
         $payload = [
             'checked_at' => time(),
             'checked_at_iso' => date('c'),
@@ -52,6 +60,8 @@ class RouterHealthService
             'hotspot_name' => $session['hotspot_name'] ?? '',
             'ip_address' => $session['ip_address'] ?? '',
             'quick_access' => (int) ($session['quick_access'] ?? 0),
+            'location' => $session['description'] ?? '',
+            'last_seen' => null,
             'status' => 'offline',
             'cpu_load' => null,
             'uptime' => null,
@@ -220,6 +230,125 @@ class RouterHealthService
         $stmt->execute([':rid' => $routerId, ':type' => $eventType, ':ago' => "-{$minutes} minutes"]);
 
         return (int) $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Waktu probe online terakhir untuk router ini (UTC datetime string).
+     */
+    private function getLastSeen(int $routerId): ?string
+    {
+        try {
+            $stmt = \App\Core\Database::getInstance()->getConnection()->prepare(
+                "SELECT MAX(checked_at) FROM router_probe_logs WHERE router_id = :rid AND status = 'online'"
+            );
+            $stmt->execute([':rid' => $routerId]);
+            $val = $stmt->fetchColumn();
+
+            return $val === false || $val === null ? null : (string) $val;
+        } catch (\Throwable $e) {
+            error_log('[probe-log] last_seen failed: '.$e->getMessage());
+
+            return null;
+        }
+    }
+
+    /**
+     * Riwayat availability per jam utk N jam terakhir + agregat.
+     * return: ['series'=>[['hour'=>'HH:00','availability_pct':float],...],
+     *          'avg_uptime_pct'=>float,'downtime_seconds'=>int,'incidents'=>int]
+     *
+     * Catatan: hanya jam yang punya data yang dikembalikan (urut ascending);
+     * frontend menggambar gap utk jam kosong.
+     * downtime_seconds = approximasi: baris offline x 60s interval probe.
+     */
+    public function getHistory(int $hours = 24): array
+    {
+        try {
+            $pdo = \App\Core\Database::getInstance()->getConnection();
+            $hours = max(1, min(168, $hours));
+
+            // Window mulai dari awal jam (now-N); checked_at disimpan UTC,
+            // jadi pakai gmdate agar benar walau PHP TZ bukan UTC.
+            $windowStart = gmdate('Y-m-d H:00:00', time() - $hours * 3600);
+
+            $stmt = $pdo->prepare(
+                "SELECT strftime('%Y-%m-%d %H', checked_at) AS bucket,
+                        COUNT(*) AS total,
+                        SUM(CASE WHEN status = 'online' THEN 1 ELSE 0 END) AS online_cnt
+                 FROM router_probe_logs
+                 WHERE checked_at >= :start
+                 GROUP BY bucket
+                 ORDER BY bucket ASC"
+            );
+            $stmt->execute([':start' => $windowStart]);
+
+            $series = [];
+            $totalRows = 0;
+            $onlineRows = 0;
+            foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $r) {
+                $total = (int) $r['total'];
+                $onlineCnt = (int) $r['online_cnt'];
+                $series[] = [
+                    // bucket = 'YYYY-MM-DD HH' (UTC); ambil bagian jam saja
+                    'hour' => substr((string) $r['bucket'], 11, 2).':00',
+                    'availability_pct' => $total > 0 ? round($onlineCnt / $total * 100, 1) : 100.0,
+                ];
+                $totalRows += $total;
+                $onlineRows += $onlineCnt;
+            }
+
+            // Approximasi downtime: tiap baris offline ~ 60 detik interval probe.
+            $dStmt = $pdo->prepare(
+                "SELECT COUNT(*) FROM router_probe_logs WHERE checked_at >= :start AND status != 'online'"
+            );
+            $dStmt->execute([':start' => $windowStart]);
+            $downtimeSeconds = (int) $dStmt->fetchColumn() * 60;
+
+            $iStmt = $pdo->prepare(
+                "SELECT COUNT(*) FROM router_events WHERE event_type = 'went_offline' AND created_at >= :start"
+            );
+            $iStmt->execute([':start' => $windowStart]);
+            $incidents = (int) $iStmt->fetchColumn();
+
+            return [
+                'series' => $series,
+                'avg_uptime_pct' => $totalRows > 0 ? round($onlineRows / $totalRows * 100, 1) : 100.0,
+                'downtime_seconds' => $downtimeSeconds,
+                'incidents' => $incidents,
+            ];
+        } catch (\Throwable $e) {
+            error_log('[history] '.$e->getMessage());
+
+            return ['series' => [], 'avg_uptime_pct' => 100.0, 'downtime_seconds' => 0, 'incidents' => 0];
+        }
+    }
+
+    /**
+     * Event router terbaru (join nama router).
+     */
+    public function getEvents(int $limit = 10): array
+    {
+        try {
+            $pdo = \App\Core\Database::getInstance()->getConnection();
+            $limit = max(1, min(50, $limit));
+
+            $stmt = $pdo->prepare(
+                'SELECT r.session_name AS router_name, r.hotspot_name,
+                        e.event_type, e.created_at
+                 FROM router_events e
+                 JOIN routers r ON r.id = e.router_id
+                 ORDER BY e.created_at DESC, e.id DESC
+                 LIMIT :lim'
+            );
+            $stmt->bindValue(':lim', $limit, \PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
+        } catch (\Throwable $e) {
+            error_log('[events] '.$e->getMessage());
+
+            return [];
+        }
     }
 
     private function cachePath(): string

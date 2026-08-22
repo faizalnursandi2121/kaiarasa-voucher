@@ -52,6 +52,8 @@ $router->group(['middleware' => 'auth'], function ($router) {
     // Global Home / Design System
     $router->get('/', [HomeController::class, 'index']);
     $router->get('/api/routers/health', [RouterHealthController::class, 'index']);
+    $router->get('/api/routers/history', [RouterHealthController::class, 'history']);
+    $router->get('/api/routers/events', [RouterHealthController::class, 'events']);
     $router->get('/design-system', [HomeController::class, 'designSystem']);
 
     // Global Settings (Admin Level)
