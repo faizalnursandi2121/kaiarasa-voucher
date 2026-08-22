@@ -1,18 +1,16 @@
-# TODO — Eksekusi Plan Redesign Login + Home
+# TODO — Plan Home v2 (NOC Dashboard)
 
-Plan: `docs/superpowers/plans/2026-08-22-home-login-redesign.md`
-Mode: Subagent-driven (implementer → spec review → quality review per task)
+Plan: `docs/superpowers/plans/2026-08-22-home-v2-noc-dashboard.md`
+Spec amandemen: `docs/superpowers/specs/2026-08-22-home-login-redesign-design.md` (H1–H6)
 
-- [x] Task 1: `docs/design.md` — design system document
-- [x] Task 2: Service + endpoint `/api/routers/health` (cache TTL 60s)
-- [x] Task 3: Rewrite view home (fleet monitor)
-- [x] Task 4: Restyle header layout (hapus titik-titik)
-- [x] Task 5: Rewrite view login (split layout)
-- [ ] Task 6: Verifikasi akhir menyeluruh
-- [ ] Final review seluruh implementasi
+- [x] Task 1: Migrasi tabel historis + logging probe (+retensi, WAL, dedup)
+- [ ] Task 2: Endpoint history & events + payload last_seen/location
+- [ ] Task 3: Vendor ApexCharts
+- [ ] Task 4: Header home tanpa sidebar + global search
+- [ ] Task 5: Rewrite home.php (NOC dashboard lengkap)
+- [ ] Task 6: Verifikasi akhir + screenshot
 
-## Deferred (disepakati, bukan bagian pilot)
-- [ ] Spinner saat submit login (spec §3 — deferral sadar)
-- [ ] `last_online` pada kartu router offline (spec §4 — butuh pelacakan backend)
-- [ ] Restyle sidebar global dengan token baru (spec §7.5 — menyusul bersama dashboard)
-- [ ] Alignment kecil: alpha border design.md (.10/.08) vs view (.07); tinggi tombol login h-11 vs token h-10
+## Deferred
+- [ ] Restyle sidebar global (konteks session dashboard)
+- [ ] Dashboard per-session redesign
+- [ ] Spinner submit login sudah; validation realtime opsional
