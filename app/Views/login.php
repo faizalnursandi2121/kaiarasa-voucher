@@ -37,8 +37,8 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
                 <form action="/login" method="POST" class="w-full">
 
-                    <!-- Heading (Metronic: text-center mb-11, h1 fw-bolder) -->
-                    <div class="text-center mb-11">
+                    <!-- Heading (rata kiri sesuai permintaan) -->
+                    <div class="mb-11">
                         <h1 data-i18n="login.sign_in" class="text-[22px] font-bold tracking-tight text-black/90 dark:text-white/95">Sign In</h1>
                     </div>
 
@@ -64,28 +64,32 @@ include ROOT.'/app/Views/layouts/header_public.php';
                     </div>
 
                     <!-- Submit (Metronic: d-grid mb-10, tombol primary full-width) -->
-                    <div class="mt-9 mb-10">
+                    <div class="mt-9">
                         <button type="submit" data-i18n="login.sign_in"
                             class="w-full h-12 rounded-[15px] bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[17px] font-semibold transition-colors">
                             Sign In
                         </button>
                     </div>
-
-                    <!-- Baris bawah ala "Not a Member yet?" (Metronic: center fs-6 fw-semibold gray) -->
-                    <div class="text-center font-semibold text-[15px] text-black/45 dark:text-white/45">
-                        Lupa password? Hubungi administrator.
-                    </div>
                 </form>
-            </div>
-
-            <!-- Footer kartu (Metronic: d-flex flex-stack px-lg-10) -->
-            <div class="flex items-center justify-between lg:px-8 pt-2 text-[11px] text-black/35 dark:text-white/35">
-                <span>&copy; <?= date('Y') ?> Kaiarasa</span>
-                <span class="uppercase tracking-wider"><?= htmlspecialchars($_SESSION['kaiarasa_lang'] ?? 'en') ?></span>
             </div>
         </div>
     </section>
 </main>
+
+<style>
+    /* Kontrol pojok kanan-atas di atas latar sage: putih translusen agar tidak kusam */
+    .fixed.top-4.right-4 .bg-background\/50,
+    .fixed.top-4.right-4 .bg-accents-2\/50 {
+        background: rgba(255, 255, 255, .12);
+        border-color: rgba(255, 255, 255, .28);
+        color: #fff;
+        backdrop-filter: blur(8px);
+    }
+    .fixed.top-4.right-4 button:hover {
+        border-color: rgba(255, 255, 255, .55);
+        color: #fff;
+    }
+</style>
 
 <script>
 (function () {
