@@ -102,7 +102,28 @@ class Migrations
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )");
 
-        // 9. Additive migration: ensure new columns exist on upgrades
+        // 9. Router Probe Logs (health history, 7-day retention)
+        $pdo->exec('CREATE TABLE IF NOT EXISTS router_probe_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            router_id INTEGER NOT NULL,
+            checked_at DATETIME NOT NULL,
+            status TEXT NOT NULL,
+            cpu_load REAL,
+            uptime TEXT,
+            response_ms INTEGER
+        )');
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_probe_logs_router ON router_probe_logs(router_id, checked_at)');
+
+        // 10. Router Events (status transitions & alerts)
+        $pdo->exec('CREATE TABLE IF NOT EXISTS router_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            router_id INTEGER NOT NULL,
+            event_type TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )');
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_router_events_router ON router_events(router_id, created_at)');
+
+        // 11. Additive migration: ensure new columns exist on upgrades
         // (CREATE TABLE IF NOT EXISTS won't add columns to existing tables)
         self::ensureColumn($pdo, 'routers', 'port', 'INTEGER DEFAULT 8728');
         self::ensureColumn($pdo, 'routers', 'ssl', 'INTEGER DEFAULT 0');
