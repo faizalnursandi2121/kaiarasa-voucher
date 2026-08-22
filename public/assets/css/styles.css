@@ -5456,6 +5456,11 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   background-color: rgb(26 28 25 / var(--tw-bg-opacity, 1));
 }
 
+.dark\:bg-\[\#33453a\]:is(.dark *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(51 69 58 / var(--tw-bg-opacity, 1));
+}
+
 .dark\:bg-black:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));

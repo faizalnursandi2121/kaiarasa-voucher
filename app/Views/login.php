@@ -7,7 +7,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
      bg full-page (sage solid, tanpa foto) · brand kiri · kartu 600px kanan.
      Nilai spasi mengikuti skala Metronic (mb-11=2.75rem, p-20=5rem, dst). -->
 
-<main class="flex-grow flex flex-col lg:flex-row w-full">
+<main class="flex-grow flex flex-col lg:flex-row w-full bg-[#5f7f67] dark:bg-[#33453a]">
 
     <!-- ===== KIRI: brand (Metronic: d-flex flex-center w-lg-50 pt-15 px-10) ===== -->
     <section class="lg:w-1/2 flex items-center justify-center pt-15 px-10 lg:pt-0 lg:pb-15">
