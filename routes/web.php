@@ -11,6 +11,7 @@ use App\Controllers\LogController;
 use App\Controllers\ProfileController;
 use App\Controllers\PublicStatusController;
 use App\Controllers\QuickPrintController;
+use App\Controllers\RouterHealthController;
 use App\Controllers\ReportController;
 use App\Controllers\SchedulerController;
 use App\Controllers\SettingsController;
@@ -50,6 +51,7 @@ $router->group(['middleware' => 'auth'], function ($router) {
 
     // Global Home / Design System
     $router->get('/', [HomeController::class, 'index']);
+    $router->get('/api/routers/health', [RouterHealthController::class, 'index']);
     $router->get('/design-system', [HomeController::class, 'designSystem']);
 
     // Global Settings (Admin Level)

@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Core\Controller;
+use App\Services\RouterHealthService;
+
+class RouterHealthController extends Controller
+{
+    public function index()
+    {
+        header('Content-Type: application/json');
+
+        // ?refresh=1 memaksa probe ulang, abaikan cache
+        $force = isset($_GET['refresh']);
+
+        echo json_encode((new RouterHealthService)->getHealth($force));
+    }
+}
