@@ -77,31 +77,47 @@ include ROOT.'/app/Views/layouts/header_public.php';
 </main>
 
 <style>
-    /* Kontrol pojok kanan-atas di atas latar sage: putih translusen agar tidak kusam */
-    .fixed.top-4.right-4 .bg-background\/50,
-    .fixed.top-4.right-4 .bg-accents-2\/50 {
-        background: rgba(255, 255, 255, .12);
-        border-color: rgba(255, 255, 255, .28);
-        color: #fff;
+    /* ===== Kontrol pojok kanan atas di atas latar sage ===== */
+
+    /* Pil bahasa */
+    .fixed.top-4.right-4 .bg-background\/50 {
+        background: rgba(255, 255, 255, .12) !important;
+        border-color: rgba(255, 255, 255, .28) !important;
+        color: #fff !important;
         backdrop-filter: blur(8px);
     }
-    .fixed.top-4.right-4 button:hover {
-        border-color: rgba(255, 255, 255, .55);
-        color: #fff;
+    .fixed.top-4.right-4 .bg-background\/50:hover {
+        background: rgba(255, 255, 255, .20) !important;
+        border-color: rgba(255, 255, 255, .55) !important;
+        color: #fff !important;
     }
 
-    /* Theme toggle: glider selalu putih solid + ikon aktif gelap,
-       supaya tidak ada ikon putih yang hilang tertimpa glider */
+    /* Pil tema (container) */
+    .fixed.top-4.right-4 .bg-accents-2\/50 {
+        background: rgba(255, 255, 255, .12) !important;
+        border-color: rgba(255, 255, 255, .28) !important;
+        backdrop-filter: blur(8px);
+    }
+
+    /* Glider: selalu putih solid agar kontras dengan sage */
     .fixed.top-4.right-4 #theme-glider {
-        background: #ffffff;
+        background: #fff !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, .18);
     }
-    .fixed.top-4.right-4 #theme-pill button {
-        color: rgba(255, 255, 255, .85);
+
+    /* Ikon tema */
+    .fixed.top-4.right-4 #theme-pill button,
+    .fixed.top-4.right-4 #theme-pill button:hover {
+        color: rgba(255, 255, 255, .85) !important;
+        background: transparent !important;
+        border-color: transparent !important;
     }
-    .fixed.top-4.right-4 #theme-pill button.text-foreground {
+    .fixed.top-4.right-4 #theme-pill button.text-foreground,
+    .fixed.top-4.right-4 #theme-pill button.text-foreground:hover {
         color: #1c2420 !important;
     }
+
+    /* Dropdown bahasa TIDAK disentuh — tetap pakai gaya normal aplikasi */
 </style>
 
 <script>
