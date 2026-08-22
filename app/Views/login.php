@@ -59,11 +59,15 @@ include ROOT.'/app/Views/layouts/header_public.php';
                         </button>
                     </div>
 
-                    <!-- Submit (Metronic: d-grid mb-10, tombol primary full-width) -->
+                    <!-- Submit (Metronic: d-grid; dengan loading state) -->
                     <div class="mt-9">
-                        <button type="submit" data-i18n="login.sign_in"
-                            class="w-full h-12 rounded-[15px] bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[17px] font-semibold transition-colors">
-                            Sign In
+                        <button type="submit" id="login-submit"
+                            class="w-full h-12 rounded-[15px] bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[17px] font-semibold transition-colors disabled:opacity-70 disabled:cursor-wait">
+                            <span id="login-btn-label" data-i18n="login.sign_in" class="inline-flex items-center justify-center gap-2">Sign In</span>
+                            <span id="login-btn-spinner" class="hidden items-center justify-center gap-2">
+                                <svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle style="opacity:.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path style="opacity:.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                <span>Signing in…</span>
+                            </span>
                         </button>
                     </div>
                 </form>
@@ -95,17 +99,34 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
 <script>
 (function () {
+    // Toggle visibilitas password
     var btn = document.getElementById('toggle-pass');
-    if (! btn) return;
-    var eye = btn.querySelector('[data-lucide="eye"]');
-    var eyeOff = btn.querySelector('[data-lucide="eye-off"]');
-    btn.addEventListener('click', function () {
-        var input = document.getElementById('login-password');
-        var isPass = input.type === 'password';
-        input.type = isPass ? 'text' : 'password';
-        eye.classList.toggle('hidden', isPass);
-        eyeOff.classList.toggle('hidden', ! isPass);
-    });
+    if (btn) {
+        var eye = btn.querySelector('[data-lucide="eye"]');
+        var eyeOff = btn.querySelector('[data-lucide="eye-off"]');
+        btn.addEventListener('click', function () {
+            var input = document.getElementById('login-password');
+            var isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+            eye.classList.toggle('hidden', isPass);
+            eyeOff.classList.toggle('hidden', ! isPass);
+        });
+    }
+
+    // Loading state saat submit (UI States #1 + #16)
+    var form = document.querySelector('form[action="/login"]');
+    if (form) {
+        form.addEventListener('submit', function () {
+            var submitBtn = document.getElementById('login-submit');
+            var label = document.getElementById('login-btn-label');
+            var spinner = document.getElementById('login-btn-spinner');
+            if (! submitBtn || submitBtn.disabled) return;
+            submitBtn.disabled = true;
+            label.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            spinner.classList.add('flex');
+        });
+    }
 })();
 </script>
 
