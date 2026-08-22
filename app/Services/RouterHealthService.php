@@ -58,6 +58,7 @@ class RouterHealthService
             $API = RouterOSAPI::fromSession($session);
             $API->attempts = 1;
             $API->timeout = 3;
+            $API->delay = 0;
 
             if (! $API->connect($session['ip_address'], $session['username'], $session['password'])) {
                 $row['error'] = 'Connection failed';
@@ -68,6 +69,13 @@ class RouterHealthService
             $resource = $API->comm('/system/resource/print');
             $activeUsers = $API->comm('/ip/hotspot/active/print');
             $API->disconnect();
+
+            if (! is_array($resource) || isset($resource['!trap']) || empty($resource[0])) {
+                $row['status'] = 'error';
+                $row['error'] = 'Resource query failed';
+
+                return $row;
+            }
 
             $row['status'] = 'online';
             $row['cpu_load'] = isset($resource[0]['cpu-load']) ? (int) $resource[0]['cpu-load'] : null;
