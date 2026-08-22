@@ -42,7 +42,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
                 <div>
                     <label for="login-password" data-i18n="login.password" class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Password</label>
                     <div class="relative">
-                        <input type="password" id="password" name="password" required autocomplete="current-password"
+                        <input type="password" id="login-password" name="password" required autocomplete="current-password"
                             class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-11 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <button type="button" id="toggle-pass" aria-label="Toggle password visibility"
                             class="absolute inset-y-0 right-0 flex items-center px-3 text-black/40 dark:text-white/40 hover:text-black/70 dark:hover:text-white/70 transition-colors z-10">
@@ -64,7 +64,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
 <script>
 document.getElementById('toggle-pass').addEventListener('click', function () {
-    var input = document.getElementById('password');
+    var input = document.getElementById('login-password');
     var eye = document.getElementById('eye-icon');
     var eyeOff = document.getElementById('eye-off-icon');
     var isPass = input.type === 'password';
