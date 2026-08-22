@@ -18,6 +18,8 @@ class Database
             $this->pdo = new PDO('sqlite:'.$dbPath);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+            $this->pdo->exec('PRAGMA journal_mode=WAL');
+            $this->pdo->exec('PRAGMA busy_timeout=5000');
         } catch (PDOException $e) {
             exit('Database Connection Failed: '.$e->getMessage());
         }

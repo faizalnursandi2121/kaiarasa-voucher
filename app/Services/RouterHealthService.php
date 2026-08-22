@@ -31,6 +31,7 @@ class RouterHealthService
         }
 
         $this->detectTransitions($results);
+        $this->pruneHistory();
 
         $payload = [
             'checked_at' => time(),
@@ -127,6 +128,25 @@ class RouterHealthService
             ]);
         } catch (\Throwable $e) {
             // logging must never break probing
+            error_log('[probe-log] '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Prune riwayat probe & event lebih tua dari 7 hari.
+     * Kegagalan prune tidak boleh mengganggu health check.
+     */
+    private function pruneHistory(): void
+    {
+        try {
+            $db = \App\Core\Database::getInstance();
+            $pdo = $db->getConnection();
+            // index tunggal utk delete tanpa router_id
+            $pdo->exec('CREATE INDEX IF NOT EXISTS idx_probe_logs_checked ON router_probe_logs(checked_at)');
+            $pdo->exec("DELETE FROM router_probe_logs WHERE checked_at < datetime('now', '-7 days')");
+            $pdo->exec("DELETE FROM router_events WHERE created_at < datetime('now', '-7 days')");
+        } catch (\Throwable $e) {
+            error_log('[probe-history] prune failed: '.$e->getMessage());
         }
     }
 
@@ -145,9 +165,14 @@ class RouterHealthService
                 // prev === null berarti belum ada log sebelumnya (probe pertama)
                 if ($prev !== null && $prev !== $row['status']) {
                     if ($prev === 'online' && $row['status'] !== 'online') {
-                        $this->insertEvent($pdo, $routerId, 'went_offline');
+                        // guard 2 menit: cegah duplikat dari siklus probe paralel
+                        if (! $this->hasRecentEvent($pdo, $routerId, 'went_offline', 2)) {
+                            $this->insertEvent($pdo, $routerId, 'went_offline');
+                        }
                     } elseif ($prev !== 'online' && $row['status'] === 'online') {
-                        $this->insertEvent($pdo, $routerId, 'connected');
+                        if (! $this->hasRecentEvent($pdo, $routerId, 'connected', 2)) {
+                            $this->insertEvent($pdo, $routerId, 'connected');
+                        }
                     }
                 }
 
@@ -159,6 +184,7 @@ class RouterHealthService
             }
         } catch (\Throwable $e) {
             // deteksi event tidak boleh mengganggu health check
+            error_log('[probe-log] '.$e->getMessage());
         }
     }
 
