@@ -12,7 +12,7 @@ use App\Core\Hooks;
 ?><?= $title ?? SiteConfig::getTitle() ?></title>
     <!-- Tailwind CSS (Local) -->
     <link rel="stylesheet" href="/assets/css/styles.css">
-    <script src="/assets/js/lucide.min.js"></script>
+    <script src="/assets/js/lucide.min.js" defer></script>
     <script src="/assets/js/sweetalert2.all.min.js" defer></script>
     <script src="/assets/js/kaiarasa.js" defer></script>
     <script src="/assets/js/modules/alert.js" defer></script>

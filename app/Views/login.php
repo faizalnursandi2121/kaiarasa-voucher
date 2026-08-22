@@ -3,6 +3,40 @@ $title = 'Kaiarasa Login';
 include ROOT.'/app/Views/layouts/header_public.php';
 ?>
 
+<!-- Initial page loader (UI States #1 Loading): menutup progresive-load asset,
+     hilang begitu DOM siap — bukan menunggu semua asset (pola captive portal) -->
+<div id="page-loader" style="position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;background:#5f7f67;transition:opacity .35s ease,visibility .35s ease;">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+         style="animation:pl-spin .8s linear infinite"><circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,.25)" stroke-width="3"/><path d="M22 12a10 10 0 0 0-10-10" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
+    <style>@keyframes pl-spin{to{transform:rotate(360deg)}}</style>
+</div>
+<script>
+(function () {
+    var loader = document.getElementById('page-loader');
+    var t0 = Date.now();
+    var done = false;
+    function hide() {
+        if (done) return;
+        done = true;
+        // tampil minimal 300ms agar tidak berkedip di koneksi cepat
+        var wait = Math.max(0, 300 - (Date.now() - t0));
+        setTimeout(function () {
+            loader.style.opacity = '0';
+            loader.style.visibility = 'hidden';
+            setTimeout(function () { loader.remove(); }, 400);
+        }, wait);
+    }
+    // Form login tidak berguna sebelum CSS siap — tunggu window.load
+    // (semua asset selesai), dengan batas aman 2.5 dtk.
+    if (document.readyState === 'complete') {
+        hide();
+    } else {
+        window.addEventListener('load', hide);
+        setTimeout(hide, 2500);
+    }
+})();
+</script>
+
 <!-- Replika anatomi Metronic demo18 creative/sign-in:
      bg full-page (sage solid, tanpa foto) · brand kiri · kartu 600px kanan.
      Nilai spasi mengikuti skala Metronic (mb-11=2.75rem, p-20=5rem, dst). -->
