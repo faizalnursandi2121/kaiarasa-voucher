@@ -73,6 +73,10 @@ include ROOT.'/app/Views/layouts/header_public.php';
 </main>
 
 <style>
+    /* Login memakai light mode + bahasa Inggris tetap.
+       Switcher tema & bahasa disembunyikan di halaman ini. */
+    .fixed.top-4.right-4 { display: none !important; }
+
     /* Background full-page di LEVEL BODY — pola Metronic creative (body.auth-bg).
        Mencegah bg terang aplikasi bocor di gutter scrollbar / area kosong. */
     body {
@@ -82,56 +86,12 @@ include ROOT.'/app/Views/layouts/header_public.php';
             radial-gradient(ellipse 70% 55% at 85% 90%, rgba(24, 44, 32, .55), transparent 60%),
             linear-gradient(160deg, #6b8b73 0%, #5f7f67 45%, #47614d 100%);
     }
-    html.dark body {
-        background-color: #2e4034 !important;
-        background-image:
-            radial-gradient(ellipse 80% 60% at 15% 10%, rgba(146, 170, 150, .18), transparent 60%),
-            radial-gradient(ellipse 70% 55% at 85% 90%, rgba(10, 20, 14, .70), transparent 60%),
-            linear-gradient(160deg, #3a4f41 0%, #2e4034 45%, #22302a 100%);
-    }
-
-    /* ===== Kontrol pojok kanan atas di atas latar sage ===== */
-
-    /* Pil bahasa */
-    .fixed.top-4.right-4 .bg-background\/50 {
-        background: rgba(255, 255, 255, .12) !important;
-        border-color: rgba(255, 255, 255, .28) !important;
-        color: #fff !important;
-        backdrop-filter: blur(8px);
-    }
-    .fixed.top-4.right-4 .bg-background\/50:hover {
-        background: rgba(255, 255, 255, .20) !important;
-        border-color: rgba(255, 255, 255, .55) !important;
-        color: #fff !important;
-    }
-
-    /* Pil tema (container) */
-    .fixed.top-4.right-4 .bg-accents-2\/50 {
-        background: rgba(255, 255, 255, .12) !important;
-        border-color: rgba(255, 255, 255, .28) !important;
-        backdrop-filter: blur(8px);
-    }
-
-    /* Glider: selalu putih solid agar kontras dengan sage */
-    .fixed.top-4.right-4 #theme-glider {
-        background: #fff !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .18);
-    }
-
-    /* Ikon tema */
-    .fixed.top-4.right-4 #theme-pill button,
-    .fixed.top-4.right-4 #theme-pill button:hover {
-        color: rgba(255, 255, 255, .85) !important;
-        background: transparent !important;
-        border-color: transparent !important;
-    }
-    .fixed.top-4.right-4 #theme-pill button.text-foreground,
-    .fixed.top-4.right-4 #theme-pill button.text-foreground:hover {
-        color: #1c2420 !important;
-    }
-
-    /* Dropdown bahasa TIDAK disentuh — tetap pakai gaya normal aplikasi */
 </style>
+<script>
+    /* Paksa light mode + bahasa Inggris di halaman login */
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('kaiarasa_lang', 'en');
+</script>
 
 <script>
 (function () {
