@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\EncryptionHelper;
 use App\Libraries\RouterOSAPI;
 use App\Models\Config;
 
@@ -53,6 +54,10 @@ class RouterHealthService
             'active_users' => null,
             'error' => null,
         ];
+
+        if (! empty($session['password'])) {
+            $session['password'] = EncryptionHelper::decrypt($session['password']);
+        }
 
         try {
             $API = RouterOSAPI::fromSession($session);
