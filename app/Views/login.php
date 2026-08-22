@@ -7,11 +7,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
      bg full-page (sage solid, tanpa foto) · brand kiri · kartu 600px kanan.
      Nilai spasi mengikuti skala Metronic (mb-11=2.75rem, p-20=5rem, dst). -->
 
-<main class="flex-grow flex flex-col lg:flex-row w-full bg-[#5f7f67] dark:bg-[#2e4034]"
-      style="background-image:
-        radial-gradient(ellipse 80% 60% at 15% 10%, rgba(146,170,150,.40), transparent 60%),
-        radial-gradient(ellipse 70% 55% at 85% 90%, rgba(24,44,32,.55), transparent 60%),
-        linear-gradient(160deg, #6b8b73 0%, #5f7f67 45%, #47614d 100%);">
+<main class="flex-grow flex flex-col lg:flex-row w-full">
 
     <!-- ===== KIRI: brand (Metronic: d-flex flex-center w-lg-50 pt-15 px-10) ===== -->
     <section class="lg:w-1/2 flex items-center justify-center pt-[3.75rem] px-10 lg:pt-0 lg:pb-[3.75rem]">
@@ -77,6 +73,23 @@ include ROOT.'/app/Views/layouts/header_public.php';
 </main>
 
 <style>
+    /* Background full-page di LEVEL BODY — pola Metronic creative (body.auth-bg).
+       Mencegah bg terang aplikasi bocor di gutter scrollbar / area kosong. */
+    body {
+        background-color: #5f7f67 !important;
+        background-image:
+            radial-gradient(ellipse 80% 60% at 15% 10%, rgba(146, 170, 150, .40), transparent 60%),
+            radial-gradient(ellipse 70% 55% at 85% 90%, rgba(24, 44, 32, .55), transparent 60%),
+            linear-gradient(160deg, #6b8b73 0%, #5f7f67 45%, #47614d 100%);
+    }
+    html.dark body {
+        background-color: #2e4034 !important;
+        background-image:
+            radial-gradient(ellipse 80% 60% at 15% 10%, rgba(146, 170, 150, .18), transparent 60%),
+            radial-gradient(ellipse 70% 55% at 85% 90%, rgba(10, 20, 14, .70), transparent 60%),
+            linear-gradient(160deg, #3a4f41 0%, #2e4034 45%, #22302a 100%);
+    }
+
     /* ===== Kontrol pojok kanan atas di atas latar sage ===== */
 
     /* Pil bahasa */
