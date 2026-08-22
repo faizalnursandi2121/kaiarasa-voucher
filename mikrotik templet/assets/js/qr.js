@@ -1,6 +1,28 @@
+// Lazy-load html5-qrcode hanya saat scanner pertama kali dipakai.
+// Library ini ~375 KB — memuatnya eager di setiap buka halaman
+// membuat captive portal terasa lambat.
+var qrLibPromise = null;
+function loadQrLibrary() {
+    if (window.Html5Qrcode) return Promise.resolve();
+    if (!qrLibPromise) {
+        qrLibPromise = new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            s.src = 'assets/js/html5-qrcode.min.js';
+            s.onload = function () { resolve(); };
+            s.onerror = function () {
+                qrLibPromise = null; // allow retry on next attempt
+                reject(new Error('Gagal memuat library QR scanner'));
+            };
+            document.head.appendChild(s);
+        });
+    }
+    return qrLibPromise;
+}
+
 function qrMixin() {
     return {
         showQr: false,
+        qrLoading: false,
         qrScanner: null,
         qrType: 'login', // 'login' or 'check'
         scanTarget: 'voucher', // 'voucher', 'member', 'check'
@@ -21,6 +43,16 @@ function qrMixin() {
         },
 
         async startCamera() {
+            this.qrLoading = true;
+            try {
+                await loadQrLibrary();
+            } catch (err) {
+                this.qrError = err.message;
+                return;
+            } finally {
+                this.qrLoading = false;
+            }
+
             if (this.qrScanner) {
                 await this.stopCamera();
             }
@@ -65,6 +97,13 @@ function qrMixin() {
         async scanFile(event) {
             const file = event.target.files[0];
             if (!file) return;
+
+            try {
+                await loadQrLibrary();
+            } catch (err) {
+                this.qrError = err.message;
+                return;
+            }
 
             // Stop camera temporarily if running
             await this.stopCamera();

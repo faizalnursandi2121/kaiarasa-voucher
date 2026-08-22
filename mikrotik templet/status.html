@@ -9,8 +9,14 @@
 
     <title>Kaiarasa — Connected</title>
 
+    <!-- Refresh data via fetch polling (lihat initStatusPage di main.js).
+         TIDAK lagi pakai meta refresh agar tidak me-reload seluruh halaman
+         + CSS + JS + gambar dari router setiap interval. -->
     $(if refresh-timeout)
-    <meta http-equiv="refresh" content="$(refresh-timeout-secs); url=$(link-status)">
+    <script>
+        window.MivoRefreshSecs = $(refresh-timeout-secs);
+        window.MivoStatusUrl = '$(link-status)';
+    </script>
     $(endif)
 
     <link rel="stylesheet" href="assets/css/styles.css">
@@ -530,7 +536,7 @@
             <div
                 class="bg-slide"
                 :class="{ active: slide === i }"
-                :style="'background-image: url(' + src + ')'"
+                :style="(slide === i || slide === (i + 1) % slides.length) ? 'background-image: url(' + src + ')' : ''"
             ></div>
         </template>
         <div class="background-overlay"></div>
@@ -593,14 +599,14 @@
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"></path></svg>
                         Download
                     </p>
-                    <p class="value">$(bytes-out-nice)</p>
+                    <p class="value" id="dl-value">$(bytes-out-nice)</p>
                 </div>
                 <div class="stat">
                     <p class="label">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
                         Upload
                     </p>
-                    <p class="value">$(bytes-in-nice)</p>
+                    <p class="value" id="ul-value">$(bytes-in-nice)</p>
                 </div>
             </div>
 
@@ -704,10 +710,29 @@
 </div>
 
 <script>
+    // Warm-up: preload sisa background slide secara bertahap SETELAH halaman siap
+    (function () {
+        var bgSlides = [
+            'assets/img/bg-1.webp',
+            'assets/img/bg-2.webp',
+            'assets/img/bg-3.webp',
+            'assets/img/bg-4.webp',
+            'assets/img/bg-5.webp'
+        ];
+        var i = 0;
+        function preloadNext() {
+            if (i >= bgSlides.length) return;
+            var img = new Image();
+            img.onload = img.onerror = function () { setTimeout(preloadNext, 2000); };
+            img.src = bgSlides[i++];
+        }
+        setTimeout(preloadNext, 3000);
+    })();
+
     // Page loader: show on load/refresh, fade out when ready
     (function () {
         var loader = document.getElementById('page-loader');
-        var minDelay = 600;
+        var minDelay = 200;
         var started = Date.now();
         var hidden = false;
 
@@ -721,8 +746,10 @@
             }, wait);
         }
 
-        window.addEventListener('load', hide);
-        setTimeout(hide, 3000);
+        // Hide saat DOM siap — BUKAN window.load, agar tidak menunggu
+        // semua asset selesai di-download dari router.
+        document.addEventListener('DOMContentLoaded', hide);
+        setTimeout(hide, 2500);
     })();
 </script>
 </body>

@@ -114,6 +114,8 @@ window.initStatusPage = function(props) {
         apiData: null,
         fetchError: null, // New debug state
         hasApi: window.MivoConfig?.apiBaseUrl !== '',
+        pollTimer: null,
+        pollFailures: 0,
         
         // Derived Limits & Usage
         limitTimeSecs: 0,
@@ -140,6 +142,9 @@ window.initStatusPage = function(props) {
                 console.log("MivoStatus: Local/Dev mode detected. Fetching API...");
                 this.fetchStatus();
             }
+
+            // Auto-refresh data via fetch (pengganti meta refresh full-reload)
+            this.startPolling();
         },
         
         updateUptime() {
@@ -282,7 +287,83 @@ window.initStatusPage = function(props) {
         },
 
         refresh() {
-            window.location.reload();
+            // Update via fetch tanpa full reload; fallback reload jika gagal
+            this.pollStatus(true);
+        },
+
+        startPolling() {
+            var secs = parseInt(window.MivoRefreshSecs, 10) || 60;
+            if (!window.MivoStatusUrl) return;
+            var self = this;
+            this.pollTimer = setInterval(function () { self.pollStatus(); }, secs * 1000);
+        },
+
+        stopPolling() {
+            if (this.pollTimer) {
+                clearInterval(this.pollTimer);
+                this.pollTimer = null;
+            }
+        },
+
+        // Ambil halaman status itu lagi via fetch, lalu update angka di halaman
+        // secara in-place. Jauh lebih ringan daripada meta refresh yang me-reload
+        // seluruh halaman + CSS + JS + gambar dari router setiap interval.
+        async pollStatus(fallbackReload) {
+            var url = window.MivoStatusUrl;
+            if (!url) return;
+
+            // Cache-buster agar router mengirim data terbaru
+            url += (url.indexOf('?') > -1 ? '&' : '?') + '_=' + Date.now();
+
+            try {
+                const res = await fetch(url, { headers: { 'Accept': 'text/html' } });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const html = await res.text();
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+
+                // 1. Counter Download/Upload (elemen ber-id di status.html)
+                ['dl-value', 'ul-value'].forEach(function (id) {
+                    const src = doc.getElementById(id);
+                    const dst = document.getElementById(id);
+                    if (src && dst) dst.textContent = src.textContent;
+                });
+
+                // 2. Variabel MikroTik dari atribut x-data halaman hasil fetch
+                const xdata = doc.querySelector('[x-data*="initStatusPage"]');
+                if (xdata) {
+                    const attr = xdata.getAttribute('x-data');
+                    const pick = function (name) {
+                        const m = attr.match(new RegExp(name + ":\\s*'([^']*)'"));
+                        return m ? m[1] : '';
+                    };
+
+                    const uptime = pick('uptime');
+                    if (uptime && uptime.indexOf('$') !== 0) {
+                        // Resync uptime dari server (koreksi drift timer lokal)
+                        this.uptimeSecs = window.parseTimeSeconds(uptime);
+                        this.updateUptime();
+                    }
+
+                    this.remainBytesStr = pick('remainBytes');
+                    this.remainTimeStr = pick('remainTime');
+
+                    const limitTime = pick('limitTime');
+                    const limitBytes = pick('limitBytes');
+                    if (limitTime && limitTime.indexOf('$') !== 0) this.limitTimeStr = limitTime;
+                    if (limitBytes && limitBytes.indexOf('$') !== 0) this.limitBytesStr = limitBytes;
+
+                    this.calculateLimits();
+                }
+
+                this.pollFailures = 0;
+            } catch (e) {
+                this.pollFailures = (this.pollFailures || 0) + 1;
+                if (fallbackReload) {
+                    // Fallback terakhir: full reload seperti perilaku lama
+                    window.location.reload();
+                }
+                // Polling berkala: diam saja, tick berikutnya mencoba lagi
+            }
         },
 
         async fetchStatus() {
