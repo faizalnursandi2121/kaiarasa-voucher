@@ -34,3 +34,6 @@ deploy.ps1
 # Plugins
 /plugins/*
 !/plugins/.gitkeep.superpowers
+
+# Brainstorm/mockup workspace
+.superpowers/
