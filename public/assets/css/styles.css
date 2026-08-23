@@ -4673,12 +4673,7 @@ div.swal2-confirm:disabled {
 }
 
 div.swal2-confirm {
-  background-color: var(--foreground);
-  color: var(--background);
-}
-
-div.swal2-confirm:hover {
-  opacity: 0.9;
+  margin: 0px !important;
 }
 
 @media print {
@@ -4688,7 +4683,14 @@ div.swal2-confirm:hover {
 }
 
 div.swal2-confirm {
+  background-color: #5f7f67 !important;
+  /* sage — senada primary button app */
+  color: #ffffff !important;
   border-radius: 0.5rem !important;
+}
+
+div.swal2-confirm:hover {
+  background-color: #6b8b73 !important;
 }
 
 div.swal2-cancel {
@@ -6054,6 +6056,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
   .sm\:items-center {
     align-items: center;
+  }
+
+  .sm\:gap-5 {
+    gap: 1.25rem;
   }
 
   .sm\:self-auto {

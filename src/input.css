@@ -466,8 +466,13 @@ div.swal2-cancel {
 }
 
 div.swal2-confirm {
-    @apply btn btn-primary !important;
+    @apply btn !m-0 !important;
+    background-color: #5f7f67 !important; /* sage — senada primary button app */
+    color: #ffffff !important;
     border-radius: 0.5rem !important;
+}
+div.swal2-confirm:hover {
+    background-color: #6b8b73 !important;
 }
 
 div.swal2-cancel {

@@ -8,26 +8,24 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
 ?>
 <!-- Modern Navbar (Tailwind) -->
 <nav class="sticky top-0 z-50 w-full border-b border-accents-2 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Container sama dengan konten halaman (max-w-[1400px] px-4 sm:px-6) agar logo sejajar kartu -->
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
         <div class="flex h-16 items-center justify-between">
-            <!-- Brand & Desktop Nav -->
-            <div class="flex items-center gap-8">
-                <a href="/" class="flex items-center gap-2 group">
+            <!-- Brand & Global Search -->
+            <div class="flex items-center gap-3 sm:gap-5 flex-1 min-w-0">
+                <a href="/" class="flex items-center gap-2 group shrink-0">
                     <img src="/assets/img/logo-sage.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" width="120" height="32" class="h-6 w-auto block dark:hidden transition-transform group-hover:scale-110">
                     <img src="/assets/img/logo-white.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" width="120" height="32" class="h-6 w-auto hidden dark:block transition-transform group-hover:scale-110">
                 </a>
 
-                <!-- Desktop Navigation Links (Hidden on Mobile) -->
-                <?php /* Menu teks dihapus: Settings kini di dalam dropdown profile */ ?>
-            </div>
-
-            <!-- Global Search (Desktop) -->
-            <div class="flex-1 max-w-md mx-auto hidden md:block" id="global-search-wrap">
-                <div class="relative">
-                    <i data-lucide="search" class="absolute inset-y-0 left-3 w-4 h-4 my-auto text-accents-5"></i>
-                    <input type="search" id="global-search" autocomplete="off"
-                        placeholder="Search router, IP address, location…"
-                        class="w-full h-10 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/[.08] dark:border-white/[.08] pl-9 pr-3 text-sm outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                <!-- Global Search (Desktop) — tepat di sebelah kanan logo -->
+                <div class="hidden md:block w-full max-w-sm" id="global-search-wrap">
+                    <div class="relative">
+                        <i data-lucide="search" class="absolute inset-y-0 left-3 w-4 h-4 my-auto text-accents-5"></i>
+                        <input type="search" id="global-search" autocomplete="off"
+                            placeholder="Search router, IP address, location…"
+                            class="w-full h-10 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/[.08] dark:border-white/[.08] pl-9 pr-3 text-sm outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    </div>
                 </div>
             </div>
 
