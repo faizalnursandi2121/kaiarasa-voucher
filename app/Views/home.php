@@ -873,16 +873,13 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         });
     });
 
-    // tombol Add Router pada navbar → buka modal (bukan redirect)
-    // stopPropagation: cegah handler SPA navbar menukar #app-dynamic
-    document.addEventListener('click', function (e) {
-        var a = e.target.closest('a[href="/settings/add"]');
-        if (!a) return;
-        e.preventDefault();
-        e.stopPropagation();
-        if (window.__kaiarasaAppSpaNavBlocked !== undefined) { /* noop */ }
+    // Expose untuk handler global navbar (tombol Add Router dari halaman mana pun)
+    window.__openRouterModal = openModal;
+    // Auto-open bila diminta dari halaman lain (flag oleh navbar global handler)
+    if (sessionStorage.getItem('mivoOpenAddRouter') === '1') {
+        sessionStorage.removeItem('mivoOpenAddRouter');
         openModal('add', null);
-    }, true);
+    }
 
     /* ================= wiring ================= */
     document.getElementById('btn-refresh').addEventListener('click', function () { load(true); });

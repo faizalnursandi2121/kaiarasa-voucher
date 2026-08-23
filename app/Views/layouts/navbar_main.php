@@ -138,6 +138,26 @@ window.KaiarasaNav = {
     }
 };
 
+// Tombol Add Router — berfungsi dari halaman mana pun:
+// di home -> langsung buka modal; di halaman lain -> navigasi home lalu auto-open.
+document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href="/settings/add"]');
+    if (!a) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if (document.getElementById('router-modal') && typeof window.__openRouterModal === 'function') {
+        window.__openRouterModal('add', null);
+        return;
+    }
+    try { sessionStorage.setItem('mivoOpenAddRouter', '1'); } catch (err) {}
+    if (window.location.pathname !== '/') {
+        history.pushState({}, '', '/');
+        window.dispatchEvent(new PopStateEvent('popstate'));
+    } else {
+        window.location.href = '/';
+    }
+}, true);
+
 // Muat notifikasi saat pertama dibuka (capture-phase: jalan sebelum toggle)
 var __notifLoaded = false;
 document.addEventListener('click', function (e) {
