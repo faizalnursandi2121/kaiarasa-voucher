@@ -115,13 +115,39 @@ badge-warning: dot #f59e0b, bg rgba(245,158,11,.10)
 ukuran: font 11px/600, padding 4px 10px
 
 ### Table
-Header: 11px/600 uppercase ink-50, border-bottom. Baris: 13px, hover bg rgba(ink,.03).
+Header: bg rgba(95,127,103,.07) (dark .12) + teks #47614d (dark #92aa96), 11px/600
+uppercase tracking-wider, border-bottom rgba(#5f7f67,.20). Baris: 13px,
+hover bg rgba(95,127,103,.05). Berlaku global via `.table-glass`.
+
+### Toggle Switch (SSL, dll)
+Track w-40px h-22px radius-full; off bg rgba(ink,.15)/dark white/.15; on bg accent.
+Knob putih 16px, translate-x saat on. Markup: checkbox `sr-only peer` + span peer-checked.
+Label helper opsional di kanan (mis. port default).
+
+### Resource Mini-Bar (CPU/MEM)
+Satu sel, dua bar bertumpuk: label 10px/600 (w-7) + persen 11px tabular-nums (w-8,
+text-right) + track w-max-80px h-6px radius-full bg ink/12%.
+Fill: hijau <50%, amber 50-80%, merah >80%. Min-width fill 6% agar nilai kecil terlihat.
+
+### Section Header Modal
+Label 13px/700 uppercase tracking .14em opacity-90 + garis horizontal flex-1
+(bg ink/6%). Dipakai untuk mengelompokkan form panjang (CONNECTION / HOTSPOT / dst).
+Field input berikon: wrapper relative + ikon Lucide absolute left-14px opacity-40,
+input padding-left 40-44px.
 
 ## 6. Layout Global
 
-- Header app: h-60px, logo kiri, action kanan (theme toggle, user menu)
-- Sidebar: w-240px, item menu h-38px radius 10px, item aktif bg rgba(146,170,150,.15)
-- Konten max-w-1200px center, padding 24px
+- Header app: h-64px SOLID bg-background (tanpa transparansi/blur saat scroll),
+  urutan: logo -> global search (max-w-sm, tepat di kanan logo) -> action kanan
+  (Add Router, bell, user menu). Container navbar = max-w-7xl px-4 sm:px-6 lg:px-8,
+  IDENTIK dengan container konten agar logo sejajar kartu pertama.
+- Sidebar session (per-router): w-256px, grup menu; item aktif = tint sage ring.
+- Sub-nav settings: pill horizontal (System / API CORS / Plugins).
+- Settings hub (/settings): menu vertikal kiri (~224px) + panel konten kanan;
+  switch tab tanpa reload, hash URL #system/#api-cors/#plugins.
+- IA: CRUD router = Home; Voucher Templates & Logos = sidebar dashboard
+  (/{session}/voucher-templates, /{session}/logos); /settings config-only.
+- Konten max-w-7xl center, px-4 sm:px-6 lg:px-8
 
 ## 7. Mapping Tailwind (cheatsheet)
 
@@ -167,7 +193,7 @@ gunakan namanya saat diskusi desain & review kode.
 | 11 | **Success** | Toast hijau (SweetAlert existing) atau badge emerald; auto-dismiss. |
 | 12 | **Error** | Toast merah untuk aksi; pesan inline merah untuk validasi form. Selalu sebut penyebabnya. |
 | 13 | **Warning** | Amber — operasi berjalan tapi ada catatan (mis. API router gagal tapi router reachable). |
-| 14 | **Toast / Notification** | Satu mekanisme resmi: SweetAlert (existing). Jangan campur sistem notifikasi lain. |
+| 14 | **Toast / Notification** | Dua mekanisme resmi: (a) **Kaiarasa.toast(type,title,msg)** — toast kecil kanan-atas untuk feedback sukses/gagal aksi; (b) **SweetAlert modal** HANYA untuk konfirmasi destruktif (premium-card solid, tombol aksi sage). Jangan pakai Swal.fire besar untuk feedback biasa. |
 | 15 | **Progress** | Bar/percent hanya untuk proses >3 detik; selain itu cukup spinner. |
 | 39 | **Completed** | Lihat #10. |
 | 40 | **Cancelled** | Kembali ke state sebelum proses tanpa sisa perubahan; toast netral "dibatalkan". |
@@ -214,3 +240,30 @@ gunakan namanya saat diskusi desain & review kode.
 
 > Aturan praktis: **setiap elemen interaktif baru harus menyebut state mana saja yang
 > diimplementasikan dari daftar ini di deskripsi PR/task-nya.**
+
+## 9. Auth / Login Page
+
+- Split layout: kiri brand block (logo + nama + tagline) di atas gradient sage
+  full-page; kanan kartu putih **w-440px** p-8/p-9 radius-16.
+- Heading "Sign In" (22px/700) + subjudul 14px ink-50 ("Enter your Access").
+- Input h-54px dengan ikon leading (user/lock) left-14px; eye toggle = kotak 28px
+  rounded-md hover bg tint; state: berslash saat tersembunyi, mata polos saat terlihat.
+- Tombol submit h-54px full-width, `active:scale-[0.98]`.
+- Light mode dipaksa; theme/lang pills disembunyikan. Bahasa dikunci Inggris.
+
+## 10. Keputusan Global
+
+| Keputusan | Detail |
+|---|---|
+| Bahasa | **English-only** — LanguageHelper & I18n terkunci ke 'en'; switcher dihapus |
+| Notifikasi feedback | Selalu `Kaiarasa.toast()` (lihat #14) |
+| Konfirmasi delete | Modal premium-card solid + tombol sage (bukan merah default Swal); teks merah hanya pada kata aksi destruktif bila perlu |
+| Cache CSS | Link styles.css diberi `?v=filemtime()` otomatis (header_main & header_public) |
+| Anti-glassmorphism | Popup/dialog WAJIB solid (putih/#1a1c19); transparan+blur dilarang |
+
+## 11. Changelog Pattern
+
+- 2026-08: Table head global -> sage tint; btn-primary -> sage; Swal solid card;
+  toast Kaiarasa sebagai mekanisme feedback; navbar solid + search sebelah logo;
+  settings hub bertab; templates/logos pindah per-session; login card direvamp;
+  English-only lock; cache-busting CSS.
