@@ -311,10 +311,28 @@ git add app/Controllers/DashboardController.php && git commit -m "feat(dashboard
 
 ```
 page-header: "Dashboard" + lokasi/session aktif (chip nama session)
-grid KPI 4 kartu (pattern stat-card Home):
-  Active Users (live, badge dot) · Sold Today · Revenue Today (formatCurrency) · Created Today
+grid KPI 4 kartu — markup persis pattern yang sudah diimplementasi:
+```
+<div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
+  <div class="flex items-center gap-3 mb-4">
+    <span class="w-11 h-11 rounded-full flex items-center justify-center {chip}">
+      <i data-lucide="{icon}" class="w-5 h-5 {iconColor}"></i>
+    </span>
+    <span class="text-sm font-semibold">{Label}</span>
+  </div>
+  <p class="text-3xl font-bold tabular-nums leading-none">{value}</p>
+</div>
+```
+Chips: Active=emerald-500/10+text-emerald-600 · Sold=sage #5f7f67/10+#47614d ·
+Revenue=#92aa96/15 · Created=amber-500/10+text-amber-600. Nilai: formatCurrency utk Revenue.
 grid lg:grid-cols-3:
-  [col-span-1] QUICK ACTIONS card: 3 tombol besar ikon+label (link)
+  [col-span-1] QUICK ACTIONS card: 3 link vertikal, tiap item:
+```
+<a href="{href}" class="flex items-center gap-3 rounded-xl border border-black/[.07] dark:border-white/[.08] p-3.5 hover:bg-[#5f7f67]/[.08] hover:border-[#5f7f67]/40 transition-colors">
+  <i data-lucide="{icon}" class="w-5 h-5 text-[#47614d] dark:text-[#92aa96]"></i>
+  <span class="text-[13px] font-semibold">{label}</span>
+</a>
+```
   [col-span-2] RECENT ACTIVITY card: list ikon+teks+detail (empty state "No activity yet.")
 grid lg:grid-cols-2:
   USER ACTIVITY card (toggle Today/7D pills; area chart)
