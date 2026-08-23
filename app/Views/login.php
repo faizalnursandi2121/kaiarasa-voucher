@@ -83,7 +83,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
                     </div>
 
                     <!-- Password (Metronic: fv-row mb-3) -->
-                    <div class="relative mb-3">
+                    <div class="relative mb-5">
                         <input type="password" id="login-password" name="password" required autocomplete="current-password"
                             data-i18n-placeholder="login.password"
                             placeholder="Password"
