@@ -44,9 +44,24 @@ class Logo
         return $randomString;
     }
 
-    public function getAll()
+    /**
+     * Semua logo. Dengan $sessionId: milik session tsb + global (fallback).
+     * Flag is_global ditambahkan pada tiap baris.
+     */
+    public function getAll(?int $sessionId = null)
     {
-        $stmt = $this->db->query("SELECT * FROM {$this->table} ORDER BY created_at DESC");
+        if ($sessionId !== null) {
+            // Session scope: milik session ini + global (NULL) sebagai fallback
+            $stmt = $this->db->query(
+                "SELECT *, (session_id IS NULL) AS is_global FROM {$this->table} ".
+                'WHERE session_id = :sid OR session_id IS NULL ORDER BY (session_id IS NULL) ASC, created_at DESC',
+                ['sid' => $sessionId]
+            );
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        $stmt = $this->db->query("SELECT *, 0 AS is_global FROM {$this->table} ORDER BY created_at DESC");
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -58,7 +73,7 @@ class Logo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function add($file)
+    public function add($file, ?int $sessionId = null)
     {
         // Security: Strict MIME Type Check
         $finfo = new \finfo(FILEINFO_MIME_TYPE);
@@ -95,12 +110,13 @@ class Logo
         $targetPath = $uploadDir.$filename;
 
         if (move_uploaded_file($file['tmp_name'], $targetPath)) {
-            $this->db->query("INSERT INTO {$this->table} (id, name, path, type, size) VALUES (:id, :name, :path, :type, :size)", [
+            $this->db->query("INSERT INTO {$this->table} (id, name, path, type, size, session_id) VALUES (:id, :name, :path, :type, :size, :sid)", [
                 'id' => $id,
                 'name' => $file['name'],
                 'path' => '/uploads/logos/'.$filename,
                 'type' => $extension,
                 'size' => $file['size'],
+                'sid' => $sessionId,
             ]);
 
             return $id;

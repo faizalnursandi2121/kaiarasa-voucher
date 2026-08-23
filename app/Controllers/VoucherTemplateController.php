@@ -8,6 +8,7 @@ use App\Helpers\FlashHelper;
 use App\Helpers\TemplateHelper;
 use App\Models\Logo;
 use App\Models\Setting;
+use App\Models\Config;
 use App\Models\VoucherTemplateModel;
 
 class VoucherTemplateController extends Controller
@@ -17,10 +18,23 @@ class VoucherTemplateController extends Controller
         Middleware::auth();
     }
 
-    public function index()
+    public function index(?string $session = null)
     {
         $templateModel = new VoucherTemplateModel;
-        $templates = $templateModel->getAll();
+
+        $routerId = null;
+        if ($session !== null && $session !== '') {
+            $configModel = new Config;
+            $router = $configModel->getSession($session);
+            if (! $router) {
+                FlashHelper::set('error', 'toasts.router_not_found', '', [], true);
+                header('Location: /settings');
+                exit;
+            }
+            $routerId = (int) $router['id'];
+        }
+
+        $templates = $templateModel->getAll($routerId);
 
         // Fetch current default template
         $settingModel = new Setting;
@@ -29,6 +43,7 @@ class VoucherTemplateController extends Controller
         $data = [
             'templates' => $templates,
             'defaultTemplate' => $defaultTemplate,
+            'sessionName' => $session,
         ];
 
         return $this->view('settings/voucher_templates/index', $data);

@@ -57,12 +57,55 @@ class SettingsController extends Controller
         ]);
     }
 
-    // ... (Existing Store methods) ...
+    /**
+     * Detect if the client expects a JSON response (fetch/XHR calls).
+     */
+    private function wantsJson(): bool
+    {
+        return str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json')
+            || ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest';
+    }
+
+    /**
+     * Emit a JSON response body.
+     */
+    private function jsonResult(bool $success, string $message, array $extra = [], int $status = 200): void
+    {
+        header('Content-Type: application/json');
+        http_response_code($status);
+        echo json_encode(array_merge(['success' => $success, 'message' => $message], $extra));
+    }
+
+    /**
+     * Router payload safe for JSON responses (never includes the password).
+     *
+     * @param  array  $router  Raw router row/data
+     * @param  int|string|null  $id
+     */
+    private function routerPublicData(array $router, $id = null): array
+    {
+        unset($router['password']);
+        if ($id !== null) {
+            $router['id'] = $id;
+        }
+
+        return $router;
+    }
+
     public function store()
     {
         // Sanitize Session Name (Duplicate Frontend Logic)
         $rawSess = $_POST['sessname'] ?? '';
         $sessName = preg_replace('/[^a-z0-9-]/', '', strtolower(str_replace(' ', '-', $rawSess)));
+
+        // JSON mode: validate early
+        if ($this->wantsJson()) {
+            if ($sessName === '' || empty($_POST['ipmik'])) {
+                $this->jsonResult(false, 'Session name and IP address are required', [], 422);
+
+                return;
+            }
+        }
 
         $data = [
             'session_name' => $sessName,
@@ -84,6 +127,16 @@ class SettingsController extends Controller
         try {
             $configModel->addSession($data);
 
+            $newId = Database::getInstance()->getConnection()->lastInsertId();
+
+            if ($this->wantsJson()) {
+                $this->jsonResult(true, 'Router '.$data['session_name'].' added', [
+                    'router' => $this->routerPublicData($data, $newId),
+                ]);
+
+                return;
+            }
+
             $redirect = '/settings/routers';
             if (isset($_POST['action']) && $_POST['action'] === 'connect') {
                 $redirect = '/'.urlencode($data['session_name']).'/dashboard';
@@ -92,6 +145,11 @@ class SettingsController extends Controller
             FlashHelper::set('success', 'toasts.router_added', 'toasts.router_added_desc', ['name' => $data['session_name']], true);
             header("Location: $redirect");
         } catch (\Exception $e) {
+            if ($this->wantsJson()) {
+                $this->jsonResult(false, 'Error adding session: '.$e->getMessage(), [], 422);
+
+                return;
+            }
             echo 'Error adding session: '.$e->getMessage();
         }
     }
@@ -134,6 +192,18 @@ class SettingsController extends Controller
         $rawSess = $_POST['sessname'] ?? '';
         $sessName = preg_replace('/[^a-z0-9-]/', '', strtolower(str_replace(' ', '-', $rawSess)));
 
+        // JSON mode: router must exist
+        $configModel = new Config;
+        $existingRouter = null;
+        if ($this->wantsJson()) {
+            $existingRouter = $configModel->getSessionById($id);
+            if (! $existingRouter) {
+                $this->jsonResult(false, 'Router not found', [], 422);
+
+                return;
+            }
+        }
+
         $data = [
             'session_name' => $sessName,
             'ip_address' => $_POST['ipmik'],
@@ -150,9 +220,16 @@ class SettingsController extends Controller
             'ssl' => isset($_POST['ssl']) ? 1 : 0,
         ];
 
-        $configModel = new Config;
         try {
             $configModel->updateSession($id, $data);
+
+            if ($this->wantsJson()) {
+                $this->jsonResult(true, 'Router '.$data['session_name'].' updated', [
+                    'router' => $this->routerPublicData($data, $id),
+                ]);
+
+                return;
+            }
 
             $redirect = '/settings/routers';
             if (isset($_POST['action']) && $_POST['action'] === 'connect') {
@@ -162,6 +239,11 @@ class SettingsController extends Controller
             FlashHelper::set('success', 'toasts.router_updated', 'toasts.router_updated_desc', ['name' => $data['session_name']], true);
             header("Location: $redirect");
         } catch (\Exception $e) {
+            if ($this->wantsJson()) {
+                $this->jsonResult(false, 'Error updating session: '.$e->getMessage(), [], 422);
+
+                return;
+            }
             echo 'Error updating session: '.$e->getMessage();
         }
     }
@@ -170,9 +252,70 @@ class SettingsController extends Controller
     {
         $id = $_POST['id'];
         $configModel = new Config;
+
+        if ($this->wantsJson()) {
+            $existing = $configModel->getSessionById($id);
+            if (! $existing) {
+                $this->jsonResult(false, 'Router not found', [], 422);
+
+                return;
+            }
+        }
+
         $configModel->deleteSession($id);
+
+        if ($this->wantsJson()) {
+            $this->jsonResult(true, 'Router deleted');
+
+            return;
+        }
+
         FlashHelper::set('success', 'toasts.router_deleted', 'toasts.router_deleted_desc', [], true);
         header('Location: /settings/routers');
+    }
+
+    /**
+     * First session slug: quick_access=1 first, else lowest id.
+     */
+    private function firstSessionSlug(): ?string
+    {
+        $row = Database::getInstance()
+            ->query('SELECT session_name FROM routers ORDER BY quick_access DESC, id ASC LIMIT 1')
+            ->fetch();
+
+        return $row['session_name'] ?? null;
+    }
+
+    /**
+     * Legacy /settings/voucher-templates -> 302 to /{firstSession}/voucher-templates.
+     */
+    public function redirectToVoucherTemplates()
+    {
+        $slug = $this->firstSessionSlug();
+        if ($slug === null) {
+            FlashHelper::set('error', 'Tambahkan router dulu', '', [], true);
+            header('Location: /settings');
+            exit;
+        }
+
+        header('Location: /'.urlencode($slug).'/voucher-templates');
+        exit;
+    }
+
+    /**
+     * Legacy /settings/logos -> 302 to /{firstSession}/logos.
+     */
+    public function redirectToLogos()
+    {
+        $slug = $this->firstSessionSlug();
+        if ($slug === null) {
+            FlashHelper::set('error', 'Tambahkan router dulu', '', [], true);
+            header('Location: /settings');
+            exit;
+        }
+
+        header('Location: /'.urlencode($slug).'/logos');
+        exit;
     }
 
     public function backup()
@@ -361,11 +504,24 @@ class SettingsController extends Controller
 
     // --- Logo Management ---
 
-    public function logos()
+    public function logos(?string $session = null)
     {
-        $logoModel = new Logo; // Fully qualified to avoid import issues for now or add import
-        $logoModel->syncFiles(); // Ensure FS and DB are in sync
-        $logos = $logoModel->getAll();
+        $logoModel = new Logo;
+        $logoModel->syncFiles();
+
+        $routerId = null;
+        if ($session !== null && $session !== '') {
+            $config = new Config;
+            $router = $config->getSession($session);
+            if (! $router) {
+                FlashHelper::set('error', 'toasts.router_not_found', '', [], true);
+                header('Location: /settings');
+                exit;
+            }
+            $routerId = (int) $router['id'];
+        }
+
+        $logos = $logoModel->getAll($routerId);
 
         // Format size for display (since DB stores raw bytes or maybe we want helper there)
         // Actually model stored bytes, we format in View or here.
@@ -374,14 +530,15 @@ class SettingsController extends Controller
             $logo['formatted_size'] = FormatHelper::formatBytes($logo['size']);
         }
 
-        return $this->view('settings/logos', ['logos' => $logos]);
+        return $this->view('settings/logos', ['logos' => $logos, 'sessionName' => $session]);
     }
 
-    public function uploadLogo()
+    public function uploadLogo(?string $session = null)
     {
+        $session = $session ?: ($_POST['session_ctx'] ?? null);
         if (! isset($_FILES['logo_file']) || $_FILES['logo_file']['error'] !== UPLOAD_ERR_OK) {
             FlashHelper::set('error', 'toasts.upload_failed', 'toasts.no_file_selected', [], true);
-            header('Location: /settings/logos');
+            header('Location: '.($session ? '/'.rawurlencode($session).'/logos' : '/settings/logos'));
             exit;
         }
 
@@ -400,7 +557,7 @@ class SettingsController extends Controller
         header('Location: /settings/logos');
     }
 
-    public function deleteLogo()
+    public function deleteLogo(?string $session = null)
     {
         $id = $_POST['id']; // Changed from filename to id
 
@@ -408,7 +565,7 @@ class SettingsController extends Controller
         $logoModel->delete($id);
 
         FlashHelper::set('success', 'toasts.logo_deleted', 'toasts.logo_deleted_desc', [], true);
-        header('Location: /settings/logos');
+        header('Location: '.($_POST['session_ctx'] ?? null ? '/'.rawurlencode($_POST['session_ctx']).'/logos' : '/settings/logos'));
     }
 
     // --- API CORS Management ---

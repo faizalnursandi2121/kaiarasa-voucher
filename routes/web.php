@@ -56,6 +56,22 @@ $router->group(['middleware' => 'auth'], function ($router) {
     $router->get('/api/routers/events', [RouterHealthController::class, 'events']);
     $router->get('/design-system', [HomeController::class, 'designSystem']);
 
+
+// --- Helper: session pertama utk redirect route lama templates/logos ---
+$redirectToSessionRoute = function (string $suffix) {
+    $config = new \App\Models\Config;
+    $sessions = $config->getAllSessions();
+    usort($sessions, function ($a, $b) {
+        return ($b['quick_access'] ?? 0) <=> ($a['quick_access'] ?? 0);
+    });
+    if (! empty($sessions)) {
+        header('Location: /'.rawurlencode($sessions[0]['session_name']).$suffix);
+    } else {
+        header('Location: /settings');
+    }
+    exit;
+};
+
     // Global Settings (Admin Level)
     $router->get('/settings', [SettingsController::class, 'routers']);
     $router->get('/settings/system', [SettingsController::class, 'system']);
@@ -71,9 +87,9 @@ $router->group(['middleware' => 'auth'], function ($router) {
     $router->post('/settings/restore', [SettingsController::class, 'restore']);
 
     // Voucher Templates
-    $router->get('/settings/voucher-templates', [VoucherTemplateController::class, 'index']);
-    $router->get('/settings/voucher-templates/preview/{id}', [VoucherTemplateController::class, 'preview']);
-    $router->get('/settings/voucher-templates/add', [VoucherTemplateController::class, 'add']);
+    $router->get('/settings/voucher-templates', function () use ($redirectToSessionRoute) { $redirectToSessionRoute('/voucher-templates'); });
+    $router->get('/settings/voucher-templates/preview/{id}', function () use ($redirectToSessionRoute) { $redirectToSessionRoute('/voucher-templates'); });
+    $router->get('/settings/voucher-templates/add', function () use ($redirectToSessionRoute) { $redirectToSessionRoute('/voucher-templates'); });
     $router->post('/settings/voucher-templates/store', [VoucherTemplateController::class, 'store']);
     $router->get('/settings/voucher-templates/edit/{id}', [VoucherTemplateController::class, 'edit']);
     $router->post('/settings/voucher-templates/update', [VoucherTemplateController::class, 'update']);
@@ -81,7 +97,7 @@ $router->group(['middleware' => 'auth'], function ($router) {
     $router->post('/settings/voucher-templates/set-default', [VoucherTemplateController::class, 'setDefault']);
 
     // Logo Management
-    $router->get('/settings/logos', [SettingsController::class, 'logos']);
+    $router->get('/settings/logos', function () use ($redirectToSessionRoute) { $redirectToSessionRoute('/logos'); });
     $router->post('/settings/logos/upload', [SettingsController::class, 'uploadLogo']);
     $router->post('/settings/logos/delete', [SettingsController::class, 'deleteLogo']);
 
@@ -103,8 +119,15 @@ $router->group(['middleware' => 'auth'], function ($router) {
 
     $router->group(['middleware' => 'router.valid'], function ($router) {
 
+
+
         // Dashboard
         $router->get('/{session}/dashboard', [DashboardController::class, 'index']);
+
+        // Voucher Templates & Logos (pindahan dari settings — per-session)
+        $router->get('/{session}/voucher-templates', [VoucherTemplateController::class, 'index']);
+        $router->get('/{session}/logos', [SettingsController::class, 'logos']);
+
 
         // Hotspot - Profiles
         $router->get('/{session}/hotspot/profiles', [ProfileController::class, 'index']);

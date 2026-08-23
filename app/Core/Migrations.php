@@ -128,6 +128,10 @@ class Migrations
         self::ensureColumn($pdo, 'routers', 'port', 'INTEGER DEFAULT 8728');
         self::ensureColumn($pdo, 'routers', 'ssl', 'INTEGER DEFAULT 0');
 
+        // 12. Per-session scoping untuk voucher templates & logos
+        self::ensureColumn($pdo, 'voucher_templates', 'session_id', 'INTEGER NULL REFERENCES routers(id)');
+        self::ensureColumn($pdo, 'logos', 'session_id', 'INTEGER NULL REFERENCES routers(id)');
+
         return true;
     }
 
