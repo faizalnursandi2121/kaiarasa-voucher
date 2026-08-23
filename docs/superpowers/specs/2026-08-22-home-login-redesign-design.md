@@ -226,3 +226,51 @@ Tombol **Open** per baris → dashboard session terkait. Tanpa hapus di home
 Mencari lintas: session_name, hotspot_name, ip_address, description(lokasi).
 Implementasi: filter client-side atas data health (cukup utk ratusan router);
 belum perlu endpoint search terpisah.
+
+---
+
+# AMANDEMEN 2 — Home v2.1: Router CRUD di Home + Settings Config-only (2026-08-23)
+
+## R1. Pemisahan tanggung jawab FINAL
+
+| Area | Isi |
+|---|---|
+| **Home** | Monitoring + CRUD router penuh (add/edit/delete via modal) |
+| **Dashboard session** | Bisnis hotspot + 🆕 Voucher Templates + 🆕 Logos (pindah penuh dari settings) |
+| **Settings** | Config-only: System · API CORS · Plugins (routers KELUAR) |
+
+## R2. Router CRUD via modal di Home
+
+- [+ Add Router] di header membuka **modal** (field = form /settings/add existing)
+- Row actions: ikon **⋮ 3-titik** → menu: Open Dashboard · Edit Router (modal) ·
+  Test Connection · Delete (merah + konfirmasi #26). Klik baris = buka dashboard
+- Backend: store/update/delete existing menerima mode JSON (deteksi
+  `Accept: application/json` atau header `X-Requested-With`) → balas
+  `{success, message, router?}`; perilaku redirect lama tetap untuk halaman settings
+- `/settings/add` & `/settings/edit/{id}` tetap ada sebagai deep-link fallback
+
+## R3. Tile "Routers" DIHAPUS dari baris navigasi home (redundan).
+Tiles final: Network Overview (aktif) · Logs (Soon) · Alerts (Soon) · Settings.
+Add Router eksklusif di header.
+
+## R4. Voucher Templates & Logos pindah PENUH ke konteks session
+
+- Routes baru: `/{session}/voucher-templates*` dan `/{session}/logos`
+- Route lama `/settings/voucher-templates*` & `/settings/logos` → **redirect 302**
+  ke session pertama yang quick_access (fallback: session pertama di DB)
+- Sidebar dashboard: grup baru "Voucher" berisi Voucher Templates + Logos
+- Navbar Settings: link templates/logos dihapus
+- **Skema per-session (fallback global):**
+  ```sql
+  ALTER TABLE voucher_templates ADD COLUMN session_id INTEGER NULL;
+  ALTER TABLE logos ADD COLUMN session_id INTEGER NULL;
+  ```
+  - `session_id NULL` = default global (fallback semua session)
+  - List per session: tampilkan milik session tsb + global (badge "Default")
+  - Create dari dalam session → session_id terisi otomatis
+  - Delete: milik session bebas; global hanya dari... (v1: bebas, konfirmasi)
+- Settings page cleanup: hapus section routers + link templates/logos
+
+## R5. UI States wajib (design.md §8) berlaku untuk semua modal & migrasi:
+loading submit, success/error toast, validation inline, destructive confirm,
+empty states, refresh tabel setelah CRUD.
