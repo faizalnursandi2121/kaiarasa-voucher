@@ -31,6 +31,12 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             <span class="font-semibold text-sm">Settings</span>
             <span class="text-[11px] opacity-50">System settings</span>
         </a>
+        <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5 flex flex-col items-center justify-center gap-2 min-h-[110px] opacity-50 cursor-not-allowed relative">
+            <span class="absolute top-2 right-2 text-[9px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-600 rounded-full px-2 py-0.5">Soon</span>
+            <i data-lucide="bar-chart-3" class="w-7 h-7"></i>
+            <span class="font-semibold text-sm">Reports</span>
+            <span class="text-[11px] opacity-50">Coming soon</span>
+        </div>
     </div>
 
     <!-- ===== 2. MAIN GRID ===== -->

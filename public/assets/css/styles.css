@@ -2374,10 +2374,6 @@ input:-webkit-autofill,
   width: 2.5rem;
 }
 
-.w-11 {
-  width: 2.75rem;
-}
-
 .w-12 {
   width: 3rem;
 }
@@ -3241,10 +3237,6 @@ input:-webkit-autofill,
 .bg-amber-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(245 158 11 / var(--tw-bg-opacity, 1));
-}
-
-.bg-amber-500\/10 {
-  background-color: rgb(245 158 11 / 0.1);
 }
 
 .bg-amber-500\/15 {
@@ -4268,10 +4260,6 @@ input:-webkit-autofill,
 
 .opacity-100 {
   opacity: 1;
-}
-
-.opacity-30 {
-  opacity: 0.3;
 }
 
 .opacity-40 {
@@ -5453,10 +5441,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   text-decoration-line: underline;
 }
 
-.hover\:opacity-60:hover {
-  opacity: 0.6;
-}
-
 .hover\:opacity-80:hover {
   opacity: 0.8;
 }
@@ -6227,10 +6211,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .lg\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .lg\:grid-cols-5 {
