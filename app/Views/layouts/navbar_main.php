@@ -25,7 +25,17 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
                 </div>
                 <?php } ?>
             </div>
-            
+
+            <!-- Global Search (Desktop) -->
+            <div class="flex-1 max-w-md mx-auto hidden md:block" id="global-search-wrap">
+                <div class="relative">
+                    <i data-lucide="search" class="absolute inset-y-0 left-3 w-4 h-4 my-auto text-accents-5"></i>
+                    <input type="search" id="global-search" autocomplete="off"
+                        placeholder="Search router, IP address, location…"
+                        class="w-full h-10 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/[.08] dark:border-white/[.08] pl-9 pr-3 text-sm outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                </div>
+            </div>
+
             <!-- Right side controls -->
             <div class="flex items-center gap-3">
                 <!-- Desktop Control Pill (Hidden on Mobile) -->
@@ -49,6 +59,13 @@ foreach ($languages as $lang) {
                             <?php } ?>
                         </div>
                     </div>
+
+                    <!-- Add Router (Primary) -->
+                    <?php if (isset($_SESSION['user_id'])) { ?>
+                    <a href="/settings/add" class="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[13px] font-semibold transition-colors">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Add Router
+                    </a>
+                    <?php } ?>
 
                     <!-- Theme Toggle (Segmented) -->
                     <div class="segmented-switch theme-toggle" title="Toggle Theme">
