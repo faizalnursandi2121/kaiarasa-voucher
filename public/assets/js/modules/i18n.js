@@ -4,7 +4,8 @@
  */
 class I18n {
     constructor() {
-        this.currentLang = localStorage.getItem('kaiarasa_lang') || 'en';
+        // Finalisasi: aplikasi English-only. Bahasa tersimpan diabaikan.
+        this.currentLang = 'en';
         this.translations = {};
         this.isLoaded = false;
         

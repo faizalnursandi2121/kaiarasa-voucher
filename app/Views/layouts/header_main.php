@@ -10,7 +10,7 @@ $theme = 'light'; // Default theme
 $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
 ?>
 <!DOCTYPE html>
-<html lang="<?= htmlspecialchars($_COOKIE["kaiarasa_lang"] ?? "en") ?>">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">

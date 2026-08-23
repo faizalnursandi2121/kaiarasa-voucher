@@ -480,6 +480,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         var online = routers.filter(function (r) { return r.status === 'online'; }).length;
         var offline = routers.filter(function (r) { return r.status === 'offline'; }).length;
         var connecting = routers.filter(function (r) { return r.status === 'connecting'; }).length;
+        var error = routers.filter(function (r) { return r.status === 'error'; }).length;
         var pct = function (n) { return total ? Math.round(n/total*1000)/10 + '%' : '-'; };
         var set = function (id, num, sub) {
             document.getElementById('stat-'+id).textContent = num;
@@ -489,7 +490,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         set('online', online, online+' dari '+total);
         set('offline', offline, pct(offline));
         set('connecting', connecting, pct(connecting));
-        return { total: total, online: online, offline: offline, connecting: connecting };
+        return { total: total, online: online, offline: offline, connecting: connecting, error: error };
     }
 
     /* ================= charts ================= */
@@ -597,7 +598,11 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 state.routers = data.routers || [];
                 state.checkedAt = data.checked_at;
                 state.page = 1;
-                renderTable(); renderStats(state.routers); renderSysHealth(true);
+                renderTable();
+                var counts = renderStats(state.routers);
+                chartDonut(counts);
+                chartTopCPU(state.routers);
+                renderSysHealth(true);
                 // history & events hanya perlu sesekali
                 return Promise.all([
                     fetch('/api/routers/history?hours=24').then(function (r) { return r.json(); }),

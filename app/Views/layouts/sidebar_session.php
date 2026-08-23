@@ -131,24 +131,6 @@ $getInitials = function ($name) {
                         <!-- Language Switcher -->
                         <!-- Language Switcher (Kaiarasa Component) -->
                         <!-- Language Switcher -->
-                        <div class="relative group/lang" onmouseleave="closeMenu('lang-dropdown-sidebar')">
-                            <button type="button" class="pill-lang-btn" onclick="toggleMenu('lang-dropdown-sidebar', this)" aria-expanded="false" aria-controls="lang-dropdown-sidebar" title="Change Language">
-                                <i data-lucide="languages" class="w-4 h-4 text-foreground dark:text-foreground" stroke-width="2.5"></i>
-                            </button>
-                            <div id="lang-dropdown-sidebar" class="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-48 bg-background/95 backdrop-blur-2xl border border-accents-2 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-out origin-top opacity-0 scale-95 invisible pointer-events-none z-50 dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
-                                <div class="px-3 py-2 text-[10px] font-bold text-accents-4 uppercase tracking-widest border-b border-accents-2/50 bg-accents-1/50" data-i18n="sidebar.switch_language"><?= LanguageHelper::t('sidebar.switch_language', 'Select Language') ?></div>
-                                <?php
-                                $languages = LanguageHelper::getAvailableLanguages();
-foreach ($languages as $lang) {
-    ?>
-                                <button onclick="Kaiarasa.modules.I18n.loadLanguage('<?= $lang['code'] ?>')" class="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-accents-1 transition-colors text-accents-6 hover:text-foreground group/lang-item">
-                                    <span class="fi fi-<?= $lang['flag'] ?> rounded-sm shadow-sm transition-transform group-hover/lang-item:scale-110"></span>
-                                    <span><?= $lang['name'] ?></span>
-                                </button>
-                                <?php } ?>
-                            </div>
-                        </div>
-
                         <div class="pill-divider"></div>
 
                         <!-- Theme Toggle (Segmented) -->
@@ -436,7 +418,7 @@ foreach ($languages as $lang) {
     <!-- Main Content Wrapper -->
     <div class="flex-1 flex flex-col overflow-hidden w-full">
         <!-- Mobile Header (Visible only on small screens) -->
-        <header class="h-16 flex items-center justify-between px-4 border-b border-accents-2 bg-background/80 backdrop-blur-md md:hidden z-20 sticky top-0">
+        <header class="h-16 flex items-center justify-between px-4 border-b border-accents-2 bg-background md:hidden z-20 sticky top-0">
              <div class="flex items-center gap-2">
                 <img src="/assets/img/logo-sage.webp" class="h-6 w-auto block dark:hidden">
                 <img src="/assets/img/logo-white.webp" class="h-6 w-auto hidden dark:block">

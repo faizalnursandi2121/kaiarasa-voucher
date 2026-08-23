@@ -23,13 +23,9 @@ class LanguageHelper
             return self::$currentLang;
         }
 
-        $lang = $_COOKIE['kaiarasa_lang'] ?? 'en';
-        $langFile = ROOT.'/public/lang/'.$lang.'.json';
-
-        // Fallback to English if the language file doesn't exist
-        if (! file_exists($langFile)) {
-            $lang = 'en';
-        }
+        // Finalisasi: aplikasi dikunci ke Bahasa Inggris.
+        // Cookie kaiarasa_lang diabaikan agar terjemahan tidak berubah-ubah.
+        $lang = 'en';
 
         self::$currentLang = $lang;
 

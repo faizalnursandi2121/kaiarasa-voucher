@@ -16,7 +16,7 @@ $menu = [
     ['label' => 'plugins_title', 'url' => '/settings/plugins', 'namespace' => 'settings'],
 ];
 ?>
-<nav id="settings-sidebar" class="w-full sticky top-[64px] z-40 bg-background/95 backdrop-blur border-b border-accents-2 transition-all duration-300">
+<nav id="settings-sidebar" class="w-full sticky top-[64px] z-40 bg-background border-b border-accents-2 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 md:px-8"> <!-- Aligned with header_main max-w-7xl -->
         <div class="relative py-2 flex items-start gap-2">
             

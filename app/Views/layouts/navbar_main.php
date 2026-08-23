@@ -7,7 +7,7 @@ use App\Helpers\LanguageHelper;
 $uri = $_SERVER['REQUEST_URI'] ?? '/';
 ?>
 <!-- Modern Navbar (Tailwind) -->
-<nav class="sticky top-0 z-50 w-full border-b border-accents-2 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+<nav class="sticky top-0 z-50 w-full border-b border-accents-2 bg-background">
     <!-- Container sama dengan konten halaman (max-w-7xl) agar logo sejajar kartu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
@@ -85,7 +85,7 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
     </div>
 
     <!-- Mobile Navigation Drawer (Hidden by default) -->
-    <div id="mobile-navbar-menu" class="md:hidden border-t border-accents-2 bg-background/95 backdrop-blur-xl transition-all duration-300 ease-in-out max-h-0 opacity-0 invisible overflow-hidden">
+    <div id="mobile-navbar-menu" class="md:hidden border-t border-accents-2 bg-background transition-all duration-300 ease-in-out max-h-0 opacity-0 invisible overflow-hidden">
         <div class="px-4 pt-4 pb-6 space-y-4">
             <!-- Nav Links -->
             <?php if (isset($_SESSION['user_id'])) { ?>
