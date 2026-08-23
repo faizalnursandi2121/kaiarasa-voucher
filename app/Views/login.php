@@ -52,7 +52,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
     <!-- ===== KANAN: kartu form (Metronic: p-12 p-lg-20 justify-end → card w-md-600px p-20 rounded-4) ===== -->
     <section class="flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
-        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[500px] p-8 md:p-14 lg:p-20 shadow-[0_1px_2px_rgba(0,0,0,.06),0_16px_40px_-12px_rgba(0,0,0,.25)] animate-fade-in-up">
+        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[560px] p-8 md:p-12 shadow-[0_1px_2px_rgba(0,0,0,.06),0_16px_40px_-12px_rgba(0,0,0,.25)] animate-fade-in-up">
 
             <!-- Wrapper dalam (Metronic: px-lg-10 pb-15 pb-lg-20) -->
             <div class="lg:px-8 pb-8 lg:pb-14">
@@ -74,18 +74,22 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
                     <!-- Username (Metronic: fv-row mb-8, input form-control besar radius .95rem) -->
                     <div class="mb-5">
+                        <div class="relative">
+                        <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <input type="text" name="username" required autocomplete="username" autofocus
                             data-i18n-placeholder="login.username"
                             placeholder="Username"
-                            class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 h-[54px] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 pl-11 h-[54px] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                        </div>
                     </div>
 
-                    <!-- Password (Metronic: fv-row mb-3) -->
+                    <!-- Password -->
                     <div class="relative">
+                        <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <input type="password" id="login-password" name="password" required autocomplete="current-password"
                             data-i18n-placeholder="login.password"
                             placeholder="Password"
-                            class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 pr-12 h-[54px] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 pl-11 pr-12 h-[54px] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <button type="button" id="toggle-pass" aria-label="Toggle password visibility"
                             class="absolute inset-y-0 right-0 flex items-center px-4 text-black/40 dark:text-white/40 hover:text-black/70 dark:hover:text-white/70 transition-colors">
                             <span class="relative block w-[18px] h-[18px]">

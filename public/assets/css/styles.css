@@ -1871,6 +1871,10 @@ input:-webkit-autofill,
   left: 0.875rem;
 }
 
+.left-4 {
+  left: 1rem;
+}
+
 .right-0 {
   right: 0px;
 }
@@ -3748,6 +3752,10 @@ input:-webkit-autofill,
 
 .pl-10 {
   padding-left: 2.5rem;
+}
+
+.pl-11 {
+  padding-left: 2.75rem;
 }
 
 .pl-3 {
@@ -6194,8 +6202,8 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
     width: 2rem;
   }
 
-  .md\:w-\[500px\] {
-    width: 500px;
+  .md\:w-\[560px\] {
+    width: 560px;
   }
 
   .md\:w-auto {
@@ -6231,8 +6239,8 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
     align-items: center;
   }
 
-  .md\:p-14 {
-    padding: 3.5rem;
+  .md\:p-12 {
+    padding: 3rem;
   }
 
   .md\:p-6 {
