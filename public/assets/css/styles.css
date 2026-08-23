@@ -1851,6 +1851,10 @@ input:-webkit-autofill,
   bottom: 1.5rem;
 }
 
+.bottom-full {
+  bottom: 100%;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -2422,6 +2426,10 @@ input:-webkit-autofill,
   width: 1.5rem;
 }
 
+.w-60 {
+  width: 15rem;
+}
+
 .w-64 {
   width: 16rem;
 }
@@ -2678,6 +2686,10 @@ input:-webkit-autofill,
 
 .cursor-default {
   cursor: default;
+}
+
+.cursor-help {
+  cursor: help;
 }
 
 .cursor-not-allowed {
@@ -3016,6 +3028,10 @@ input:-webkit-autofill,
   border-width: 2px;
 }
 
+.border-4 {
+  border-width: 4px;
+}
+
 .border-b {
   border-bottom-width: 1px;
 }
@@ -3184,6 +3200,11 @@ input:-webkit-autofill,
   border-color: rgb(255 255 255 / 0.2);
 }
 
+.border-t-\[\#1a1c19\] {
+  --tw-border-opacity: 1;
+  border-top-color: rgb(26 28 25 / var(--tw-border-opacity, 1));
+}
+
 .\!bg-green-500\/10 {
   background-color: rgb(34 197 94 / 0.1) !important;
 }
@@ -3199,6 +3220,11 @@ input:-webkit-autofill,
 .bg-\[\#0d1117\] {
   --tw-bg-opacity: 1;
   background-color: rgb(13 17 23 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#1a1c19\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(26 28 25 / var(--tw-bg-opacity, 1));
 }
 
 .bg-\[\#5f7f67\] {
@@ -3519,6 +3545,10 @@ input:-webkit-autofill,
 
 .p-2 {
   padding: 0.5rem;
+}
+
+.p-2\.5 {
+  padding: 0.625rem;
 }
 
 .p-20 {
@@ -5547,6 +5577,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   color: var(--primary);
 }
 
+.group\/tip:focus-within .group-focus-within\/tip\:opacity-100 {
+  opacity: 1;
+}
+
 .group:hover .group-hover\:pointer-events-auto {
   pointer-events: auto;
 }
@@ -5626,6 +5660,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 .group:hover .group-hover\:text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.group\/tip:hover .group-hover\/tip\:opacity-100 {
+  opacity: 1;
 }
 
 .group:hover .group-hover\:opacity-0 {
@@ -5723,6 +5761,11 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
 .dark\:border-white\/\[\.08\]:is(.dark *) {
   border-color: rgb(255 255 255 / .08);
+}
+
+.dark\:border-t-black:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-top-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
 }
 
 .dark\:\!bg-red-900\/10:is(.dark *) {
