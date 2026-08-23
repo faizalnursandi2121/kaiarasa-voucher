@@ -1,6 +1,9 @@
 <?php
 // Template Editor (Shared for Add/Edit)
 $isEdit = isset($template);
+// Base URL mengikuti konteks: per-session (dari sidebar dashboard) atau global lama
+$vtBase = ! empty($sessionName) ? '/'.rawurlencode($sessionName).'/voucher-templates' : '/settings/voucher-templates';
+$lgBase = ! empty($sessionName) ? '/'.rawurlencode($sessionName).'/logos' : '/settings/logos';
 $title = $isEdit ? 'Edit Template' : 'New Template';
 $initialContent = $template['content'] ?? '<div style="border: 1px solid #000; padding: 10px; width: 300px; background-color: #fff;">
     <h3>{{dns_name}}</h3>
@@ -23,13 +26,13 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     <!-- Header -->
     <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 flex-shrink-0">
         <div class="flex items-center gap-4">
-            <a href="/settings/voucher-templates" class="text-accents-5 hover:text-foreground transition-colors">
+            <a href="<?= $vtBase ?>" class="text-accents-5 hover:text-foreground transition-colors">
                 <i data-lucide="arrow-left" class="w-5 h-5"></i>
             </a>
             <h1 class="text-xl font-bold tracking-tight text-foreground"><?= $title ?></h1>
         </div>
         
-        <form id="templateForm" action="<?= $isEdit ? '/settings/voucher-templates/update' : '/settings/voucher-templates/store' ?>" method="POST" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+        <form id="templateForm" action="<?= $isEdit ? $vtBase.'/update' : $vtBase.'/store' ?>" method="POST" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
             <?php if ($isEdit) { ?>
                 <input type="hidden" name="id" value="<?= $template['id'] ?>">
             <?php } ?>
@@ -207,7 +210,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         <p>{{qrcode size=150 logo=<span class="text-primary">YOUR_LOGO_ID</span>}}</p>
                     </div>
 
-                    <a href="/settings/logos" class="inline-flex items-center gap-1 text-sm text-primary hover:underline mt-2">
+                    <a href="<?= $lgBase ?>" class="inline-flex items-center gap-1 text-sm text-primary hover:underline mt-2">
                         <i data-lucide="image" class="w-4 h-4"></i> <span data-i18n="settings.logo_manage_link">Manage Logos</span>
                     </a>
                 </div>

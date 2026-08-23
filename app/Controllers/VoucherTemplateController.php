@@ -18,21 +18,39 @@ class VoucherTemplateController extends Controller
         Middleware::auth();
     }
 
+    /**
+     * Resolve session slug ke row router (null = konteks global).
+     * Redirect ke /settings bila session tidak ditemukan.
+     */
+    private function resolveSession(?string $session): ?array
+    {
+        if ($session === null || $session === '') {
+            return null;
+        }
+
+        $router = (new Config)->getSession($session);
+        if (! $router) {
+            FlashHelper::set('error', 'toasts.router_not_found', '', [], true);
+            header('Location: /settings');
+            exit;
+        }
+
+        return $router;
+    }
+
+    /** Kembali ke index sesuai konteks (per-session atau global). */
+    private function indexRedirect(?string $session): void
+    {
+        header('Location: '.($session ? '/'.rawurlencode($session).'/voucher-templates' : '/settings/voucher-templates'));
+        exit;
+    }
+
     public function index(?string $session = null)
     {
         $templateModel = new VoucherTemplateModel;
 
-        $routerId = null;
-        if ($session !== null && $session !== '') {
-            $configModel = new Config;
-            $router = $configModel->getSession($session);
-            if (! $router) {
-                FlashHelper::set('error', 'toasts.router_not_found', '', [], true);
-                header('Location: /settings');
-                exit;
-            }
-            $routerId = (int) $router['id'];
-        }
+        $router = $this->resolveSession($session);
+        $routerId = $router !== null ? (int) $router['id'] : null;
 
         $templates = $templateModel->getAll($routerId);
 
@@ -44,6 +62,7 @@ class VoucherTemplateController extends Controller
             'templates' => $templates,
             'defaultTemplate' => $defaultTemplate,
             'sessionName' => $session,
+            'session' => $session,
         ];
 
         return $this->view('settings/voucher_templates/index', $data);
@@ -65,7 +84,7 @@ class VoucherTemplateController extends Controller
         echo TemplateHelper::getPreviewPage($content);
     }
 
-    public function add()
+    public function add(?string $session = null)
     {
         $logoModel = new Logo;
         $logos = $logoModel->getAll();
@@ -76,12 +95,14 @@ class VoucherTemplateController extends Controller
 
         $data = [
             'logoMap' => $logoMap,
+            'sessionName' => $session,
+            'session' => $session,
         ];
 
         return $this->view('settings/voucher_templates/add', $data);
     }
 
-    public function store()
+    public function store(?string $session = null)
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return;
@@ -90,33 +111,32 @@ class VoucherTemplateController extends Controller
         $name = $_POST['name'] ?? 'Untitled';
         $content = $_POST['content'] ?? '';
 
-        // Session context could be 'global' or specific. For now, let's treat settings templates as global or assign to 'global' session name if column exists.
-        // My migration made 'session_name' NOT NULL.
-        // I will use 'global' for templates created in Settings.
+        // Konteks per-session: template terikat ke router tsb.
+        // Tanpa konteks (global) -> session_id NULL + label 'global'.
+        $router = $this->resolveSession($session);
 
         $data = [
-            'router_id' => 0, // Global templates
-            'session_name' => 'global',
+            'router_id' => $router !== null ? (int) $router['id'] : 0,
+            'session_name' => $router !== null ? $router['session_name'] : 'global',
             'name' => $name,
             'content' => $content,
+            'session_id' => $router !== null ? (int) $router['id'] : null,
         ];
 
         $templateModel = new VoucherTemplateModel;
         $templateModel->add($data);
 
         FlashHelper::set('success', 'toasts.template_created', 'toasts.template_created_desc', ['name' => $name], true);
-        header('Location: /settings/voucher-templates');
-        exit;
+        $this->indexRedirect($session);
     }
 
-    public function edit($id)
+    public function edit($id, ?string $session = null)
     {
         $templateModel = new VoucherTemplateModel;
         $template = $templateModel->getById($id);
 
         if (! $template) {
-            header('Location: /settings/voucher-templates');
-            exit;
+            $this->indexRedirect($session);
         }
 
         $logoModel = new Logo;
@@ -129,12 +149,14 @@ class VoucherTemplateController extends Controller
         $data = [
             'template' => $template,
             'logoMap' => $logoMap,
+            'sessionName' => $session,
+            'session' => $session,
         ];
 
         return $this->view('settings/voucher_templates/edit', $data);
     }
 
-    public function update()
+    public function update(?string $session = null)
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return;
@@ -153,11 +175,10 @@ class VoucherTemplateController extends Controller
         $templateModel->update($id, $data);
 
         FlashHelper::set('success', 'toasts.template_updated', 'toasts.template_updated_desc', ['name' => $name], true);
-        header('Location: /settings/voucher-templates');
-        exit;
+        $this->indexRedirect($session);
     }
 
-    public function delete()
+    public function delete(?string $session = null)
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return;
@@ -168,11 +189,10 @@ class VoucherTemplateController extends Controller
         $templateModel->delete($id);
 
         FlashHelper::set('success', 'toasts.template_deleted', 'toasts.template_deleted_desc', [], true);
-        header('Location: /settings/voucher-templates');
-        exit;
+        $this->indexRedirect($session);
     }
 
-    public function setDefault()
+    public function setDefault(?string $session = null)
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return;
@@ -184,7 +204,6 @@ class VoucherTemplateController extends Controller
         $settingModel->set('default_voucher_template', $id);
 
         FlashHelper::set('success', 'toasts.default_template_set', 'toasts.default_template_set_desc', [], true);
-        header('Location: /settings/voucher-templates');
-        exit;
+        $this->indexRedirect($session);
     }
 }

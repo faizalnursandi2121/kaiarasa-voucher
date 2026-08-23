@@ -1,6 +1,8 @@
 <?php
 $title = 'Logo Management';
 $no_main_container = true;
+// Base URL mengikuti konteks: per-session (dari sidebar dashboard) atau global lama
+$lgBase = ! empty($sessionName) ? '/'.rawurlencode($sessionName).'/logos' : '/settings/logos';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 
 use App\Helpers\LanguageHelper;
@@ -8,7 +10,7 @@ use App\Helpers\LanguageHelper;
 
 <!-- Sub-Navbar Navigation -->
 <div id="app-dynamic" class="contents">
-<?php include ROOT.'/app/Views/layouts/sidebar_settings.php'; ?>
+<?php if (empty($sessionName)) include ROOT.'/app/Views/layouts/sidebar_settings.php'; ?>
 
 <div id="settings-dynamic" class="contents">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
@@ -34,7 +36,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
             <!-- Upload Section -->
             <section>
                 <div class="card p-8 border-dashed border-2 bg-accents-1 hover:bg-background transition-colors text-center relative group">
-                    <form action="/settings/logos/upload" method="POST" enctype="multipart/form-data" class="absolute inset-0 w-full h-full cursor-pointer z-50">
+                    <form action="<?= $lgBase ?>/upload" method="POST" enctype="multipart/form-data" class="absolute inset-0 w-full h-full cursor-pointer z-50">
                         <input type="file" name="logo_file" accept=".png,.jpg,.jpeg,.svg,.gif" onchange="this.form.submit()" class="block w-full h-full opacity-0 cursor-pointer">
                     </form>
         
@@ -70,7 +72,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                             <button onclick="copyToClipboard('<?= $logo['id'] ?>')" class="p-2 bg-white text-black rounded hover:bg-accents-2 transition-colors" title="Copy ID">
                                 <i data-lucide="hash" class="w-4 h-4"></i>
                             </button>
-                            <form action="/settings/logos/delete" method="POST" class="delete-logo-form">
+                            <form action="<?= $lgBase ?>/delete" method="POST" class="delete-logo-form">
                                 <input type="hidden" name="id" value="<?= $logo['id'] ?>">
                                 <button type="submit" class="p-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors" title="Delete">
                                     <i data-lucide="trash-2" class="w-4 h-4"></i>

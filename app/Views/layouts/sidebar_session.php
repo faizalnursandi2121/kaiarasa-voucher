@@ -7,8 +7,9 @@ use App\Models\Config;
 $uri = $_SERVER['REQUEST_URI'] ?? '/';
 $isDashboard = strpos($uri, '/dashboard') !== false;
 $isGenerate = strpos($uri, '/hotspot/generate') !== false;
-$isTemplates = strpos($uri, '/settings/voucher-templates') !== false;
-$isSettings = ($uri === '/settings' || strpos($uri, '/settings/') !== false) && ! $isTemplates;
+$isTemplates = strpos($uri, '/voucher-templates') !== false;
+$isLogos = strpos($uri, '/logos') !== false;
+$isSettings = ($uri === '/settings' || strpos($uri, '/settings/') !== false) && ! $isTemplates && ! $isLogos;
 
 // Hotspot Group Active Check
 $hotspotPages = ['/hotspot/users', '/hotspot/profiles', '/hotspot/generate', '/hotspot/cookies'];
@@ -384,10 +385,16 @@ foreach ($languages as $lang) {
                  <span data-i18n="sidebar.settings"><?= LanguageHelper::t('sidebar.settings', 'Settings') ?></span>
             </a>
 
-            <!-- Voucher Templates -->
-            <a href="/settings/voucher-templates" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= $isTemplates ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
+            <!-- Voucher Templates (per-session) -->
+            <a href="/<?= htmlspecialchars($session ?? '') ?>/voucher-templates" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= $isTemplates ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
                  <i data-lucide="file-code" class="w-4 h-4"></i>
                  <span data-i18n="sidebar.templates"><?= LanguageHelper::t('sidebar.templates', 'Templates') ?></span>
+            </a>
+
+            <!-- Logos (per-session) -->
+            <a href="/<?= htmlspecialchars($session ?? '') ?>/logos" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= $isLogos ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
+                 <i data-lucide="image" class="w-4 h-4"></i>
+                 <span data-i18n="sidebar.logos"><?= LanguageHelper::t('sidebar.logos', 'Logos') ?></span>
             </a>
 
         </div>

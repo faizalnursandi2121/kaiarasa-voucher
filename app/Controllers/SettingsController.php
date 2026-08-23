@@ -529,21 +529,35 @@ class SettingsController extends Controller
             $logo['formatted_size'] = FormatHelper::formatBytes($logo['size']);
         }
 
-        return $this->view('settings/logos', ['logos' => $logos, 'sessionName' => $session]);
+        return $this->view('settings/logos', ['logos' => $logos, 'sessionName' => $session, 'session' => $session]);
     }
 
     public function uploadLogo(?string $session = null)
     {
         $session = $session ?: ($_POST['session_ctx'] ?? null);
+        $redirect = '/'.($session ? rawurlencode($session).'/' : '').'logos';
+
         if (! isset($_FILES['logo_file']) || $_FILES['logo_file']['error'] !== UPLOAD_ERR_OK) {
             FlashHelper::set('error', 'toasts.upload_failed', 'toasts.no_file_selected', [], true);
-            header('Location: '.($session ? '/'.rawurlencode($session).'/logos' : '/settings/logos'));
+            header('Location: '.$redirect);
             exit;
+        }
+
+        // Logo terikat ke router saat diunggah dari konteks session (NULL = global).
+        $routerId = null;
+        if ($session !== null && $session !== '') {
+            $router = (new Config)->getSession($session);
+            if (! $router) {
+                FlashHelper::set('error', 'toasts.router_not_found', '', [], true);
+                header('Location: /settings');
+                exit;
+            }
+            $routerId = (int) $router['id'];
         }
 
         $logoModel = new Logo;
         try {
-            $result = $logoModel->add($_FILES['logo_file']);
+            $result = $logoModel->add($_FILES['logo_file'], $routerId);
             if ($result) {
                 FlashHelper::set('success', 'toasts.logo_uploaded', 'toasts.logo_uploaded_desc', [], true);
             } else {
@@ -553,18 +567,21 @@ class SettingsController extends Controller
             FlashHelper::set('error', 'toasts.upload_failed', $e->getMessage(), [], true);
         }
 
-        header('Location: /settings/logos');
+        header('Location: '.$redirect);
+        exit;
     }
 
     public function deleteLogo(?string $session = null)
     {
-        $id = $_POST['id']; // Changed from filename to id
+        $session = $session ?: ($_POST['session_ctx'] ?? null);
+        $id = $_POST['id'] ?? ''; // Changed from filename to id
 
         $logoModel = new Logo;
         $logoModel->delete($id);
 
         FlashHelper::set('success', 'toasts.logo_deleted', 'toasts.logo_deleted_desc', [], true);
-        header('Location: '.($_POST['session_ctx'] ?? null ? '/'.rawurlencode($_POST['session_ctx']).'/logos' : '/settings/logos'));
+        header('Location: '.($session ? '/'.rawurlencode($session).'/logos' : '/settings/logos'));
+        exit;
     }
 
     // --- API CORS Management ---

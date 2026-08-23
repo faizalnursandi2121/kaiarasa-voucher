@@ -126,7 +126,22 @@ $redirectToSessionRoute = function (string $suffix) {
 
         // Voucher Templates & Logos (pindahan dari settings — per-session)
         $router->get('/{session}/voucher-templates', [VoucherTemplateController::class, 'index']);
+        $router->get('/{session}/voucher-templates/add', function ($session) {
+            (new VoucherTemplateController)->add($session);
+        });
+        $router->get('/{session}/voucher-templates/edit/{id}', function ($session, $id) {
+            (new VoucherTemplateController)->edit($id, $session);
+        });
+        $router->get('/{session}/voucher-templates/preview/{id}', function ($session, $id) {
+            (new VoucherTemplateController)->preview($id);
+        });
+        $router->post('/{session}/voucher-templates/store', [VoucherTemplateController::class, 'store']);
+        $router->post('/{session}/voucher-templates/update', [VoucherTemplateController::class, 'update']);
+        $router->post('/{session}/voucher-templates/delete', [VoucherTemplateController::class, 'delete']);
+        $router->post('/{session}/voucher-templates/set-default', [VoucherTemplateController::class, 'setDefault']);
         $router->get('/{session}/logos', [SettingsController::class, 'logos']);
+        $router->post('/{session}/logos/upload', [SettingsController::class, 'uploadLogo']);
+        $router->post('/{session}/logos/delete', [SettingsController::class, 'deleteLogo']);
 
 
         // Hotspot - Profiles

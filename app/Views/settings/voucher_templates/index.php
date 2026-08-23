@@ -1,12 +1,14 @@
 <?php
 $title = 'Voucher Templates';
 $no_main_container = true;
+// Base URL mengikuti konteks: per-session (dari sidebar dashboard) atau global lama
+$vtBase = ! empty($sessionName) ? '/'.rawurlencode($sessionName).'/voucher-templates' : '/settings/voucher-templates';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 ?>
 
 <!-- Sub-Navbar Navigation -->
 <div id="app-dynamic" class="contents">
-<?php include ROOT.'/app/Views/layouts/sidebar_settings.php'; ?>
+<?php if (empty($sessionName)) include ROOT.'/app/Views/layouts/sidebar_settings.php'; ?>
 
 <div id="settings-dynamic" class="contents">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
@@ -23,7 +25,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     <div class="hidden md:block">
                         <!-- Spacer -->
                     </div>
-                    <a href="/settings/voucher-templates/add" class="btn btn-primary w-full sm:w-auto justify-center">
+                    <a href="<?= $vtBase ?>/add" class="btn btn-primary w-full sm:w-auto justify-center">
                         <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
                         <span data-i18n="settings.new_template">New Template</span>
                     </a>
@@ -39,7 +41,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                                 <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-accents-4"></i>
                             </div>
                             <iframe 
-                                data-src="/settings/voucher-templates/preview/default" 
+                                data-src="<?= $vtBase ?>/preview/default" 
                                 src="about:blank"
                                 class="w-full h-full border-0 pointer-events-none opacity-0 transition-opacity duration-500"
                                 scrolling="no"
@@ -57,7 +59,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                             </div>
                             <p class="text-sm text-accents-5 mb-4" data-i18n="settings.default_template_desc">Standard thermal printer friendly template.</p>
                             <?php if (($defaultTemplate ?? 'default') !== 'default') { ?>
-                                <form action="/settings/voucher-templates/set-default" method="POST" class="mt-auto">
+                                <form action="<?= $vtBase ?>/set-default" method="POST" class="mt-auto">
                                     <input type="hidden" name="id" value="default">
                                     <button type="submit" class="w-full py-2 border border-accents-2 rounded text-accents-6 text-sm hover:bg-accents-2 transition-colors" data-i18n="settings.set_as_default">
                                         Set as Default
@@ -82,7 +84,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                                 <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-accents-4"></i>
                             </div>
                              <iframe 
-                                data-src="/settings/voucher-templates/preview/<?= $tpl['id'] ?>" 
+                                data-src="<?= $vtBase ?>/preview/<?= $tpl['id'] ?>" 
                                 src="about:blank"
                                 class="w-full h-full border-0 pointer-events-none opacity-0 transition-opacity duration-500"
                                 scrolling="no"
@@ -108,18 +110,18 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                                 <p class="text-sm text-accents-5 mb-4 line-clamp-1">Created: <?= htmlspecialchars($tpl['created_at']) ?></p>
                                 
                                 <div class="flex items-center gap-2 mt-auto">
-                                    <a href="/settings/voucher-templates/edit/<?= $tpl['id'] ?>" class="flex-1 btn btn-primary flex justify-center">
+                                    <a href="<?= $vtBase ?>/edit/<?= $tpl['id'] ?>" class="flex-1 btn btn-primary flex justify-center">
                                         <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i> <span data-i18n="common.edit">Edit</span>
                                     </a>
                                     <?php if (($defaultTemplate ?? 'default') !== (string) $tpl['id']) { ?>
-                                        <form action="/settings/voucher-templates/set-default" method="POST">
+                                        <form action="<?= $vtBase ?>/set-default" method="POST">
                                             <input type="hidden" name="id" value="<?= $tpl['id'] ?>">
                                             <button type="submit" class="p-2 btn btn-secondary hover:text-primary hover:bg-primary/5 transition-colors h-9 w-9 flex items-center justify-center" title="Set as Default" data-i18n-title="settings.set_as_default">
                                                 <i data-lucide="check-circle" class="w-5 h-5"></i>
                                             </button>
                                         </form>
                                     <?php } ?>
-                                    <form action="/settings/voucher-templates/delete" method="POST" class="delete-template-form">
+                                    <form action="<?= $vtBase ?>/delete" method="POST" class="delete-template-form">
                                         <input type="hidden" name="id" value="<?= $tpl['id'] ?>">
                                         <input type="hidden" name="template_name" value="<?= htmlspecialchars($tpl['name']) ?>">
                                         <button type="submit" class="p-2 btn btn-secondary hover:text-red-600 hover:bg-red-50 transition-colors h-9 w-9 flex items-center justify-center">
