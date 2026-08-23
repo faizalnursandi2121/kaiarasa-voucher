@@ -741,12 +741,14 @@ body {
 }
 
 .btn-primary {
-  background-color: var(--foreground);
-  color: var(--background);
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  background-color: #5f7f67;
+  /* sage — warna primary aplikasi */
 }
 
-.btn-primary:hover {
-  opacity: 0.9;
+.btn-primary:hover:not(:disabled) {
+  background-color: #6b8b73;
 }
 
 .btn-secondary {
@@ -5139,12 +5141,14 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 }
 
 .skip-link:focus {
-  background-color: var(--foreground);
-  color: var(--background);
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  background-color: #5f7f67;
+  /* sage — warna primary aplikasi */
 }
 
-.skip-link:focus:hover {
-  opacity: 0.9;
+.skip-link:focus:hover:not(:disabled) {
+  background-color: #6b8b73;
 }
 
 .skip-link:focus {

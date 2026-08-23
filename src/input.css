@@ -44,7 +44,11 @@
         @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2 hover:shadow-md active:scale-95;
     }
     .btn-primary {
-        @apply bg-foreground text-background hover:opacity-90;
+        @apply text-white;
+        background-color: #5f7f67; /* sage — warna primary aplikasi */
+    }
+    .btn-primary:hover:not(:disabled) {
+        background-color: #6b8b73;
     }
     .btn-secondary {
         @apply bg-background text-foreground border border-accents-2 hover:bg-accents-1 hover:border-foreground;
