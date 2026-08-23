@@ -91,8 +91,8 @@ include ROOT.'/app/Views/layouts/header_public.php';
                             placeholder="Password"
                             class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 pl-11 pr-12 h-[54px] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <button type="button" id="toggle-pass" aria-label="Toggle password visibility"
-                            class="absolute inset-y-0 right-0 flex items-center px-4 text-black/40 dark:text-white/40 hover:text-black/70 dark:hover:text-white/70 transition-colors">
-                            <span class="relative block w-[18px] h-[18px]">
+                            class="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-md inline-flex items-center justify-center opacity-40 hover:opacity-80 hover:bg-black/[.05] dark:hover:bg-white/[.06] transition">
+                            <span class="relative block w-4 h-4">
                                 <i data-lucide="eye" class="pass-icon-eye absolute inset-0 transition-[opacity,transform,filter] duration-200 ease-out"></i>
                                 <i data-lucide="eye-off" class="pass-icon-off absolute inset-0 opacity-0 scale-[.25] blur-[4px] transition-[opacity,transform,filter] duration-200 ease-out"></i>
                             </span>
