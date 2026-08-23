@@ -54,7 +54,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
     <!-- ===== KANAN: kartu form ===== -->
     <section class="flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
-        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full max-w-[420px] p-8 md:p-10 shadow-[0_8px_24px_rgba(0,0,0,.08)]">
+        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[520px] p-8 md:p-12 shadow-[0_8px_24px_rgba(0,0,0,.08)]">
 
             <div>
 
@@ -70,8 +70,8 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
                     <!-- Heading -->
                     <div class="mb-8">
-                        <h1 class="text-[22px] font-bold tracking-tight text-black/90 dark:text-white/95">Welcome back</h1>
-                        <p class="text-sm text-black/50 dark:text-white/50 mt-1.5">Sign in to manage your routers &amp; vouchers.</p>
+                        <h1 class="text-[22px] font-bold tracking-tight text-black/90 dark:text-white/95">Sign In</h1>
+                        <p class="text-sm text-black/50 dark:text-white/50 mt-1.5">Enter your Access</p>
                     </div>
 
                     <!-- Username -->
@@ -96,7 +96,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
                     </div>
 
                     <!-- Submit -->
-                    <div class="mt-7">
+                    <div class="mt-9">
                         <button type="submit" id="login-submit"
                             class="w-full h-12 rounded-[15px] bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[17px] font-semibold transition-colors disabled:opacity-70 disabled:cursor-wait">
                             <span id="login-btn-label" data-i18n="login.sign_in" class="inline-flex items-center justify-center gap-2">Sign In</span>
