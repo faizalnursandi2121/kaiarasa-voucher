@@ -50,7 +50,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     <p class="text-xs opacity-50 mt-0.5">Real-time status of all connected routers</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <input type="search" id="table-search" placeholder="Cari router…"
+                    <input type="search" id="table-search" placeholder="Search routers…"
                         class="h-9 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3 pr-3 text-[13px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 w-40 sm:w-48 transition">
                     <select id="status-filter"
                         class="h-9 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-2 text-[13px] outline-none cursor-pointer">
@@ -96,7 +96,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     <span class="text-[11px] opacity-50">live</span>
                 </div>
                 <ul id="activity-list" class="space-y-3 max-h-[280px] overflow-y-auto pr-1">
-                    <li class="text-xs opacity-50">memuat…</li>
+                    <li class="text-xs opacity-50">Loading…</li>
                 </ul>
             </div>
         </div>
@@ -118,7 +118,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="font-bold tracking-tight">System Health</h3>
-                <span class="text-[11px] opacity-50" title="Kesehatan komponen aplikasi MIVO">info</span>
+                <span class="text-[11px] opacity-50" title="MIVO application component health">info</span>
             </div>
             <div class="space-y-4">
                 <div class="flex items-center justify-between">
@@ -131,7 +131,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3"><i data-lucide="cloud-upload" class="w-5 h-5 opacity-60"></i><div><p class="text-sm font-semibold">Last Backup</p><p class="text-[11px] opacity-50">via Settings → System</p></div></div>
-                    <span class="text-sm font-semibold opacity-40" title="Belum tersedia — jalankan backup dari Settings">—</span>
+                    <span class="text-sm font-semibold opacity-40" title="Not available — run backup from Settings">—</span>
                 </div>
             </div>
         </div>
@@ -189,7 +189,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 <div class="w-full sm:w-auto shrink-0">
                     <label for="rf-ssl" class="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">
                         SSL
-                        <i data-lucide="help-circle" class="w-3.5 h-3.5 opacity-50" title="Aktifkan jika API RouterOS menggunakan api-ssl terenkripsi"></i>
+                        <i data-lucide="help-circle" class="w-3.5 h-3.5 opacity-50" title="Enable if the RouterOS API uses encrypted api-ssl"></i>
                     </label>
                     <div class="h-11 flex items-center">
                         <label class="relative inline-flex items-center cursor-pointer select-none">
@@ -267,7 +267,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     <i data-lucide="network" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                     <select name="iface" id="rf-iface" required disabled
                         class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-9 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition disabled:opacity-60 appearance-none">
-                        <option value="">— Jalankan Test Connection —</option>
+                        <option value="">— Run Test Connection —</option>
                     </select>
                     <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                 </div>
@@ -422,10 +422,10 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
         if (!state.routers.length) {
             grid.innerHTML = '<div class="py-12 text-center">'
-                + '<p class="text-sm opacity-50 mb-4">Belum ada router. Tambahkan router pertama Anda untuk mulai memantau.</p>'
+                + '<p class="text-sm opacity-50 mb-4">No routers yet. Add your first router to start monitoring.</p>'
                 + '<a href="/settings/add" class="inline-flex items-center gap-2 h-9 px-4 rounded-xl bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[13px] font-semibold transition-colors"><i data-lucide="plus" class="w-4 h-4"></i>Add Router</a></div>';
         } else if (!list.length) {
-            grid.innerHTML = '<div class="py-14 text-center text-sm opacity-50">Tidak ada router yang cocok dengan pencarian/filter.</div>';
+            grid.innerHTML = '<div class="py-14 text-center text-sm opacity-50">No routers match your search or filter.</div>';
         } else {
             grid.innerHTML = '<table class="w-full text-sm"><thead><tr class="text-left text-[11px] uppercase tracking-wider text-[#47614d] dark:text-[#92aa96] bg-[#5f7f67]/[.06] border-b border-[#5f7f67]/20">'
                 + '<th class="px-4 py-2.5 font-semibold">Status</th><th class="px-4 py-2.5 font-semibold">Router Name</th>'
@@ -473,7 +473,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         document.getElementById('incidents').textContent = agg.incidents ?? '-';
         var el = document.getElementById('chart-availability');
         if (charts.avail) charts.avail.destroy();
-        if (!series.length) { el.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">Belum ada riwayat.</p>'; return; }
+        if (!series.length) { el.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No history yet.</p>'; return; }
         el.innerHTML = '';
         charts.avail = new ApexCharts(el, baseChart({
             series: [{ name: 'Availability', data: series.map(function (s) { return [s.ts * 1000, s.availability_pct]; }) }],
@@ -515,7 +515,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             .sort(function (a, b) { return b.cpu_load - a.cpu_load; }).slice(0, 5);
         var el = document.getElementById('chart-topcpu');
         if (charts.topcpu) charts.topcpu.destroy();
-        if (!top.length) { el.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">Tidak ada data CPU.</p>'; return; }
+        if (!top.length) { el.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No CPU data available.</p>'; return; }
         charts.topcpu = new ApexCharts(el, baseChart({
             series: [{ name: 'CPU %', data: top.map(function (r) { return r.cpu_load; }) }],
             chart: { type: 'bar', height: 220 },
@@ -531,7 +531,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     /* ================= recent activity ================= */
     function renderActivity(events) {
         var ul = document.getElementById('activity-list');
-        if (!events.length) { ul.innerHTML = '<li class="text-xs opacity-50">Belum ada aktivitas.</li>'; return; }
+        if (!events.length) { ul.innerHTML = '<li class="text-xs opacity-50">No activity yet.</li>'; return; }
         var icons = {
             connected:    ['arrow-up-circle', 'text-emerald-600', 'connected'],
             went_offline: ['arrow-down-circle', 'text-red-600', 'went offline'],
@@ -620,7 +620,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         connOk = false;
         submitBtn.disabled = true;
         var sel = document.getElementById('rf-iface');
-        sel.innerHTML = '<option value="">— Jalankan Test Connection —</option>';
+        sel.innerHTML = '<option value="">— Run Test Connection —</option>';
         sel.disabled = true;
         setTestStatus('idle');
     }
@@ -651,7 +651,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         var pass = document.getElementById('rf-passmik').value;
         var id = document.getElementById('rf-id').value || null; // edit: fallback password tersimpan
         if (!ip || !user) {
-            setTestStatus('err', 'Isi IP Address dan Username dulu.');
+            setTestStatus('err', 'Enter IP Address and Username first.');
             return;
         }
         testBtn.disabled = true;
@@ -676,7 +676,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 sel.disabled = false;
                 connOk = true;
                 submitBtn.disabled = false;
-                setTestStatus('ok', sel.options.length + ' interface terdeteksi \u2022 API port ' + portVal + (sslVal ? ' (SSL)' : '') + '. Pilih Traffic Interface lalu simpan.');
+                setTestStatus('ok', sel.options.length + ' interfaces detected \u2022 API port ' + portVal + (sslVal ? ' (SSL)' : '') + '. Choose a Traffic Interface, then save.');
                 testBtn.disabled = false;
                 document.getElementById('rf-test-label').textContent = 'Re-test';
             } else {
@@ -688,7 +688,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     function failTest(detail) {
         testBtn.disabled = false;
         document.getElementById('rf-test-label').textContent = 'Test Connection';
-        setTestStatus('err', 'Gagal terhubung. ' + (detail || 'Periksa IP, user, password, API Port, atau SSL.'));
+        setTestStatus('err', 'Connection failed. ' + (detail || 'Check IP, user, password, API Port, or SSL.'));
     }
 
     function openModal(mode, r) {
@@ -703,7 +703,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         if (mode === 'edit') {
             document.getElementById('router-modal-title').textContent = 'Edit Router';
             document.getElementById('rf-submit-label').textContent = 'Save Changes';
-            document.getElementById('rf-pass-hint').textContent = '(kosongkan jika tidak diubah)';
+            document.getElementById('rf-pass-hint').textContent = '(leave blank to keep current)';
             document.getElementById('rf-id').value = r.id;
             document.getElementById('rf-sessname').value = r.session_name;
             document.getElementById('rf-ipmik').value = r.ip_address;
@@ -801,7 +801,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             }).then(function (res) { return res.json(); });
         };
         if (window.Kaiarasa && Kaiarasa.confirm) {
-            Kaiarasa.confirm('Delete Router?', 'Router "'+r.session_name+'" dan sesinya akan dihapus permanen.', 'Delete', 'Cancel')
+            Kaiarasa.confirm('Delete Router?', 'Router "'+r.session_name+'" and its session will be permanently deleted.', 'Delete', 'Cancel')
                 .then(function (ok) { if (!ok) return; doDelete().then(function (j) {
                     if (window.Kaiarasa) Kaiarasa.toast(j.success ? 'success' : 'error', j.message);
                     load(true);
@@ -823,7 +823,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         if (!connOk) {
-            setTestStatus('err', 'Wajib Test Connection berhasil sebelum menyimpan.');
+            setTestStatus('err', 'A successful Test Connection is required before saving.');
             return;
         }
         form.querySelectorAll('[data-err]').forEach(function (p) { p.classList.add('hidden'); });
@@ -849,7 +849,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 if (window.Kaiarasa) Kaiarasa.toast('success', out.json.message);
                 load(true);
             } else {
-                if (window.Kaiarasa) Kaiarasa.toast('error', out.json.message || 'Periksa kembali data.');
+                if (window.Kaiarasa) Kaiarasa.toast('error', out.json.message || 'Please check your data.');
             }
         })
         .catch(function () {

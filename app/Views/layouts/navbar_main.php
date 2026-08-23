@@ -50,7 +50,7 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
                             <a href="/api/routers/events" class="text-[11px] text-accents-5 hover:text-foreground" onclick="event.preventDefault()">Router events</a>
                         </div>
                         <div id="notif-list" class="max-h-72 overflow-y-auto divide-y divide-black/[.05] dark:divide-white/[.05]">
-                            <p class="px-4 py-6 text-center text-xs opacity-50">memuat…</p>
+                            <p class="px-4 py-6 text-center text-xs opacity-50">Loading…</p>
                         </div>
                     </div>
                 </div>
@@ -148,7 +148,7 @@ document.addEventListener('click', function (e) {
         .then(function (r) { return r.json(); })
         .then(function (events) {
             var list = document.getElementById('notif-list');
-            if (!events.length) { list.innerHTML = '<p class="px-4 py-6 text-center text-xs opacity-50">Belum ada aktivitas.</p>'; return; }
+            if (!events.length) { list.innerHTML = '<p class="px-4 py-6 text-center text-xs opacity-50">No activity yet.</p>'; return; }
             list.innerHTML = events.map(function (ev) {
                 var icon = ev.event_type === 'connected'     ? ['arrow-up-circle',   'text-emerald-600', 'connected']
                         : ev.event_type === 'went_offline'   ? ['arrow-down-circle', 'text-red-600',      'went offline']
@@ -164,7 +164,7 @@ document.addEventListener('click', function (e) {
         })
         .catch(function () {
             var list = document.getElementById('notif-list');
-            if (list) list.innerHTML = '<p class="px-4 py-6 text-center text-xs opacity-50">Gagal memuat notifikasi.</p>';
+            if (list) list.innerHTML = '<p class="px-4 py-6 text-center text-xs opacity-50">Failed to load notifications.</p>';
         });
 }, true);
 function escNav(s) {
