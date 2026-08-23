@@ -4549,21 +4549,24 @@ html {
   scrollbar-gutter: stable;
 }
 
-/* Premium SweetAlert2 Overrides - Glassmorphism Style */
+/* Premium SweetAlert2 Overrides - Solid Card Style */
 
 div.swal2-popup {
-  background-color: rgba(255, 255, 255, 0.5) !important;
-  /* High transparency for Maximum Glossy Light Mode */
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  background-color: #ffffff !important;
   color: var(--foreground) !important;
-  border: 1px solid rgba(255, 255, 255, 0.4) !important;
-  /* Subtle reflective border */
-  border-radius: 0.75rem !important;
-  /* rounded-xl */
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
-  /* Softer shadow */
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 1rem !important;
+  /* rounded-2xl */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
   padding: 1.5rem !important;
+}
+
+/* Dialog konfirmasi ringkas (Yes/No) — lebih kecil dari default */
+
+div.swal2-popup.swal2-confirm-sm {
+  width: 22rem !important;
+  max-width: calc(100vw - 2rem);
+  padding: 1.25rem !important;
 }
 
 div:where(.swal2-container) {
@@ -4575,11 +4578,11 @@ div:where(.swal2-popup).swal-wide {
   max-width: 900px !important;
 }
 
-/* Dark mode background fix for glassmorphism */
+/* Dark mode background fix — solid card */
 
 .dark div.swal2-popup {
-  background-color: rgba(0, 0, 0, 0.75) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: #1a1c19 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 div.swal2-title {
@@ -4754,12 +4757,6 @@ div.swal2-cancel {
   border-radius: 0.5rem !important;
 }
 
-/* Dark Mode Specific Adjustments */
-
-.dark div.swal2-popup {
-  border-color: #333 !important;
-}
-
 /* Custom Icon Colors (applied to Lucide wrapper) */
 
 .text-success {
@@ -4908,15 +4905,14 @@ div:where(.swal2-icon).swal2-error {
 }
 
 div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
-  background: rgba(255, 255, 255, 0.25) !important;
-  backdrop-filter: blur(40px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
 }
 
 .dark div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
-  background: rgba(0, 0, 0, 0.4) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: #1a1c19 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 /* SweetAlert2 Premium Input Styles Override */

@@ -71,7 +71,7 @@ class AlertModule {
             confirmButtonText: confirmText,
             cancelButtonText: cancelText,
             customClass: {
-                popup: 'swal2-premium-card',
+                popup: 'swal2-premium-card swal2-confirm-sm',
                 confirmButton: 'btn btn-primary',
                 cancelButton: 'btn btn-secondary',
             },

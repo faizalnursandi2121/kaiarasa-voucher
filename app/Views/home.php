@@ -797,7 +797,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 }); });
         } else if (window.Swal) {
             Swal.fire({ title: 'Delete Router?', text: r.session_name, icon: 'warning', showCancelButton: true,
-                confirmButtonColor: '#dc2626', confirmButtonText: 'Delete' })
+                confirmButtonColor: '#dc2626', confirmButtonText: 'Delete',
+                customClass: { popup: 'swal2-premium-card swal2-confirm-sm' } })
                 .then(function (res) { if (res.isConfirmed) doDelete().then(function (j) {
                     if (window.Kaiarasa) Kaiarasa.toast(j.success ? 'success' : 'error', j.message);
                     load(true);
