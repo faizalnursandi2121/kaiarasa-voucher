@@ -1,13 +1,12 @@
         <div class="space-y-8">
-            
-            <!-- Section Header (Removed redundant General) -->
-            <div class="pb-5">
-                    <h3 class="text-lg font-medium leading-6 text-foreground" data-i18n="settings.security">Security & Access</h3>
-            </div>
 
             <!-- Admin Password -->
             <div class="card">
-                    <form action="/settings/admin/update" method="POST" class="space-y-6">
+                <div class="mb-6">
+                    <h4 class="text-lg font-medium text-foreground" data-i18n="settings.security">Security & Access</h4>
+                    <p class="text-sm text-accents-5">Manage administrator credentials and access.</p>
+                </div>
+                <form action="/settings/admin/update" method="POST" class="space-y-6">
                     <div class="grid grid-cols-1 gap-6 w-full">
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-foreground" data-i18n="settings.admin_username">Admin Username</label>
@@ -15,21 +14,21 @@
                                 <input type="text" class="form-control w-full bg-accents-1 text-accents-5 cursor-not-allowed pl-10" value="<?= htmlspecialchars($username) ?>" readonly disabled>
                                 <i data-lucide="lock" class="absolute left-3 top-2.5 h-4 w-4 text-accents-4"></i>
                             </div>
-                                <p class="text-xs text-accents-4" data-i18n="settings.admin_username_desc">
+                            <p class="text-xs text-accents-4" data-i18n="settings.admin_username_desc">
                                 <i class="inline-block w-3 h-3 mr-1 align-middle" data-lucide="info"></i>
                                 For security reasons, the administrator username cannot be changed.
                             </p>
                         </div>
-                        
+
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-foreground" data-i18n="settings.change_password">Change Password</label>
-                                <div class="relative">
+                            <div class="relative">
                                 <input type="password" name="admin_password" class="form-control w-full pl-10" placeholder="Enter new password" data-i18n-placeholder="settings.new_password_placeholder">
                                 <i data-lucide="key" class="absolute left-3 top-2.5 h-4 w-4 text-accents-4"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="pt-4 border-t border-accents-2">
+                    <div class="mt-6 pt-4 border-t border-accents-2">
                         <button type="submit" class="btn btn-primary">
                             <span data-i18n="settings.update_password">Update Password</span>
                         </button>
@@ -39,21 +38,25 @@
 
             <!-- Global Configuration -->
             <div class="card">
-                    <form action="/settings/global/update" method="POST" class="space-y-6">
+                <div class="mb-6">
+                    <h4 class="text-lg font-medium text-foreground">Quick Print Mode</h4>
+                    <p class="text-sm text-accents-5">Global configuration applied across the application.</p>
+                </div>
+                <form action="/settings/global/update" method="POST" class="space-y-6">
                     <div class="grid grid-cols-1 gap-6 w-full">
-                            <div class="space-y-2">
-                                <label class="block text-sm font-medium text-foreground" data-i18n="settings.quick_print_mode">Quick Print Mode</label>
-                                <div class="relative">
-                                    <select name="quick_print_mode" class="custom-select w-full">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-foreground" data-i18n="settings.quick_print_mode">Quick Print Mode</label>
+                            <div class="relative">
+                                <select name="quick_print_mode" class="custom-select w-full">
                                     <option value="0" <?= ($settings['quick_print_mode'] ?? '0') == '0' ? 'selected' : '' ?> data-i18n="common.forms.disabled">Disabled</option>
                                     <option value="1" <?= ($settings['quick_print_mode'] ?? '0') == '1' ? 'selected' : '' ?> data-i18n="common.forms.enabled">Enabled</option>
-                                    </select>
-                                </div>
-                                <p class="text-xs text-accents-4" data-i18n="settings.quick_print_mode_desc">Enable direct printing for voucher generation.</p>
+                                </select>
+                            </div>
+                            <p class="text-xs text-accents-4" data-i18n="settings.quick_print_mode_desc">Enable direct printing for voucher generation.</p>
                         </div>
                     </div>
-        
-                    <div class="pt-4 border-t border-accents-2 mt-6">
+
+                    <div class="mt-6 pt-4 border-t border-accents-2">
                         <button type="submit" class="btn btn-primary" data-i18n="settings.save_global">
                             Save Global Settings
                         </button>

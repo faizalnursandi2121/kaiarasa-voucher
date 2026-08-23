@@ -21,8 +21,7 @@ $activeTab = in_array($_GET['tab'] ?? '', $allowedTabs, true) ? $_GET['tab'] : '
 <?php
 $page_title_key = 'sidebar.settings';
 $page_title = 'Settings';
-$page_desc_key = 'settings.system_desc';
-$page_desc = 'System-wide configurations and security.';
+$page_desc = 'Application configuration, security, and extensions.';
 $breadcrumbs = [
     ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
     ['label' => LanguageHelper::t('sidebar.settings', 'Settings'), 'href' => null],
