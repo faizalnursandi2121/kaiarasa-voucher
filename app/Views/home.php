@@ -371,7 +371,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             : { cpu: '<span class="opacity-40">-</span>', up: '<span class="opacity-40">-</span>',
                 seen: r.last_seen ? relTime(r.last_seen) : '<span class="opacity-40">'+esc(r.error || '-')+'</span>' };
         var initial = esc((r.session_name || '?').slice(0, 2).toUpperCase());
-        return '<tr class="border-t border-black/[.05] dark:border-white/[.05] hover:bg-black/[.02] dark:hover:bg-white/[.03] cursor-pointer" data-session="'+esc(r.session_name)+'">'
+        return '<tr class="border-t border-black/[.05] dark:border-white/[.05] hover:bg-[#5f7f67]/[.04] cursor-pointer transition-colors" data-session="'+esc(r.session_name)+'">'
             + '<td class="px-4 py-3">'+badge(r.status)+'</td>'
             + '<td class="px-4 py-3"><div class="flex items-center gap-3">'
             +   '<span class="w-8 h-8 rounded-lg bg-[#92aa96]/20 text-[#47614d] dark:text-[#92aa96] text-[11px] font-bold flex items-center justify-center shrink-0">'+initial+'</span>'
@@ -408,12 +408,13 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         var slice = list.slice(start, start + PAGE_SIZE);
 
         if (!state.routers.length) {
-            grid.innerHTML = '<div class="py-14 text-center text-sm opacity-50">Belum ada router.'
-                + ' Klik <a href="/settings/add" class="underline font-semibold">Add Router</a> untuk menambahkan pertama Anda.</div>';
+            grid.innerHTML = '<div class="py-12 text-center">'
+                + '<p class="text-sm opacity-50 mb-4">Belum ada router. Tambahkan router pertama Anda untuk mulai memantau.</p>'
+                + '<a href="/settings/add" class="inline-flex items-center gap-2 h-9 px-4 rounded-xl bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[13px] font-semibold transition-colors"><i data-lucide="plus" class="w-4 h-4"></i>Add Router</a></div>';
         } else if (!list.length) {
             grid.innerHTML = '<div class="py-14 text-center text-sm opacity-50">Tidak ada router yang cocok dengan pencarian/filter.</div>';
         } else {
-            grid.innerHTML = '<table class="w-full text-sm"><thead><tr class="text-left text-[11px] uppercase tracking-wider opacity-50 border-b border-black/[.05] dark:border-white/[.05]">'
+            grid.innerHTML = '<table class="w-full text-sm"><thead><tr class="text-left text-[11px] uppercase tracking-wider text-[#47614d] dark:text-[#92aa96] bg-[#5f7f67]/[.06] border-b border-[#5f7f67]/20">'
                 + '<th class="px-4 py-2.5 font-semibold">Status</th><th class="px-4 py-2.5 font-semibold">Router Name</th>'
                 + '<th class="px-4 py-2.5 font-semibold">IP Address</th><th class="px-4 py-2.5 font-semibold">CPU</th>'
                 + '<th class="px-4 py-2.5 font-semibold">Uptime</th><th class="px-4 py-2.5 font-semibold">Last Seen</th>'
