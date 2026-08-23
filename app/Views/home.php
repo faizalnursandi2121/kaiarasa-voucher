@@ -389,17 +389,19 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             : { cpu: '<span class="opacity-40">-</span>', up: '<span class="opacity-40">-</span>',
                 seen: r.last_seen ? relTime(r.last_seen) : '<span class="opacity-40">'+esc(r.error || '-')+'</span>' };
         var initial = esc((r.session_name || '?').slice(0, 2).toUpperCase());
-        // Baris kedua: tipe board + versi RouterOS
-        var metaParts = [];
-        if (r.board_name) metaParts.push(esc(r.board_name));
-        if (r.os_version) metaParts.push('RouterOS '+esc(r.os_version));
-        var meta = metaParts.length ? metaParts.join(' \u00b7 ') : esc(r.hotspot_name || r.location || '');
+        // Baris 2: tipe board (fallback hotspot/lokasi), baris 3: versi RouterOS
+        var typeLine = r.board_name ? esc(r.board_name) : esc(r.hotspot_name || r.location || '');
+        var osLine = r.os_version
+            ? '<p class="text-[11px] font-medium text-[#47614d] dark:text-[#92aa96]">RouterOS '+esc(r.os_version)+'</p>'
+            : '';
         return '<tr class="border-t border-black/[.05] dark:border-white/[.05] hover:bg-[#5f7f67]/[.04] cursor-pointer transition-colors" data-session="'+esc(r.session_name)+'">'
             + '<td class="px-4 py-3">'+badge(r.status)+'</td>'
             + '<td class="px-4 py-3"><div class="flex items-center gap-3">'
             +   '<span class="w-8 h-8 rounded-lg bg-[#92aa96]/20 text-[#47614d] dark:text-[#92aa96] text-[11px] font-bold flex items-center justify-center shrink-0">'+initial+'</span>'
             +   '<div><p class="font-semibold text-[13px] leading-tight">'+esc(r.session_name)+'</p>'
-            +   '<p class="text-[11px] opacity-50 truncate max-w-[220px]">'+meta+'</p></div></div></td>'
+            +   '<p class="text-[11px] opacity-50 truncate max-w-[220px]">'+typeLine+'</p>'
+            +   osLine
+            +   '</div></div></td>'
             + '<td class="px-4 py-3 font-mono text-xs">'+esc(r.ip_address)+'</td>'
             + '<td class="px-4 py-3">'+metrics.cpu+'</td>'
             + '<td class="px-4 py-3 text-xs tabular-nums whitespace-nowrap">'+metrics.up+'</td>'
