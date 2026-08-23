@@ -191,9 +191,9 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         SSL
                         <span class="relative group/tip inline-flex items-center cursor-help" tabindex="0">
                             <i data-lucide="help-circle" class="w-3.5 h-3.5 opacity-70"></i>
-                            <span class="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-60 rounded-lg bg-[#1a1c19] dark:bg-black text-left text-white text-[11px] leading-relaxed p-2.5 opacity-0 group-hover/tip:opacity-100 group-focus-within/tip:opacity-100 transition-opacity z-30 shadow-xl">
+                            <span class="pointer-events-none absolute left-1/2 -translate-x-1/2 top-full mt-2 w-60 normal-case tracking-normal rounded-lg bg-[#1a1c19] dark:bg-black text-left text-white text-[11px] leading-relaxed p-2.5 opacity-0 group-hover/tip:opacity-100 group-focus-within/tip:opacity-100 transition-opacity z-30 shadow-xl">
                                 Check which API service is enabled under <span class="font-semibold">IP &rarr; Services</span> on your router, then match it here. Enable SSL only if the service is <span class="font-semibold">api-ssl</span> (port 8729) &mdash; otherwise leave it off for plain API (8728).
-                                <span class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#1a1c19] dark:border-t-black"></span>
+                                <span class="absolute -top-2 left-1/2 -translate-x-1/2 border-4 border-transparent border-b-[#1a1c19] dark:border-b-black"></span>
                             </span>
                         </span>
                     </label>

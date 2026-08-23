@@ -1843,16 +1843,16 @@ input:-webkit-autofill,
   top: -2.5rem;
 }
 
+.-top-2 {
+  top: -0.5rem;
+}
+
 .bottom-1 {
   bottom: 0.25rem;
 }
 
 .bottom-6 {
   bottom: 1.5rem;
-}
-
-.bottom-full {
-  bottom: 100%;
 }
 
 .left-0 {
@@ -3200,9 +3200,9 @@ input:-webkit-autofill,
   border-color: rgb(255 255 255 / 0.2);
 }
 
-.border-t-\[\#1a1c19\] {
+.border-b-\[\#1a1c19\] {
   --tw-border-opacity: 1;
-  border-top-color: rgb(26 28 25 / var(--tw-border-opacity, 1));
+  border-bottom-color: rgb(26 28 25 / var(--tw-border-opacity, 1));
 }
 
 .\!bg-green-500\/10 {
@@ -3989,6 +3989,10 @@ input:-webkit-autofill,
 
 .tracking-\[0\.15em\] {
   letter-spacing: 0.15em;
+}
+
+.tracking-normal {
+  letter-spacing: 0em;
 }
 
 .tracking-tight {
@@ -5763,9 +5767,9 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   border-color: rgb(255 255 255 / .08);
 }
 
-.dark\:border-t-black:is(.dark *) {
+.dark\:border-b-black:is(.dark *) {
   --tw-border-opacity: 1;
-  border-top-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
+  border-bottom-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
 }
 
 .dark\:\!bg-red-900\/10:is(.dark *) {
