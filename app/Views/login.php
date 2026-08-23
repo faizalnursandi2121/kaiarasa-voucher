@@ -52,7 +52,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
     <!-- ===== KANAN: kartu form (Metronic: p-12 p-lg-20 justify-end → card w-md-600px p-20 rounded-4) ===== -->
     <section class="flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
-        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[560px] p-8 md:p-12 shadow-[0_1px_2px_rgba(0,0,0,.06),0_16px_40px_-12px_rgba(0,0,0,.25)] animate-fade-in-up">
+        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[560px] p-8 md:p-10 shadow-[0_1px_2px_rgba(0,0,0,.06),0_16px_40px_-12px_rgba(0,0,0,.25)] animate-fade-in-up">
 
             <!-- Wrapper dalam (Metronic: px-lg-10 pb-15 pb-lg-20) -->
             <div class="lg:px-8 pb-8 lg:pb-14">
@@ -91,16 +91,17 @@ include ROOT.'/app/Views/layouts/header_public.php';
                             placeholder="Password"
                             class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 pl-11 pr-12 h-[54px] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <button type="button" id="toggle-pass" aria-label="Toggle password visibility"
-                            class="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-md inline-flex items-center justify-center opacity-40 hover:opacity-80 hover:bg-black/[.05] dark:hover:bg-white/[.06] transition">
+                            class="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-md inline-flex items-center justify-center opacity-40 hover:opacity-80 hover:bg-black/[.05] dark:hover:bg-white/[.06] transition">
                             <span class="relative block w-4 h-4">
-                                <i data-lucide="eye" class="pass-icon-eye absolute inset-0 transition-[opacity,transform,filter] duration-200 ease-out"></i>
-                                <i data-lucide="eye-off" class="pass-icon-off absolute inset-0 opacity-0 scale-[.25] blur-[4px] transition-[opacity,transform,filter] duration-200 ease-out"></i>
+                                <!-- password tersembunyi = ikon berslash; terlihat = mata polos -->
+                                <i data-lucide="eye-off" class="pass-icon-hidden absolute inset-0 transition-[opacity,transform,filter] duration-200 ease-out"></i>
+                                <i data-lucide="eye" class="pass-icon-shown absolute inset-0 opacity-0 scale-[.25] blur-[4px] transition-[opacity,transform,filter] duration-200 ease-out"></i>
                             </span>
                         </button>
                     </div>
 
                     <!-- Submit (Metronic: d-grid; dengan loading state) -->
-                    <div class="mt-7">
+                    <div class="mt-6">
                         <button type="submit" id="login-submit"
                             class="w-full h-[54px] rounded-[15px] bg-[#5f7f67] hover:bg-[#6b8b73] active:scale-[0.98] text-white text-[17px] font-semibold transition-[background-color,transform] duration-150 ease-out disabled:opacity-70 disabled:cursor-wait">
                             <span id="login-btn-label" data-i18n="login.sign_in" class="inline-flex items-center justify-center gap-2">Sign In</span>
@@ -142,19 +143,17 @@ include ROOT.'/app/Views/layouts/header_public.php';
     // Toggle visibilitas password
     var btn = document.getElementById('toggle-pass');
     if (btn) {
-        var eye = btn.querySelector('.pass-icon-eye');
-        var eyeOff = btn.querySelector('.pass-icon-off');
+        var icHidden = btn.querySelector('.pass-icon-hidden');
+        var icShown = btn.querySelector('.pass-icon-shown');
         btn.addEventListener('click', function () {
             var input = document.getElementById('login-password');
             var isPass = input.type === 'password';
             input.type = isPass ? 'text' : 'password';
             // cross-fade ikon (opacity + scale + blur), tanpa toggle visibility
-            eye.classList.toggle('opacity-0', !isPass);
-            eye.classList.toggle('scale-[.25]', !isPass);
-            eye.classList.toggle('blur-[4px]', !isPass);
-            eyeOff.classList.toggle('opacity-0', isPass);
-            eyeOff.classList.toggle('scale-[.25]', isPass);
-            eyeOff.classList.toggle('blur-[4px]', isPass);
+            [['opacity-0',!isPass],['scale-[.25]',!isPass],['blur-[4px]',!isPass]].forEach(function (pair) {
+                icHidden.classList.toggle(pair[0], pair[1]);
+                icShown.classList.toggle(pair[0], !pair[1]);
+            });
         });
     }
 
