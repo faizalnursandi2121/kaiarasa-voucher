@@ -314,11 +314,21 @@
     }
 
     .table-glass thead {
-        @apply bg-accents-1 dark:bg-white/5 border-b border-accents-2 dark:border-white/10;
+        background-color: rgba(95, 127, 103, 0.07); /* sage tint — identitas app */
+        @apply border-b border-[#5f7f67]/20;
+    }
+
+    .dark .table-glass thead {
+        background-color: rgba(95, 127, 103, 0.12);
     }
 
     .table-glass th {
-        @apply px-6 py-4 font-semibold text-accents-5 uppercase tracking-wider text-xs;
+        @apply px-6 py-4 font-semibold uppercase tracking-wider text-xs;
+        color: #47614d;
+    }
+
+    .dark .table-glass th {
+        color: #92aa96;
     }
 
     .table-glass tbody {
@@ -326,7 +336,11 @@
     }
 
     .table-glass tr {
-        @apply transition-colors duration-200 hover:bg-accents-1 dark:hover:bg-white/10;
+        @apply transition-colors duration-200;
+    }
+
+    .table-glass tbody tr:hover {
+        background-color: rgba(95, 127, 103, 0.05);
     }
 
     .table-glass td {

@@ -1674,14 +1674,14 @@ input:-webkit-autofill,
 }
 
 .table-glass thead {
+  background-color: rgba(95, 127, 103, 0.07);
+  /* sage tint — identitas app */
   border-bottom-width: 1px;
-  border-color: var(--accents-2);
-  background-color: var(--accents-1);
+  border-color: rgb(95 127 103 / 0.2);
 }
 
-.table-glass thead:is(.dark *) {
-  border-color: rgb(255 255 255 / 0.1);
-  background-color: rgb(255 255 255 / 0.05);
+.dark .table-glass thead {
+  background-color: rgba(95, 127, 103, 0.12);
 }
 
 .table-glass th {
@@ -1694,13 +1694,11 @@ input:-webkit-autofill,
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--accents-5);
+  color: #47614d;
 }
 
-@media print {
-  .table-glass th {
-    color: #444;
-  }
+.dark .table-glass th {
+  color: #92aa96;
 }
 
 .table-glass tbody > :not([hidden]) ~ :not([hidden]) {
@@ -1728,12 +1726,8 @@ input:-webkit-autofill,
   transition-duration: 200ms;
 }
 
-.table-glass tr:hover {
-  background-color: var(--accents-1);
-}
-
-.table-glass tr:hover:is(.dark *) {
-  background-color: rgb(255 255 255 / 0.1);
+.table-glass tbody tr:hover {
+  background-color: rgba(95, 127, 103, 0.05);
 }
 
 .table-glass td {
@@ -3079,6 +3073,10 @@ input:-webkit-autofill,
   border-color: rgb(48 54 61 / var(--tw-border-opacity, 1));
 }
 
+.border-\[\#5f7f67\]\/20 {
+  border-color: rgb(95 127 103 / 0.2);
+}
+
 .border-\[\#5f7f67\]\/30 {
   border-color: rgb(95 127 103 / 0.3);
 }
@@ -3214,6 +3212,10 @@ input:-webkit-autofill,
 
 .bg-\[\#5f7f67\]\/10 {
   background-color: rgb(95 127 103 / 0.1);
+}
+
+.bg-\[\#5f7f67\]\/\[\.06\] {
+  background-color: rgb(95 127 103 / .06);
 }
 
 .bg-\[\#5f7f67\]\/\[\.07\] {
@@ -3949,10 +3951,6 @@ input:-webkit-autofill,
 .tabular-nums {
   --tw-numeric-spacing: tabular-nums;
   font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
-}
-
-.leading-6 {
-  line-height: 1.5rem;
 }
 
 .leading-none {
@@ -5331,6 +5329,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   background-color: rgb(95 127 103 / 0.1);
 }
 
+.hover\:bg-\[\#5f7f67\]\/\[\.04\]:hover {
+  background-color: rgb(95 127 103 / .04);
+}
+
 .hover\:bg-\[\#6b8b73\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(107 139 115 / var(--tw-bg-opacity, 1));
@@ -5355,10 +5357,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
 .hover\:bg-background:hover {
   background-color: var(--background);
-}
-
-.hover\:bg-black\/\[\.02\]:hover {
-  background-color: rgb(0 0 0 / .02);
 }
 
 .hover\:bg-black\/\[\.03\]:hover {
@@ -5758,6 +5756,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   background-color: rgb(26 28 25 / var(--tw-bg-opacity, 1));
 }
 
+.dark\:bg-\[\#5f7f67\]\/\[\.12\]:is(.dark *) {
+  background-color: rgb(95 127 103 / .12);
+}
+
 .dark\:bg-black:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
@@ -5942,10 +5944,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
 .dark\:hover\:bg-white\/10:hover:is(.dark *) {
   background-color: rgb(255 255 255 / 0.1);
-}
-
-.dark\:hover\:bg-white\/\[\.03\]:hover:is(.dark *) {
-  background-color: rgb(255 255 255 / .03);
 }
 
 .dark\:hover\:bg-white\/\[\.05\]:hover:is(.dark *) {

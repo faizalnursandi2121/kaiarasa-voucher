@@ -11,7 +11,7 @@
         <div class="card overflow-hidden p-0">
              <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left">
-                    <thead class="text-xs text-accents-5 uppercase bg-accents-1/50 border-b border-accents-2 font-semibold tracking-wider">
+                    <thead class="text-xs uppercase tracking-wider font-semibold border-b border-[#5f7f67]/20 bg-[#5f7f67]/[.07] text-[#47614d] dark:bg-[#5f7f67]/[.12] dark:text-[#92aa96]">
                         <tr>
                             <th class="px-6 py-4 w-[250px]" data-i18n="common.name">Name</th>
                             <th class="px-6 py-4" data-i18n="common.description">Description</th>
