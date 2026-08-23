@@ -2039,6 +2039,10 @@ input:-webkit-autofill,
   margin-bottom: 1rem;
 }
 
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -2103,12 +2107,12 @@ input:-webkit-autofill,
   margin-top: 1.5rem;
 }
 
-.mt-8 {
-  margin-top: 2rem;
+.mt-7 {
+  margin-top: 1.75rem;
 }
 
-.mt-9 {
-  margin-top: 2.25rem;
+.mt-8 {
+  margin-top: 2rem;
 }
 
 .mt-auto {
@@ -2304,6 +2308,10 @@ input:-webkit-autofill,
 
 .h-\[400px\] {
   height: 400px;
+}
+
+.h-\[54px\] {
+  height: 54px;
 }
 
 .h-full {
@@ -3708,11 +3716,6 @@ input:-webkit-autofill,
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-
-.py-\[\.775rem\] {
-  padding-top: .775rem;
-  padding-bottom: .775rem;
 }
 
 .pb-1 {

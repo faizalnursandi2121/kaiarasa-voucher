@@ -73,19 +73,19 @@ include ROOT.'/app/Views/layouts/header_public.php';
                     </div>
 
                     <!-- Username (Metronic: fv-row mb-8, input form-control besar radius .95rem) -->
-                    <div class="mb-8">
+                    <div class="mb-5">
                         <input type="text" name="username" required autocomplete="username" autofocus
                             data-i18n-placeholder="login.username"
                             placeholder="Username"
-                            class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 py-[.775rem] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 h-[54px] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
 
                     <!-- Password (Metronic: fv-row mb-3) -->
-                    <div class="relative mb-3">
+                    <div class="relative">
                         <input type="password" id="login-password" name="password" required autocomplete="current-password"
                             data-i18n-placeholder="login.password"
                             placeholder="Password"
-                            class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 pr-12 py-[.775rem] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 pr-12 h-[54px] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <button type="button" id="toggle-pass" aria-label="Toggle password visibility"
                             class="absolute inset-y-0 right-0 flex items-center px-4 text-black/40 dark:text-white/40 hover:text-black/70 dark:hover:text-white/70 transition-colors">
                             <span class="relative block w-[18px] h-[18px]">
@@ -96,9 +96,9 @@ include ROOT.'/app/Views/layouts/header_public.php';
                     </div>
 
                     <!-- Submit (Metronic: d-grid; dengan loading state) -->
-                    <div class="mt-9">
+                    <div class="mt-7">
                         <button type="submit" id="login-submit"
-                            class="w-full h-12 rounded-[15px] bg-[#5f7f67] hover:bg-[#6b8b73] active:scale-[0.98] text-white text-[17px] font-semibold transition-[background-color,transform] duration-150 ease-out disabled:opacity-70 disabled:cursor-wait">
+                            class="w-full h-[54px] rounded-[15px] bg-[#5f7f67] hover:bg-[#6b8b73] active:scale-[0.98] text-white text-[17px] font-semibold transition-[background-color,transform] duration-150 ease-out disabled:opacity-70 disabled:cursor-wait">
                             <span id="login-btn-label" data-i18n="login.sign_in" class="inline-flex items-center justify-center gap-2">Sign In</span>
                             <span id="login-btn-spinner" class="hidden items-center justify-center gap-2">
                                 <svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle style="opacity:.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path style="opacity:.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
