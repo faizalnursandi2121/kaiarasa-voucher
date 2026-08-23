@@ -2519,10 +2519,6 @@ input:-webkit-autofill,
   max-width: 80rem;
 }
 
-.max-w-\[1400px\] {
-  max-width: 1400px;
-}
-
 .max-w-\[140px\] {
   max-width: 140px;
 }

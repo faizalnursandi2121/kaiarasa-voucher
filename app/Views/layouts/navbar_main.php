@@ -8,14 +8,14 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
 ?>
 <!-- Modern Navbar (Tailwind) -->
 <nav class="sticky top-0 z-50 w-full border-b border-accents-2 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-    <!-- Container sama dengan konten halaman (max-w-[1400px] px-4 sm:px-6) agar logo sejajar kartu -->
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <!-- Container sama dengan konten halaman (max-w-7xl) agar logo sejajar kartu -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
             <!-- Brand & Global Search -->
             <div class="flex items-center gap-3 sm:gap-5 flex-1 min-w-0">
                 <a href="/" class="flex items-center gap-2 group shrink-0">
-                    <img src="/assets/img/logo-sage.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" width="120" height="32" class="h-6 w-auto block dark:hidden transition-transform group-hover:scale-110">
-                    <img src="/assets/img/logo-white.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" width="120" height="32" class="h-6 w-auto hidden dark:block transition-transform group-hover:scale-110">
+                    <img src="/assets/img/logo-sage.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" width="120" height="32" class="h-8 w-auto block dark:hidden transition-transform group-hover:scale-110">
+                    <img src="/assets/img/logo-white.webp" alt="<?= SiteConfig::APP_NAME ?> Logo" width="120" height="32" class="h-8 w-auto hidden dark:block transition-transform group-hover:scale-110">
                 </a>
 
                 <!-- Global Search (Desktop) — tepat di sebelah kanan logo -->

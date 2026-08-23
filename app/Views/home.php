@@ -5,7 +5,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <!-- =============================================================
      HOME v2 — NOC Dashboard (spec H1–H6, mockup ui home.png)
 ============================================================== -->
-<div class="w-full max-w-[1400px] mx-auto py-6 px-4 sm:px-6">
+<div class="w-full max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
 
     <!-- ===== 1. NAV TILES ===== -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
