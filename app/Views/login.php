@@ -150,10 +150,13 @@ include ROOT.'/app/Views/layouts/header_public.php';
             var isPass = input.type === 'password';
             input.type = isPass ? 'text' : 'password';
             // cross-fade ikon (opacity + scale + blur), tanpa toggle visibility
-            [['opacity-0',!isPass],['scale-[.25]',!isPass],['blur-[4px]',!isPass]].forEach(function (pair) {
-                icHidden.classList.toggle(pair[0], pair[1]);
-                icShown.classList.toggle(pair[0], !pair[1]);
-            });
+            // setelah klik: password jadi terlihat -> sembunyikan berslash, tampilkan mata polos
+            icHidden.classList.toggle('opacity-0', isPass);
+            icHidden.classList.toggle('scale-[.25]', isPass);
+            icHidden.classList.toggle('blur-[4px]', isPass);
+            icShown.classList.toggle('opacity-0', !isPass);
+            icShown.classList.toggle('scale-[.25]', !isPass);
+            icShown.classList.toggle('blur-[4px]', !isPass);
         });
     }
 
