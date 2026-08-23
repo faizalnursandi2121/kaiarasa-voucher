@@ -14,11 +14,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             <span class="font-semibold text-sm">Network Overview</span>
             <span class="text-[11px] text-white/70">All routers status</span>
         </div>
-        <a href="/settings" class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5 flex flex-col items-center justify-center gap-2 min-h-[110px] hover:border-[#92aa96] transition-colors group">
-            <i data-lucide="router" class="w-7 h-7 opacity-60 group-hover:opacity-100 transition-opacity"></i>
-            <span class="font-semibold text-sm">Routers</span>
-            <span class="text-[11px] opacity-50">Manage routers</span>
-        </a>
         <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5 flex flex-col items-center justify-center gap-2 min-h-[110px] opacity-50 cursor-not-allowed relative">
             <span class="absolute top-2 right-2 text-[9px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-600 rounded-full px-2 py-0.5">Soon</span>
             <i data-lucide="file-text" class="w-7 h-7"></i>
@@ -163,6 +158,84 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     </div>
 </div>
 
+<!-- ===== Router Modal (Add / Edit) ===== -->
+<div id="router-modal" class="hidden fixed inset-0 z-[250] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-close-modal></div>
+    <div class="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-start justify-between mb-6">
+            <div>
+                <h3 id="router-modal-title" class="text-lg font-bold tracking-tight">Add Router</h3>
+                <p class="text-xs opacity-50 mt-0.5">Konfigurasi koneksi RouterOS API</p>
+            </div>
+            <button type="button" data-close-modal aria-label="Close"
+                class="w-8 h-8 rounded-lg inline-flex items-center justify-center hover:bg-black/[.05] dark:hover:bg-white/[.06] transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <form id="router-form" class="space-y-4" novalidate>
+            <input type="hidden" name="id" id="rf-id">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Session Name *</label>
+                    <input name="sessname" id="rf-sessname" required placeholder="e.g. router-jakarta-1"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    <p class="hidden text-xs text-red-600 mt-1.5" data-err="sessname"></p>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">IP Address *</label>
+                    <input name="ipmik" id="rf-ipmik" required placeholder="192.168.88.1"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    <p class="hidden text-xs text-red-600 mt-1.5" data-err="ipmik"></p>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Username *</label>
+                    <input name="usermik" id="rf-usermik" required placeholder="admin"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Password <span class="normal-case font-normal" id="rf-pass-hint"></span></label>
+                    <input type="password" name="passmik" id="rf-passmik" autocomplete="new-password" placeholder="••••••••"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Hotspot Name *</label>
+                    <input name="hotspotname" id="rf-hotspotname" required placeholder="My Hotspot ID"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">DNS Name *</label>
+                    <input name="dnsname" id="rf-dnsname" required placeholder="hotspot.net"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">API Port</label>
+                    <input type="number" name="port" id="rf-port" min="1" max="65535" value="8728"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                </div>
+                <div class="flex flex-col gap-3 pt-7">
+                    <label class="flex items-center gap-2.5 text-sm cursor-pointer">
+                        <input type="checkbox" name="quick_access" id="rf-quick" value="1" class="w-4 h-4 accent-[#5f7f67]"> Quick Access
+                    </label>
+                    <label class="flex items-center gap-2.5 text-sm cursor-pointer">
+                        <input type="checkbox" name="ssl" id="rf-ssl" value="1" class="w-4 h-4 accent-[#5f7f67]"> Gunakan SSL (api-ssl)
+                    </label>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2.5 pt-5 border-t border-black/[.06] dark:border-white/[.06]">
+                <button type="button" data-close-modal
+                    class="h-10 px-4 rounded-xl border border-black/10 dark:border-white/10 text-[13px] font-semibold hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">Cancel</button>
+                <button type="submit" id="rf-submit"
+                    class="h-10 px-5 rounded-xl bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[13px] font-semibold transition-colors disabled:opacity-60 disabled:cursor-wait inline-flex items-center gap-2">
+                    <span id="rf-submit-label">Save Router</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script src="/assets/js/vendor/apexcharts.min.js"></script>
 <script>
 (function () {
@@ -239,12 +312,17 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             + '<td class="px-4 py-3">'+metrics.cpu+'</td>'
             + '<td class="px-4 py-3 text-xs tabular-nums">'+metrics.up+'</td>'
             + '<td class="px-4 py-3 text-xs whitespace-nowrap">'+metrics.seen+'</td>'
-            + '<td class="px-4 py-3 text-right"><a href="/'+esc(r.session_name)+'/dashboard"'
-            +   ' class="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold '
-            +   (r.status === 'online'
-                ? 'bg-[#5f7f67]/10 text-[#47614d] dark:text-[#92aa96] hover:bg-[#5f7f67] hover:text-white'
-                : 'border border-black/10 dark:border-white/10 opacity-50 pointer-events-none')
-            + ' transition-colors"'+(r.status !== 'online' ? ' aria-disabled="true" tabindex="-1"' : '')+'>Open</a></td>'
+            + '<td class="px-4 py-3 text-right relative">'
+            +   '<button type="button" class="w-8 h-8 inline-flex items-center justify-center rounded-lg hover:bg-black/[.06] dark:hover:bg-white/[.08] transition-colors" data-actions-menu aria-haspopup="true">'
+            +   '<i data-lucide="more-vertical" class="w-4 h-4"></i></button>'
+            +   '<div class="hidden absolute right-4 top-full mt-0 z-30 w-44 rounded-xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] shadow-xl overflow-hidden text-left" data-menu>'
+            +     '<button type="button" class="w-full px-4 py-2.5 text-xs font-medium text-left hover:bg-black/[.04] dark:hover:bg-white/[.05] flex items-center gap-2.5" data-act="open" data-s="'+esc(r.session_name)+'"><i data-lucide="external-link" class="w-3.5 h-3.5 opacity-60"></i>Open Dashboard</button>'
+            +     '<button type="button" class="w-full px-4 py-2.5 text-xs font-medium text-left hover:bg-black/[.04] dark:hover:bg-white/[.05] flex items-center gap-2.5" data-act="edit"><i data-lucide="pencil" class="w-3.5 h-3.5 opacity-60"></i>Edit Router</button>'
+            +     '<button type="button" class="w-full px-4 py-2.5 text-xs font-medium text-left hover:bg-black/[.04] dark:hover:bg-white/[.05] flex items-center gap-2.5" data-act="test"><i data-lucide="plug-zap" class="w-3.5 h-3.5 opacity-60"></i>Test Connection</button>'
+            +     '<div class="border-t border-black/[.05] dark:border-white/[.05]"></div>'
+            +     '<button type="button" class="w-full px-4 py-2.5 text-xs font-semibold text-left text-red-600 hover:bg-red-500/[.07] flex items-center gap-2.5" data-act="delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i>Delete</button>'
+            +   '</div>'
+            + '</td>'
             + '</tr>';
     }
 
@@ -446,6 +524,178 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             });
     }
 
+
+    /* ================= router CRUD modal & row actions ================= */
+    var modal = document.getElementById('router-modal');
+    var form = document.getElementById('router-form');
+    var submitBtn = document.getElementById('rf-submit');
+
+    function openModal(mode, r) {
+        form.reset();
+        ['sessname','ipmik'].forEach(function (n) {
+            var err = form.querySelector('[data-err="'+n+'"]');
+            if (err) err.classList.add('hidden');
+        });
+        if (mode === 'edit') {
+            document.getElementById('router-modal-title').textContent = 'Edit Router';
+            document.getElementById('rf-submit-label').textContent = 'Save Changes';
+            document.getElementById('rf-pass-hint').textContent = '(kosongkan jika tidak diubah)';
+            document.getElementById('rf-id').value = r.id;
+            document.getElementById('rf-sessname').value = r.session_name;
+            document.getElementById('rf-ipmik').value = r.ip_address;
+            document.getElementById('rf-usermik').value = '';
+            document.getElementById('rf-passmik').value = '';
+            document.getElementById('rf-usermik').placeholder = r.username || 'admin';
+            document.getElementById('rf-hotspotname').value = r.hotspot_name || '';
+            document.getElementById('rf-dnsname').value = '';
+            document.getElementById('rf-port').value = 8728;
+            form.dataset.mode = 'edit';
+        } else {
+            document.getElementById('router-modal-title').textContent = 'Add Router';
+            document.getElementById('rf-submit-label').textContent = 'Save Router';
+            document.getElementById('rf-pass-hint').textContent = '';
+            document.getElementById('rf-id').value = '';
+            document.getElementById('rf-usermik').placeholder = 'admin';
+            delete form.dataset.mode;
+        }
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(function () { document.getElementById('rf-sessname').focus(); }, 50);
+    }
+    function closeModal() {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+    modal.querySelectorAll('[data-close-modal]').forEach(function (el) {
+        el.addEventListener('click', closeModal);
+    });
+
+    /* ---- row actions menu (delegasi) ---- */
+    grid.addEventListener('click', function (e) {
+        var menuBtn = e.target.closest('[data-actions-menu]');
+        if (menuBtn) {
+            var menu = menuBtn.parentElement.querySelector('[data-menu]');
+            var wasOpen = !menu.classList.contains('hidden');
+            grid.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.add('hidden'); });
+            if (!wasOpen) menu.classList.remove('hidden');
+            e.stopPropagation();
+            return;
+        }
+        // tutup menu bila klik area lain
+        if (!e.target.closest('[data-menu]')) {
+            grid.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.add('hidden'); });
+        }
+        var actBtn = e.target.closest('[data-act]');
+        if (actBtn) {
+            var act = actBtn.getAttribute('data-act');
+            var tr = actBtn.closest('tr[data-session]');
+            var name = tr ? tr.getAttribute('data-session') : null;
+            var r = state.routers.find(function (x) { return x.session_name === name; });
+            if (!r) return;
+            if (act === 'open') location.href = '/' + name + '/dashboard';
+            if (act === 'edit') openModal('edit', r);
+            if (act === 'test') testConnection(r);
+            if (act === 'delete') deleteRouter(r);
+        }
+    });
+
+    /* ---- test connection (#UI States #11/#12) ---- */
+    function testConnection(r) {
+        window.KaiarasaAlert = window.KaiarasaAlert || (window.Kaiarasa && window.Kaiarasa.modules && window.Kaiarasa.modules.Alert);
+        fetch('/api/router/interfaces', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ session: r.session_name }),
+        }).then(function (res) { return res.json().then(function (j) { return { ok: res.ok, j: j }; }); })
+          .then(function (out) {
+              if (window.Swal) Swal.fire({ icon: out.ok ? 'success' : 'error',
+                  title: out.ok ? 'Connection OK' : 'Connection Failed',
+                  text: out.ok ? ((out.j.interfaces ? out.j.interfaces.length : 0) + ' interfaces terdeteksi')
+                               : (out.j.error || 'Tidak dapat terhubung'), timer: 3500, showConfirmButton: false });
+          }).catch(function () {
+              if (window.Swal) Swal.fire({ icon: 'error', title: 'Connection Failed', text: 'Network error', timer: 3000, showConfirmButton: false });
+          });
+    }
+
+    /* ---- delete (#26 destructive confirm) ---- */
+    function deleteRouter(r) {
+        var doDelete = function () {
+            return fetch('/settings/delete', {
+                method: 'POST',
+                headers: { Accept: 'application/json' },
+                body: new URLSearchParams({ id: String(r.id) }),
+            }).then(function (res) { return res.json(); });
+        };
+        if (window.Kaiarasa && Kaiarasa.confirm) {
+            Kaiarasa.confirm('Delete Router?', 'Router "'+r.session_name+'" dan sesinya akan dihapus permanen.', 'Delete', 'Cancel')
+                .then(function (ok) { if (!ok) return; doDelete().then(function (j) {
+                    if (window.Swal) Swal.fire({ icon: j.success ? 'success' : 'error', title: j.message, timer: 2500, showConfirmButton: false });
+                    load(true);
+                }); });
+        } else if (window.Swal) {
+            Swal.fire({ title: 'Delete Router?', text: r.session_name, icon: 'warning', showCancelButton: true,
+                confirmButtonColor: '#dc2626', confirmButtonText: 'Delete' })
+                .then(function (res) { if (res.isConfirmed) doDelete().then(function (j) {
+                    if (window.Swal) Swal.fire({ icon: j.success ? 'success' : 'error', title: j.message, timer: 2500, showConfirmButton: false });
+                    load(true);
+                }); });
+        } else {
+            if (confirm('Delete router '+r.session_name+'?')) doDelete().then(function () { load(true); });
+        }
+    }
+
+    /* ---- add / edit submit via fetch JSON ---- */
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        form.querySelectorAll('[data-err]').forEach(function (p) { p.classList.add('hidden'); });
+
+        var isEdit = form.dataset.mode === 'edit';
+        var payload = new URLSearchParams(new FormData(form));
+        if (isEdit && !payload.get('passmik')) payload.delete('passmik'); // kosong = tetap
+
+        submitBtn.disabled = true;
+        document.getElementById('rf-submit-label').textContent = isEdit ? 'Saving…' : 'Saving…';
+
+        fetch(isEdit ? '/settings/update' : '/settings/store', {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body: payload,
+        })
+        .then(function (res) {
+            return res.json().then(function (j) { return { status: res.status, json: j }; });
+        })
+        .then(function (out) {
+            if (out.status === 200 && out.json.success) {
+                closeModal();
+                if (window.Swal) Swal.fire({ icon: 'success', title: out.json.message, timer: 2200, showConfirmButton: false });
+                load(true);
+            } else {
+                // tampilkan pesan error umum
+                if (window.Swal) Swal.fire({ icon: 'error', title: 'Gagal', text: out.json.message || 'Periksa kembali data.', });
+            }
+        })
+        .catch(function () {
+            if (window.Swal) Swal.fire({ icon: 'error', title: 'Network error' });
+        })
+        .finally(function () {
+            submitBtn.disabled = false;
+            document.getElementById('rf-submit-label').textContent =
+                form.dataset.mode === 'edit' ? 'Save Changes' : 'Save Router';
+        });
+    });
+
+    // tombol Add Router pada navbar → buka modal (bukan redirect)
+    // stopPropagation: cegah handler SPA navbar menukar #app-dynamic
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href="/settings/add"]');
+        if (!a) return;
+        e.preventDefault();
+        e.stopPropagation();
+        if (window.__kaiarasaAppSpaNavBlocked !== undefined) { /* noop */ }
+        openModal('add', null);
+    }, true);
+
     /* ================= wiring ================= */
     document.getElementById('btn-refresh').addEventListener('click', function () { load(true); });
     document.getElementById('table-search').addEventListener('input', function () {
@@ -455,6 +705,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         state.filter = this.value; state.page = 1; renderTable();
     });
     grid.addEventListener('click', function (e) {
+        // klik di dalam menu aksi / tombol titik tiga tidak menavigasi
+        if (e.target.closest('[data-actions-menu]') || e.target.closest('[data-menu]')) return;
         var tr = e.target.closest('tr[data-session]');
         if (tr && !e.target.closest('a')) location.href = '/' + tr.getAttribute('data-session') + '/dashboard';
     });
