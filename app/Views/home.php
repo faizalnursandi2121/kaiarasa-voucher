@@ -792,14 +792,14 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         if (window.Kaiarasa && Kaiarasa.confirm) {
             Kaiarasa.confirm('Delete Router?', 'Router "'+r.session_name+'" dan sesinya akan dihapus permanen.', 'Delete', 'Cancel')
                 .then(function (ok) { if (!ok) return; doDelete().then(function (j) {
-                    if (window.Swal) Swal.fire({ icon: j.success ? 'success' : 'error', title: j.message, timer: 2500, showConfirmButton: false });
+                    if (window.Kaiarasa) Kaiarasa.toast(j.success ? 'success' : 'error', j.message);
                     load(true);
                 }); });
         } else if (window.Swal) {
             Swal.fire({ title: 'Delete Router?', text: r.session_name, icon: 'warning', showCancelButton: true,
                 confirmButtonColor: '#dc2626', confirmButtonText: 'Delete' })
                 .then(function (res) { if (res.isConfirmed) doDelete().then(function (j) {
-                    if (window.Swal) Swal.fire({ icon: j.success ? 'success' : 'error', title: j.message, timer: 2500, showConfirmButton: false });
+                    if (window.Kaiarasa) Kaiarasa.toast(j.success ? 'success' : 'error', j.message);
                     load(true);
                 }); });
         } else {
@@ -834,15 +834,14 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         .then(function (out) {
             if (out.status === 200 && out.json.success) {
                 closeModal();
-                if (window.Swal) Swal.fire({ icon: 'success', title: out.json.message, timer: 2200, showConfirmButton: false });
+                if (window.Kaiarasa) Kaiarasa.toast('success', out.json.message);
                 load(true);
             } else {
-                // tampilkan pesan error umum
-                if (window.Swal) Swal.fire({ icon: 'error', title: 'Gagal', text: out.json.message || 'Periksa kembali data.', });
+                if (window.Kaiarasa) Kaiarasa.toast('error', out.json.message || 'Periksa kembali data.');
             }
         })
         .catch(function () {
-            if (window.Swal) Swal.fire({ icon: 'error', title: 'Network error' });
+            if (window.Kaiarasa) Kaiarasa.toast('error', 'Network error');
         })
         .finally(function () {
             submitBtn.disabled = false;
