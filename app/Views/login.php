@@ -45,10 +45,12 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
 <main class="flex-grow flex flex-col lg:flex-row w-full">
 
-    <!-- ===== KIRI: brand (Metronic: d-flex flex-center w-lg-50 pt-15 px-10) ===== -->
+    <!-- ===== KIRI: brand ===== -->
     <section class="lg:w-1/2 flex items-center justify-center pt-[3.75rem] px-10 lg:pt-0 lg:pb-[3.75rem]">
         <div class="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <img src="/assets/img/logo-white.webp" alt="Kaiarasa" class="h-20 w-auto mb-7 drop-shadow-lg">
+            <img src="/assets/img/logo-white.webp" alt="Kaiarasa" class="h-20 w-auto mb-6 drop-shadow-lg">
+            <h2 class="text-white text-3xl font-bold tracking-tight drop-shadow">Kaiarasa</h2>
+            <p class="text-white/70 text-sm mt-2 max-w-xs">Hotspot Voucher Manager for your MikroTik network.</p>
         </div>
     </section>
 
