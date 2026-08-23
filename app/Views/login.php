@@ -1,4 +1,6 @@
 <?php
+use App\Config\SiteConfig;
+
 $title = 'Kaiarasa Login';
 include ROOT.'/app/Views/layouts/header_public.php';
 ?>
@@ -50,12 +52,11 @@ include ROOT.'/app/Views/layouts/header_public.php';
         </div>
     </section>
 
-    <!-- ===== KANAN: kartu form (Metronic: p-12 p-lg-20 justify-end → card w-md-600px p-20 rounded-4) ===== -->
+    <!-- ===== KANAN: kartu form ===== -->
     <section class="flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
-        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[600px] p-8 md:p-14 lg:p-20 shadow-[0_8px_24px_rgba(0,0,0,.08)]">
+        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full max-w-[420px] p-8 md:p-10 shadow-[0_8px_24px_rgba(0,0,0,.08)]">
 
-            <!-- Wrapper dalam (Metronic: px-lg-10 pb-15 pb-lg-20) -->
-            <div class="lg:px-8 pb-8 lg:pb-14">
+            <div>
 
                 <?php if (! empty($error)): ?>
                 <!-- Fallback error inline (path aktif saat ini: FlashHelper → SweetAlert via footer) -->
@@ -67,13 +68,14 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
                 <form action="/login" method="POST" class="w-full">
 
-                    <!-- Heading (rata kiri sesuai permintaan) -->
-                    <div class="mb-11">
-                        <h1 data-i18n="login.sign_in" class="text-[22px] font-bold tracking-tight text-black/90 dark:text-white/95">Sign In</h1>
+                    <!-- Heading -->
+                    <div class="mb-8">
+                        <h1 class="text-[22px] font-bold tracking-tight text-black/90 dark:text-white/95">Welcome back</h1>
+                        <p class="text-sm text-black/50 dark:text-white/50 mt-1.5">Sign in to manage your routers &amp; vouchers.</p>
                     </div>
 
-                    <!-- Username (Metronic: fv-row mb-8, input form-control besar radius .95rem) -->
-                    <div class="mb-8">
+                    <!-- Username -->
+                    <div class="mb-5">
                         <input type="text" name="username" required autocomplete="username"
                             data-i18n-placeholder="login.username"
                             placeholder="Username"
@@ -93,8 +95,8 @@ include ROOT.'/app/Views/layouts/header_public.php';
                         </button>
                     </div>
 
-                    <!-- Submit (Metronic: d-grid; dengan loading state) -->
-                    <div class="mt-9">
+                    <!-- Submit -->
+                    <div class="mt-7">
                         <button type="submit" id="login-submit"
                             class="w-full h-12 rounded-[15px] bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[17px] font-semibold transition-colors disabled:opacity-70 disabled:cursor-wait">
                             <span id="login-btn-label" data-i18n="login.sign_in" class="inline-flex items-center justify-center gap-2">Sign In</span>
@@ -105,6 +107,10 @@ include ROOT.'/app/Views/layouts/header_public.php';
                         </button>
                     </div>
                 </form>
+
+                <p class="mt-8 pt-6 border-t border-black/[.06] dark:border-white/[.06] text-center text-[11px] text-black/40 dark:text-white/40">
+                    &copy; <?= date('Y') ?> <?= htmlspecialchars(SiteConfig::APP_NAME) ?> &middot; Hotspot Voucher Manager
+                </p>
             </div>
         </div>
     </section>
