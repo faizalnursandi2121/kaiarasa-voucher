@@ -209,18 +209,45 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     <input name="dnsname" id="rf-dnsname" required placeholder="hotspot.net"
                         class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                 </div>
-                <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">API Port</label>
-                    <input type="number" name="port" id="rf-port" min="1" max="65535" value="8728"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                <div class="sm:col-span-1 flex items-center pt-7 sm:pt-0">
+                    <label class="flex items-center gap-2.5 text-sm cursor-pointer">
+                        <input type="checkbox" name="quick_access" id="rf-quick" value="1" class="w-4 h-4 accent-[#5f7f67]"> Tampilkan di Quick Access
+                    </label>
                 </div>
-                <div class="flex flex-col gap-3 pt-7">
-                    <label class="flex items-center gap-2.5 text-sm cursor-pointer">
-                        <input type="checkbox" name="quick_access" id="rf-quick" value="1" class="w-4 h-4 accent-[#5f7f67]"> Quick Access
-                    </label>
-                    <label class="flex items-center gap-2.5 text-sm cursor-pointer">
-                        <input type="checkbox" name="ssl" id="rf-ssl" value="1" class="w-4 h-4 accent-[#5f7f67]"> Gunakan SSL (api-ssl)
-                    </label>
+            </div>
+
+            <!-- Koneksi: wajib test sebelum simpan; port API diisi manual -->
+            <div class="rounded-xl border border-black/[.08] dark:border-white/[.08] bg-black/[.02] dark:bg-white/[.02] p-4 space-y-4">
+                <div class="flex items-center justify-between gap-3">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider opacity-60">Koneksi RouterOS API</span>
+                    <button type="button" id="rf-test-btn"
+                        class="h-9 px-3 rounded-xl border border-black/10 dark:border-white/10 text-xs font-bold uppercase tracking-tight hover:bg-black/[.04] dark:hover:bg-white/[.05] transition-colors inline-flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap">
+                        <i data-lucide="plug-zap" class="w-3.5 h-3.5"></i><span id="rf-test-label">Test Connection</span>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">API Port *</label>
+                        <input type="number" name="port" id="rf-port" min="1" max="65535" value="8728"
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    </div>
+                    <div class="flex items-end pb-1">
+                        <label class="flex items-center gap-2.5 text-sm cursor-pointer pb-2.5">
+                            <input type="checkbox" name="ssl" id="rf-ssl" value="1" class="w-4 h-4 accent-[#5f7f67]"> Gunakan SSL (api-ssl)
+                        </label>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Traffic Interface *</label>
+                        <select name="iface" id="rf-iface" required disabled
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition disabled:opacity-60">
+                            <option value="">— Jalankan Test Connection —</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end pb-1">
+                        <p id="rf-test-status" class="text-xs opacity-60 leading-relaxed">Wajib Test Connection berhasil sebelum menyimpan — daftar interface diambil langsung dari router.</p>
+                    </div>
                 </div>
             </div>
 
@@ -313,15 +340,9 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             + '<td class="px-4 py-3 text-xs tabular-nums">'+metrics.up+'</td>'
             + '<td class="px-4 py-3 text-xs whitespace-nowrap">'+metrics.seen+'</td>'
             + '<td class="px-4 py-3 text-right relative">'
-            +   '<button type="button" class="w-8 h-8 inline-flex items-center justify-center rounded-lg hover:bg-black/[.06] dark:hover:bg-white/[.08] transition-colors" data-actions-menu aria-haspopup="true">'
+            +   '<button type="button" class="w-8 h-8 inline-flex items-center justify-center rounded-lg hover:bg-black/[.06] dark:hover:bg-white/[.08] transition-colors"'
+            +   ' data-actions-menu data-session="'+esc(r.session_name)+'" aria-haspopup="true">'
             +   '<i data-lucide="more-vertical" class="w-4 h-4"></i></button>'
-            +   '<div class="hidden absolute right-4 top-full mt-0 z-30 w-44 rounded-xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] shadow-xl overflow-hidden text-left" data-menu>'
-            +     '<button type="button" class="w-full px-4 py-2.5 text-xs font-medium text-left hover:bg-black/[.04] dark:hover:bg-white/[.05] flex items-center gap-2.5" data-act="open" data-s="'+esc(r.session_name)+'"><i data-lucide="external-link" class="w-3.5 h-3.5 opacity-60"></i>Open Dashboard</button>'
-            +     '<button type="button" class="w-full px-4 py-2.5 text-xs font-medium text-left hover:bg-black/[.04] dark:hover:bg-white/[.05] flex items-center gap-2.5" data-act="edit"><i data-lucide="pencil" class="w-3.5 h-3.5 opacity-60"></i>Edit Router</button>'
-            +     '<button type="button" class="w-full px-4 py-2.5 text-xs font-medium text-left hover:bg-black/[.04] dark:hover:bg-white/[.05] flex items-center gap-2.5" data-act="test"><i data-lucide="plug-zap" class="w-3.5 h-3.5 opacity-60"></i>Test Connection</button>'
-            +     '<div class="border-t border-black/[.05] dark:border-white/[.05]"></div>'
-            +     '<button type="button" class="w-full px-4 py-2.5 text-xs font-semibold text-left text-red-600 hover:bg-red-500/[.07] flex items-center gap-2.5" data-act="delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i>Delete</button>'
-            +   '</div>'
             + '</td>'
             + '</tr>';
     }
@@ -530,8 +551,82 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     var form = document.getElementById('router-form');
     var submitBtn = document.getElementById('rf-submit');
 
+    var connOk = false;
+    var testBtn = document.getElementById('rf-test-btn');
+    function markUntested() {
+        connOk = false;
+        submitBtn.disabled = true;
+        var sel = document.getElementById('rf-iface');
+        sel.innerHTML = '<option value="">— Jalankan Test Connection —</option>';
+        sel.disabled = true;
+        document.getElementById('rf-port').value = '';
+        document.getElementById('rf-ssl').value = '';
+        var st = document.getElementById('rf-test-status');
+        st.className = 'text-xs opacity-60 leading-relaxed';
+        st.textContent = 'Wajib test koneksi dulu — port API & SSL dideteksi otomatis (8728 / 8729).';
+    }
+    ['rf-ipmik','rf-usermik','rf-passmik'].forEach(function (id) {
+        document.getElementById(id).addEventListener('input', markUntested);
+    });
+    testBtn.addEventListener('click', runConnectionTest);
+    function runConnectionTest() {
+        var ip = document.getElementById('rf-ipmik').value.trim();
+        var user = document.getElementById('rf-usermik').value.trim();
+        var pass = document.getElementById('rf-passmik').value;
+        var id = document.getElementById('rf-id').value || null; // edit: fallback password tersimpan
+        if (!ip || !user) {
+            var st = document.getElementById('rf-test-status');
+            st.className = 'text-xs text-red-600 leading-relaxed';
+            st.textContent = 'Isi IP Address dan Username dulu.';
+            return;
+        }
+        testBtn.disabled = true;
+        document.getElementById('rf-test-label').textContent = 'Testing…';
+        testBtn.disabled = true;
+        document.getElementById('rf-test-label').textContent = 'Testing…';
+        var portVal = parseInt(document.getElementById('rf-port').value, 10) || 8728;
+        var sslVal = document.getElementById('rf-ssl').checked;
+        fetch('/api/router/interfaces', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ ip: ip, user: user, password: pass, id: id, port: portVal, ssl: sslVal }),
+        })
+        .then(function (res) { return res.json().then(function (j) { return { ok: res.ok, j: j }; }); })
+        .then(function (out) {
+            if (out.ok && Array.isArray(out.j.interfaces) && out.j.interfaces.length) {
+                var sel = document.getElementById('rf-iface');
+                sel.innerHTML = '';
+                out.j.interfaces.forEach(function (nm) {
+                    var o = document.createElement('option');
+                    o.value = nm; o.textContent = nm;
+                    sel.appendChild(o);
+                });
+                sel.disabled = false;
+                connOk = true;
+                submitBtn.disabled = false;
+                var st = document.getElementById('rf-test-status');
+                st.className = 'text-xs font-semibold text-[#47614d] dark:text-[#92aa96] leading-relaxed';
+                st.textContent = '\u2713 Terhubung — ' + sel.options.length + ' interface terdeteksi. Pilih Traffic Interface lalu simpan.';
+                if (window.lucide) lucide.createIcons();
+                testBtn.disabled = false;
+                document.getElementById('rf-test-label').textContent = 'Re-test';
+            } else {
+                failTest(out.j && out.j.error);
+            }
+        })
+        .catch(function () { failTest(); });
+    }
+    function failTest(detail) {
+        testBtn.disabled = false;
+        document.getElementById('rf-test-label').textContent = 'Test Connection';
+        var st = document.getElementById('rf-test-status');
+        st.className = 'text-xs text-red-600 leading-relaxed';
+        st.textContent = 'Gagal terhubung. ' + (detail || 'Periksa IP, user, password, API Port, atau SSL.');
+    }
+
     function openModal(mode, r) {
         form.reset();
+        markUntested();
         ['sessname','ipmik'].forEach(function (n) {
             var err = form.querySelector('[data-err="'+n+'"]');
             if (err) err.classList.add('hidden');
@@ -548,7 +643,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             document.getElementById('rf-usermik').placeholder = r.username || 'admin';
             document.getElementById('rf-hotspotname').value = r.hotspot_name || '';
             document.getElementById('rf-dnsname').value = '';
-            document.getElementById('rf-port').value = 8728;
+            if (r.port) document.getElementById('rf-port').value = r.port;
+            document.getElementById('rf-ssl').checked = !!parseInt(r.ssl, 10);
             form.dataset.mode = 'edit';
         } else {
             document.getElementById('router-modal-title').textContent = 'Add Router';
@@ -571,52 +667,60 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         el.addEventListener('click', closeModal);
     });
 
-    /* ---- row actions menu (delegasi) ---- */
-    grid.addEventListener('click', function (e) {
-        var menuBtn = e.target.closest('[data-actions-menu]');
-        if (menuBtn) {
-            var menu = menuBtn.parentElement.querySelector('[data-menu]');
-            var wasOpen = !menu.classList.contains('hidden');
-            grid.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.add('hidden'); });
-            if (!wasOpen) menu.classList.remove('hidden');
-            e.stopPropagation();
-            return;
-        }
-        // tutup menu bila klik area lain
-        if (!e.target.closest('[data-menu]')) {
-            grid.querySelectorAll('[data-menu]').forEach(function (m) { m.classList.add('hidden'); });
-        }
-        var actBtn = e.target.closest('[data-act]');
-        if (actBtn) {
-            var act = actBtn.getAttribute('data-act');
-            var tr = actBtn.closest('tr[data-session]');
-            var name = tr ? tr.getAttribute('data-session') : null;
-            var r = state.routers.find(function (x) { return x.session_name === name; });
-            if (!r) return;
-            if (act === 'open') location.href = '/' + name + '/dashboard';
-            if (act === 'edit') openModal('edit', r);
-            if (act === 'test') testConnection(r);
-            if (act === 'delete') deleteRouter(r);
-        }
-    });
-
-    /* ---- test connection (#UI States #11/#12) ---- */
-    function testConnection(r) {
-        window.KaiarasaAlert = window.KaiarasaAlert || (window.Kaiarasa && window.Kaiarasa.modules && window.Kaiarasa.modules.Alert);
-        fetch('/api/router/interfaces', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify({ session: r.session_name }),
-        }).then(function (res) { return res.json().then(function (j) { return { ok: res.ok, j: j }; }); })
-          .then(function (out) {
-              if (window.Swal) Swal.fire({ icon: out.ok ? 'success' : 'error',
-                  title: out.ok ? 'Connection OK' : 'Connection Failed',
-                  text: out.ok ? ((out.j.interfaces ? out.j.interfaces.length : 0) + ' interfaces terdeteksi')
-                               : (out.j.error || 'Tidak dapat terhubung'), timer: 3500, showConfirmButton: false });
-          }).catch(function () {
-              if (window.Swal) Swal.fire({ icon: 'error', title: 'Connection Failed', text: 'Network error', timer: 3000, showConfirmButton: false });
-          });
+    /* ---- row actions: floating menu (portal ke body, anti terpotong overflow) ---- */
+    var floatMenu = null;
+    function closeFloatMenu() {
+        if (!floatMenu) return;
+        floatMenu.remove();
+        floatMenu = null;
+        document.removeEventListener('click', floatOutside, true);
+        window.removeEventListener('scroll', closeFloatMenu, true);
+        window.removeEventListener('resize', closeFloatMenu);
     }
+    function floatOutside(e) {
+        if (floatMenu && !floatMenu.contains(e.target) && !e.target.closest('[data-actions-menu]')) closeFloatMenu();
+    }
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-actions-menu]');
+        if (!btn) return;
+        e.stopPropagation();
+        closeFloatMenu();
+        var sess = btn.getAttribute('data-session');
+        var r = state.routers.find(function (x) { return x.session_name === sess; });
+        if (!r) return;
+        var rect = btn.getBoundingClientRect();
+        var menu = document.createElement('div');
+        menu.style.cssText = 'position:fixed;z-index:400;width:176px;border-radius:12px;overflow:hidden;text-align:left;'
+            + 'border:1px solid ' + (isDark() ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.08)') + ';'
+            + 'background:' + (isDark() ? '#1a1c19' : '#ffffff') + ';box-shadow:0 10px 30px rgba(0,0,0,.18);';
+        menu.innerHTML =
+            '<button type="button" class="w-full px-4 py-2.5 text-xs font-medium text-left hover:bg-black/[.04] dark:hover:bg-white/[.05] flex items-center gap-2.5" data-act="open"><i data-lucide="external-link" class="w-3.5 h-3.5 opacity-60"></i>Open Dashboard</button>'
+          + '<button type="button" class="w-full px-4 py-2.5 text-xs font-medium text-left hover:bg-black/[.04] dark:hover:bg-white/[.05] flex items-center gap-2.5" data-act="edit"><i data-lucide="pencil" class="w-3.5 h-3.5 opacity-60"></i>Edit Router</button>'
+          + '<div style="border-top:1px solid rgba(128,128,128,.15)"></div>'
+          + '<button type="button" class="w-full px-4 py-2.5 text-xs font-semibold text-left text-red-600 hover:bg-red-500/[.07] flex items-center gap-2.5" data-act="delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i>Delete</button>';
+        menu.addEventListener('click', function (ev) {
+            var actBtn = ev.target.closest('[data-act]');
+            if (!actBtn) return;
+            ev.stopPropagation();
+            var act = actBtn.getAttribute('data-act');
+            var snapshot = JSON.parse(JSON.stringify(r));
+            closeFloatMenu();
+            if (act === 'open') location.href = '/' + r.session_name + '/dashboard';
+            if (act === 'edit') openModal('edit', snapshot);
+            if (act === 'delete') deleteRouter(snapshot);
+        });
+        document.body.appendChild(menu);
+        // posisi: bawah tombol, rata kanan dgn tombol; jepit agar tak keluar viewport
+        var mw = menu.offsetWidth || 176;
+        var left = Math.min(rect.right - mw, window.innerWidth - mw - 8);
+        menu.style.top = Math.min(rect.bottom + 6, window.innerHeight - menu.offsetHeight - 8) + 'px';
+        menu.style.left = Math.max(8, left) + 'px';
+        if (window.lucide) lucide.createIcons();
+        document.addEventListener('click', floatOutside, true);
+        window.addEventListener('scroll', closeFloatMenu, true);
+        window.addEventListener('resize', closeFloatMenu);
+        floatMenu = menu;
+    });
 
     /* ---- delete (#26 destructive confirm) ---- */
     function deleteRouter(r) {
@@ -648,6 +752,12 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     /* ---- add / edit submit via fetch JSON ---- */
     form.addEventListener('submit', function (e) {
         e.preventDefault();
+        if (!connOk) {
+            var st = document.getElementById('rf-test-status');
+            st.className = 'text-xs text-red-600 leading-relaxed font-semibold';
+            st.textContent = 'Wajib Test Connection berhasil sebelum menyimpan.';
+            return;
+        }
         form.querySelectorAll('[data-err]').forEach(function (p) { p.classList.add('hidden'); });
 
         var isEdit = form.dataset.mode === 'edit';

@@ -49,6 +49,8 @@ class ApiController extends Controller
         // $api->debug = true; // Enable for debugging
         $api->port = (int) $port;
         $api->ssl = $ssl;
+        // Single attempt: this endpoint is for quick "Test Connection" in the Add Router form
+        $api->attempts = 1;
 
         if ($api->connect($ip, $user, $pass)) {
             $api->write('/interface/print');
