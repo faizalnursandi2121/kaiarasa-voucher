@@ -117,7 +117,6 @@ class SettingsController extends Controller
             'currency' => $_POST['currency'],
             'reload_interval' => $_POST['areload'],
             'interface' => $_POST['iface'],
-            'description' => 'Added via Remake',
             'quick_access' => isset($_POST['quick_access']) ? 1 : 0,
             'port' => (int) ($_POST['port'] ?? 8728),
             'ssl' => isset($_POST['ssl']) ? 1 : 0,

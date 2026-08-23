@@ -67,7 +67,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             <div class="p-5 pb-4 flex flex-wrap items-center gap-3 justify-between">
                 <div>
                     <h2 class="text-lg font-bold tracking-tight">Router Status</h2>
-                    <p class="text-xs opacity-50 mt-0.5">Real-time status of all connected routers · <span id="last-updated">…</span></p>
+                    <p class="text-xs opacity-50 mt-0.5">Real-time status of all connected routers</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <input type="search" id="table-search" placeholder="Cari router…"
@@ -564,9 +564,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 state.checkedAt = data.checked_at;
                 state.page = 1;
                 renderTable(); renderStats(state.routers); renderSysHealth(true);
-                var d = new Date(data.checked_at * 1000);
-                document.getElementById('last-updated').textContent = 'terakhir diperbarui ' +
-                    d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
                 // history & events hanya perlu sesekali
                 return Promise.all([
                     fetch('/api/routers/history?hours=24').then(function (r) { return r.json(); }),
@@ -578,7 +575,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 });
             })
             .catch(function () {
-                document.getElementById('last-updated').textContent = 'gagal memuat — coba Refresh';
                 renderSysHealth(false);
             })
             .finally(function () {
