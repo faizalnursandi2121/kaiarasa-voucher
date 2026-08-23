@@ -158,13 +158,21 @@ class SalesReportService
                 && ($end === null || $rec['date'] <= $end);
 
             // Undated: keluar dari agregasi BER-RANGE (konsistensi dashboard);
-            // masuk total hanya pada view all-time. Selalu jadi data-quality note.
+            // masuk total hanya pada view all-time. Tipe & paket tetap tercatat
+            // karena diketahui (hanya tanggalnya yang tidak ada).
             if ($sold && $isUndated) {
                 $undatedCount++;
                 if (! $rangeActive) {
                     $summary['revenue'] += $rec['price'];
                     $summary['vouchers_sold']++;
                 }
+                $byType[$rec['sale_type']]['count']++;
+                $byType[$rec['sale_type']]['revenue'] += $rec['price'];
+                if (! isset($pkgAgg[$rec['profile']])) {
+                    $pkgAgg[$rec['profile']] = ['name' => $rec['profile'], 'count' => 0, 'revenue' => 0];
+                }
+                $pkgAgg[$rec['profile']]['count']++;
+                $pkgAgg[$rec['profile']]['revenue'] += $rec['price'];
                 continue;
             }
 

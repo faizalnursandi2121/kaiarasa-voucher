@@ -140,7 +140,9 @@ t('mixed + by_package pct', function () {
 
 t('manual billable masuk, non-billable keluar dari sold', function () {
     $recs = [manualBillable(), manualFree()];
+    foreach ($recs as $r) { fwrite(STDERR, "DBG {$r['sale_type']} bill=".(int)$r['billable']." price={$r['price']} date=".var_export($r['date'],true)."\n"); }
     $out = SalesReportService::computeFromRecords($recs, []);
+    fwrite(STDERR, "DBG sold={$out['summary']['vouchers_sold']} rev={$out['summary']['revenue']} issued={$out['summary']['issued']}\n");
     eq($out['summary']['vouchers_sold'], 1);
     eq($out['summary']['revenue'], 40000);
     eq($out['by_type']['manual_user']['count'], 1);
