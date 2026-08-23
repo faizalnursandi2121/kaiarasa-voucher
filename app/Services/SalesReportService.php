@@ -257,4 +257,126 @@ class SalesReportService
             'list' => $list,
         ];
     }
+
+    private string $session;
+
+    public function __construct(string $session)
+    {
+        $this->session = $session;
+    }
+
+    private function cachePath(): string
+    {
+        return sys_get_temp_dir().'/mivo-sales-'.$this->session.'.json';
+    }
+
+    /** Ambil users + profile price map dari RouterOS. ['__unreachable'] bila gagal. */
+    public function fetchRaw(): array
+    {
+        $configModel = new \App\Models\Config;
+        $config = $configModel->getSession($this->session);
+        if (! $config) {
+            return ['__unreachable' => true];
+        }
+
+        try {
+            $api = \App\Services\RouterOSAPI::fromSession($config);
+            $api->attempts = 1;
+            $api->timeout = 5;
+            if (! $api->connect($config['ip_address'], $config['username'], $config['password'])) {
+                return ['__unreachable' => true];
+            }
+            $users = $api->comm('/ip/hotspot/user/print');
+            $profiles = $api->comm('/ip/hotspot/user/profile/print');
+            $api->disconnect();
+        } catch (\Throwable $e) {
+            return ['__unreachable' => true];
+        }
+
+        $map = [];
+        foreach ((array) $profiles as $p) {
+            $meta = \App\Helpers\HotspotHelper::parseProfileMetadata($p['on-login'] ?? '');
+            if (! empty($meta['price'])) {
+                $map[$p['name']] = intval($meta['price']);
+            }
+        }
+
+        return ['users' => (array) $users, 'price_map' => $map];
+    }
+
+    /** Records ternormalisasi + cache 60 detik. */
+    public function getVoucherRecords(bool $force = false): array
+    {
+        $file = $this->cachePath();
+        if (! $force && is_file($file)) {
+            $json = json_decode((string) file_get_contents($file), true);
+            if (isset($json['ts']) && (time() - $json['ts']) < 60) {
+                return $json['payload'];
+            }
+        }
+
+        if ($this->session === 'demo') {
+            $raw = self::demoRaw();
+        } else {
+            $raw = $this->fetchRaw();
+        }
+
+        $payload = isset($raw['__unreachable'])
+            ? ['__unreachable' => true]
+            : array_map(
+                fn ($u) => self::normalizeUser($u, $raw['price_map']),
+                array_values($raw['users'])
+            );
+
+        @file_put_contents($file, json_encode(['ts' => time(), 'payload' => $payload]));
+
+        return $payload;
+    }
+
+    /** Entry point utama: records + agregasi terfilter. */
+    public function getReport(array $filters = [], bool $force = false): array
+    {
+        $records = $this->getVoucherRecords($force);
+        if (isset($records['__unreachable'])) {
+            return ['__unreachable' => true];
+        }
+
+        return self::computeFromRecords($records, $filters);
+    }
+
+    /** Ringkasan hari-ini untuk Dashboard KPI (dated-only). */
+    public function getTodaySummary(bool $force = false): array
+    {
+        $today = date('Y-m-d');
+        $rep = $this->getReport(['start' => $today, 'end' => $today], $force);
+        if (isset($rep['__unreachable'])) {
+            return ['__unreachable' => true];
+        }
+
+        return ['sold' => $rep['summary']['sold_dated'], 'revenue' => $rep['summary']['revenue_dated']];
+    }
+
+    /** Fixture session demo — menguji jalur deteksi harga via comment override. */
+    public static function demoRaw(): array
+    {
+        $today = date('Y-m-d');
+        $yest = date('Y-m-d', strtotime('-1 day'));
+        $users = [];
+        for ($i = 0; $i < 8; $i++) {
+            $users[] = ['name' => 'demo-q'.$i, 'profile' => '1 Hour', 'price' => 0,
+                'comment' => "p:3000 [QP] {$today}", 'uptime' => $i < 3 ? '45m' : '0s', 'bytes-out' => 0];
+        }
+        for ($i = 0; $i < 10; $i++) {
+            $users[] = ['name' => 'demo-g'.$i, 'profile' => '1 Day', 'price' => 0,
+                'comment' => "vc-D1-{$today}- p:5000", 'uptime' => $i < 4 ? '2h' : '0s', 'bytes-out' => 0];
+        }
+        for ($i = 0; $i < 6; $i++) {
+            $users[] = ['name' => 'demo-y'.$i, 'profile' => '3 Hours', 'price' => 0,
+                'comment' => "vc-Y2-{$yest}- p:3500", 'uptime' => '1h', 'bytes-out' => 2048];
+        }
+        $users[] = ['name' => 'demo-nodate', 'profile' => '1 Day', 'price' => 0,
+            'comment' => '[QP]', 'uptime' => '0s', 'bytes-out' => 0];
+
+        return ['users' => $users, 'price_map' => ['1 Hour' => 3000, '1 Day' => 5000, '3 Hours' => 3500]];
+    }
 }

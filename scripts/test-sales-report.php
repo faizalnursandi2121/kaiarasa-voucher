@@ -86,6 +86,18 @@ t('used detection', function () {
 });
 
 
+// ---------- Task 3: demo fixture ----------
+t('demo fixture: compute konsisten', function () {
+    $raw = SalesReportService::demoRaw();
+    $map = $raw['price_map'];
+    $recs = array_map(fn($u) => SalesReportService::normalizeUser($u, $map), $raw['users']);
+    $today = date('Y-m-d');
+    $out = SalesReportService::computeFromRecords($recs, ['start'=>$today,'end'=>$today]);
+    // QP today 8x3000 = 24000 ; Gen today 10x5000 = 50000 ; nodate excluded dari range
+    eq($out['summary']['vouchers_sold'], 18);
+    eq($out['summary']['revenue'], 74000);
+});
+
 // ---------- Task 2: computeFromRecords ----------
 function datedRec(string $date, string $type, int $price, bool $used = false): array {
     $c = $type === 'quick_print' ? "p:{$price} [QP] {$date}" : "vc-B-{$date}- p:{$price}";
@@ -140,9 +152,7 @@ t('mixed + by_package pct', function () {
 
 t('manual billable masuk, non-billable keluar dari sold', function () {
     $recs = [manualBillable(), manualFree()];
-    foreach ($recs as $r) { fwrite(STDERR, "DBG {$r['sale_type']} bill=".(int)$r['billable']." price={$r['price']} date=".var_export($r['date'],true)."\n"); }
     $out = SalesReportService::computeFromRecords($recs, []);
-    fwrite(STDERR, "DBG sold={$out['summary']['vouchers_sold']} rev={$out['summary']['revenue']} issued={$out['summary']['issued']}\n");
     eq($out['summary']['vouchers_sold'], 1);
     eq($out['summary']['revenue'], 40000);
     eq($out['by_type']['manual_user']['count'], 1);
