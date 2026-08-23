@@ -164,8 +164,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     <div class="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-6 sm:p-8 shadow-2xl">
         <div class="flex items-start justify-between mb-6">
             <div>
-                <h3 id="router-modal-title" class="text-lg font-bold tracking-tight">Add Router</h3>
-                <p class="text-xs opacity-50 mt-0.5">Konfigurasi koneksi RouterOS API</p>
+                <h3 id="router-modal-title" class="text-2xl font-bold tracking-tight">Add Router</h3>
+                <p class="text-xs opacity-50 mt-1">RouterOS API Connection</p>
             </div>
             <button type="button" data-close-modal aria-label="Close"
                 class="w-8 h-8 rounded-lg inline-flex items-center justify-center hover:bg-black/[.05] dark:hover:bg-white/[.06] transition-colors">
@@ -176,78 +176,120 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         <form id="router-form" class="space-y-4" novalidate>
             <input type="hidden" name="id" id="rf-id">
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Session Name *</label>
-                    <input name="sessname" id="rf-sessname" required placeholder="e.g. router-jakarta-1"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                    <p class="hidden text-xs text-red-600 mt-1.5" data-err="sessname"></p>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">IP Address *</label>
-                    <input name="ipmik" id="rf-ipmik" required placeholder="192.168.88.1"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                    <p class="hidden text-xs text-red-600 mt-1.5" data-err="ipmik"></p>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Username *</label>
-                    <input name="usermik" id="rf-usermik" required placeholder="admin"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Password <span class="normal-case font-normal" id="rf-pass-hint"></span></label>
-                    <input type="password" name="passmik" id="rf-passmik" autocomplete="new-password" placeholder="••••••••"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Hotspot Name *</label>
-                    <input name="hotspotname" id="rf-hotspotname" required placeholder="My Hotspot ID"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">DNS Name *</label>
-                    <input name="dnsname" id="rf-dnsname" required placeholder="hotspot.net"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                </div>
-                <div class="sm:col-span-1 flex items-center pt-7 sm:pt-0">
-                    <label class="flex items-center gap-2.5 text-sm cursor-pointer">
-                        <input type="checkbox" name="quick_access" id="rf-quick" value="1" class="w-4 h-4 accent-[#5f7f67]"> Tampilkan di Quick Access
-                    </label>
-                </div>
+            <div class="flex items-center gap-3 pt-1">
+                <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90">Connection</span>
+                <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
             </div>
 
-            <!-- Koneksi: wajib test sebelum simpan; port API diisi manual -->
-            <div class="rounded-xl border border-black/[.08] dark:border-white/[.08] bg-black/[.02] dark:bg-white/[.02] p-4 space-y-4">
-                <div class="flex items-center justify-between gap-3">
-                    <span class="text-[11px] font-semibold uppercase tracking-wider opacity-60">Koneksi RouterOS API</span>
-                    <button type="button" id="rf-test-btn"
-                        class="h-9 px-3 rounded-xl border border-black/10 dark:border-white/10 text-xs font-bold uppercase tracking-tight hover:bg-black/[.04] dark:hover:bg-white/[.05] transition-colors inline-flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap">
-                        <i data-lucide="plug-zap" class="w-3.5 h-3.5"></i><span id="rf-test-label">Test Connection</span>
-                    </button>
+            <div>
+                <label for="rf-sessname" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Session Name *</label>
+                <div class="relative">
+                    <i data-lucide="tag" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                    <input name="sessname" id="rf-sessname" required placeholder="e.g. router-jakarta-1"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">API Port *</label>
-                        <input type="number" name="port" id="rf-port" min="1" max="65535" value="8728"
-                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                <p class="hidden text-xs text-red-600 mt-1.5" data-err="sessname"></p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-end gap-4">
+                <div class="flex-1 min-w-0">
+                    <label for="rf-ipmik" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">IP Address *</label>
+                    <div class="relative">
+                        <i data-lucide="globe" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                        <input name="ipmik" id="rf-ipmik" required placeholder="192.168.88.1"
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
-                    <div class="flex items-end pb-1">
-                        <label class="flex items-center gap-2.5 text-sm cursor-pointer pb-2.5">
-                            <input type="checkbox" name="ssl" id="rf-ssl" value="1" class="w-4 h-4 accent-[#5f7f67]"> Gunakan SSL (api-ssl)
+                    <p class="hidden text-xs text-red-600 mt-1.5" data-err="ipmik"></p>
+                </div>
+                <div class="w-full sm:w-36 shrink-0">
+                    <label for="rf-port" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">API Port *</label>
+                    <input type="number" name="port" id="rf-port" min="1" max="65535" value="8728"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                </div>
+                <div class="w-full sm:w-auto shrink-0">
+                    <label for="rf-ssl" class="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">
+                        SSL
+                        <i data-lucide="help-circle" class="w-3.5 h-3.5 opacity-50" title="Aktifkan jika API RouterOS menggunakan api-ssl terenkripsi"></i>
+                    </label>
+                    <div class="h-11 flex items-center">
+                        <label class="relative inline-flex items-center cursor-pointer select-none">
+                            <input type="checkbox" name="ssl" id="rf-ssl" value="1" class="sr-only peer">
+                            <span class="block w-10 h-[22px] rounded-full bg-black/[.15] dark:bg-white/[.15] peer-checked:bg-[#5f7f67] relative transition-colors after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:w-4 after:h-4 after:rounded-full after:bg-white after:shadow-sm after:transition-transform peer-checked:after:translate-x-[18px]"></span>
                         </label>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-60 mb-2">Traffic Interface *</label>
-                        <select name="iface" id="rf-iface" required disabled
-                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition disabled:opacity-60">
-                            <option value="">— Jalankan Test Connection —</option>
-                        </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="rf-usermik" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Username *</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                        <input name="usermik" id="rf-usermik" required placeholder="admin"
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
-                    <div class="flex items-end pb-1">
-                        <p id="rf-test-status" class="text-xs opacity-60 leading-relaxed">Wajib Test Connection berhasil sebelum menyimpan — daftar interface diambil langsung dari router.</p>
+                </div>
+                <div>
+                    <label for="rf-passmik" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Password <span class="normal-case font-normal" id="rf-pass-hint"></span></label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                        <input type="password" name="passmik" id="rf-passmik" autocomplete="new-password" placeholder="••••••••"
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-11 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                        <button type="button" id="rf-pass-eye" aria-label="Toggle password visibility"
+                            class="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-md inline-flex items-center justify-center opacity-40 hover:opacity-80 hover:bg-black/[.05] dark:hover:bg-white/[.06] transition">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
                     </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2">
+                <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90">Hotspot</span>
+                <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="rf-hotspotname" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Hotspot Name *</label>
+                    <div class="relative">
+                        <i data-lucide="share-2" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                        <input name="hotspotname" id="rf-hotspotname" required placeholder="My Hotspot ID"
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    </div>
+                </div>
+                <div>
+                    <label for="rf-dnsname" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">DNS Name *</label>
+                    <div class="relative">
+                        <i data-lucide="globe" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                        <input name="dnsname" id="rf-dnsname" required placeholder="hotspot.net"
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2">
+                <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90">Connection Test</span>
+                <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
+            </div>
+
+            <div class="flex items-center">
+                <button type="button" id="rf-test-btn"
+                    class="h-11 px-4 rounded-xl border border-[#5f7f67]/40 text-[#47614d] dark:text-[#92aa96] text-xs font-bold uppercase tracking-tight hover:bg-[#5f7f67]/10 transition-colors inline-flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shrink-0">
+                    <i data-lucide="zap" class="w-3.5 h-3.5"></i><span id="rf-test-label">Test Connection</span>
+                </button>
+            </div>
+
+            <div id="rf-test-status" class="hidden"></div>
+
+            <div>
+                <label for="rf-iface" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Traffic Interface *</label>
+                <div class="relative">
+                    <i data-lucide="network" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                    <select name="iface" id="rf-iface" required disabled
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-9 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition disabled:opacity-60 appearance-none">
+                        <option value="">— Jalankan Test Connection —</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                 </div>
             </div>
 
@@ -553,35 +595,58 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
     var connOk = false;
     var testBtn = document.getElementById('rf-test-btn');
+    var testStatus = document.getElementById('rf-test-status');
+    function setTestStatus(kind, detail) {
+        if (kind === 'idle') { testStatus.classList.add('hidden'); testStatus.innerHTML = ''; return; }
+        var ok = kind === 'ok';
+        testStatus.classList.remove('hidden');
+        testStatus.className = 'flex items-start gap-3 rounded-xl border p-3.5 text-[13px] leading-relaxed ' + (ok
+            ? 'border-[#5f7f67]/30 bg-[#5f7f67]/[.07] text-[#3c5443] dark:text-[#b7cbb9]'
+            : 'border-red-500/30 bg-red-500/[.06] text-red-700 dark:text-red-400');
+        testStatus.innerHTML =
+            '<i data-lucide="' + (ok ? 'check-circle-2' : 'x-circle') + '" class="w-5 h-5 shrink-0"></i>' +
+            '<div class="min-w-0"><p class="font-semibold">' + (ok ? 'Connection successful' : 'Connection failed') + '</p>' +
+            (detail ? '<p class="opacity-70 mt-0.5">' + esc(detail) + '</p>' : '') + '</div>';
+        if (window.lucide) lucide.createIcons();
+    }
     function markUntested() {
         connOk = false;
         submitBtn.disabled = true;
         var sel = document.getElementById('rf-iface');
         sel.innerHTML = '<option value="">— Jalankan Test Connection —</option>';
         sel.disabled = true;
-        document.getElementById('rf-port').value = '';
-        document.getElementById('rf-ssl').value = '';
-        var st = document.getElementById('rf-test-status');
-        st.className = 'text-xs opacity-60 leading-relaxed';
-        st.textContent = 'Wajib test koneksi dulu — port API & SSL dideteksi otomatis (8728 / 8729).';
+        setTestStatus('idle');
     }
     ['rf-ipmik','rf-usermik','rf-passmik'].forEach(function (id) {
         document.getElementById(id).addEventListener('input', markUntested);
     });
     testBtn.addEventListener('click', runConnectionTest);
+
+    // SSL toggle → sinkronkan port default 8728 ⇄ 8729 (hanya jika port masih default)
+    document.getElementById('rf-ssl').addEventListener('change', function () {
+        var portEl = document.getElementById('rf-port');
+        var p = parseInt(portEl.value, 10);
+        if (this.checked && p === 8728) portEl.value = 8729;
+        else if (!this.checked && p === 8729) portEl.value = 8728;
+    });
+
+    // toggle tampil/sembunyi password
+    document.getElementById('rf-pass-eye').addEventListener('click', function () {
+        var inp = document.getElementById('rf-passmik');
+        var show = inp.type === 'password';
+        inp.type = show ? 'text' : 'password';
+        this.innerHTML = '<i data-lucide="' + (show ? 'eye-off' : 'eye') + '" class="w-4 h-4"></i>';
+        if (window.lucide) lucide.createIcons();
+    });
     function runConnectionTest() {
         var ip = document.getElementById('rf-ipmik').value.trim();
         var user = document.getElementById('rf-usermik').value.trim();
         var pass = document.getElementById('rf-passmik').value;
         var id = document.getElementById('rf-id').value || null; // edit: fallback password tersimpan
         if (!ip || !user) {
-            var st = document.getElementById('rf-test-status');
-            st.className = 'text-xs text-red-600 leading-relaxed';
-            st.textContent = 'Isi IP Address dan Username dulu.';
+            setTestStatus('err', 'Isi IP Address dan Username dulu.');
             return;
         }
-        testBtn.disabled = true;
-        document.getElementById('rf-test-label').textContent = 'Testing…';
         testBtn.disabled = true;
         document.getElementById('rf-test-label').textContent = 'Testing…';
         var portVal = parseInt(document.getElementById('rf-port').value, 10) || 8728;
@@ -604,10 +669,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 sel.disabled = false;
                 connOk = true;
                 submitBtn.disabled = false;
-                var st = document.getElementById('rf-test-status');
-                st.className = 'text-xs font-semibold text-[#47614d] dark:text-[#92aa96] leading-relaxed';
-                st.textContent = '\u2713 Terhubung — ' + sel.options.length + ' interface terdeteksi. Pilih Traffic Interface lalu simpan.';
-                if (window.lucide) lucide.createIcons();
+                setTestStatus('ok', sel.options.length + ' interface terdeteksi \u2022 API port ' + portVal + (sslVal ? ' (SSL)' : '') + '. Pilih Traffic Interface lalu simpan.');
                 testBtn.disabled = false;
                 document.getElementById('rf-test-label').textContent = 'Re-test';
             } else {
@@ -619,13 +681,13 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     function failTest(detail) {
         testBtn.disabled = false;
         document.getElementById('rf-test-label').textContent = 'Test Connection';
-        var st = document.getElementById('rf-test-status');
-        st.className = 'text-xs text-red-600 leading-relaxed';
-        st.textContent = 'Gagal terhubung. ' + (detail || 'Periksa IP, user, password, API Port, atau SSL.');
+        setTestStatus('err', 'Gagal terhubung. ' + (detail || 'Periksa IP, user, password, API Port, atau SSL.'));
     }
 
     function openModal(mode, r) {
         form.reset();
+        document.getElementById('rf-passmik').type = 'password';
+        document.getElementById('rf-pass-eye').innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
         markUntested();
         ['sessname','ipmik'].forEach(function (n) {
             var err = form.querySelector('[data-err="'+n+'"]');
@@ -753,9 +815,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         if (!connOk) {
-            var st = document.getElementById('rf-test-status');
-            st.className = 'text-xs text-red-600 leading-relaxed font-semibold';
-            st.textContent = 'Wajib Test Connection berhasil sebelum menyimpan.';
+            setTestStatus('err', 'Wajib Test Connection berhasil sebelum menyimpan.');
             return;
         }
         form.querySelectorAll('[data-err]').forEach(function (p) { p.classList.add('hidden'); });
