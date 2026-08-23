@@ -37,7 +37,11 @@ class RouterHealthService
         // sekarang ikut terhitung.
         foreach ($results as &$row) {
             $lastSeen = $this->getLastSeen((int) $row['id']);
-            $row['last_seen'] = $lastSeen !== null ? date('c', strtotime($lastSeen)) : null;
+            // last_seen disimpan naive UTC (SQLite datetime('now')); parse eksplisit
+            // sebagai UTC agar offset ISO-8601 benar walau PHP TZ server bukan UTC.
+            $row['last_seen'] = $lastSeen !== null
+                ? (new \DateTimeImmutable($lastSeen, new \DateTimeZone('UTC')))->format(DATE_ATOM)
+                : null;
         }
         unset($row);
 
@@ -289,8 +293,10 @@ class RouterHealthService
                 $total = (int) $r['total'];
                 $onlineCnt = (int) $r['online_cnt'];
                 $series[] = [
-                    // bucket = 'YYYY-MM-DD HH' (UTC); ambil bagian jam saja
-                    'hour' => substr((string) $r['bucket'], 11, 2).':00',
+                    // bucket = 'YYYY-MM-DD HH' (UTC); label membawa tanggal agar
+                    // jam lintas hari tidak ambigu, plus epoch utk chart frontend.
+                    'hour' => substr((string) $r['bucket'], 0, 13).':00',
+                    'ts' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $r['bucket'].':00:00', new \DateTimeZone('UTC'))->getTimestamp(),
                     'availability_pct' => $total > 0 ? round($onlineCnt / $total * 100, 1) : 100.0,
                 ];
                 $totalRows += $total;
