@@ -2523,10 +2523,6 @@ input:-webkit-autofill,
   max-width: 220px;
 }
 
-.max-w-\[80px\] {
-  max-width: 80px;
-}
-
 .max-w-full {
   max-width: 100%;
 }
@@ -3273,10 +3269,6 @@ input:-webkit-autofill,
 
 .bg-black\/\[\.06\] {
   background-color: rgb(0 0 0 / .06);
-}
-
-.bg-black\/\[\.12\] {
-  background-color: rgb(0 0 0 / .12);
 }
 
 .bg-black\/\[\.15\] {
@@ -5821,12 +5813,12 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   background-color: rgb(255 255 255 / .06);
 }
 
-.dark\:bg-white\/\[\.14\]:is(.dark *) {
-  background-color: rgb(255 255 255 / .14);
-}
-
 .dark\:bg-white\/\[\.15\]:is(.dark *) {
   background-color: rgb(255 255 255 / .15);
+}
+
+.dark\:bg-white\/\[\.18\]:is(.dark *) {
+  background-color: rgb(255 255 255 / .18);
 }
 
 .dark\:from-white\/\[\.02\]:is(.dark *) {

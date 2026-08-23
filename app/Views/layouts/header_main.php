@@ -21,7 +21,7 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
     <link rel="icon" href="/assets/img/favicon.png" />
     
     <!-- Tailwind CSS (Local) -->
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles.css?v=<?= filemtime(ROOT.'/public/assets/css/styles.css') ?>">
     
     <!-- Flag Icons (Local) -->
     <link rel="stylesheet" href="/assets/vendor/flag-icons/css/flag-icons.min.css" />
