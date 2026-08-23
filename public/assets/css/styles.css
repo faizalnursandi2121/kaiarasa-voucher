@@ -1875,6 +1875,10 @@ input:-webkit-autofill,
   right: 0px;
 }
 
+.right-1 {
+  right: 0.25rem;
+}
+
 .right-2 {
   right: 0.5rem;
 }
@@ -2009,6 +2013,10 @@ input:-webkit-autofill,
 
 .mb-1 {
   margin-bottom: 0.25rem;
+}
+
+.mb-1\.5 {
+  margin-bottom: 0.375rem;
 }
 
 .mb-11 {
@@ -2424,10 +2432,6 @@ input:-webkit-autofill,
 
 .w-6 {
   width: 1.5rem;
-}
-
-.w-60 {
-  width: 15rem;
 }
 
 .w-64 {
@@ -3545,10 +3549,6 @@ input:-webkit-autofill,
 
 .p-2 {
   padding: 0.5rem;
-}
-
-.p-2\.5 {
-  padding: 0.625rem;
 }
 
 .p-20 {
@@ -5481,6 +5481,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
 .hover\:underline:hover {
   text-decoration-line: underline;
+}
+
+.hover\:opacity-100:hover {
+  opacity: 1;
 }
 
 .hover\:opacity-80:hover {

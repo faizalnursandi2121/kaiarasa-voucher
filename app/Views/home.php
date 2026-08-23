@@ -187,12 +187,17 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                 </div>
                 <div class="w-full sm:w-auto shrink-0">
-                    <label for="rf-ssl" class="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">
-                        SSL
+                    <label for="rf-ssl" class="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider mb-2">
+                        <span class="opacity-50">SSL</span>
                         <span class="relative group/tip inline-flex items-center cursor-help" tabindex="0">
-                            <i data-lucide="help-circle" class="w-3.5 h-3.5 opacity-70"></i>
-                            <span class="pointer-events-none absolute right-0 top-full mt-2 w-60 normal-case tracking-normal rounded-lg bg-[#1a1c19] dark:bg-black text-left text-white text-[11px] leading-relaxed p-2.5 opacity-0 group-hover/tip:opacity-100 group-focus-within/tip:opacity-100 transition-opacity z-30 shadow-xl">
-                                Check which API service is enabled under <span class="font-semibold">IP &rarr; Services</span> on your router, then match it here. Enable SSL only if the service is <span class="font-semibold">api-ssl</span> (port 8729) &mdash; otherwise leave it off for plain API (8728).
+                            <i data-lucide="help-circle" class="w-3.5 h-3.5 opacity-60 hover:opacity-100 transition-opacity"></i>
+                            <span class="pointer-events-none absolute right-0 top-full mt-2 w-64 normal-case tracking-normal rounded-lg bg-[#1a1c19] dark:bg-black text-left text-white text-[11px] leading-relaxed p-3 opacity-0 group-hover/tip:opacity-100 group-focus-within/tip:opacity-100 transition-opacity z-30 shadow-xl">
+                                <p class="font-bold mb-1.5">API service &amp; port</p>
+                                <p class="opacity-80 mb-2">Match this switch with the API service listed under <span class="font-semibold">IP &rarr; Services</span> on your router:</p>
+                                <div class="space-y-1">
+                                    <p><span class="font-semibold">api-ssl</span> enabled &rarr; set <span class="font-semibold">ON</span> <span class="opacity-60">(port 8729)</span></p>
+                                    <p>plain <span class="font-semibold">api</span> &rarr; keep <span class="font-semibold">OFF</span> <span class="opacity-60">(port 8728)</span></p>
+                                </div>
                                 <span class="absolute -top-2 right-1 border-4 border-transparent border-b-[#1a1c19] dark:border-b-black"></span>
                             </span>
                         </span>
