@@ -18,12 +18,7 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
                 </a>
 
                 <!-- Desktop Navigation Links (Hidden on Mobile) -->
-                <?php if (isset($_SESSION['user_id'])) { ?>
-                <div class="hidden md:flex items-center gap-6 text-sm font-medium">
-                    <a href="/" data-app-nav data-nav-path="/" data-on="text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-foreground" data-off="text-accents-5 hover:text-foreground transition-colors" class="relative py-1 <?= ($uri == '/' || $uri == '/home') ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-foreground' : 'text-accents-5 hover:text-foreground transition-colors' ?>">Home</a>
-                    <a href="/settings" data-app-nav data-nav-path="/settings" data-on="text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-foreground" data-off="text-accents-5 hover:text-foreground transition-colors" class="relative py-1 <?= (strpos($uri, '/settings') === 0) ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-foreground' : 'text-accents-5 hover:text-foreground transition-colors' ?>">Settings</a>
-                </div>
-                <?php } ?>
+                <?php /* Menu teks dihapus: Settings kini di dalam dropdown profile */ ?>
             </div>
 
             <!-- Global Search (Desktop) -->
@@ -38,69 +33,55 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
 
             <!-- Right side controls -->
             <div class="flex items-center gap-3">
-                <!-- Desktop Control Pill (Hidden on Mobile) -->
-                <div class="hidden md:flex control-pill scale-95 hover:scale-100 transition-transform">
-                    <!-- Language Switcher -->
-                    <div class="relative group" onmouseleave="closeMenu('lang-dropdown-desktop')">
-                        <button type="button" class="pill-lang-btn" onclick="toggleMenu('lang-dropdown-desktop', this)" title="Change Language">
-                             <i data-lucide="languages" class="w-4 h-4"></i>
-                        </button>
-                         <div id="lang-dropdown-desktop" class="absolute right-0 top-full mt-3 w-48 bg-background/95 backdrop-blur-2xl border border-accents-2 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-out origin-top-right opacity-0 scale-95 invisible pointer-events-none z-50 dropdown-bridge">
-                            <div class="px-3 py-2 text-[10px] font-bold text-accents-4 uppercase tracking-widest border-b border-accents-2/50 bg-accents-1/50" data-i18n="sidebar.switch_language">Select Language</div>
-                            <?php
-                            $languages = LanguageHelper::getAvailableLanguages();
-foreach ($languages as $lang) {
-    $pathArg = isset($lang['path']) ? "', '".$lang['path'] : '';
-    ?>
-                            <button onclick="Kaiarasa.modules.I18n.loadLanguage('<?= $lang['code'] ?><?= $pathArg ?>')" class="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-accents-1 transition-colors text-accents-6 hover:text-foreground group/lang">
-                                <span class="fi fi-<?= $lang['flag'] ?> rounded-sm shadow-sm transition-transform group-hover/lang:scale-110"></span>
-                                <span><?= $lang['name'] ?></span>
-                            </button>
-                            <?php } ?>
-                        </div>
-                    </div>
+                <?php if (isset($_SESSION['user_id'])) { ?>
+                <!-- Add Router (Primary) -->
+                <a href="/settings/add" class="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[13px] font-semibold transition-colors">
+                    <i data-lucide="plus" class="w-4 h-4"></i> <span class="hidden sm:inline">Add Router</span>
+                </a>
 
-                    <!-- Add Router (Primary) -->
-                    <?php if (isset($_SESSION['user_id'])) { ?>
-                    <a href="/settings/add" class="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[13px] font-semibold transition-colors">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Add Router
-                    </a>
-                    <?php } ?>
-
-                    <!-- Theme Toggle (Segmented) -->
-                    <div class="segmented-switch theme-toggle" title="Toggle Theme">
-                        <div class="segmented-switch-slider"></div>
-                        <div class="segmented-switch-btn theme-toggle-light-icon">
-                            <i data-lucide="sun" class="w-4 h-4" stroke-width="3.5"></i>
-                        </div>
-                        <div class="segmented-switch-btn theme-toggle-dark-icon">
-                            <i data-lucide="moon" class="w-4 h-4" stroke-width="3.5"></i>
-                        </div>
-                    </div>
-
-                    <?php if (isset($_SESSION['user_id'])) { ?>
-                        <div class="pill-divider"></div>
-                        <a href="/logout" class="p-1.5 rounded-lg text-accents-5 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all ml-0.5" title="Logout">
-                            <i data-lucide="log-out" class="w-4 h-4 text-foreground dark:text-foreground" stroke-width="2.5"></i>
-                        </a>
-                    <?php } ?>
-                </div>
-
-                <!-- Mobile Menu Toggles -->
-                <div class="flex md:hidden items-center gap-2">
-                    <!-- Mobile Mode Control Pill (Condensed) -->
-                    <div class="control-pill py-1.5 px-2">
-                         <div class="segmented-switch theme-toggle scale-75" title="Toggle Theme">
-                            <div class="segmented-switch-slider"></div>
-                            <div class="segmented-switch-btn theme-toggle-light-icon"><i data-lucide="sun" class="w-4 h-4" stroke-width="3.5"></i></div>
-                            <div class="segmented-switch-btn theme-toggle-dark-icon"><i data-lucide="moon" class="w-4 h-4" stroke-width="3.5"></i></div>
-                        </div>
-                    </div>
-
-                    <button type="button" class="p-2 rounded-lg bg-accents-1 text-accents-5 hover:text-foreground transition-colors group" onclick="toggleMenu('mobile-navbar-menu', this)">
-                        <i data-lucide="menu" class="w-5 h-5 text-foreground dark:text-foreground transition-transform duration-300" stroke-width="2.5"></i>
+                <!-- Notifikasi Bell -->
+                <div class="relative" id="notif-wrap">
+                    <button type="button" onclick="KaiarasaNav.toggle('notif-dropdown')"
+                        class="relative w-10 h-10 inline-flex items-center justify-center rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/[.08] dark:border-white/[.08] text-accents-6 hover:text-foreground hover:border-[#92aa96] transition-all">
+                        <i data-lucide="bell" class="w-[18px] h-[18px]"></i>
+                        <span id="notif-dot" class="hidden absolute top-2 right-2.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-background"></span>
                     </button>
+                    <div id="notif-dropdown" class="hidden absolute right-0 top-full mt-2 w-80 bg-background dark:bg-[#1a1c19] border border-black/[.08] dark:border-white/[.08] rounded-xl shadow-xl z-50 overflow-hidden">
+                        <div class="px-4 py-3 border-b border-black/[.06] dark:border-white/[.06] flex items-center justify-between">
+                            <span class="text-sm font-bold">Notifications</span>
+                            <a href="/api/routers/events" class="text-[11px] text-accents-5 hover:text-foreground" onclick="event.preventDefault()">Router events</a>
+                        </div>
+                        <div id="notif-list" class="max-h-72 overflow-y-auto divide-y divide-black/[.05] dark:divide-white/[.05]">
+                            <p class="px-4 py-6 text-center text-xs opacity-50">memuat…</p>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Profile Dropdown -->
+                <div class="relative" id="profile-wrap">
+                    <button type="button" onclick="KaiarasaNav.toggle('profile-dropdown')"
+                        class="flex items-center gap-2 h-10 pl-1 pr-2 rounded-xl hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
+                        <span class="w-8 h-8 rounded-full bg-[#5f7f67] text-white text-xs font-bold flex items-center justify-center uppercase">
+                            <?= htmlspecialchars(substr($_SESSION['username'] ?? 'A', 0, 2)) ?>
+                        </span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 opacity-50"></i>
+                    </button>
+                    <div id="profile-dropdown" class="hidden absolute right-0 top-full mt-2 w-56 bg-background dark:bg-[#1a1c19] border border-black/[.08] dark:border-white/[.08] rounded-xl shadow-xl z-50 overflow-hidden">
+                        <div class="px-4 py-3 border-b border-black/[.06] dark:border-white/[.06]">
+                            <p class="text-sm font-bold"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></p>
+                            <p class="text-[11px] opacity-50">Signed in</p>
+                        </div>
+                        <a href="/settings" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
+                            <i data-lucide="settings" class="w-4 h-4 opacity-60"></i> Settings
+                        </a>
+                        <a href="/logout" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/[.07] transition-colors">
+                            <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                        </a>
+                    </div>
+                </div>
+                <?php } else { ?>
+                <a href="/login" class="inline-flex items-center h-10 px-4 rounded-xl bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[13px] font-semibold transition-colors">Sign In</a>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -119,37 +100,81 @@ foreach ($languages as $lang) {
                     <i data-lucide="settings" class="w-5 h-5 text-foreground dark:text-foreground" stroke-width="2.5"></i>
                     <span>Settings</span>
                 </a>
+                <a href="/logout" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-500/[.07] transition-colors">
+                    <i data-lucide="log-out" class="w-5 h-5" stroke-width="2.5"></i>
+                    <span>Logout</span>
+                </a>
             </div>
             <?php } ?>
-
-            <!-- Mobile Controls Overlay -->
-            <div class="p-4 rounded-2xl bg-accents-1/50 border border-accents-2 space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-accents-4 uppercase tracking-wider">Select Language</span>
-                </div>
-                <div class="flex items-center gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide snap-x">
-                    <?php foreach ($languages as $lang) {
-                        $pathArg = isset($lang['path']) ? "', '".$lang['path'] : '';
-                        ?>
-                    <button onclick="changeLanguage('<?= $lang['code'] ?><?= $pathArg ?>')" class="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border border-accents-2 bg-background hover:border-foreground transition-all text-sm font-medium snap-start shadow-sm">
-                        <span class="fi fi-<?= $lang['flag'] ?> rounded-full shadow-sm"></span>
-                        <span class="whitespace-nowrap"><?= $lang['name'] ?></span>
-                    </button>
-                    <?php } ?>
-                </div>
-
-                <?php if (isset($_SESSION['user_id'])) { ?>
-                <div class="pt-2 border-t border-accents-2">
-                    <a href="/logout" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-red-500/10 text-red-600 font-bold hover:bg-red-500/20 transition-all">
-                        <i data-lucide="log-out" class="w-5 h-5 text-foreground dark:text-foreground" stroke-width="2.5"></i>
-                        <span>Logout System</span>
-                    </a>
-                </div>
-                <?php } ?>
-            </div>
         </div>
     </div>
 </nav>
+
+<script>
+// ===== Dropdown helpers (notifikasi & profil) =====
+// Tutup dropdown saat klik di luar
+(function () {
+    var DD_IDS = ['notif-dropdown', 'profile-dropdown'];
+    document.addEventListener('click', function (e) {
+        DD_IDS.forEach(function (id) {
+            var dd = document.getElementById(id);
+            if (!dd || dd.classList.contains('hidden')) return;
+            var wrap = dd.parentElement;
+            if (!wrap.contains(e.target)) dd.classList.add('hidden');
+        });
+    });
+})();
+
+// Toggle mandiri (tidak memakai toggleMenu global yang ditimpa footer_main)
+window.KaiarasaNav = {
+    toggle: function (id) {
+        var dd = document.getElementById(id);
+        if (!dd) return;
+        ['notif-dropdown', 'profile-dropdown'].forEach(function (other) {
+            if (other !== id) {
+                var el = document.getElementById(other);
+                if (el && !el.classList.contains('hidden')) el.classList.add('hidden');
+            }
+        });
+        dd.classList.toggle('hidden');
+    }
+};
+
+// Muat notifikasi saat pertama dibuka (capture-phase: jalan sebelum toggle)
+var __notifLoaded = false;
+document.addEventListener('click', function (e) {
+    if (! e.target.closest('#notif-wrap button')) return;
+    if (__notifLoaded) return;
+    __notifLoaded = true;
+    fetch('/api/routers/events?limit=8', { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (events) {
+            var list = document.getElementById('notif-list');
+            if (!events.length) { list.innerHTML = '<p class="px-4 py-6 text-center text-xs opacity-50">Belum ada aktivitas.</p>'; return; }
+            list.innerHTML = events.map(function (ev) {
+                var icon = ev.event_type === 'connected'     ? ['arrow-up-circle',   'text-emerald-600', 'connected']
+                        : ev.event_type === 'went_offline'   ? ['arrow-down-circle', 'text-red-600',      'went offline']
+                        :                                      ['alert-triangle',    'text-amber-600',    'high CPU usage'];
+                return '<div class="px-4 py-3 flex items-start gap-3 text-xs">'
+                    + '<i data-lucide="'+icon[0]+'" class="w-4 h-4 mt-0.5 shrink-0 '+icon[1]+'"></i>'
+                    + '<div class="flex-grow"><p class="font-medium">Router '+escNav(ev.router_name)+' '+icon[2]+'</p>'
+                    + '<p class="opacity-50 mt-0.5">'+escNav((ev.created_at || '').replace(' ', 'T')+'Z').slice(11, 16)+' UTC</p></div></div>';
+            }).join('');
+            var dot = document.getElementById('notif-dot');
+            if (dot) dot.classList.add('hidden');
+            if (window.lucide) lucide.createIcons();
+        })
+        .catch(function () {
+            var list = document.getElementById('notif-list');
+            if (list) list.innerHTML = '<p class="px-4 py-6 text-center text-xs opacity-50">Gagal memuat notifikasi.</p>';
+        });
+}, true);
+function escNav(s) {
+    return String(s ?? '').replace(/[&<>"']/g, function (c) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+}
+</script>
 
 <script>
 // ===== Unified in-app SPA navigation (Home <-> Settings <-> settings sub-nav) =====
