@@ -3,18 +3,15 @@ $uri = $_SERVER['REQUEST_URI'];
 function isActive($path, $current)
 {
     if ($path === '/settings') {
-        // Routers is the new home. Active if exactly /settings or /settings/routers
-        return $current === '/settings' || $current === '/settings/' || strpos($current, '/settings/routers') !== false;
+        // Hub: aktif untuk /settings root saja (sub-path punya item sendiri)
+        return $current === '/settings' || $current === '/settings/';
     }
 
     return strpos($current, $path) !== false;
 }
 
 $menu = [
-    ['label' => 'routers_title', 'url' => '/settings', 'namespace' => 'settings'],
     ['label' => 'system', 'url' => '/settings/system', 'namespace' => 'settings'],
-    ['label' => 'templates_title', 'url' => '/settings/voucher-templates', 'namespace' => 'settings'],
-    ['label' => 'logos_title', 'url' => '/settings/logos', 'namespace' => 'settings'],
     ['label' => 'api_cors_title', 'url' => '/settings/api-cors', 'namespace' => 'settings'],
     ['label' => 'plugins_title', 'url' => '/settings/plugins', 'namespace' => 'settings'],
 ];

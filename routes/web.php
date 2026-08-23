@@ -72,15 +72,15 @@ $redirectToSessionRoute = function (string $suffix) {
     exit;
 };
 
-    // Global Settings (Admin Level)
+    // Global Settings (Admin Level) — config-only hub (System / API CORS / Plugins)
     $router->get('/settings', [SettingsController::class, 'routers']);
     $router->get('/settings/system', [SettingsController::class, 'system']);
-    $router->get('/settings/routers', [SettingsController::class, 'routers']);
-    $router->get('/settings/add', [SettingsController::class, 'add']);
-    $router->post('/settings/store', [SettingsController::class, 'store']);
-    $router->get('/settings/edit/{id}', [SettingsController::class, 'edit']);
-    $router->post('/settings/update', [SettingsController::class, 'update']);
-    $router->post('/settings/delete', [SettingsController::class, 'delete']);
+    $router->get('/settings/routers', function () { header('Location: /settings'); exit; }); // CRUD router kini di Home
+    $router->get('/settings/add', function () { header('Location: /'); exit; });             // modal Add Router ada di Home
+    $router->get('/settings/edit/{id}', function () { header('Location: /'); exit; });        // modal Edit Router ada di Home
+    $router->post('/settings/store', [SettingsController::class, 'store']);                  // dipakai modal Home
+    $router->post('/settings/update', [SettingsController::class, 'update']);                // dipakai modal Home
+    $router->post('/settings/delete', [SettingsController::class, 'delete']);                // dipakai modal Home
     $router->post('/settings/admin/update', [SettingsController::class, 'updateAdmin']);
     $router->post('/settings/global/update', [SettingsController::class, 'updateGlobal']);
     $router->get('/settings/backup', [SettingsController::class, 'backup']);

@@ -37,11 +37,58 @@ class SettingsController extends Controller
 
     public function routers()
     {
-        // Routers List Tab
-        $configModel = new Config;
-        $routers = $configModel->getAllSessions();
+        // Settings Hub: System + API CORS + Plugins dalam satu halaman bertab.
+        // Router CRUD kini di Home; Templates & Logos di sidebar dashboard per-router.
+        $settingModel = new Setting;
+        $settings = $settingModel->getAll();
+        $username = $_SESSION['username'] ?? 'admin';
 
-        return $this->view('settings/index', ['routers' => $routers]);
+        $db = Database::getInstance();
+        $rules = $db->query('SELECT * FROM api_cors ORDER BY created_at DESC')->fetchAll();
+
+        // Decode JSON methods and headers for view
+        foreach ($rules as &$rule) {
+            $rule['methods_arr'] = json_decode($rule['methods'], true) ?: [];
+            $rule['headers_arr'] = json_decode($rule['headers'], true) ?: [];
+        }
+        unset($rule);
+
+        $pluginManager = new PluginManager;
+        $pluginsDir = ROOT.'/plugins';
+        $plugins = [];
+
+        if (is_dir($pluginsDir)) {
+            $folders = scandir($pluginsDir);
+            foreach ($folders as $folder) {
+                if ($folder === '.' || $folder === '..') {
+                    continue;
+                }
+
+                $path = $pluginsDir.'/'.$folder;
+                if (is_dir($path) && file_exists($path.'/plugin.php')) {
+                    $content = file_get_contents($path.'/plugin.php', false, null, 0, 1024);
+                    preg_match('/Plugin Name:\s*(.*)$/mi', $content, $nameMatch);
+                    preg_match('/Version:\s*(.*)$/mi', $content, $verMatch);
+                    preg_match('/Description:\s*(.*)$/mi', $content, $descMatch);
+                    preg_match('/Author:\s*(.*)$/mi', $content, $authMatch);
+                    $plugins[] = [
+                        'id' => $folder,
+                        'name' => trim($nameMatch[1] ?? $folder),
+                        'version' => trim($verMatch[1] ?? '1.0.0'),
+                        'description' => trim($descMatch[1] ?? '-'),
+                        'author' => trim($authMatch[1] ?? '-'),
+                        'path' => $path,
+                    ];
+                }
+            }
+        }
+
+        return $this->view('settings/index', [
+            'settings' => $settings,
+            'username' => $username,
+            'rules' => $rules,
+            'plugins' => $plugins,
+        ]);
     }
 
     public function add()
