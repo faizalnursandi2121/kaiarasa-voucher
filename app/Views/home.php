@@ -33,33 +33,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         </a>
     </div>
 
-    <!-- ===== 2. STAT CARDS ===== -->
-    <div id="stat-cards" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <?php foreach ([
-            ['total', 'Total Routers', 'router', ''],
-            ['online', 'Online', 'check-circle', 'text-emerald-600 bg-emerald-500/10'],
-            ['offline', 'Offline', 'x-circle', 'text-red-600 bg-red-500/10'],
-            ['connecting', 'Connecting', 'loader', 'text-amber-600 bg-amber-500/10'],
-        ] as [$key, $label, $icon, $chip]): ?>
-        <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
-            <div class="flex items-start justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    <span class="w-11 h-11 rounded-full flex items-center justify-center <?= $chip ?: 'bg-black/[.04] dark:bg-white/[.06]' ?>">
-                        <i data-lucide="<?= $icon ?>" class="w-5 h-5"></i>
-                    </span>
-                    <span class="text-sm font-semibold"><?= $label ?></span>
-                </div>
-                <button type="button" class="opacity-30 hover:opacity-60 transition-opacity" aria-label="Options">
-                    <i data-lucide="more-vertical" class="w-4 h-4"></i>
-                </button>
-            </div>
-            <p class="text-3xl font-bold tabular-nums leading-none" id="stat-<?= $key ?>">—</p>
-            <p class="text-xs mt-2" id="stat-<?= $key ?>-sub">&nbsp;</p>
-        </div>
-        <?php endforeach; ?>
-    </div>
-
-    <!-- ===== 3. MAIN GRID ===== -->
+    <!-- ===== 2. MAIN GRID ===== -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
 
         <!-- LEFT: Router Status Table -->
@@ -476,20 +450,12 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     }
 
     function renderStats(routers) {
+        // Hanya penghitung untuk donut Status Distribution (KPI cards dihapus)
         var total = routers.length;
         var online = routers.filter(function (r) { return r.status === 'online'; }).length;
         var offline = routers.filter(function (r) { return r.status === 'offline'; }).length;
         var connecting = routers.filter(function (r) { return r.status === 'connecting'; }).length;
         var error = routers.filter(function (r) { return r.status === 'error'; }).length;
-        var pct = function (n) { return total ? Math.round(n/total*1000)/10 + '%' : '-'; };
-        var set = function (id, num, sub) {
-            document.getElementById('stat-'+id).textContent = num;
-            document.getElementById('stat-'+id+'-sub').textContent = sub;
-        };
-        set('total', total, total ? 'All locations' : 'belum ada router');
-        set('online', online, online+' dari '+total);
-        set('offline', offline, pct(offline));
-        set('connecting', connecting, pct(connecting));
         return { total: total, online: online, offline: offline, connecting: connecting, error: error };
     }
 
