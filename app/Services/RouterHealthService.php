@@ -69,6 +69,8 @@ class RouterHealthService
             'status' => 'offline',
             'cpu_load' => null,
             'uptime' => null,
+            'os_version' => null,
+            'board_name' => null,
             'active_users' => null,
             'error' => null,
         ];
@@ -109,6 +111,8 @@ class RouterHealthService
             $row['status'] = 'online';
             $row['cpu_load'] = isset($resource[0]['cpu-load']) ? (int) $resource[0]['cpu-load'] : null;
             $row['uptime'] = $resource[0]['uptime'] ?? null;
+            $row['os_version'] = $resource[0]['version'] ?? null;
+            $row['board_name'] = $resource[0]['board-name'] ?? null;
             $row['active_users'] = is_array($activeUsers) && ! isset($activeUsers['!trap']) ? count($activeUsers) : 0;
         } catch (\Throwable $e) {
             $row['status'] = 'error';

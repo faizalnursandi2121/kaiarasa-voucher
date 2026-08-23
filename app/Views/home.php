@@ -347,6 +347,24 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     var state = { routers: [], page: 1, query: '', filter: '', checkedAt: null };
     var grid = document.getElementById('table-scroll');
 
+    // "3w1d02:11:45" / "22d3h14m" / "5h12m30s" -> "22d 3h" / "5h 12m" / "43m"
+    function fmtUptime(u) {
+        if (!u) return '-';
+        var s = String(u), w = 0, d = 0, h = 0, m = 0, mt;
+        var mw = s.match(/(\d+)w/); if (mw) w = +mw[1];
+        var md = s.match(/(\d+)d/); if (md) d = +md[1];
+        var mh = s.match(/(\d+)h/); if (mh) h = +mh[1];
+        var mm = s.match(/(\d+)m/); if (mm) m = +mm[1];
+        mt = s.match(/(\d{1,4}):(\d{2})(?::\d{2})?$/); if (!mh && mt) { h = +mt[1]; m = +mt[2]; }
+        var totalH = w * 168 + d * 24 + h;
+        if (totalH >= 24) {
+            var days = Math.floor(totalH / 24);
+            return days + 'd' + (totalH % 24 ? ' ' + (totalH % 24) + 'h' : '');
+        }
+        if (totalH >= 1) return totalH + 'h' + (m ? ' ' + m + 'm' : '');
+        return m + 'm';
+    }
+
     function badge(status) {
         var map = {
             online:     ['Online',     'emerald', '●'],
@@ -367,19 +385,24 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     }
     function rowHTML(r) {
         var metrics = r.status === 'online'
-            ? { cpu: cpuBar(r.cpu_load), up: esc(r.uptime ?? '-'), seen: relTime(r.last_seen) }
+            ? { cpu: cpuBar(r.cpu_load), up: fmtUptime(r.uptime), seen: relTime(r.last_seen) }
             : { cpu: '<span class="opacity-40">-</span>', up: '<span class="opacity-40">-</span>',
                 seen: r.last_seen ? relTime(r.last_seen) : '<span class="opacity-40">'+esc(r.error || '-')+'</span>' };
         var initial = esc((r.session_name || '?').slice(0, 2).toUpperCase());
+        // Baris kedua: tipe board + versi RouterOS
+        var metaParts = [];
+        if (r.board_name) metaParts.push(esc(r.board_name));
+        if (r.os_version) metaParts.push('RouterOS '+esc(r.os_version));
+        var meta = metaParts.length ? metaParts.join(' \u00b7 ') : esc(r.hotspot_name || r.location || '');
         return '<tr class="border-t border-black/[.05] dark:border-white/[.05] hover:bg-[#5f7f67]/[.04] cursor-pointer transition-colors" data-session="'+esc(r.session_name)+'">'
             + '<td class="px-4 py-3">'+badge(r.status)+'</td>'
             + '<td class="px-4 py-3"><div class="flex items-center gap-3">'
             +   '<span class="w-8 h-8 rounded-lg bg-[#92aa96]/20 text-[#47614d] dark:text-[#92aa96] text-[11px] font-bold flex items-center justify-center shrink-0">'+initial+'</span>'
             +   '<div><p class="font-semibold text-[13px] leading-tight">'+esc(r.session_name)+'</p>'
-            +   '<p class="text-[11px] opacity-50">'+esc(r.location || r.hotspot_name || '')+'</p></div></div></td>'
+            +   '<p class="text-[11px] opacity-50 truncate max-w-[220px]">'+meta+'</p></div></div></td>'
             + '<td class="px-4 py-3 font-mono text-xs">'+esc(r.ip_address)+'</td>'
             + '<td class="px-4 py-3">'+metrics.cpu+'</td>'
-            + '<td class="px-4 py-3 text-xs tabular-nums">'+metrics.up+'</td>'
+            + '<td class="px-4 py-3 text-xs tabular-nums whitespace-nowrap">'+metrics.up+'</td>'
             + '<td class="px-4 py-3 text-xs whitespace-nowrap">'+metrics.seen+'</td>'
             + '<td class="px-4 py-3 text-right relative">'
             +   '<button type="button" class="w-8 h-8 inline-flex items-center justify-center rounded-lg hover:bg-black/[.06] dark:hover:bg-white/[.08] transition-colors"'
