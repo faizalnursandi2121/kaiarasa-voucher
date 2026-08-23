@@ -13,7 +13,7 @@
 - [ ] Route lama `/settings/voucher-templates*` & `/settings/logos` → redirect 302 ke `/{firstSession}/...` (prioritas quick_access=1)
 - [ ] Verifikasi curl JSON add/edit/delete router + akses routes baru; commit
 
-### Task 2: Frontend Home — modal CRUD + row actions ⋮
+### Task 2: ✅ SELESAI — Frontend Home — modal CRUD + row actions ⋮
 - [ ] home.php: hapus tile Routers; tabel Actions → tombol ⋮ dropdown per baris (Open/Edit/Test Connection/Delete merah+confirm); klik baris tetap buka dashboard
 - [ ] Modal Add Router (markup form = fields settings/add existing) + submit fetch JSON; sukses → tutup modal, toast SweetAlert, load(true) refresh tabel
 - [ ] Modal Edit Router (prefill dari data baris) + Delete dengan konfirmasi SweetAlert (#26) → DELETE JSON
