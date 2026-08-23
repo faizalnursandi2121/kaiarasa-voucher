@@ -90,11 +90,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
                             class="w-full rounded-[15px] border border-black/15 dark:border-white/15 bg-transparent px-4 pl-11 pr-12 h-[54px] text-[17px] font-medium text-black/80 dark:text-white/85 outline-none placeholder:text-black/35 dark:placeholder:text-white/30 focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <button type="button" id="toggle-pass" aria-label="Toggle password visibility"
                             class="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-md inline-flex items-center justify-center opacity-40 hover:opacity-80 hover:bg-black/[.05] dark:hover:bg-white/[.06] transition">
-                            <span class="relative block w-4 h-4">
-                                <!-- password tersembunyi = ikon berslash; terlihat = mata polos -->
-                                <i data-lucide="eye-off" class="pass-icon-hidden absolute inset-0 transition-[opacity,transform,filter] duration-200 ease-out"></i>
-                                <i data-lucide="eye" class="pass-icon-shown absolute inset-0 opacity-0 scale-[.25] blur-[4px] transition-[opacity,transform,filter] duration-200 ease-out"></i>
-                            </span>
+                                <i data-lucide="eye-off" class="w-4 h-4"></i>
                         </button>
                     </div>
 
@@ -140,20 +136,13 @@ include ROOT.'/app/Views/layouts/header_public.php';
     // Toggle visibilitas password
     var btn = document.getElementById('toggle-pass');
     if (btn) {
-        var icHidden = btn.querySelector('.pass-icon-hidden');
-        var icShown = btn.querySelector('.pass-icon-shown');
         btn.addEventListener('click', function () {
             var input = document.getElementById('login-password');
             var isPass = input.type === 'password';
             input.type = isPass ? 'text' : 'password';
-            // cross-fade ikon (opacity + scale + blur), tanpa toggle visibility
-            // setelah klik: password jadi terlihat -> sembunyikan berslash, tampilkan mata polos
-            icHidden.classList.toggle('opacity-0', isPass);
-            icHidden.classList.toggle('scale-[.25]', isPass);
-            icHidden.classList.toggle('blur-[4px]', isPass);
-            icShown.classList.toggle('opacity-0', !isPass);
-            icShown.classList.toggle('scale-[.25]', !isPass);
-            icShown.classList.toggle('blur-[4px]', !isPass);
+            // swap ikon ala modal add router: berslash saat tersembunyi, polos saat terlihat
+            btn.innerHTML = '<i data-lucide="' + (isPass ? 'eye' : 'eye-off') + '" class="w-4 h-4"></i>';
+            if (window.lucide) lucide.createIcons();
         });
     }
 
