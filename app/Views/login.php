@@ -52,7 +52,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
     <!-- ===== KANAN: kartu form (Metronic: p-12 p-lg-20 justify-end → card w-md-600px p-20 rounded-4) ===== -->
     <section class="flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
-        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[560px] p-8 md:p-10 shadow-[0_1px_2px_rgba(0,0,0,.06),0_16px_40px_-12px_rgba(0,0,0,.25)] animate-fade-in-up">
+        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[440px] p-8 md:p-9 shadow-[0_1px_2px_rgba(0,0,0,.06),0_16px_40px_-12px_rgba(0,0,0,.25)] animate-fade-in-up">
 
             <?php if (! empty($error)): ?>
             <!-- Catatan: error login aktual dirender via FlashHelper -> SweetAlert (footer_public) -->
