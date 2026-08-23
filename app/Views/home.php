@@ -382,8 +382,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         return '<div class="flex items-center gap-1.5">'
              + '<span class="text-[10px] font-semibold opacity-50 w-7 shrink-0">'+label+'</span>'
              + '<span class="tabular-nums text-[11px] w-8 text-right">'+v+'%</span>'
-             + '<span class="flex-1 max-w-[72px] h-1 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden inline-block">'
-             + '<span class="block h-full '+color+'" style="width:'+Math.min(100,v)+'%"></span></span></div>';
+             + '<span class="flex-1 max-w-[80px] h-1.5 rounded-full bg-black/[.12] dark:bg-white/[.14] overflow-hidden inline-block">'
+             + '<span class="block h-full rounded-full '+color+'" style="width:'+Math.max(v > 0 ? 6 : 0, Math.min(100, v))+'%"></span></span></div>';
     }
     function rowHTML(r) {
         var metrics = r.status === 'online'

@@ -2382,10 +2382,6 @@ input:-webkit-autofill,
   width: 3rem;
 }
 
-.w-16 {
-  width: 4rem;
-}
-
 .w-2 {
   width: 0.5rem;
 }
@@ -2521,6 +2517,14 @@ input:-webkit-autofill,
 
 .max-w-\[200px\] {
   max-width: 200px;
+}
+
+.max-w-\[220px\] {
+  max-width: 220px;
+}
+
+.max-w-\[80px\] {
+  max-width: 80px;
 }
 
 .max-w-full {
@@ -3255,10 +3259,6 @@ input:-webkit-autofill,
   background-color: var(--background);
 }
 
-.bg-black\/10 {
-  background-color: rgb(0 0 0 / 0.1);
-}
-
 .bg-black\/50 {
   background-color: rgb(0 0 0 / 0.5);
 }
@@ -3273,6 +3273,10 @@ input:-webkit-autofill,
 
 .bg-black\/\[\.06\] {
   background-color: rgb(0 0 0 / .06);
+}
+
+.bg-black\/\[\.12\] {
+  background-color: rgb(0 0 0 / .12);
 }
 
 .bg-black\/\[\.15\] {
@@ -5805,10 +5809,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   background-color: rgb(127 29 29 / 0.4);
 }
 
-.dark\:bg-white\/10:is(.dark *) {
-  background-color: rgb(255 255 255 / 0.1);
-}
-
 .dark\:bg-white\/5:is(.dark *) {
   background-color: rgb(255 255 255 / 0.05);
 }
@@ -5819,6 +5819,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
 .dark\:bg-white\/\[\.06\]:is(.dark *) {
   background-color: rgb(255 255 255 / .06);
+}
+
+.dark\:bg-white\/\[\.14\]:is(.dark *) {
+  background-color: rgb(255 255 255 / .14);
 }
 
 .dark\:bg-white\/\[\.15\]:is(.dark *) {
