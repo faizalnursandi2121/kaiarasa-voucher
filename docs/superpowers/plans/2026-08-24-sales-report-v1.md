@@ -832,6 +832,8 @@ Struktur (ikuti pola home.php untuk chart helpers):
 - 4 KPI cards (pattern stat-card Home): Revenue (formatCurrency), Vouchers Sold, Average Sale, Top Package
 - Charts section grid 2 kolom: `<div id="chart-trend">`, `<div id="chart-volume">`, donut `<div id="chart-package">` full-width bawahnya
 - By Type: dua kartu kecil angka Bulk Generate / Quick Print (+ manual_user bila >0)
+- Daily Breakdown (range >= 7 hari): tabel ringkas `table-glass` Date | Vouchers | Revenue
+  dari `$report['daily_breakdown']` (maks 31 baris), posisi sebelum Sales table
 - Table `table-glass`: Date | Package | Quantity | Unit Price | Total | Type | Used; input search client-side; sort klik th (data-sort); pagination 15/baris
 - Toolbar table: Export CSV (link `sales/export/csv?<query>`), Print (`onclick="window.print()"`)
 - Script inline: helper `baseChart()/gridColor()/isDark()` disalin gaya home.php; render 3 ApexCharts dari `window.__SALES_DATA` (di-echo json_encode dari PHP); search/paginate/sort vanilla JS pada tbody rows

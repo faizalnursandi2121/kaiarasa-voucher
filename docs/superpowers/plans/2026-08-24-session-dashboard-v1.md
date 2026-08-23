@@ -282,7 +282,14 @@ private function getActivityFeed(array $records): array
 }
 ```
 
-Catatan jujur: feed ini berbasis creation-date hari ini (tanpa jam), urutan stabil by profile — TIDAK mengarang timestamp. Connected/disconnected events ditambahkan pada Task 6 setelah audit LogController selesai.
+Feed = gabungan dua sumber (best-effort, tanpa fabrikasi):
+1) Creation events (kode di atas): berbasis creation-date hari ini, tanpa jam.
+2) Connection events: reuse pattern `LogController::index` — `$API->comm('/log/print',
+   ['?topics' => 'hotspot,info,debug'])`, ambil baris hari-ini:
+   - mengandung 'logged in'  -> icon `log-in`,  "User connected",    detail nama user
+   - mengandung 'logged out' -> icon `log-out`, "User disconnected", detail nama user
+Gabungkan, urut stabil, slice 12 item. Bila log buffer kosong/rotated, feed tetap
+tampil dengan creation-events saja.
 
 - [ ] **Step 3: Demo branch** — session `demo`: `active_users=25`, records dari `SalesReportService::demoRaw()` dinormalisasi, snapshots sintetis dibuat on-the-fly bila tabel kosong (INSERT 48 titik intraday nilai 18–30).
 
@@ -311,7 +318,7 @@ grid lg:grid-cols-3:
   [col-span-2] RECENT ACTIVITY card: list ikon+teks+detail (empty state "No activity yet.")
 grid lg:grid-cols-2:
   USER ACTIVITY card (toggle Today/7D pills; area chart)
-  VOUCHER ACTIVITY card (Today→dua bar compare; 7D→bar harian; pill toggle sama state)
+  VOUCHER ACTIVITY card (pill Today / Last 7 Days / Last 30 Days; Today→dua bar compare today vs yesterday; 7D & 30D→bar harian dari `charts.voucher_activity.daily[]`)
 TOP PACKAGES donut full-width (atau col-span-2 + kolom list paket kanan)
 ```
 
@@ -363,6 +370,7 @@ Dashboard
 ACCESS      : User Accounts(/hotspot/users) · Vouchers(/hotspot/generate) · Access Packages(/hotspot/profiles)
 ACTIVITY    : Active Users(/hotspot/active) · Connected Devices(/hotspot/hosts)
 SALES       : Sales Report(/reports/sales)
+              [deviasi D1 disetujui: entri "Transactions" ditunda sampai ada local transaction source]
 ADMINISTRATION (collapsible):
    Voucher Templates · Logos · Network ▸ DHCP · Security ▸ IP Bindings, Walled Garden · System ▸ Scheduler, Reboot, Shutdown
 footer: Quick Print shortcut tetap · Disconnect · Logout
