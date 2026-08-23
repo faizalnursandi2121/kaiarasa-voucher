@@ -313,15 +313,23 @@ t('manual billable masuk, non-billable keluar dari sold', function () {
     eq($out['summary']['issued'], 1);
 });
 
-t('undated: masuk total, keluar dari series', function () {
+t('undated: all-time view -> ikut total', function () {
     $recs = [undatedQP(2500), datedRec('2024-05-01','bulk_generate',5000)];
-    $out = SalesReportService::computeFromRecords($recs, ['start'=>'2024-05-01','end'=>'2024-05-31']);
-    eq($out['summary']['vouchers_sold'], 2);          // undated ikut total
+    $out = SalesReportService::computeFromRecords($recs, []); // tanpa range
+    eq($out['summary']['vouchers_sold'], 2);
     eq($out['summary']['revenue'], 7500);
     eq($out['meta']['undated_count'], 1);
-    eq(count($out['revenue_trend']), 1);              // series hanya bertanggal
+    eq(count($out['revenue_trend']), 1);
+});
+
+t('undated: ranged view -> dikecualikan + meta note (konsistensi dashboard)', function () {
+    $recs = [undatedQP(2500), datedRec('2024-05-01','bulk_generate',5000)];
+    $out = SalesReportService::computeFromRecords($recs, ['start'=>'2024-05-01','end'=>'2024-05-31']);
+    eq($out['summary']['vouchers_sold'], 1);          // hanya dated dalam range
+    eq($out['summary']['revenue'], 5000);
+    eq($out['meta']['undated_count'], 1);
+    eq(count($out['revenue_trend']), 1);
     eq($out['summary']['sold_dated'], 1);
-    eq($out['summary']['revenue_dated'], 5000);
 });
 
 t('range filter membuang di luar rentang', function () {
@@ -375,8 +383,9 @@ Tambahkan ke `SalesReportService` (setelah normalizeUser):
  * MURNI (tanpa I/O): agregasi records hasil normalizeUser.
  * Filter: start,end (Y-m-d, hanya menyaring record bertanggal),
  *         package (nama profile), sale_type.
- * Undated billable: selalu masuk summary.total; keluar dari series;
- * dilaporkan di meta.undated_count + summary.sold_dated/revenue_dated.
+ * Undated billable: DIKECUALIKAN dari agregasi ber-range (Today/7D/Custom)
+ * agar Dashboard ≡ Sales Report by construction; masuk total hanya pada
+ * view all-time (tanpa start/end). Selalu dilaporkan meta.undated_count.
  */
 public static function computeFromRecords(array $records, array $f = []): array
 {
@@ -415,17 +424,21 @@ public static function computeFromRecords(array $records, array $f = []): array
         $sold = $rec['billable'] && $rec['price'] > 0;
         if (! $sold) continue;
 
+        $isUndated = $rec['date'] === null;
+        $rangeActive = ($start !== null || $end !== null);
+
+        // Undated keluar dari SEMUA agregasi ber-range (konsistensi dashboard)
+        if ($isUndated && $rangeActive) { $undatedCount++; continue; }
+        if ($isUndated) $undatedCount++;
+
         $summary['revenue'] += $rec['price'];
         $summary['vouchers_sold']++;
-
-        if ($rec['date'] === null) {
-            $undatedCount++;
-        } else {
+        if (! $isUndated) {
             $summary['sold_dated']++;
             $summary['revenue_dated'] += $rec['price'];
         }
 
-        if ($rec['date'] === null) continue; // series/list wajib bertanggal
+        if ($isUndated) continue; // series/list/batch wajib bertanggal
         if ($start !== null && $rec['date'] < $start) continue;
         if ($end !== null && $rec['date'] > $end) continue;
 

@@ -12,8 +12,11 @@
   - comment prefix `vc-/up-{batchId}-{date}` → bulk_generate
   - sisanya → manual_user; **billable hanya jika ada harga eksplisit di comment**
     (`p:|price:|harga:`) — profile-price default saja TIDAK membuat manual user menjadi sale.
-- Undated records: masuk total KPI, keluar dari seri bertanggal, tampilkan
-  data-quality note jika ada. Jangan mengarang tanggal.
+- Undated records (ATURAN RANGE): bila agregasi memakai rentang tanggal
+  (Today/7D/30D/Custom), record tanpa tanggal DIKECUALIKAN dari angka rentang
+  dan dilaporkan via meta/data-quality note; bila TANPA rentang (all-time),
+  undated ikut total. Tujuan: Dashboard "Today" ≡ Sales Report "Today" by
+  construction. Jangan mengarang tanggal.
 - Operator/payment/refund/timestamp-per-transaksi: tidak tersedia → kolom tidak ditampilkan.
 
 ## Consistency Rule
@@ -35,7 +38,8 @@ Sales Report, Financial Report (migrated), Export. Dashboard ≡ Sales Report by
 - billable = sale_type !== manual_user OR explicit price marker in comment.
 - Sold/Revenue aggregates HANYA billable && price>0.
 - used = uptime>0 || bytes-out>0 (legacy definition dipertahankan sebagai usage metric).
-- Undated: date===null → ikut KPI billable, eksklusi dari series; counter `undated`.
+- Undated: date===null → eksklusi dari agregasi BER-RANGE; ikut total hanya pada
+  view all-time; counter `undated` + note UI.
 
 ## Sales Report Page (/reports/sales, alias lama /reports/financial redirect)
 Filter bar: Range (Today/Yesterday/7D/30D/Custom) · Package · Sale Type.
