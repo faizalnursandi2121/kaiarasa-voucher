@@ -54,22 +54,20 @@ include ROOT.'/app/Views/layouts/header_public.php';
     <section class="flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
         <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[560px] p-8 md:p-10 shadow-[0_1px_2px_rgba(0,0,0,.06),0_16px_40px_-12px_rgba(0,0,0,.25)] animate-fade-in-up">
 
-            <!-- Wrapper dalam (Metronic: px-lg-10 pb-15 pb-lg-20) -->
-            <div class="lg:px-8 pb-8 lg:pb-14">
+            <?php if (! empty($error)): ?>
+            <!-- Catatan: error login aktual dirender via FlashHelper -> SweetAlert (footer_public) -->
+            <div class="mb-8 flex items-start gap-2.5 rounded-[15px] bg-red-500/[.07] border border-red-500/20 px-4 py-3 text-[13px] text-red-600 dark:text-red-400">
+                <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0"></i>
+                <span><?= htmlspecialchars($error) ?></span>
+            </div>
+            <?php endif; ?>
 
-                <?php if (! empty($error)): ?>
-                <!-- Fallback error inline (path aktif saat ini: FlashHelper → SweetAlert via footer) -->
-                <div class="mb-8 flex items-start gap-2.5 rounded-[15px] bg-red-500/[.07] border border-red-500/20 px-4 py-3 text-[13px] text-red-600 dark:text-red-400">
-                    <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0"></i>
-                    <span><?= htmlspecialchars($error) ?></span>
-                </div>
-                <?php endif; ?>
-
-                <form action="/login" method="POST" class="w-full">
+            <form action="/login" method="POST" class="w-full">
 
                     <!-- Heading (rata kiri sesuai permintaan) -->
                     <div class="mb-6">
-                        <h1 data-i18n="login.sign_in" class="text-[22px] font-bold tracking-tight text-black/90 dark:text-white/95">Sign In</h1>
+                        <h1 class="text-[22px] font-bold tracking-tight text-black/90 dark:text-white/95">Sign In</h1>
+                        <p class="text-sm text-black/50 dark:text-white/50 mt-1.5">Enter your Access</p>
                     </div>
 
                     <!-- Username (Metronic: fv-row mb-8, input form-control besar radius .95rem) -->
@@ -112,7 +110,6 @@ include ROOT.'/app/Views/layouts/header_public.php';
                         </button>
                     </div>
                 </form>
-            </div>
         </div>
     </section>
 </main>
