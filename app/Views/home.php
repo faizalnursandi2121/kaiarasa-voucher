@@ -376,16 +376,24 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         return '<span class="inline-flex items-center gap-1.5 rounded-full bg-'+m[1]+'-500/10 px-2.5 py-1 text-[11px] font-semibold text-'+m[1]+'-600 dark:text-'+m[1]+'-400">'
              + '<span class="w-1.5 h-1.5 rounded-full bg-'+m[1]+'-500"></span>'+m[0]+'</span>';
     }
-    function cpuBar(v) {
-        if (v === null || v === undefined) return '<span class="opacity-40">-</span>';
+    // Bar resource mini berlabel: CPU & MEM ditumpuk dalam satu sel
+    function resBar(label, v) {
         var color = v > 80 ? 'bg-red-500' : (v > 50 ? 'bg-amber-500' : 'bg-emerald-500');
-        return '<div class="flex items-center gap-2"><span class="tabular-nums text-xs">'+v+'%</span>'
-             + '<span class="w-16 h-1 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden inline-block">'
+        return '<div class="flex items-center gap-1.5">'
+             + '<span class="text-[10px] font-semibold opacity-50 w-7 shrink-0">'+label+'</span>'
+             + '<span class="tabular-nums text-[11px] w-8 text-right">'+v+'%</span>'
+             + '<span class="flex-1 max-w-[72px] h-1 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden inline-block">'
              + '<span class="block h-full '+color+'" style="width:'+Math.min(100,v)+'%"></span></span></div>';
     }
     function rowHTML(r) {
         var metrics = r.status === 'online'
-            ? { cpu: cpuBar(r.cpu_load), up: fmtUptime(r.uptime), seen: relTime(r.last_seen) }
+            ? {
+                cpu: '<div class="space-y-1 py-0.5">'
+                    + resBar('CPU', r.cpu_load ?? 0)
+                    + resBar('MEM', r.mem_load ?? 0)
+                    + '</div>',
+                up: fmtUptime(r.uptime), seen: relTime(r.last_seen)
+            }
             : { cpu: '<span class="opacity-40">-</span>', up: '<span class="opacity-40">-</span>',
                 seen: r.last_seen ? relTime(r.last_seen) : '<span class="opacity-40">'+esc(r.error || '-')+'</span>' };
         var initial = esc((r.session_name || '?').slice(0, 2).toUpperCase());
@@ -441,7 +449,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         } else {
             grid.innerHTML = '<table class="w-full text-sm"><thead><tr class="text-left text-[11px] uppercase tracking-wider text-[#47614d] dark:text-[#92aa96] bg-[#5f7f67]/[.06] border-b border-[#5f7f67]/20">'
                 + '<th class="px-4 py-2.5 font-semibold">Status</th><th class="px-4 py-2.5 font-semibold">Router Name</th>'
-                + '<th class="px-4 py-2.5 font-semibold">IP Address</th><th class="px-4 py-2.5 font-semibold">CPU</th>'
+                + '<th class="px-4 py-2.5 font-semibold">IP Address</th><th class="px-4 py-2.5 font-semibold">CPU / MEM</th>'
                 + '<th class="px-4 py-2.5 font-semibold">Uptime</th><th class="px-4 py-2.5 font-semibold">Last Seen</th>'
                 + '<th class="px-4 py-2.5 font-semibold text-right">Actions</th></tr></thead><tbody>'
                 + slice.map(rowHTML).join('') + '</tbody></table>';

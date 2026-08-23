@@ -68,6 +68,7 @@ class RouterHealthService
             'last_seen' => null,
             'status' => 'offline',
             'cpu_load' => null,
+            'mem_load' => null,
             'uptime' => null,
             'os_version' => null,
             'board_name' => null,
@@ -110,6 +111,9 @@ class RouterHealthService
 
             $row['status'] = 'online';
             $row['cpu_load'] = isset($resource[0]['cpu-load']) ? (int) $resource[0]['cpu-load'] : null;
+            $totMem = isset($resource[0]['total-memory']) ? (int) $resource[0]['total-memory'] : 0;
+            $freeMem = isset($resource[0]['free-memory']) ? (int) $resource[0]['free-memory'] : 0;
+            $row['mem_load'] = $totMem > 0 ? (int) round((($totMem - $freeMem) / $totMem) * 100) : null;
             $row['uptime'] = $resource[0]['uptime'] ?? null;
             $row['os_version'] = $resource[0]['version'] ?? null;
             $row['board_name'] = $resource[0]['board-name'] ?? null;
