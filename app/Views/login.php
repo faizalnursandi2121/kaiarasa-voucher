@@ -54,7 +54,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
     <!-- ===== KANAN: kartu form ===== -->
     <section class="flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
-        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[520px] p-8 md:p-12 shadow-[0_8px_24px_rgba(0,0,0,.08)]">
+        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[560px] p-8 md:p-12 shadow-[0_8px_24px_rgba(0,0,0,.08)]">
 
             <div>
 
@@ -69,13 +69,13 @@ include ROOT.'/app/Views/layouts/header_public.php';
                 <form action="/login" method="POST" class="w-full">
 
                     <!-- Heading -->
-                    <div class="mb-8">
+                    <div class="mb-9">
                         <h1 class="text-[22px] font-bold tracking-tight text-black/90 dark:text-white/95">Sign In</h1>
                         <p class="text-sm text-black/50 dark:text-white/50 mt-1.5">Enter your Access</p>
                     </div>
 
                     <!-- Username -->
-                    <div class="mb-5">
+                    <div class="mb-6">
                         <input type="text" name="username" required autocomplete="username"
                             data-i18n-placeholder="login.username"
                             placeholder="Username"
@@ -83,7 +83,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
                     </div>
 
                     <!-- Password (Metronic: fv-row mb-3) -->
-                    <div class="relative mb-5">
+                    <div class="relative mb-6">
                         <input type="password" id="login-password" name="password" required autocomplete="current-password"
                             data-i18n-placeholder="login.password"
                             placeholder="Password"
