@@ -52,7 +52,7 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
     <!-- ===== KANAN: kartu form (Metronic: p-12 p-lg-20 justify-end → card w-md-600px p-20 rounded-4) ===== -->
     <section class="flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
-        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[500px] p-8 md:p-10 lg:p-12 shadow-[0_8px_24px_rgba(0,0,0,.08)]">
+        <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[500px] p-8 md:p-14 lg:p-20 shadow-[0_8px_24px_rgba(0,0,0,.08)]">
 
             <!-- Wrapper dalam (Metronic: px-lg-10 pb-15 pb-lg-20) -->
             <div class="lg:px-8 pb-8 lg:pb-14">
