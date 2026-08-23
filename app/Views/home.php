@@ -26,9 +26,9 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             <span class="font-semibold text-sm">Alerts</span>
             <span class="text-[11px] opacity-50">Coming soon</span>
         </div>
-        <a href="/settings" class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5 flex flex-col items-center justify-center gap-2 min-h-[110px] hover:border-[#92aa96] transition-colors group">
-            <i data-lucide="settings" class="w-7 h-7 opacity-60 group-hover:opacity-100 transition-opacity"></i>
-            <span class="font-semibold text-sm">Settings</span>
+        <a href="/settings" class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5 flex flex-col items-center justify-center gap-2 min-h-[110px] transition-colors group hover:bg-[#5f7f67]/[.08] hover:border-[#5f7f67]/40">
+            <i data-lucide="settings" class="w-7 h-7 opacity-60 group-hover:opacity-100 group-hover:text-[#47614d] dark:group-hover:text-[#92aa96] transition-colors"></i>
+            <span class="font-semibold text-sm group-hover:text-[#47614d] dark:group-hover:text-[#92aa96] transition-colors">Settings</span>
             <span class="text-[11px] opacity-50">System settings</span>
         </a>
         <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5 flex flex-col items-center justify-center gap-2 min-h-[110px] opacity-50 cursor-not-allowed relative">
