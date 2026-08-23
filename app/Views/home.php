@@ -394,7 +394,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         var osLine = r.os_version
             ? '<p class="text-[11px] font-medium text-[#47614d] dark:text-[#92aa96]">RouterOS '+esc(r.os_version)+'</p>'
             : '';
-        return '<tr class="border-t border-black/[.05] dark:border-white/[.05] hover:bg-[#5f7f67]/[.04] cursor-pointer transition-colors" data-session="'+esc(r.session_name)+'">'
+        return '<tr class="border-t border-black/[.05] dark:border-white/[.05] hover:bg-[#5f7f67]/[.04] transition-colors" data-session="'+esc(r.session_name)+'">'
             + '<td class="px-4 py-3">'+badge(r.status)+'</td>'
             + '<td class="px-4 py-3"><div class="flex items-center gap-3">'
             +   '<span class="w-8 h-8 rounded-lg bg-[#92aa96]/20 text-[#47614d] dark:text-[#92aa96] text-[11px] font-bold flex items-center justify-center shrink-0">'+initial+'</span>'
@@ -896,12 +896,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     document.getElementById('status-filter').addEventListener('change', function () {
         state.filter = this.value; state.page = 1; renderTable();
     });
-    grid.addEventListener('click', function (e) {
-        // klik di dalam menu aksi / tombol titik tiga tidak menavigasi
-        if (e.target.closest('[data-actions-menu]') || e.target.closest('[data-menu]')) return;
-        var tr = e.target.closest('tr[data-session]');
-        if (tr && !e.target.closest('a')) location.href = '/' + tr.getAttribute('data-session') + '/dashboard';
-    });
+    // Catatan: klik baris TIDAK membuka dashboard — hanya lewat aksi ⋮ → Open Dashboard
 
     var REFETCH_MS = 60000;
     setInterval(function () { if (!document.hidden) load(false); }, REFETCH_MS);
