@@ -442,7 +442,14 @@ class HotspotController extends Controller
 
         $items = [];
         $error = null;
+        $asOf = null;
+        $cacheFile = sys_get_temp_dir().'/mivo_active_'.md5($session).'.json';
 
+        if (is_file($cacheFile) && (time() - filemtime($cacheFile)) < 45) {
+            // P2: data per 45 detik — hindari API pull tiap buka halaman
+            $items = json_decode((string) file_get_contents($cacheFile), true) ?: [];
+            $asOf = date('H:i', filemtime($cacheFile));
+        } else {
         $API = RouterOSAPI::fromSession($creds);
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
@@ -452,16 +459,20 @@ class HotspotController extends Controller
         if ($API->connect($creds['ip'], $creds['user'], $password_router)) {
             $items = $API->comm('/ip/hotspot/active/print');
             $API->disconnect();
+            file_put_contents($cacheFile, json_encode($items));
+            $asOf = date('H:i');
         } else {
             FlashHelper::set('error', 'Connection Failed', 'Could not connect to router at '.$creds['ip']);
             header('Location: '.($_SERVER['HTTP_REFERER'] ?? '/'.$session.'/dashboard'));
             exit;
+        }
         }
 
         $data = [
             'session' => $session,
             'items' => $items,
             'error' => $error,
+            'asOf' => $asOf,
         ];
 
         return $this->view('status/active', $data);
@@ -530,6 +541,7 @@ class HotspotController extends Controller
             'session' => $session,
             'items' => $items,
             'error' => $error,
+            'asOf' => $asOf,
         ];
 
         return $this->view('status/hosts', $data);
@@ -566,6 +578,7 @@ class HotspotController extends Controller
             'session' => $session,
             'items' => $items,
             'error' => $error,
+            'asOf' => $asOf,
         ];
 
         return $this->view('security/bindings', $data);
@@ -701,6 +714,7 @@ class HotspotController extends Controller
             'session' => $session,
             'items' => $items,
             'error' => $error,
+            'asOf' => $asOf,
         ];
 
         return $this->view('security/walled_garden', $data);

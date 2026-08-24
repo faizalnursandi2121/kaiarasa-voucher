@@ -99,6 +99,14 @@ $toolbar_html .= '
 <?php echo $toolbar_html; ?>
 </div>
 
+    <?php if (empty($users)) { ?>
+    <!-- Empty State -->
+    <div class="rounded-2xl border border-dashed border-black/[.10] dark:border-white/[.08] p-12 text-center">
+        <i data-lucide="inbox" class="w-8 h-8 mx-auto opacity-30 mb-3"></i>
+        <p class="text-sm opacity-60">No vouchers yet.</p>
+        <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/generate" class="inline-block mt-3 text-[13px] font-semibold text-[#47614d] dark:text-[#92aa96] hover:underline">+ Generate your first batch</a>
+    </div>
+    <?php } else { ?>
     <!-- Table Container -->
     <div class="table-container">
         <table class="table-glass" id="users-table">
@@ -215,7 +223,8 @@ $toolbar_html .= '
         <div class="px-6 py-4 border-t border-accents-2 dark:border-white/10 flex items-center justify-between" id="pagination-controls">
             <div class="text-sm text-accents-5">
                  <span id="pagination-text">Showing <span id="start-idx" class="font-medium text-foreground">0</span> to <span id="end-idx" class="font-medium text-foreground">0</span> of <span id="total-count" class="font-medium text-foreground">0</span> users</span>
-            </div>
+            
+    <?php } ?></div>
             <div class="flex gap-2">
                 <button id="prev-btn" class="btn btn-sm btn-secondary" disabled data-i18n="common.previous">Previous</button>
                 <div id="page-numbers" class="flex gap-1"></div>
@@ -557,7 +566,7 @@ $toolbar_html .= '
 
         const preConfirmFn = () => {
              const form = Swal.getHtmlContainer().querySelector('form');
-             if(form.reportValidity()) {
+             if(form.reportValidity()) { var _cb = Swal.getConfirmButton(); if (_cb) { _cb.disabled = true; _cb.style.opacity = '.6'; }
                  form.submit();
                  return true;
              }

@@ -336,7 +336,7 @@ $toolbar_html .= '
                  }
              }
 
-             if(form.reportValidity()) {
+             if(form.reportValidity()) { var _cb = Swal.getConfirmButton(); if (_cb) { _cb.disabled = true; _cb.style.opacity = '.6'; }
                  form.submit();
                  return true;
              }

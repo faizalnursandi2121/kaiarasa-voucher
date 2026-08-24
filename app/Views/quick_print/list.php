@@ -322,7 +322,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         // Validation Callback
         const preConfirmFn = () => {
              const form = Swal.getHtmlContainer().querySelector('form');
-             if(form.reportValidity()) {
+             if(form.reportValidity()) { var _cb = Swal.getConfirmButton(); if (_cb) { _cb.disabled = true; _cb.style.opacity = '.6'; }
                  form.submit();
              } else {
                  return false;
