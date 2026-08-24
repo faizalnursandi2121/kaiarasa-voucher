@@ -77,14 +77,12 @@ function dashRp(int $v): string
     <!-- ===== Quick Actions + Recent Activity ===== -->
     <!-- ===== Quick Actions (compact) + Recent Activity ===== -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-4">
             <?php foreach (($quick_actions ?? []) as $qa): ?>
-            <a href="<?= $qa['href'] ?>" class="flex items-center gap-3 rounded-xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] px-4 py-3 hover:bg-[#5f7f67]/[.08] hover:border-[#5f7f67]/40 transition-colors group">
-                <span class="w-9 h-9 rounded-lg bg-[#5f7f67]/10 flex items-center justify-center shrink-0">
-                    <i data-lucide="<?= $qa['icon'] ?>" class="w-[18px] h-[18px] text-[#47614d] dark:text-[#92aa96]"></i>
-                </span>
-                <span class="text-[13px] font-semibold group-hover:text-[#47614d] dark:group-hover:text-[#92aa96] transition-colors"><?= $qa['label'] ?></span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto opacity-30"></i>
+            <a href="<?= $qa['href'] ?>" class="rounded-2xl bg-[#5f7f67] text-white p-6 flex flex-col items-center justify-center gap-2 min-h-[150px] transition-all hover:bg-[#557359] hover:-translate-y-0.5 shadow-sm">
+                <i data-lucide="<?= $qa['icon'] ?>" class="w-8 h-8"></i>
+                <span class="font-semibold text-base"><?= htmlspecialchars($qa['label']) ?></span>
+                <span class="text-[11px] text-white/70"><?= $qa['label'] === 'Generate Vouchers' ? 'Bulk voucher generation' : 'Instant voucher printing' ?></span>
             </a>
             <?php endforeach; ?>
         </div>
