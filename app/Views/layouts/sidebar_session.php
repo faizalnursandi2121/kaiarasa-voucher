@@ -115,7 +115,7 @@ $getInitials = function ($name) {
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity opacity-0"></div>
 
     <!-- Sidebar -->
-    <aside id="sidebar" data-session="<?= htmlspecialchars($session ?? '') ?>" class="w-64 flex-shrink-0 border-r border-white/20 dark:border-accents-2 dark:border-white/10 bg-[#5f7f67] fixed md:static inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200 flex flex-col h-full">
+    <aside id="sidebar" data-session="<?= htmlspecialchars($session ?? '') ?>" class="w-64 flex-shrink-0 border-r border-white/20 bg-[#5f7f67] fixed inset-y-0 left-0 z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 flex flex-col">
         <!-- Sidebar Header -->
         <!-- Sidebar Header -->
         <div id="sidebar-header" class="group flex flex-col items-center py-5 border-b border-accents-2 flex-shrink-0 relative cursor-default overflow-hidden">
@@ -126,20 +126,6 @@ $getInitials = function ($name) {
                     <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" width="120" height="32" class="h-10 w-auto hidden dark:block">
                 </div>
 
-                <!-- Premium Control Pill (Slides in from the Right to replace Brand) -->
-                <div class="absolute inset-0 hidden md:flex items-center justify-center transition-all duration-500 ease-in-out translate-x-full opacity-0 group-hover:translate-x-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto z-10">
-                    <div class="control-pill scale-90 transition-transform hover:scale-100 shadow-lg bg-white/10 dark:bg-black/20 backdrop-blur-md">
-                        <!-- Language Switcher -->
-                        <!-- Language Switcher (Kaiarasa Component) -->
-                        <!-- Language Switcher -->
-                        <div class="pill-divider"></div>
-
-                        <!-- Theme Toggle (Segmented) -->
-                        <div class="segmented-switch theme-toggle" title="Toggle Theme">
-                            <div class="segmented-switch-slider"></div>
-                            <div class="segmented-switch-btn theme-toggle-light-icon">
-                                <i data-lucide="sun" class="w-4 h-4" stroke-width="3.5"></i>
-                            </div>
                             <div class="segmented-switch-btn theme-toggle-dark-icon">
                                 <i data-lucide="moon" class="w-4 h-4" stroke-width="3.5"></i>
                             </div>
@@ -157,11 +143,6 @@ $getInitials = function ($name) {
         <!-- Sidebar Content (RTL for left scrollbar) -->
         <div class="flex-1 overflow-y-auto" style="direction: rtl;">
             <div class="py-4 px-3 space-y-1" style="direction: ltr;">
-            <!-- Brand -->
-            <div class="px-3 mb-5">
-                <img src="/assets/img/logo-white.webp" alt="Kaiarasa" class="h-9 w-auto drop-shadow">
-            </div>
-
             <!-- Session Switcher -->
             <div class="px-3 mb-6 relative" onmouseleave="closeMenu('session-dropdown')">
                 <button type="button" class="w-full group grid grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-accents-2 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all decoration-0 overflow-hidden shadow-sm" onclick="toggleMenu('session-dropdown', this)">
