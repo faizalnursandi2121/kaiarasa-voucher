@@ -181,13 +181,17 @@ function collectTargets(array $argv): array
             fwrite(STDERR, "Lewati (bukan file/direktori): $p\n");
             continue;
         }
-        $iterator = new RecursiveIteratorIterator(
-            is_dir($p) ? new RecursiveDirectoryIterator($p, FilesystemIterator::SKIP_DOTS) : new ArrayIterator([$p => new SplFileInfo($p)])
-        );
-        foreach ($iterator as $f) {
-            if ($f->isFile() && strtolower($f->getExtension()) === 'php') {
-                $files[] = $f->getPathname();
+        if (is_dir($p)) {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($p, FilesystemIterator::SKIP_DOTS)
+            );
+            foreach ($iterator as $f) {
+                if ($f->isFile() && strtolower($f->getExtension()) === 'php') {
+                    $files[] = $f->getPathname();
+                }
             }
+        } else {
+            $files[] = realpath($p);
         }
     }
 
