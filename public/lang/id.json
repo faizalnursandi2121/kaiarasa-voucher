@@ -15,6 +15,8 @@
   "voucher_format": "Format Voucher",
   "pricing": "Harga",
   "package_form_subtitle": "Pengaturan kartu quick print",
+  "upload_rx": "Unggah (Rx)",
+  "download_tx": "Unduh (Tx)",
   "profile_form_subtitle": "Kecepatan, kedaluwarsa & harga paket",
   "dashboard": "Dashboard",
   "save": "Simpan",

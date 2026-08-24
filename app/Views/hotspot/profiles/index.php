@@ -333,6 +333,24 @@ $toolbar_html .= '
 
         const preConfirmFn = () => {
              const form = Swal.getHtmlContainer().querySelector('form');
+
+             // Compose MikroTik rate-limit "rx/tx" dari field terpisah (mirror jika satu sisi kosong)
+             const rxV = form.querySelector('[name="rate-limit-rx"]');
+             const txV = form.querySelector('[name="rate-limit-tx"]');
+             const rxU = form.querySelector('[name="rate-limit-rx-unit"]');
+             const txU = form.querySelector('[name="rate-limit-tx-unit"]');
+             const rl  = form.querySelector('[name="rate-limit"]');
+             if (rl && rxV && txV) {
+                 const hasRx = rxV.value !== '', hasTx = txV.value !== '';
+                 if (hasRx || hasTx) {
+                     const rv = hasRx ? rxV.value : txV.value;
+                     const tv = hasTx ? txV.value : rxV.value;
+                     rl.value = rv + rxU.value + '/' + tv + txU.value;
+                 } else {
+                     rl.value = '';
+                 }
+             }
+
              if(form.reportValidity()) {
                  form.submit();
                  return true;
@@ -373,7 +391,15 @@ $toolbar_html .= '
                  // Populate Fields
                  form.querySelector('[name="name"]').value = row.dataset.name || '';
                  form.querySelector('[name="shared-users"]').value = row.dataset.sharedUsers || '1';
-                 form.querySelector('[name="rate-limit"]').value = row.dataset.rateLimit || '';
+                                  const rlCombined = row.dataset.rateLimit || '';
+                 if (form.querySelector('[name="rate-limit"]')) form.querySelector('[name="rate-limit"]').value = rlCombined;
+                 const rlParts = rlCombined.split('/');
+                 const parseRl = (s) => { const m = /^\s*(\d+(?:\.\d+)?)\s*([kKmMgG]?)\s*$/.exec(s || ''); return m ? [m[1], (m[2] || 'M')] : null; };
+                 if (rlParts.length === 2) {
+                     const rxP = parseRl(rlParts[0]), txP = parseRl(rlParts[1]);
+                     if (rxP) { form.querySelector('[name="rate-limit-rx"]').value = rxP[0]; form.querySelector('[name="rate-limit-rx-unit"]').value = rxP[1]; }
+                     if (txP) { form.querySelector('[name="rate-limit-tx"]').value = txP[0]; form.querySelector('[name="rate-limit-tx-unit"]').value = txP[1]; }
+                 }
                  
                  // Selects
                  if(form.querySelector('[name="address-pool"]')) form.querySelector('[name="address-pool"]').value = row.dataset.addressPool;
@@ -476,8 +502,36 @@ $toolbar_html .= '
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.rate_limit">Rate Limit (Rx/Tx)</label>
-                        <input type="text" name="rate-limit" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" data-i18n-placeholder="hotspot_profiles.form.rate_limit_help" placeholder="e.g. 512k/1M">
+                        <label class="block text-[13px] font-semibold mb-2" data-i18n="common.upload_rx">Upload (Rx)</label>
+                        <div class="flex gap-2">
+                            <input type="number" step="any" min="0" name="rate-limit-rx" placeholder="e.g. 512"
+                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            <div class="relative w-24 shrink-0">
+                                <select name="rate-limit-rx-unit" data-native aria-label="Upload unit"
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-8 text-[14px] text-center appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                    <option value="k">Kbps</option>
+                                    <option value="M" selected>Mbps</option>
+                                    <option value="G">Gbps</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-semibold mb-2" data-i18n="common.download_tx">Download (Tx)</label>
+                        <div class="flex gap-2">
+                            <input type="number" step="any" min="0" name="rate-limit-tx" placeholder="e.g. 1024"
+                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            <div class="relative w-24 shrink-0">
+                                <select name="rate-limit-tx-unit" data-native aria-label="Download unit"
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-8 text-[14px] text-center appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                    <option value="k">Kbps</option>
+                                    <option value="M" selected>Mbps</option>
+                                    <option value="G">Gbps</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.parent_queue">Parent queue</label>
@@ -493,7 +547,9 @@ $toolbar_html .= '
                     </div>
                 </div>
 
-                                <div class="flex items-center gap-3 pt-2">
+                <input type="hidden" name="rate-limit" id="rate-limit-combined">
+
+                <div class="flex items-center gap-3 pt-2">
                     <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.expiry_pricing">Expiry & Pricing</span>
                     <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
                 </div>
