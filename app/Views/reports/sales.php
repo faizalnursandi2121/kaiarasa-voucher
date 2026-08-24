@@ -32,10 +32,7 @@ function salesFmtRp(int $v): string
 }
 ?>
 
-<div id="app-dynamic" class="contents">
-<?php include ROOT.'/app/Views/layouts/sidebar_session.php'; ?>
-
-<div id="settings-dynamic" class="contents">
+<div class="contents">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
 
 <?php
@@ -281,7 +278,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
     <?php endif; ?>
 
     <?php endif; ?>
-</div>
 </div>
 
 <script src="/assets/js/vendor/apexcharts.min.js"></script>

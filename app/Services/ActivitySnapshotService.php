@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Core\Database;
+use App\Helpers\EncryptionHelper;
 use App\Models\Config;
 use App\Libraries\RouterOSAPI;
 
@@ -29,6 +30,7 @@ class ActivitySnapshotService
         if (! $config) {
             return null;
         }
+        $config['password'] = \App\Helpers\EncryptionHelper::decrypt($config['password']);
 
         try {
             $api = RouterOSAPI::fromSession($config);

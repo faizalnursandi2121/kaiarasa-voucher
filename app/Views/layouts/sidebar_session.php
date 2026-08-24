@@ -273,7 +273,7 @@ $getInitials = function ($name) {
                 </div>
             </div>
 
-             <!-- Security Group (Collapsible) -->
+             <!-- Administration Group (Collapsible) -->
              <div class="space-y-1">
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('administration-menu', this)" aria-expanded="" aria-controls="administration-menu">
                     <div class="flex items-center gap-3">
@@ -332,46 +332,6 @@ $getInitials = function ($name) {
                     <a href="/<?= htmlspecialchars($session) ?>/reports/sales" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/sales') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="sidebar.sales"><?= LanguageHelper::t('sidebar.sales_report', 'Sales Report') ?></span>
                     </a>
-                </div>
-            </div>
-
-            <!-- Network Group -->
-             <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('network-menu', this)" aria-expanded="" aria-controls="network-menu">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="network" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.network"><?= LanguageHelper::t('sidebar.network', 'Network') ?></span>
-                    </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isNetworkActive ? 'rotate-180' : '' ?>"></i>
-                </button>
-                
-                <div id="network-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isNetworkActive ? '500px' : '0px' ?>">
-                    <a href="/<?= htmlspecialchars($session) ?>/network/dhcp" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/network/dhcp') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="network_menu.dhcp"><?= LanguageHelper::t('network_menu.dhcp', 'DHCP Leases') ?></span>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- System Group -->
-             <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('system-menu', this)" aria-expanded="" aria-controls="system-menu">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="cpu" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.system"><?= LanguageHelper::t('sidebar.system', 'System') ?></span>
-                    </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isSystemActive ? 'rotate-180' : '' ?>"></i>
-                </button>
-                
-                <div id="system-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSystemActive ? '500px' : '0px' ?>">
-                     <a href="/<?= htmlspecialchars($session) ?>/system/scheduler" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/system/scheduler') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="system_menu.scheduler"><?= LanguageHelper::t('system_menu.scheduler', 'Scheduler') ?></span>
-                    </a>
-                    <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/reboot', 'Reboot Router?')" class="w-full text-left block px-3 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
-                        <span data-i18n="system_menu.reboot"><?= LanguageHelper::t('system_menu.reboot', 'Reboot') ?></span>
-                    </button>
-                    <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/shutdown', 'Shutdown Router?')" class="w-full text-left block px-3 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
-                        <span data-i18n="system_menu.shutdown"><?= LanguageHelper::t('system_menu.shutdown', 'Shutdown') ?></span>
-                    </button>
                 </div>
             </div>
 
