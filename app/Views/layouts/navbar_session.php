@@ -12,7 +12,7 @@ $sessionUser = $_SESSION['username'] ?? 'Admin';
 $sessionInitials = strtoupper(substr($sessionUser, 0, 2));
 ?>
 <!-- ===== Session Topbar ===== -->
-<header class="h-16 bg-white dark:bg-[#1a1c19] border-b border-black/[.07] dark:border-white/[.08] flex items-center gap-4 px-4 sm:px-6 sticky top-0 z-30">
+<header class="h-16 bg-white dark:bg-[#1a1c19] border-b border-black/[.07] dark:border-white/[.08] flex items-center gap-4 px-4 sm:px-6 sticky top-0 z-30 lg:ml-64">
 
     <div class="hidden md:block w-full max-w-sm relative">
         <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40"></i>
