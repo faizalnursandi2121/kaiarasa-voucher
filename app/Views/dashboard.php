@@ -69,7 +69,7 @@ function dashRp(int $v): string
                 </span>
                 <span class="text-sm font-semibold"><?= $label ?></span>
             </div>
-            <p class="text-2xl sm:text-3xl font-bold tabular-nums leading-none break-words"<?= $value ?></p>
+            <p class="text-2xl sm:text-3xl font-bold tabular-nums leading-none break-words"><?= $value ?></p>
         </div>
         <?php endforeach; ?>
     </div>
