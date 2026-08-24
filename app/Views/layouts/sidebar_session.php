@@ -253,31 +253,7 @@ $getInitials = function ($name) {
                         <i data-lucide="image" class="w-4 h-4 opacity-60"></i>
                         <span data-i18n="sidebar.logos"><?= LanguageHelper::t('sidebar.logos', 'Logos') ?></span>
                     </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/network/dhcp" class="flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/network/dhcp') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <i data-lucide="network" class="w-4 h-4 opacity-60"></i>
-                        <span data-i18n="sidebar.network"><?= LanguageHelper::t('sidebar.network', 'Network — DHCP') ?></span>
-                    </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/bindings" class="flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/bindings') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <i data-lucide="link" class="w-4 h-4 opacity-60"></i>
-                        <span data-i18n="hotspot_menu.bindings"><?= LanguageHelper::t('hotspot_menu.bindings', 'IP Bindings') ?></span>
-                    </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/walled-garden" class="flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/walled-garden') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <i data-lucide="shield" class="w-4 h-4 opacity-60"></i>
-                        <span data-i18n="hotspot_menu.walled_garden"><?= LanguageHelper::t('hotspot_menu.walled_garden', 'Walled Garden') ?></span>
-                    </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/system/scheduler" class="flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/system/scheduler') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <i data-lucide="clock" class="w-4 h-4 opacity-60"></i>
-                        <span data-i18n="system_menu.scheduler"><?= LanguageHelper::t('system_menu.scheduler', 'Scheduler') ?></span>
-                    </a>
-                    <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/reboot', 'Reboot Router?')" class="w-full flex items-center gap-3 px-2 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
-                        <i data-lucide="rotate-cw" class="w-4 h-4 opacity-60"></i>
-                        <span data-i18n="system_menu.reboot"><?= LanguageHelper::t('system_menu.reboot', 'Reboot') ?></span>
-                    </button>
-                    <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/shutdown', 'Shutdown Router?')" class="w-full flex items-center gap-3 px-2 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
-                        <i data-lucide="power" class="w-4 h-4 opacity-60"></i>
-                        <span data-i18n="system_menu.shutdown"><?= LanguageHelper::t('system_menu.shutdown', 'Shutdown') ?></span>
-                    </button>
-                </div>
+                    </div>
             </div>
 
             <!-- Settings -->
