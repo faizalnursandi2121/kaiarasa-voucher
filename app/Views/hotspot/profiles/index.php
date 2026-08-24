@@ -352,21 +352,22 @@ $toolbar_html .= '
              const form = popup.querySelector('form');
              
              // Validity Toggle Logic for Modal
-             const modeSelect = form.querySelector('#expired-mode');
+             const modeCarrier = form.querySelector('#expired-mode');
+             const autoToggle  = form.querySelector('#auto-disable-toggle');
              const validityGroup = form.querySelector('#validity-group');
 
              function toggleValidity() {
-                 if (!modeSelect || !validityGroup) return;
-                 if (modeSelect.value === 'none') {
-                     validityGroup.classList.add('hidden');
-                 } else {
-                     validityGroup.classList.remove('hidden');
-                 }
+                 if (!validityGroup || !modeCarrier) return;
+                 validityGroup.classList.toggle('hidden', modeCarrier.value === 'none');
              }
 
-             if (modeSelect) {
-                 modeSelect.addEventListener('change', toggleValidity);
+             if (autoToggle && modeCarrier) {
+                 autoToggle.addEventListener('change', () => {
+                     modeCarrier.value = autoToggle.checked ? 'remc' : 'none';
+                     toggleValidity();
+                 });
              }
+             toggleValidity();
 
              if (mode === 'edit' && btn) {
                  const row = btn.closest('tr');
@@ -394,7 +395,10 @@ $toolbar_html .= '
                  // Selects
                  if(form.querySelector('[name="address-pool"]')) form.querySelector('[name="address-pool"]').value = row.dataset.addressPool;
                  if(form.querySelector('[name="parent-queue"]')) form.querySelector('[name="parent-queue"]').value = row.dataset.parentQueue;
-                 if(form.querySelector('[name="expired_mode"]')) form.querySelector('[name="expired_mode"]').value = row.dataset.expiredMode;
+                 const legacyMode = row.dataset.expiredMode || 'none';
+                 if (form.querySelector('[name="expired_mode"]')) form.querySelector('[name="expired_mode"]').value = (legacyMode === 'none') ? 'none' : 'remc';
+                 if (autoToggle) autoToggle.checked = (legacyMode !== 'none');
+                 toggleValidity();
                  if(form.querySelector('[name="lock_user"]')) form.querySelector('[name="lock_user"]').value = row.dataset.lockUser;
 
                  // Validity
@@ -554,19 +558,17 @@ $toolbar_html .= '
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.expired_mode">Expired mode</label>
-                        <div class="relative">
-                            <select name="expired_mode" id="expired-mode" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                                <option value="none" data-i18n="common.forms.none" selected>none</option>
-                                <option value="rem">Remove</option>
-                                <option value="ntf">Notice</option>
-                                <option value="remc">Remove &amp; Record</option>
-                                <option value="ntfc">Notice &amp; Record</option>
-                            </select>
-                            <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                        <label class="block text-[13px] font-semibold mb-2" for="auto-disable-toggle" data-i18n="common.auto_disable">Auto-disable after expiry</label>
+                        <div class="h-11 flex items-center">
+                            <label class="relative inline-flex items-center cursor-pointer select-none">
+                                <input type="checkbox" id="auto-disable-toggle" class="sr-only peer" checked>
+                                <span class="block w-10 h-[22px] rounded-full bg-black/[.15] dark:bg-white/[.15] peer-checked:bg-[#5f7f67] relative transition-colors after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:w-4 after:h-4 after:rounded-full after:bg-white after:shadow-sm after:transition-transform peer-checked:after:translate-x-[18px]"></span>
+                            </label>
                         </div>
                     </div>
                 </div>
+
+                <input type="hidden" name="expired_mode" id="expired-mode" value="remc">
 
                 <div id="validity-group" class="hidden space-y-2 transition-all">
                     <span class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.validity">Validity</span>
