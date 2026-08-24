@@ -17,7 +17,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>
 
 <!-- ===== Generate Vouchers Panel (pattern: Home / Add Router Modal) ===== -->
-<div class="max-w-3xl mx-auto">
+<div class="max-w-2xl mx-auto">
     <div class="rounded-2xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-6 sm:p-8 shadow-2xl">
         <form action="/<?= htmlspecialchars($session) ?>/hotspot/generate/process" method="POST" class="space-y-4">
             <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
@@ -204,6 +204,30 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                 </button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- ===== Quick Tips (compact) ===== -->
+<div class="max-w-2xl mx-auto mt-4">
+    <div class="rounded-2xl border border-dashed border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
+        <h3 class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-3">
+            <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-yellow-500"></i>
+            <span data-i18n="hotspot_generate.form.quick_tips">Quick Tips</span>
+        </h3>
+        <ul class="space-y-1.5 text-xs opacity-70 leading-relaxed">
+            <li class="flex gap-2">
+                <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
+                <span data-i18n="hotspot_generate.form.tip_user_mode"><strong>User Mode</strong>: UP (separate), VC (same).</span>
+            </li>
+            <li class="flex gap-2">
+                <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
+                <span data-i18n="hotspot_generate.form.tip_format_examples"><strong>Format Examples</strong>: abcd (lower), 1234 (num), Mix (upper/lower/num).</span>
+            </li>
+            <li class="flex gap-2">
+                <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
+                <span data-i18n="hotspot_generate.form.tip_limits"><strong>Limits</strong>: Time (e.g. 1h, 30m), Data (e.g. 100MB). Leave empty to use Profile default.</span>
+            </li>
+        </ul>
     </div>
 </div>
 

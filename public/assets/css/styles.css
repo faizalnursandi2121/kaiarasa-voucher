@@ -2349,6 +2349,10 @@ input:-webkit-autofill,
   width: 5rem;
 }
 
+.w-24 {
+  width: 6rem;
+}
+
 .w-3 {
   width: 0.75rem;
 }
@@ -3360,10 +3364,6 @@ input:-webkit-autofill,
   background-color: rgb(236 72 153 / var(--tw-bg-opacity, 1));
 }
 
-.bg-primary {
-  background-color: var(--primary);
-}
-
 .bg-purple-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(243 232 255 / var(--tw-bg-opacity, 1));
@@ -3612,11 +3612,6 @@ input:-webkit-autofill,
   padding-right: 1.5rem;
 }
 
-.px-8 {
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
 .py-0\.5 {
   padding-top: 0.125rem;
   padding-bottom: 0.125rem;
@@ -3727,6 +3722,10 @@ input:-webkit-autofill,
   padding-left: 0.75rem;
 }
 
+.pl-3\.5 {
+  padding-left: 0.875rem;
+}
+
 .pl-4 {
   padding-left: 1rem;
 }
@@ -3751,8 +3750,8 @@ input:-webkit-autofill,
   padding-right: 3rem;
 }
 
-.pr-16 {
-  padding-right: 4rem;
+.pr-14 {
+  padding-right: 3.5rem;
 }
 
 .pr-2 {
@@ -3797,10 +3796,6 @@ input:-webkit-autofill,
 
 .pt-5 {
   padding-top: 1.25rem;
-}
-
-.pt-6 {
-  padding-top: 1.5rem;
 }
 
 .pt-\[3\.75rem\] {
@@ -5530,10 +5525,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 .focus\:border-\[\#5f7f67\]:focus {
   --tw-border-opacity: 1;
   border-color: rgb(95 127 103 / var(--tw-border-opacity, 1));
-}
-
-.focus\:border-primary:focus {
-  border-color: var(--primary);
 }
 
 .focus\:border-red-500:focus {
