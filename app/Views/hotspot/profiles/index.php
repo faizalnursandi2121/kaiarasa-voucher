@@ -500,6 +500,27 @@ $toolbar_html .= '
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
+                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.price">Price (Rp)</label>
+                        <input type="number" name="price" placeholder="e.g. 5000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.selling_price">Selling Price (Rp)</label>
+                        <input type="number" name="selling_price" placeholder="e.g. 7000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.lock_user">Lock user</label>
+                        <div class="relative">
+                            <select name="lock_user" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <option value="Disable" data-i18n="common.forms.disabled">Disable</option>
+                                <option value="Enable" data-i18n="common.forms.enabled">Enable</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                        </div>
+                    </div>
+                    <div>
                         <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.expired_mode">Expired mode</label>
                         <div class="relative">
                             <select name="expired_mode" id="expired-mode" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
@@ -512,46 +533,26 @@ $toolbar_html .= '
                             <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         </div>
                     </div>
-                    <div id="validity-group" class="hidden space-y-2 transition-all">
-                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.validity">Validity</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <div class="relative">
-                                <input type="number" name="validity_d" min="0" placeholder="0D" aria-label="Validity days"
-                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-6 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                            </div>
-                            <div class="relative">
-                                <input type="number" name="validity_h" min="0" placeholder="0H" aria-label="Validity hours"
-                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                            </div>
-                            <div class="relative">
-                                <input type="number" name="validity_m" min="0" placeholder="0M" aria-label="Validity minutes"
-                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                            </div>
+                </div>
+
+                <div id="validity-group" class="hidden space-y-2 transition-all">
+                    <span class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.validity">Validity</span>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="relative">
+                            <input type="number" name="validity_d" min="0" placeholder="0D" aria-label="Validity days"
+                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-6 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                        </div>
+                        <div class="relative">
+                            <input type="number" name="validity_h" min="0" placeholder="0H" aria-label="Validity hours"
+                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                        </div>
+                        <div class="relative">
+                            <input type="number" name="validity_m" min="0" placeholder="0M" aria-label="Validity minutes"
+                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.price">Price (Rp)</label>
-                        <input type="number" name="price" placeholder="e.g. 5000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                    </div>
-                    <div>
-                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.selling_price">Selling Price (Rp)</label>
-                        <input type="number" name="selling_price" placeholder="e.g. 7000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.lock_user">Lock user</label>
-                    <div class="relative sm:max-w-xs">
-                        <select name="lock_user" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                            <option value="Disable" data-i18n="common.forms.disabled">Disable</option>
-                            <option value="Enable" data-i18n="common.forms.enabled">Enable</option>
-                        </select>
-                        <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
-                    </div>
-                </div>
             </form>
         </div>
 
