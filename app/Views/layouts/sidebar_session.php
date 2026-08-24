@@ -119,8 +119,8 @@ $getInitials = function ($name) {
         <!-- Sidebar Header -->
         <div id="sidebar-header" class="flex flex-col items-center py-5 border-b border-accents-2 flex-shrink-0 relative cursor-default">
             <div class="relative w-full h-10 flex items-center justify-center">
-                <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" width="120" height="32" class="h-10 w-auto block dark:hidden">
-                <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" width="120" height="32" class="h-10 w-auto hidden dark:block">
+                
+                <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" width="120" height="32" class="h-10 w-auto">
             </div>
 
             <!-- Mobile Close Button -->
@@ -136,7 +136,7 @@ $getInitials = function ($name) {
             <div class="px-3 mb-6 relative" onmouseleave="closeMenu('session-dropdown')">
                 <button type="button" class="w-full group grid grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-accents-2 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all decoration-0 overflow-hidden shadow-sm" onclick="toggleMenu('session-dropdown', this)">
                     <!-- Initials -->
-                    <div class="h-8 w-8 rounded-lg bg-accents-2/50 group-hover:bg-accents-2 flex items-center justify-center text-xs font-bold text-accents-6 group-hover:text-foreground transition-colors flex-shrink-0">
+                    <div class="h-8 w-8 rounded-lg bg-white/15 group-hover:bg-white/25 flex items-center justify-center text-xs font-bold text-white transition-colors flex-shrink-0">
                         <?= $getInitials($session ?? '') ?>
                     </div>
 
@@ -149,7 +149,7 @@ $getInitials = function ($name) {
                     </div>
 
                     <!-- Chevron Icon -->
-                    <div class="h-8 w-8 flex-shrink-0 flex items-center justify-center rounded-lg bg-accents-2/50 group-hover:bg-accents-2 transition-colors">
+                    <div class="h-8 w-8 flex-shrink-0 flex items-center justify-center rounded-lg bg-white/15 group-hover:bg-white/25 transition-colors">
                         <i data-lucide="chevrons-up-down" class="!w-4 !h-4 !text-accents-6 dark:!text-accents-6 transition-colors"></i>
                     </div>
                 </button>
