@@ -157,16 +157,16 @@ $getInitials = function ($name) {
                 <!-- Dropdown -->
                 <div id="session-dropdown" class="absolute top-full left-3 w-[calc(100%-1.5rem)] z-50 mt-1 bg-white dark:bg-[#1a1c19] border border-black/10 dark:border-white/10 rounded-lg shadow-lg overflow-hidden transition-all duration-200 ease-out origin-top opacity-0 scale-95 invisible pointer-events-none dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
                     <div class="py-1 max-h-60 overflow-y-auto">
-                        <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50 border-b border-gray-200" data-i18n="sidebar.switch_session">
+                        <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50 border-b border-gray-200 dark:text-gray-400 dark:bg-white/5 dark:border-white/10" data-i18n="sidebar.switch_session">
                             Switch Session
                         </div>
                         <?php foreach ($allSessions as $s) { ?>
-                        <a href="/<?= htmlspecialchars($s['session_name']) ?>/dashboard" class="flex items-center gap-3 px-3 py-2 text-sm hover:bg-gray-100 transition-colors group/item text-gray-700">
-                            <div class="h-6 w-6 rounded flex-shrink-0 bg-gray-200 flex items-center justify-center text-[10px] font-bold text-gray-600">
+                        <a href="/<?= htmlspecialchars($s['session_name']) ?>/dashboard" class="flex items-center gap-3 px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group/item text-gray-700 dark:text-gray-200">
+                            <div class="h-6 w-6 rounded flex-shrink-0 bg-gray-200 flex items-center justify-center text-[10px] font-bold text-gray-600 dark:bg-white/10 dark:text-gray-300">
                                  <?= $getInitials($s['session_name']) ?>
                             </div>
                             <div class="flex flex-col overflow-hidden">
-                                <span class="truncate font-medium text-gray-800">
+                                <span class="truncate <?= ($session === $s['session_name']) ? 'font-semibold text-gray-900 dark:text-white' : 'font-medium text-gray-700 dark:text-gray-200' ?>">
                                     <?= htmlspecialchars($s['session_name']) ?>
                                 </span>
                                 <span class="text-[10px] text-gray-400 truncate">
@@ -179,8 +179,8 @@ $getInitials = function ($name) {
                         </a>
                         <?php } ?>
                     </div>
-                    <div class="border-t border-accents-2 p-1 bg-accents-1/30">
-                         <a href="/settings/add" class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accents-2 rounded-md transition-colors text-accents-5 hover:text-foreground">
+                    <div class="border-t border-gray-200 dark:border-white/10 p-1 bg-gray-50 dark:bg-white/5">
+                         <a href="/settings/add" class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-100 hover:text-gray-800 rounded-md transition-colors text-gray-600 dark:text-gray-300 dark:hover:bg-white/5">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i>
                             <span data-i18n="settings.add_router"><?= LanguageHelper::t('settings.add_router', 'Connect Router') ?></span>
                         </a>
