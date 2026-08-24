@@ -3,18 +3,18 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Core\Middleware;
-use App\Helpers\FlashHelper;
 use App\Libraries\RouterOSAPI;
 use App\Models\Config;
+use App\Services\ActivitySnapshotService;
+use App\Services\SalesReportService;
 
 class DashboardController extends Controller
 {
-    public function __construct()
-    {
-        // Auth handled by Router Middleware
-    }
-
+    /**
+     * Operational control panel untuk satu lokasi/router.
+     * Target: receptionist/operator — bukan monitoring teknis router
+     * (itu tanggung jawab Home/NOC).
+     */
     public function index($session)
     {
         $configModel = new Config;
@@ -26,102 +26,210 @@ class DashboardController extends Controller
             return;
         }
 
-        // Mock Data for Demo (SQLite or Legacy)
-        if ($session === 'demo') {
-            $todaySales = (new \App\Services\SalesReportService($session))->getTodaySummary(isset($_GET['refresh']));
-            $data = [
-                'session' => $session,
-                'today_sales' => $todaySales,
-                'clock' => ['time' => '12:00:00', 'date' => 'jan/01/2024'],
-                'resource' => [
-                    'board-name' => 'CHR (Demo SQLite)',
-                    'version' => '7.12',
-                    'uptime' => '1w 2d 3h',
-                    'cpu-load' => '15',
-                    'free-memory' => 1048576 * 512, // 512 MB
-                    'free-hdd-space' => 1048576 * 1024, // 1 GB
-                ],
-                // ... rest of mock data
-                'routerboard' => ['model' => 'x86_64'],
-                'hotspot_active' => 25,
-                'hotspot_users' => 150,
-                'lang' => [
-                    'system_date_time' => 'System Date & Time',
-                    'uptime' => 'Uptime',
-                    'board_name' => 'Board Name',
-                    'model' => 'Model',
-                    'cpu_load' => 'CPU Load',
-                    'free_memory' => 'Free Memory',
-                    'free_hdd' => 'Free HDD',
-                    'hotspot_active' => 'Hotspot Active',
-                    'hotspot_users' => 'Hotspot Users',
-                ],
-            ];
+        $force = isset($_GET['refresh']);
+        $demo = $session === 'demo';
+        $salesSvc = new SalesReportService($session);
+        $snapSvc = new ActivitySnapshotService($session);
 
-            return $this->view('dashboard', $data);
-        }
+        // ---------- Active Users (live count + sampler) ----------
+        $unreachable = false;
+        $activeUsers = null;
 
-        $API = RouterOSAPI::fromSession($creds);
-
-        // Determine password: if legacy, decrypt it. If SQLite (new), assume plain for now
-        // (since we just seeded 'admin' plain in setup_database.php) or decrypt if you decide to encrypt in DB.
-        // For this Demo, setup_database.php inserted plain 'admin'.
-        // Existing v3 passwords are encrypted.
-
-        $password = $creds['password'];
-        if (isset($creds['source']) && $creds['source'] === 'legacy') {
-            $password = RouterOSAPI::decrypt($password);
-        }
-
-        if ($API->connect($creds['ip'], $creds['user'], $password)) {
-            // ... API calls
-            $getclock = $API->comm('/system/clock/print');
-            $clock = $getclock[0] ?? [];
-
-            $getresource = $API->comm('/system/resource/print');
-            $resource = $getresource[0] ?? [];
-
-            $getrouterboard = $API->comm('/system/routerboard/print');
-            $routerboard = $getrouterboard[0] ?? [];
-
-            $counthotspotactive = $API->comm('/ip/hotspot/active/print', ['count-only' => '']);
-            $countallusers = $API->comm('/ip/hotspot/user/print', ['count-only' => '']);
-
-            $API->disconnect();
-
-            $todaySales = (new \App\Services\SalesReportService($session))->getTodaySummary(isset($_GET['refresh']));
-            $data = [
-                'session' => $session,
-                'today_sales' => $todaySales,
-                'clock' => $clock,
-                'resource' => $resource,
-                'routerboard' => $routerboard,
-                'hotspot_active' => $counthotspotactive,
-                'hotspot_users' => $countallusers,
-                'lang' => [
-                    'system_date_time' => 'System Date & Time',
-                    'uptime' => 'Uptime',
-                    'board_name' => 'Board Name',
-                    'model' => 'Model',
-                    'cpu_load' => 'CPU Load',
-                    'free_memory' => 'Free Memory',
-                    'free_hdd' => 'Free HDD',
-                    'hotspot_active' => 'Hotspot Active',
-                    'hotspot_users' => 'Hotspot Users',
-                    'hotspot_users' => 'Hotspot Users',
-                ],
-                'reload_interval' => $creds['reload'] ?? 5, // Default 5s if not set
-                'interface' => $creds['interface'] ?? 'ether1',
-            ];
-
-            // Pass Users Link (Optional: could be part of layout or card link)
-            // Ideally, the "Hotspot Users" card on dashboard should be clickable.
-            return $this->view('dashboard', $data);
-
+        if ($demo) {
+            $activeUsers = 25;
+            $this->seedDemoSnapshots();
         } else {
-            FlashHelper::set('error', 'Connection Failed', 'Could not connect to router at '.$creds['ip']);
-            header('Location: '.($_SERVER['HTTP_REFERER'] ?? '/'));
-            exit;
+            $snapSvc->sampleIfStale();
+            $latest = $snapSvc->getLatestSnapshot();
+            if ($latest !== null) {
+                $activeUsers = (int) $latest['active_users'];
+            } else {
+                $live = $snapSvc->countActiveNow();
+                if ($live === null) {
+                    $unreachable = true;
+                } else {
+                    $snapSvc->recordNow($live);
+                    $activeUsers = $live;
+                }
+            }
+        }
+
+        // ---------- Records penjualan/issuance ----------
+        if ($demo) {
+            $raw = SalesReportService::demoRaw();
+            $records = array_map(
+                fn ($u) => SalesReportService::normalizeUser($u, $raw['price_map']),
+                $raw['users']
+            );
+        } else {
+            $records = $salesSvc->getVoucherRecords($force);
+            if (isset($records['__unreachable'])) {
+                $records = [];
+                $unreachable = true;
+            }
+        }
+
+        // ---------- KPI ----------
+        $today = date('Y-m-d');
+        $soldToday = 0;
+        $revenueToday = 0;
+        $createdStats = $this->getCreatedStats($records);
+
+        foreach ($records as $rec) {
+            if (($rec['date'] ?? null) !== $today || empty($rec['billable'])) {
+                continue;
+            }
+            if ($rec['price'] > 0) {
+                $soldToday++;
+                $revenueToday += $rec['price'];
+            }
+        }
+
+        // ---------- Charts ----------
+        $uaMode = in_array($_GET['ua'] ?? '', ['today', '7d', '30d'], true) ? $_GET['ua'] : 'today';
+        $uaSeries = $unreachable
+            ? []
+            : $snapSvc->getSeries($uaMode === 'today' ? 'today' : 'days', $uaMode === '30d' ? 30 : 7);
+
+        $data = [
+            'session' => $session,
+            'today_sales' => ['sold' => $soldToday, 'revenue' => $revenueToday],
+            'kpis' => [
+                'active_users' => $activeUsers,
+                'sold_today' => $soldToday,
+                'revenue_today' => $revenueToday,
+                'created_today' => $createdStats['today'],
+            ],
+            'quick_actions' => [
+                ['label' => 'Generate Vouchers', 'icon' => 'ticket-plus', 'href' => '/'.htmlspecialchars($session).'/hotspot/generate'],
+                ['label' => 'Quick Print', 'icon' => 'printer', 'href' => '/'.htmlspecialchars($session).'/quick-print'],
+                ['label' => 'Create User', 'icon' => 'user-plus', 'href' => '/'.htmlspecialchars($session).'/hotspot/users/add'],
+            ],
+            'activity' => $unreachable ? [] : $this->getActivityFeed($records, $session),
+            'charts' => [
+                'user_activity' => ['mode' => $uaMode, 'series' => $uaSeries],
+                'voucher_activity' => [
+                    'today' => $createdStats['today'],
+                    'yesterday' => $createdStats['yesterday'],
+                    'daily' => array_slice($createdStats['daily'], -30),
+                ],
+                'top_packages' => array_slice(
+                    array_map(fn ($name, $count) => ['name' => $name, 'count' => $count],
+                        array_keys($createdStats['top_packages']), $createdStats['top_packages']),
+                    0, 5),
+            ],
+            'unreachable' => $unreachable,
+            'ua_mode' => $uaMode,
+        ];
+
+        return $this->view('dashboard', $data);
+    }
+
+    /** Agregasi voucher dibuat hari ini/kemarin + distribusi harian 30 hari. */
+    private function getCreatedStats(array $records): array
+    {
+        $today = date('Y-m-d');
+        $yest = date('Y-m-d', strtotime('-1 day'));
+        $todayN = 0; $yestN = 0; $byPkg = []; $byDate = [];
+
+        foreach ($records as $r) {
+            // Hanya issuance types; manual non-billable tidak dihitung
+            if (! in_array($r['sale_type'], ['bulk_generate', 'quick_print'], true)) {
+                continue;
+            }
+            $d = $r['date'] ?? null;
+            if ($d === null) {
+                continue;
+            }
+            $byDate[$d] = ($byDate[$d] ?? 0) + 1;
+            if ($d === $today) {
+                $todayN++;
+                $byPkg[$r['profile']] = ($byPkg[$r['profile']] ?? 0) + 1;
+            }
+            if ($d === $yest) {
+                $yestN++;
+            }
+        }
+        arsort($byPkg);
+
+        $daily = [];
+        for ($i = 29; $i >= 0; $i--) {
+            $d = date('Y-m-d', strtotime("-{$i} day"));
+            $daily[] = ['date' => $d, 'count' => ($byDate[$d] ?? 0)];
+        }
+
+        return ['today' => $todayN, 'yesterday' => $yestN, 'top_packages' => $byPkg, 'daily' => $daily];
+    }
+
+    /**
+     * Operational activity feed (best-effort):
+     * creation events hari ini + connection events dari RouterOS hotspot log.
+     */
+    private function getActivityFeed(array $records, string $session): array
+    {
+        $items = [];
+        foreach ($records as $r) {
+            if (($r['date'] ?? null) !== date('Y-m-d')) {
+                continue;
+            }
+            if ($r['sale_type'] === 'quick_print') {
+                $items[] = ['icon' => 'printer', 'text' => 'Voucher printed', 'detail' => $r['profile']];
+            } elseif ($r['sale_type'] === 'bulk_generate') {
+                $items[] = ['icon' => 'ticket-plus', 'text' => 'Voucher generated', 'detail' => $r['profile']];
+            } elseif (! empty($r['billable'])) {
+                $items[] = ['icon' => 'user-plus', 'text' => 'User account created', 'detail' => $r['profile']];
+            }
+        }
+
+        // Connection events dari hotspot log (best-effort)
+        try {
+            $config = (new Config)->getSession($session);
+            if ($config) {
+                $api = RouterOSAPI::fromSession($config);
+                $api->attempts = 1;
+                $api->timeout = 3;
+                if ($api->connect($config['ip_address'], $config['username'], $config['password'])) {
+                    $logs = $api->comm('/log/print', ['?topics' => 'hotspot,info,debug']);
+                    if (empty($logs) || isset($logs['!trap'])) {
+                        $logs = $api->comm('/log/print', []);
+                    }
+                    $api->disconnect();
+
+                    if (is_array($logs)) {
+                        foreach (array_reverse($logs) as $log) {
+                            $msg = (string) ($log['message'] ?? '');
+                            if (stripos($msg, 'logged in') !== false) {
+                                $items[] = ['icon' => 'log-in', 'text' => 'User connected', 'detail' => $msg];
+                            } elseif (stripos($msg, 'logged out') !== false) {
+                                $items[] = ['icon' => 'log-out', 'text' => 'User disconnected', 'detail' => $msg];
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            // log feed bersifat best-effort
+        }
+
+        return array_slice($items, 0, 12);
+    }
+
+    /** Seed intraday snapshots sintetis utk session demo (sekali, bila kosong). */
+    private function seedDemoSnapshots(): void
+    {
+        $svc = new ActivitySnapshotService('demo');
+        if ($svc->getLatestSnapshot() !== null) {
+            return;
+        }
+
+        $values = [18, 20, 22, 21, 24, 26, 25, 27, 28, 30, 29, 28];
+        $now = time();
+        foreach ($values as $i => $v) {
+            $ts = $now - ((count($values) - $i) * 300);
+            \App\Core\Database::getInstance()->getConnection()
+                ->prepare("INSERT INTO session_activity_snapshots (session_name, active_users, recorded_at)
+                           VALUES ('demo', ?, datetime(?, 'unixepoch','localtime'))")
+                ->execute([$v, $ts]);
         }
     }
 }

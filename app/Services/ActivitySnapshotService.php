@@ -79,6 +79,18 @@ class ActivitySnapshotService
             ->execute([$this->session, $activeUsers]);
     }
 
+    /** Snapshot terakhir utk sesi ini. Null bila belum ada. */
+    public function getLatestSnapshot(): ?array
+    {
+        $st = Database::getInstance()->getConnection()
+            ->prepare('SELECT active_users, recorded_at FROM session_activity_snapshots
+                       WHERE session_name = ? ORDER BY recorded_at DESC LIMIT 1');
+        $st->execute([$this->session]);
+        $row = $st->fetch(\PDO::FETCH_ASSOC);
+
+        return $row ?: null;
+    }
+
     /**
      * Series untuk chart User Activity.
      *
