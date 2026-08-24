@@ -236,10 +236,10 @@ $getInitials = function ($name) {
 
             <!-- Administration (Collapsible Group) -->
              <div class="pt-4 space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-xs font-semibold uppercase tracking-wider text-accents-5 hover:text-foreground hover:bg-accents-2/50 transition-colors" onclick="toggleMenu('administration-menu', this)" aria-expanded="<?= $isSecurityActive ? 'true' : 'false' ?>" aria-controls="administration-menu">
+                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-[13px] font-bold text-white/90 hover:bg-white/10 transition-colors" onclick="toggleMenu('administration-menu', this)" aria-expanded="<?= $isSecurityActive ? 'true' : 'false' ?>" aria-controls="administration-menu">
                     <span class="flex items-center gap-2">
-                        <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
-                        <span data-i18n="sidebar.administration"><?= LanguageHelper::t('sidebar.administration', 'Administration') ?></span>
+                        <i data-lucide="palette" class="w-4 h-4"></i>
+                        <span data-i18n="sidebar.administration">Branding</span>
                     </span>
                     <i data-lucide="chevron-down" class="w-3.5 h-3.5 transition-transform duration-300 <?= $isSecurityActive ? 'rotate-180' : '' ?>"></i>
                 </button>
