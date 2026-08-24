@@ -42,7 +42,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     <th data-i18n="quick_print.profile">Profile</th>
                     <th data-i18n="quick_print.prefix">Prefix</th>
                     <th data-sort="price" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="quick_print.price">Price</th>
-                    <th data-i18n="quick_print.time_limit">Time limit</th>
                     <th class="text-right" data-i18n="common.actions">Actions</th>
                 </tr>
             </thead>
@@ -59,10 +58,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         data-profile="<?= htmlspecialchars($pkg['profile']) ?>"
                         data-prefix="<?= htmlspecialchars($pkg['prefix']) ?>"
                         data-price="<?= htmlspecialchars($pkg['price']) ?>"
-                        data-selling-price="<?= htmlspecialchars($pkg['selling_price'] ?? $pkg['price']) ?>"
-                        data-time-limit="<?= htmlspecialchars($pkg['time_limit']) ?>"
-                        data-data-limit="<?= htmlspecialchars($pkg['data_limit']) ?>"
-                        data-char-length="<?= htmlspecialchars($pkg['char_length']) ?>"
+                                                                                                data-char-length="<?= htmlspecialchars($pkg['char_length']) ?>"
                         data-color="<?= htmlspecialchars($pkg['color']) ?>"
                         data-comment="<?= htmlspecialchars($pkg['comment']) ?>">
                         
@@ -75,7 +71,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                         <td><?= htmlspecialchars($pkg['profile']) ?></td>
                         <td class="font-mono text-xs"><?= htmlspecialchars($pkg['prefix']) ?: '-' ?></td>
                         <td><?= htmlspecialchars($pkg['price'] > 0 ? number_format($pkg['price'], 0, ',', '.') : 'Free') ?></td>
-                        <td><?= htmlspecialchars($pkg['time_limit'] ?: 'Unlimited') ?></td>
                         <td class="text-right text-sm">
                             <div class="flex items-center justify-end gap-2 table-actions-reveal">
                                 <!-- Simple Delete Form -->
@@ -350,34 +345,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                  
                  form.querySelector('[name="name"]').value = row.dataset.name;
                  form.querySelector('[name="price"]').value = row.dataset.price;
-                 form.querySelector('[name="selling_price"]').value = row.dataset.sellingPrice;
                  form.querySelector('[name="prefix"]').value = row.dataset.prefix;
-
-                 // Parse stored time_limit (e.g. "3h", "1d2h30m") back into D/H/M fields
-                 const tl = row.dataset.timeLimit || '';
-                 const mD = tl.match(/(\d+)d/);
-                 const mH = tl.match(/(\d+)h/);
-                 const mM = tl.match(/(\d+)m/);
-                 form.querySelector('[name="timelimit_d"]').value = mD ? mD[1] : '';
-                 form.querySelector('[name="timelimit_h"]').value = mH ? mH[1] : '';
-                 form.querySelector('[name="timelimit_m"]').value = mM ? mM[1] : '';
-
-                 // Parse stored data_limit (bytes integer) back into val + unit
-                 const dlBytes = parseInt(row.dataset.dataLimit, 10) || 0;
-                 const dlValInput = form.querySelector('[name="datalimit_val"]');
-                 const dlUnitSel = form.querySelector('[name="datalimit_unit"]');
-                 if (dlBytes > 0) {
-                     if (dlBytes % 1073741824 === 0) {
-                         dlValInput.value = dlBytes / 1073741824;
-                         dlUnitSel.value = 'GB';
-                     } else {
-                         dlValInput.value = dlBytes / 1048576;
-                         dlUnitSel.value = 'MB';
-                     }
-                 } else {
-                     dlValInput.value = '';
-                     dlUnitSel.value = 'MB';
-                 }
 
                  form.querySelector('[name="comment"]').value = row.dataset.comment;
                  

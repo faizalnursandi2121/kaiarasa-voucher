@@ -74,8 +74,6 @@ $toolbar_html .= '
                     <th data-i18n="hotspot_profiles.parent_queue">Parent Queue</th>
                     <th data-sort="mode" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="hotspot_profiles.expired_mode">Expired Mode</th>
                     <th data-i18n="hotspot_profiles.validity">Validity</th>
-                    <th data-i18n="hotspot_profiles.price">Price</th>
-                    <th data-i18n="hotspot_profiles.selling_price">Selling Price</th>
                     <th data-i18n="hotspot_profiles.lock_user">Lock User</th>
                     <th class="text-right" data-i18n="common.actions">Actions</th>
                 </tr>
@@ -94,8 +92,6 @@ $toolbar_html .= '
                         data-val-d="<?= htmlspecialchars($profile['val_d'] ?? '') ?>"
                         data-val-h="<?= htmlspecialchars($profile['val_h'] ?? '') ?>"
                         data-val-m="<?= htmlspecialchars($profile['val_m'] ?? '') ?>"
-                        data-price="<?= htmlspecialchars($profile['meta']['price'] ?? '') ?>"
-                        data-selling-price="<?= htmlspecialchars($profile['meta']['selling_price'] ?? '') ?>"
                         data-lock-user="<?= htmlspecialchars($profile['meta']['lock_user'] ?? 'Disable') ?>"
                         data-search-name="<?= strtolower($profile['name'] ?? '') ?>"
                         data-mode="<?= htmlspecialchars($profile['meta']['expired_mode_formatted'] ?? '') ?>">
@@ -133,12 +129,6 @@ $toolbar_html .= '
                         </td>
                         <td class="text-sm text-accents-6">
                            <?= htmlspecialchars($profile['meta']['validity'] ?? '') ?>
-                        </td>
-                        <td class="text-sm text-accents-6">
-                           <?= htmlspecialchars($profile['meta']['price'] ?? '') ?>
-                        </td>
-                        <td class="text-sm text-accents-6">
-                           <?= htmlspecialchars($profile['meta']['selling_price'] ?? '') ?>
                         </td>
                          <td class="text-sm text-accents-6">
                            <?= htmlspecialchars($profile['meta']['lock_user'] ?? '') ?>
