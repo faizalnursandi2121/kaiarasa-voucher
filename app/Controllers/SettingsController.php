@@ -191,12 +191,17 @@ class SettingsController extends Controller
             FlashHelper::set('success', 'toasts.router_added', 'toasts.router_added_desc', ['name' => $data['session_name']], true);
             header("Location: $redirect");
         } catch (\Exception $e) {
+            // Nama session duplikat -> pesan ramah operator
+            $friendly = (strpos($e->getMessage(), '23000') !== false || stripos($e->getMessage(), 'unique') !== false)
+                ? 'Session name already exists — use another name.'
+                : 'Error adding session: '.$e->getMessage();
+
             if ($this->wantsJson()) {
-                $this->jsonResult(false, 'Error adding session: '.$e->getMessage(), [], 422);
+                $this->jsonResult(false, $friendly, [], 422);
 
                 return;
             }
-            echo 'Error adding session: '.$e->getMessage();
+            echo $friendly;
         }
     }
 
