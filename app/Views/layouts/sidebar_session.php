@@ -308,37 +308,18 @@ $getInitials = function ($name) {
         </div>
 
         <!-- Sidebar Footer -->
-        <div class="p-4 border-t border-accents-2 dark:border-white/10 space-y-3">
-             <!-- Disconnect (Session) -->
-             <a href="/" class="group flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-accents-2 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all decoration-0 shadow-sm" title="Disconnect Session">
-                <div class="flex items-center gap-3">
-                    <div class="p-1.5 rounded-lg bg-accents-2/50 group-hover:bg-accents-2 transition-colors">
-                         <i data-lucide="cast" class="!w-4 !h-4 text-foreground dark:text-foreground !flex-shrink-0 transition-colors"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-xs font-bold text-accents-6 group-hover:text-foreground transition-colors leading-none" data-i18n="sidebar.disconnect"><?= LanguageHelper::t('sidebar.disconnect', 'Disconnect') ?></span>
-                        <span class="text-[10px] text-accents-4 leading-none mt-1">Exit Session</span>
-                    </div>
-                </div>
-                <i data-lucide="chevron-right" class="!w-4 !h-4 text-foreground dark:text-foreground !flex-shrink-0 transition-colors"></i>
+        <div class="p-4 border-t border-accents-2 dark:border-white/10">
+            <a href="/" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-6 hover:text-foreground hover:bg-white/5" title="Exit Session">
+                <i data-lucide="cast" class="w-4 h-4"></i>
+                <span data-i18n="sidebar.disconnect">Disconnect</span>
             </a>
-            
-            <?php if (isset($_SESSION['user_id'])) { ?>
-            <!-- Logout (System) -->
-             <a href="/logout" class="group flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-accents-2 dark:border-white/10 hover:bg-red-500/10 hover:border-red-500/20 transition-all decoration-0 shadow-sm" title="Logout from Kaiarasa">
-                <div class="flex items-center gap-3">
-                    <div class="p-1.5 rounded-lg bg-red-500/10 text-red-500 group-hover:bg-red-500/20 transition-colors">
-                         <i data-lucide="log-out" class="w-4 h-4"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-xs font-bold text-accents-6 group-hover:text-red-500 transition-colors leading-none" data-i18n="sidebar.logout"><?= LanguageHelper::t('sidebar.logout', 'Logout') ?></span>
-                        <span class="text-[10px] text-accents-4 group-hover:text-red-400/80 leading-none mt-1">Sign Out</span>
-                    </div>
-                </div>
-                <i data-lucide="chevron-right" class="!w-4 !h-4 text-foreground dark:text-foreground !flex-shrink-0 group-hover:!text-red-500 transition-colors"></i>
+            <a href="/logout" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors text-red-500/90 hover:text-red-500 hover:bg-red-500/10" title="Keluar aplikasi">
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+                <span data-i18n="sidebar.logout">Logout</span>
             </a>
-            <?php } ?>
         </div>
+
+
     </aside>
 
     <!-- Main Content Wrapper -->
