@@ -2,371 +2,253 @@
 
 use App\Helpers\FormatHelper;
 
+$title = 'Dashboard';
 require_once ROOT.'/app/Views/layouts/header_main.php';
+
+$uaMode = $ua_mode ?? 'today';
+$uaSeries = $charts['user_activity']['series'] ?? [];
+$va = $charts['voucher_activity'] ?? [];
+$topPkgs = $charts['top_packages'] ?? [];
+
+function dashRp(int $v): string
+{
+    return 'Rp'.number_format($v, 0, ',', '.');
+}
 ?>
 
-<div class="page-header-block">
-    <header class="page-header">
-        <div class="page-title-group">
-            <h1 class="page-title" data-i18n="common.dashboard">Dashboard</h1>
-            <p class="page-description">
-                <span data-i18n="common.session">Session</span>: 
-                <strong class="text-foreground"><?= $session ?></strong>
-            </p>
-        </div>
-    </header>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full flex flex-col">
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <!-- System Info Card -->
-    <div class="card space-y-5">
-        <div class="flex items-center gap-2">
-             <i data-lucide="cpu" class="w-5 h-5"></i>
-            <h3 class="font-semibold text-lg" data-i18n="dashboard.system_info">System Info</h3>
+    <!-- ===== Page Header ===== -->
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight">Dashboard</h1>
+            <div class="flex items-center gap-2 mt-1.5">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#5f7f67]/10 text-[#47614d] dark:text-[#92aa96] text-[11px] font-semibold">
+                    <i data-lucide="map-pin" class="w-3 h-3"></i> <?= htmlspecialchars($session) ?>
+                </span>
+                <span class="text-xs opacity-50">Operational overview for this location</span>
+            </div>
         </div>
-        <div class="text-sm space-y-2">
-            <div class="flex justify-between border-b border-accents-2 pb-2">
-                <span class="text-accents-5" data-i18n="dashboard.model">Model</span>
-                <span class="font-medium"><?= $routerboard['model'] ?? '-' ?></span>
+        <a href="?refresh=1" title="Refresh data"
+            class="h-9 w-9 inline-flex items-center justify-center rounded-xl border border-black/10 dark:border-white/10 hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </a>
+    </div>
+
+    <?php if (! empty($unreachable)): ?>
+    <div class="mt-6 rounded-2xl border border-amber-500/30 bg-amber-500/[.07] p-6 text-center">
+        <i data-lucide="wifi-off" class="w-8 h-8 mx-auto text-amber-600 mb-2"></i>
+        <p class="font-semibold">Live data unavailable — router cannot be reached.</p>
+        <p class="text-xs opacity-60 mt-1">KPI values may be stale.</p>
+    </div>
+    <?php endif; ?>
+
+    <!-- ===== KPI Cards ===== -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+        <?php
+        $kpis = [
+            ['Active Users', 'users', ($kpis['active_users'] ?? null) !== null ? number_format($kpis['active_users']) : '—', 'bg-emerald-500/10 text-emerald-600'],
+            ['Sold Today', 'ticket', (string) ($kpis['sold_today'] ?? 0), 'bg-[#5f7f67]/10 text-[#47614d] dark:text-[#92aa96]'],
+            ['Revenue Today', 'banknote', dashRp((int) ($kpis['revenue_today'] ?? 0)), 'bg-sky-500/10 text-sky-600'],
+            ['Created Today', 'ticket-plus', (string) ($kpis['created_today'] ?? 0), 'bg-amber-500/10 text-amber-600'],
+        ];
+        foreach ($kpis as [$label, $icon, $value, $chip]): ?>
+        <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="w-11 h-11 rounded-full flex items-center justify-center <?= $chip ?>">
+                    <i data-lucide="<?= $icon ?>" class="w-5 h-5"></i>
+                </span>
+                <span class="text-sm font-semibold"><?= $label ?></span>
             </div>
-            <div class="flex justify-between border-b border-accents-2 pb-2">
-                <span class="text-accents-5" data-i18n="dashboard.board_name">Board Name</span>
-                <span class="font-medium"><?= $resource['board-name'] ?? '-' ?></span>
+            <p class="text-3xl font-bold tabular-nums leading-none"><?= $value ?></p>
+        </div>
+        <?php endforeach; ?>
+    </div>
+
+    <!-- ===== Quick Actions + Recent Activity ===== -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
+        <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
+            <h3 class="font-bold tracking-tight mb-4">Quick Actions</h3>
+            <div class="space-y-2">
+                <?php foreach (($quick_actions ?? []) as $qa): ?>
+                <a href="<?= $qa['href'] ?>"
+                    class="flex items-center gap-3 rounded-xl border border-black/[.07] dark:border-white/[.08] p-3.5 hover:bg-[#5f7f67]/[.08] hover:border-[#5f7f67]/40 transition-colors group">
+                    <i data-lucide="<?= $qa['icon'] ?>" class="w-5 h-5 text-[#47614d] dark:text-[#92aa96]"></i>
+                    <span class="text-[13px] font-semibold group-hover:text-[#47614d] dark:group-hover:text-[#92aa96] transition-colors"><?= $qa['label'] ?></span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 ml-auto opacity-30"></i>
+                </a>
+                <?php endforeach; ?>
             </div>
-             <div class="flex justify-between border-b border-accents-2 pb-2">
-                <span class="text-accents-5" data-i18n="dashboard.router_os">RouterOS</span>
-                <span class="font-medium"><?= $resource['version'] ?? '-' ?></span>
+        </div>
+
+        <div class="lg:col-span-2 rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold tracking-tight">Recent Activity</h3>
+                <span class="text-[11px] opacity-50">today</span>
             </div>
-            <div class="flex justify-between border-b border-accents-2 pb-2">
-                <span class="text-accents-5" data-i18n="dashboard.architecture">Architecture</span>
-                <span class="font-medium"><?= $resource['architecture-name'] ?? '-' ?></span>
-            </div>
-             <div class="flex justify-between">
-                <span class="text-accents-5" data-i18n="dashboard.uptime">Uptime</span>
-                <span class="font-medium"><?= FormatHelper::elapsedTime($resource['uptime'] ?? '-') ?></span>
-            </div>
+            <ul id="activity-list" class="space-y-3 max-h-[260px] overflow-y-auto pr-1">
+                <?php if (empty($activity)): ?>
+                <li class="text-xs opacity-50">No activity yet.</li>
+                <?php else: ?>
+                <?php foreach (($activity ?? []) as $item): ?>
+                <li class="flex items-start gap-3 text-xs">
+                    <i data-lucide="<?= $item['icon'] ?>" class="w-4 h-4 mt-0.5 shrink-0 opacity-60"></i>
+                    <div class="flex-grow min-w-0">
+                        <p class="font-medium"><?= htmlspecialchars($item['text']) ?></p>
+                        <p class="opacity-50 truncate"><?= htmlspecialchars($item['detail']) ?></p>
+                    </div>
+                </li>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </ul>
         </div>
     </div>
 
-    <!-- Resources Card -->
-    <div class="card space-y-5">
-        <div class="flex items-center gap-2">
-            <i data-lucide="hard-drive" class="w-5 h-5"></i>
-            <h3 class="font-semibold text-lg" data-i18n="dashboard.resources">Resources</h3>
-        </div>
-        
-        <!-- CPU Config (simple progress not calculated here for cpu-load as it fluctuates, just text) -->
-        <div class="space-y-1">
-             <div class="flex justify-between text-sm">
-                <span data-i18n="dashboard.cpu_load">CPU Load</span>
-                <span class="font-bold"><?= $resource['cpu-load'] ?? 0 ?>%</span>
+    <!-- ===== Charts ===== -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+        <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-bold tracking-tight">User Activity</h3>
+                <div class="flex items-center gap-1" id="ua-pills">
+                    <?php foreach ([['today', 'Today'], ['7d', '7 Days'], ['30d', '30 Days']] as [$m, $lbl]): ?>
+                    <a href="?<?= http_build_query(array_filter(array_merge($_GET, ['ua' => $m]))) ?>"
+                        class="px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-colors <?= $uaMode === $m ? 'bg-[#5f7f67]/10 text-[#47614d] dark:text-[#92aa96]' : 'text-accents-5 hover:text-foreground' ?>"><?= $lbl ?></a>
+                    <?php endforeach; ?>
+                </div>
             </div>
-            <div class="h-2 w-full bg-accents-2 rounded-full overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="System resource usage">
-                <div class="h-full bg-foreground" style="width: <?= $resource['cpu-load'] ?? 0 ?>%"></div>
-            </div>
+            <div id="chart-ua"></div>
         </div>
 
-        <div class="space-y-1">
-            <div class="flex justify-between text-sm">
-                <span data-i18n="dashboard.memory">Memory</span>
-                <span class="text-accents-5"><?= FormatHelper::formatBytes($resource['free-memory'] ?? 0, 1) ?> <span data-i18n="dashboard.free">Free</span></span>
+        <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-bold tracking-tight">Voucher Activity</h3>
+                <span class="text-[11px] opacity-50">created · last 30 days</span>
             </div>
-            <div class="h-2 w-full bg-accents-2 rounded-full overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="System resource usage">
-                <?php
-                    $totalMem = ($resource['total-memory'] ?? 1);
-$freeMem = ($resource['free-memory'] ?? 0);
-$usedMemP = (($totalMem - $freeMem) / $totalMem) * 100;
-?>
-                <div class="h-full bg-foreground" style="width:<?= $usedMemP ?>%"></div>
-            </div>
-        </div>
-
-        <div class="space-y-1">
-            <div class="flex justify-between text-sm">
-                <span data-i18n="dashboard.hdd">HDD</span>
-                <span class="text-accents-5"><?= FormatHelper::formatBytes($resource['free-hdd-space'] ?? 0, 1) ?> <span data-i18n="dashboard.free">Free</span></span>
-            </div>
-             <div class="h-2 w-full bg-accents-2 rounded-full overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="System resource usage">
-                <?php
-    $totalHdd = ($resource['total-hdd-space'] ?? 1);
-$freeHdd = ($resource['free-hdd-space'] ?? 0);
-$usedHddP = (($totalHdd - $freeHdd) / $totalHdd) * 100;
-?>
-                <div class="h-full bg-foreground" style="width:<?= $usedHddP ?>%"></div>
-            </div>
+            <div id="chart-va"></div>
         </div>
     </div>
 
-    <!-- Hotspot Stats -->
-    <div class="col-span-full md:col-span-1 lg:col-span-1 card flex flex-col justify-center space-y-5">
-         <div class="flex items-center gap-2">
-            <i data-lucide="wifi" class="w-5 h-5"></i>
-            <h3 class="font-semibold text-lg" data-i18n="hotspot_menu.hotspot">Hotspot</h3>
-         </div>
-         
-        <div class="grid grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-4">
-            <!-- Active Hotspot -->
-            <div class="sub-card text-center group relative aspect-square flex flex-col justify-center items-center w-full max-w-[140px] mx-auto">
-                 <a href="/<?= htmlspecialchars($session) ?>/hotspot/active" class="absolute inset-0 z-10" title="View Active Users"></a>
-                <div class="flex justify-center mb-2 text-foreground  transition-transform">
-                     <i data-lucide="activity" class="w-6 h-6"></i>
-                </div>
-                <div class="text-2xl font-bold text-foreground"><?= $hotspot_active ?></div>
-                <div class="text-xs text-accents-5 uppercase tracking-wide font-semibold mt-1" data-i18n="status_menu.active">Active</div>
-            </div>
-
-            <!-- Users -->
-            <div class="sub-card text-center group relative aspect-square flex flex-col justify-center items-center w-full max-w-[140px] mx-auto">
-                 <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="absolute inset-0 z-10" title="Manage Users"></a>
-                <div class="flex justify-center mb-2 text-foreground  transition-transform">
-                     <i data-lucide="users" class="w-6 h-6"></i>
-                </div>
-                <div class="text-2xl font-bold text-foreground"><?= htmlspecialchars($hotspot_users['count'] ?? 0) ?></div>
-                <div class="text-xs text-accents-5 uppercase tracking-wide font-semibold mt-1" data-i18n="hotspot_menu.users">Users</div>
-            </div>
-
-            <!-- Income -->
-            <div class="sub-card text-center col-span-2 group">
-                 <div class="flex justify-center mb-2 text-foreground  transition-transform">
-                     <i data-lucide="dollar-sign" class="w-6 h-6"></i>
-                </div>
-                 <div class="text-2xl font-bold text-foreground"><?= htmlspecialchars($income_today ?? 0) ?></div>
-                <div class="text-xs text-accents-5 uppercase tracking-wide font-semibold mt-1" data-i18n="dashboard.income_today">Income Today</div>
-            </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4 mb-4">
+        <div class="lg:col-span-2 rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
+            <h3 class="font-bold tracking-tight mb-3">Top Packages</h3>
+            <div id="chart-packages"></div>
         </div>
-    </div>
-    
-    <!-- Traffic Monitor -->
-    <div class="col-span-full card space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="flex flex-col sm:flex-row sm:items-center gap-4 w-full sm:w-auto">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="activity" class="w-5 h-5 text-blue-500"></i>
-                    <h3 class="font-semibold text-lg" data-i18n="dashboard.traffic_monitor">Traffic Monitor</h3>
+        <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
+            <h3 class="font-bold tracking-tight mb-4">Top Packages — List</h3>
+            <div class="space-y-2">
+                <?php if (empty($topPkgs)): ?>
+                <p class="text-xs opacity-50">No package data yet.</p>
+                <?php else: ?>
+                <?php foreach (($topPkgs ?? []) as $i => $pkg): ?>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-black/[.03] dark:bg-white/[.04]">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <span class="w-6 h-6 rounded-md bg-[#5f7f67]/15 text-[#47614d] dark:text-[#92aa96] text-[11px] font-bold flex items-center justify-center shrink-0"><?= $i + 1 ?></span>
+                        <span class="text-sm font-medium truncate"><?= htmlspecialchars($pkg['name']) ?></span>
+                    </div>
+                    <span class="text-sm font-bold tabular-nums"><?= $pkg['count'] ?></span>
                 </div>
-                <div class="relative w-full sm:w-auto">
-                    <select id="traffic-interface" class="custom-select w-full sm:w-48">
-                        <option value="" disabled selected>Loading...</option>
-                    </select>
-                </div>
+                <?php endforeach; ?>
+                <?php endif; ?>
             </div>
-             <div class="flex items-center gap-2 text-xs text-accents-5 self-end sm:self-auto">
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span> <span data-i18n="dashboard.rx_download">Rx (Download)</span></span>
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500"></span> <span data-i18n="dashboard.tx_upload">Tx (Upload)</span></span>
-            </div>
-        </div>
-        <div class="relative h-64 w-full">
-            <canvas id="trafficChart"></canvas>
         </div>
     </div>
 </div>
 
-<script src="/assets/js/chart.min.js"></script>
+<script src="/assets/js/vendor/apexcharts.min.js"></script>
 <script>
-    window.whenReady(() => {
-        const ctx = document.getElementById('trafficChart').getContext('2d');
-        const labels = Array(20).fill(''); 
-        const rxData = Array(20).fill(0);
-        const txData = Array(20).fill(0);
+(function () {
+    'use strict';
 
-        // Chart Configuration
-        const chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: window.i18n ? window.i18n.t('dashboard.rx_download') : 'Rx (Download)',
-                        data: rxData,
-                        borderColor: '#3b82f6', // blue-500
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true,
-                        pointRadius: 0
-                    },
-                    {
-                        label: window.i18n ? window.i18n.t('dashboard.tx_upload') : 'Tx (Upload)',
-                        data: txData,
-                        borderColor: '#22c55e', // green-500
-                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true,
-                        pointRadius: 0
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: false, // Disable animation for smoother realtime updates
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
-                },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.dataset.label + ': ' + formatBits(context.raw);
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        display: false,
-                        grid: { display: false }
-                    },
-                    y: {
-                        border: { display: false },
-                        grid: { color: getComputedStyle(document.documentElement).getPropertyValue('--accents-2').trim() || 'rgba(128,128,128,0.1)' },
-                        ticks: {
-                            callback: function(value) {
-                                return formatBits(value);
-                            }
-                        },
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+    var isDark = function () { return document.documentElement.classList.contains('dark'); };
+    var gridColor = function () { return isDark() ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)'; };
 
-        // Helper: Format Bits
-        function formatBits(bits) {
-            if (bits === 0) return '0 bps';
-            const units = ['bps', 'Kbps', 'Mbps', 'Gbps'];
-            const i = Math.floor(Math.log(bits) / Math.log(1024));
-            return parseFloat((bits / Math.pow(1024, i)).toFixed(1)) + ' ' + units[i];
-        }
-
-        // Fetch Data
-        const session = '<?= htmlspecialchars($session) ?>';
-        let currentInterface = null; // Will be set after fetching interfaces
-
-        async function fetchInterfaces() {
-            try {
-                const response = await fetch(`/${session}/traffic/interfaces`);
-                if (!response.ok) return;
-
-                const interfaces = await response.json();
-                const select = document.getElementById('traffic-interface');
-                select.innerHTML = ''; // access clean
-
-                if (Array.isArray(interfaces)) {
-                    interfaces.forEach(iface => {
-                        const option = document.createElement('option');
-                        option.value = iface.name;
-                        option.textContent = iface.name; // Simple name, can add type if needed
-                        select.appendChild(option);
-                    });
-
-                    // Set default (ether1 or first one)
-                    // Priority: Configured Interface > ether1 > First available
-                    const configInterface = '<?= $interface ?>'; // From Controller
-                    let defaultIface = null;
-
-                    if (configInterface && interfaces.find(i => i.name === configInterface)) {
-                        defaultIface = configInterface;
-                    } else if (interfaces.find(i => i.name === 'ether1')) {
-                         defaultIface = 'ether1';
-                    } else {
-                        defaultIface = interfaces[0]?.name;
-                    }
-
-                    if (defaultIface) {
-                        select.value = defaultIface;
-                        currentInterface = defaultIface;
-                    }
-                    
-                    // Refresh Custom Select UI
-                    if (typeof CustomSelect !== 'undefined' && CustomSelect.instances) {
-                        const instance = CustomSelect.instances.find(i => i.originalSelect.id === 'traffic-interface');
-                        if (instance) instance.refresh();
-                    }
-                }
-            } catch (err) {
-                console.error("Interfaces fetch error:", err);
-                document.getElementById('traffic-interface').innerHTML = '<option>Error</option>';
-            }
-        }
-        
-        // Handle Change
-        document.getElementById('traffic-interface').addEventListener('change', (e) => {
-            currentInterface = e.target.value;
-            // Clear chart for visual feedback? Or just let it transition
-             rxData.fill(0);
-             txData.fill(0);
-             chart.update();
-        });
-
-        async function fetchTraffic() {
-            if (!currentInterface) return;
-
-            try {
-                // Encode interface name to handle special chars / spaces
-                const response = await fetch(`/${session}/traffic/monitor?interface=${encodeURIComponent(currentInterface)}`);
-                if (!response.ok) return; // Silent fail
-                
-                const data = await response.json();
-                
-                if (data && !data.error) {
-                    // Update Data (Shift and Push)
-                    chart.data.datasets[0].data.push(parseInt(data['rx-bits-per-second']));
-                    chart.data.datasets[0].data.shift();
-                    
-                    chart.data.datasets[1].data.push(parseInt(data['tx-bits-per-second']));
-                    chart.data.datasets[1].data.shift();
-                    
-                    chart.update('none'); // Update without animation
-                }
-            } catch (err) {
-                console.error("Traffic fetch error:", err);
-            }
-        }
-
-        // Init
-        let trafficInterval;
-        fetchInterfaces().then(() => {
-            // Start Polling after interfaces loaded
-            const reloadInterval = <?= ($reload_interval ?? 5) * 1000 ?>; // Convert sec to ms
-            trafficInterval = setInterval(fetchTraffic, reloadInterval); 
-            fetchTraffic();
-        });
-
-        // Localization Support
-        const updateChartLabels = () => {
-            if (window.i18n && window.i18n.isLoaded) {
-                const rxLabel = window.i18n.t('dashboard.rx_download');
-                const txLabel = window.i18n.t('dashboard.tx_upload');
-                
-                // Only update if changed
-                if (chart.data.datasets[0].label !== rxLabel || chart.data.datasets[1].label !== txLabel) {
-                    chart.data.datasets[0].label = rxLabel;
-                    chart.data.datasets[1].label = txLabel;
-                    chart.update('none');
-                }
-            }
+    function baseChart(extra) {
+        var base = {
+            chart: Object.assign({ fontFamily: 'inherit', foreColor: isDark() ? '#e9ebe7' : '#1c2420', toolbar: { show: false } }, extra.chart || {}),
+            grid: { borderColor: gridColor() },
+            tooltip: { theme: isDark() ? 'dark' : 'light' },
         };
+        return Object.assign(base, extra);
+    }
 
-        // Listen for language changes
-        if (window.Kaiarasa) {
-            window.Kaiarasa.on('languageChanged', updateChartLabels);
+    var uaSeries = <?= json_encode($charts['user_activity']['series'] ?? []) ?>;
+    var uaMode = <?= json_encode($ua_mode ?? 'today') ?>;
+    var va = <?= json_encode($charts['voucher_activity'] ?? []) ?>;
+    var topPkgs = <?= json_encode($top_pkgs ?? []) ?>;
+
+    // ---- User Activity ----
+    var uaEl = document.getElementById('chart-ua');
+    if (uaEl) {
+        if (! uaSeries.length) {
+            uaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">Not enough data yet — activity is sampled every few minutes.</p>';
+        } else if (uaMode === 'today') {
+            new ApexCharts(uaEl, baseChart({
+                series: [{ name: 'Active users', data: uaSeries.map(function (p) { return [p.label, p.value]; }) }],
+                chart: Object.assign({ type: 'area', height: 240 }, {}),
+                colors: ['#5f7f67'],
+                stroke: { curve: 'smooth', width: 2 },
+                fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: .35, opacityTo: .02 } },
+                xaxis: { categories: uaSeries.map(function (p) { return p.label; }), tickAmount: Math.min(10, uaSeries.length - 1) },
+                yaxis: { min: 0, tickAmount: 4, labels: { formatter: function (v) { return Math.round(v); } } },
+            })).render();
+        } else {
+            new ApexCharts(uaEl, baseChart({
+                series: [
+                    { name: 'Avg active', data: uaSeries.map(function (p) { return p.avg; }) },
+                    { name: 'Peak', data: uaSeries.map(function (p) { return p.max; }) },
+                ],
+                chart: Object.assign({ type: 'bar', height: 240 }, {}),
+                colors: ['#5f7f67', '#92aa96'],
+                plotOptions: { bar: { borderRadius: 4, columnWidth: '55%' } },
+                xaxis: { categories: uaSeries.map(function (p) { return p.label.slice(5); }) },
+                legend: { position: 'top' },
+            })).render();
         }
-        window.addEventListener('languageChanged', updateChartLabels);
-        
-        // Try initial update after a short delay to ensure i18n is ready if race condition
-        setTimeout(updateChartLabels, 500); 
+    }
 
-        // SPA cleanup: stop polling, destroy chart, remove listeners when navigating away.
-        window.__kaiarasaSessionCleanup = function () {
-            if (trafficInterval) clearInterval(trafficInterval);
-            try { chart.destroy(); } catch (e) {}
-            window.removeEventListener('languageChanged', updateChartLabels);
-            if (window.Kaiarasa) window.Kaiarasa.off('languageChanged', updateChartLabels);
-        };
-    });
+    // ---- Voucher Activity ----
+    var vaEl = document.getElementById('chart-va');
+    if (vaEl) {
+        if ((va.daily || []).length === 0) {
+            vaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No voucher activity yet.</p>';
+        } else {
+            new ApexCharts(vaEl, baseChart({
+                series: [{ name: 'Vouchers created', data: va.daily.map(function (d) { return d.count; }) }],
+                chart: Object.assign({ type: 'bar', height: 240 }, {}),
+                colors: ['#5f7f67'],
+                plotOptions: { bar: { borderRadius: 6, columnWidth: '55%' } },
+                xaxis: { categories: va.daily.map(function (d) { return d.date.slice(5); }) },
+                yaxis: { min: 0, labels: { formatter: function (v) { return Math.round(v); } } },
+                dataLabels: { enabled: false },
+            })).render();
+        }
+    }
+
+    // ---- Top Packages donut ----
+    var pkgEl = document.getElementById('chart-packages');
+    if (pkgEl) {
+        if (! topPkgs.length) {
+            pkgEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No package data yet.</p>';
+        } else {
+            new ApexCharts(pkgEl, baseChart({
+                series: topPkgs.map(function (p) { return p.count; }),
+                labels: topPkgs.map(function (p) { return p.name; }),
+                chart: Object.assign({ type: 'donut', height: 260 }, {}),
+                colors: ['#5f7f67', '#92aa96', '#6b8b73', '#47614d', '#c9d6cc'],
+                legend: { position: 'bottom', fontSize: '12px' },
+                plotOptions: { pie: { donut: { size: '72%', labels: {
+                    show: true,
+                    name: { fontSize: '11px' },
+                    value: { fontSize: '20px', fontWeight: 700 },
+                    total: { show: true, label: 'Created', fontSize: '11px',
+                        formatter: function (w) { return w.globals.seriesTotals.reduce(function (a, b) { return a + b; }, 0); } },
+                } } } },
+                dataLabels: { enabled: false },
+            })).render();
+        }
+    }
+
+    if (window.lucide) lucide.createIcons();
+})();
 </script>
-
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
