@@ -12,7 +12,7 @@ $isLogos = strpos($uri, '/logos') !== false;
 $isSettings = ($uri === '/settings' || strpos($uri, '/settings/') !== false) && ! $isTemplates && ! $isLogos;
 
 // Hotspot Group Active Check
-$hotspotPages = ['/hotspot/users', '/hotspot/profiles', '/hotspot/generate', '/hotspot/cookies'];
+$hotspotPages = ['/hotspot/users', '/hotspot/profiles', '/hotspot/generate'];
 $isHotspotActive = false;
 foreach ($hotspotPages as $page) {
     if (strpos($uri, $page) !== false) {
@@ -31,10 +31,11 @@ foreach ($statusPages as $page) {
     }
 }
 
-// Security Group Active Check (Existing)
-$securityPages = ['/hotspot/bindings', '/hotspot/walled-garden'];
+// Administration Group Active Check
+$adminPages = ['/hotspot/bindings', '/hotspot/walled-garden', '/network/dhcp',
+    '/reports/user-log', '/system/scheduler', '/system/reboot', '/system/shutdown'];
 $isSecurityActive = false;
-foreach ($securityPages as $page) {
+foreach ($adminPages as $page) {
     if (strpos($uri, $page) !== false) {
         $isSecurityActive = true;
         break;
@@ -224,94 +225,112 @@ $getInitials = function ($name) {
                 <span data-i18n="sidebar.quick_print"><?= LanguageHelper::t('sidebar.quick_print', 'Quick Print') ?></span>
             </a>
 
-            <!-- Hotspots Separator -->
+            <!-- Access Separator -->
             <div class="pt-4 pb-1 px-3">
-                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.hotspot"><?= LanguageHelper::t('sidebar.hotspot', 'Hotspots') ?></div>
+                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.access"><?= LanguageHelper::t('sidebar.access', 'Access') ?></div>
             </div>
 
             <!-- Hotspot Group (Collapsible) -->
             <div class="space-y-1">
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('hotspot-menu', this)" aria-expanded="" aria-controls="hotspot-menu">
                     <div class="flex items-center gap-3">
-                        <i data-lucide="wifi" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.hotspot"><?= LanguageHelper::t('sidebar.hotspot', 'Hotspot') ?></span>
+                        <i data-lucide="key-round" class="w-4 h-4"></i>
+                        <span data-i18n="access.title"><?= LanguageHelper::t('access.title', 'User Accounts & Vouchers') ?></span>
                     </div>
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isHotspotActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
                 <div id="hotspot-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isHotspotActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.users"><?= LanguageHelper::t('hotspot_menu.users', 'Users') ?></span>
+                        <span data-i18n="access.user_accounts"><?= LanguageHelper::t('access.user_accounts', 'User Accounts') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/profiles" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/profile') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.profiles"><?= LanguageHelper::t('hotspot_menu.profiles', 'User Profiles') ?></span>
+                        <span data-i18n="access.packages"><?= LanguageHelper::t('access.packages', 'Access Packages') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/generate" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/generate') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.generate"><?= LanguageHelper::t('hotspot_menu.generate', 'Generate') ?></span>
-                    </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/cookies" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/cookies') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.cookies"><?= LanguageHelper::t('hotspot_menu.cookies', 'Cookies') ?></span>
+                        <span data-i18n="access.vouchers"><?= LanguageHelper::t('access.vouchers', 'Vouchers') ?></span>
                     </a>
                 </div>
             </div>
 
-            <!-- Status Group (Collapsible) -->
+            <!-- Activity Group (Collapsible) -->
              <div class="space-y-1">
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('status-menu', this)" aria-expanded="" aria-controls="status-menu">
                     <div class="flex items-center gap-3">
                         <i data-lucide="activity" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.status"><?= LanguageHelper::t('sidebar.status', 'Status') ?></span>
+                        <span data-i18n="sidebar.activity"><?= LanguageHelper::t('sidebar.activity', 'Activity') ?></span>
                     </div>
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isStatusActive ? 'rotate-180' : '' ?>"></i>
                 </button>
                 
                 <div id="status-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isStatusActive ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/active" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.active"><?= LanguageHelper::t('hotspot_menu.active', 'Active') ?></span>
+                        <span data-i18n="activity.active_users"><?= LanguageHelper::t('activity.active_users', 'Active Users') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/hosts" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/hosts') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="hotspot_menu.hosts"><?= LanguageHelper::t('hotspot_menu.hosts', 'Hosts') ?></span>
+                        <span data-i18n="activity.devices"><?= LanguageHelper::t('activity.devices', 'Connected Devices') ?></span>
                     </a>
                 </div>
             </div>
 
              <!-- Security Group (Collapsible) -->
              <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('security-menu', this)" aria-expanded="" aria-controls="security-menu">
+                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('administration-menu', this)" aria-expanded="" aria-controls="administration-menu">
                     <div class="flex items-center gap-3">
-                        <i data-lucide="shield" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.security"><?= LanguageHelper::t('sidebar.security', 'Security') ?></span>
+                        <i data-lucide="settings-2" class="w-4 h-4"></i>
+                        <span data-i18n="sidebar.administration"><?= LanguageHelper::t('sidebar.administration', 'Administration') ?></span>
                     </div>
                     <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isSecurityActive ? 'rotate-180' : '' ?>"></i>
                 </button>
-                
-                <div id="security-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSecurityActive ? '500px' : '0px' ?>">
+
+                <div id="administration-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSecurityActive ? '800px' : '0px' ?>">
+                    <a href="/<?= htmlspecialchars($session ?? '') ?>/voucher-templates" class="block px-3 py-2 rounded-md text-sm transition-colors <?= $isTemplates ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <span data-i18n="sidebar.templates"><?= LanguageHelper::t('sidebar.templates', 'Voucher Templates') ?></span>
+                    </a>
+                    <a href="/<?= htmlspecialchars($session ?? '') ?>/logos" class="block px-3 py-2 rounded-md text-sm transition-colors <?= $isLogos ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <span data-i18n="sidebar.logos"><?= LanguageHelper::t('sidebar.logos', 'Logos') ?></span>
+                    </a>
+                    <a href="/<?= htmlspecialchars($session) ?>/network/dhcp" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/network/dhcp') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <span data-i18n="sidebar.network"><?= LanguageHelper::t('sidebar.network', 'Network — DHCP') ?></span>
+                    </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/bindings" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/bindings') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="hotspot_menu.bindings"><?= LanguageHelper::t('hotspot_menu.bindings', 'IP Bindings') ?></span>
                     </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/walled-garden" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/walled-garden') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="hotspot_menu.walled_garden"><?= LanguageHelper::t('hotspot_menu.walled_garden', 'Walled Garden') ?></span>
                     </a>
+                    <a href="/<?= htmlspecialchars($session) ?>/reports/user-log" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <span data-i18n="reports_menu.user_log"><?= LanguageHelper::t('reports_menu.user_log', 'User Log') ?></span>
+                    </a>
+                    <a href="/<?= htmlspecialchars($session) ?>/system/scheduler" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/system/scheduler') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <span data-i18n="system_menu.scheduler"><?= LanguageHelper::t('system_menu.scheduler', 'Scheduler') ?></span>
+                    </a>
+                    <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/reboot', 'Reboot Router?')" class="w-full text-left block px-3 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
+                        <span data-i18n="system_menu.reboot"><?= LanguageHelper::t('system_menu.reboot', 'Reboot') ?></span>
+                    </button>
+                    <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/shutdown', 'Shutdown Router?')" class="w-full text-left block px-3 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
+                        <span data-i18n="system_menu.shutdown"><?= LanguageHelper::t('system_menu.shutdown', 'Shutdown') ?></span>
+                    </button>
                 </div>
             </div>
 
+                        <!-- Sales Separator -->
+             <div class="pt-4 pb-1 px-3">
+                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.sales"><?= LanguageHelper::t('sidebar.sales', 'Sales') ?></div>
+            </div>
 
-            <!-- Reports Group -->
-             <div class="space-y-1">
+            <div class="space-y-1">
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('reports-menu', this)" aria-expanded="" aria-controls="reports-menu">
                     <div class="flex items-center gap-3">
-                        <i data-lucide="file-text" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.reports"><?= LanguageHelper::t('sidebar.reports', 'Reports') ?></span>
+                        <i data-lucide="receipt" class="w-4 h-4"></i>
+                        <span data-i18n="sidebar.sales_report"><?= LanguageHelper::t('sidebar.sales_report', 'Sales') ?></span>
                     </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isReportsActive ? 'rotate-180' : '' ?>"></i>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isSecurityActive && strpos($uri, '/reports/sales') !== false ? 'rotate-180' : '' ?>"></i>
                 </button>
-                
-                <div id="reports-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isReportsActive ? '500px' : '0px' ?>">
+
+                <div id="reports-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= strpos($uri, '/reports/sales') !== false ? '500px' : '0px' ?>">
                     <a href="/<?= htmlspecialchars($session) ?>/reports/sales" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/sales') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="sales.report"><?= LanguageHelper::t('sales.report', 'Sales Report') ?></span>
-                    </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/reports/user-log" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="reports_menu.user_log"><?= LanguageHelper::t('reports_menu.user_log', 'User Log') ?></span>
+                        <span data-i18n="sidebar.sales"><?= LanguageHelper::t('sidebar.sales_report', 'Sales Report') ?></span>
                     </a>
                 </div>
             </div>
@@ -367,11 +386,6 @@ $getInitials = function ($name) {
                  <span data-i18n="sidebar.settings"><?= LanguageHelper::t('sidebar.settings', 'Settings') ?></span>
             </a>
 
-            <!-- Voucher Templates (per-session) -->
-            <a href="/<?= htmlspecialchars($session ?? '') ?>/voucher-templates" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= $isTemplates ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
-                 <i data-lucide="file-code" class="w-4 h-4"></i>
-                 <span data-i18n="sidebar.templates"><?= LanguageHelper::t('sidebar.templates', 'Templates') ?></span>
-            </a>
 
             <!-- Logos (per-session) -->
             <a href="/<?= htmlspecialchars($session ?? '') ?>/logos" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= $isLogos ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
