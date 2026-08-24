@@ -102,8 +102,8 @@ class DashboardController extends Controller
                 'created_today' => $createdStats['today'],
             ],
             'quick_actions' => [
-                ['label' => 'Generate Vouchers', 'icon' => 'ticket-plus', 'href' => '/'.htmlspecialchars($session).'/hotspot/generate'],
                 ['label' => 'Quick Print', 'icon' => 'printer', 'href' => '/'.htmlspecialchars($session).'/quick-print'],
+                ['label' => 'Generate Vouchers', 'icon' => 'ticket-plus', 'href' => '/'.htmlspecialchars($session).'/hotspot/generate'],
             ],
             'activity' => $unreachable ? [] : $this->getActivityFeed($records, $session),
             'charts' => [

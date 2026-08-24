@@ -79,11 +79,20 @@ function dashRp(int $v): string
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
         <div class="flex flex-col gap-4">
             <?php foreach (($quick_actions ?? []) as $qa): ?>
+            <?php $isQp = ($qa['label'] === 'Quick Print'); ?>
+            <?php if ($isQp): ?>
             <a href="<?= $qa['href'] ?>" class="rounded-2xl bg-[#5f7f67] text-white p-6 flex flex-col items-center justify-center gap-2 min-h-[150px] transition-all hover:bg-[#557359] hover:-translate-y-0.5 shadow-sm">
                 <i data-lucide="<?= $qa['icon'] ?>" class="w-8 h-8"></i>
                 <span class="font-semibold text-base"><?= htmlspecialchars($qa['label']) ?></span>
-                <span class="text-[11px] text-white/70"><?= $qa['label'] === 'Generate Vouchers' ? 'Bulk voucher generation' : 'Instant voucher printing' ?></span>
+                <span class="text-[11px] text-white/70">Instant voucher printing</span>
             </a>
+            <?php else: ?>
+            <a href="<?= $qa['href'] ?>" class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-6 flex flex-col items-center justify-center gap-2 min-h-[150px] transition-all group hover:bg-[#5f7f67]/[.08] hover:border-[#5f7f67]/40 hover:-translate-y-0.5">
+                <i data-lucide="<?= $qa['icon'] ?>" class="w-8 h-8 opacity-60 group-hover:opacity-100 group-hover:text-[#47614d] dark:group-hover:text-[#92aa96] transition-colors"></i>
+                <span class="font-semibold text-base group-hover:text-[#47614d] dark:group-hover:text-[#92aa96] transition-colors"><?= htmlspecialchars($qa['label']) ?></span>
+                <span class="text-[11px] opacity-50">Bulk voucher generation</span>
+            </a>
+            <?php endif ?>
             <?php endforeach; ?>
         </div>
 
