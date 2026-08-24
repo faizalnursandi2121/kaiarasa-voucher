@@ -191,7 +191,7 @@ class AlertModule {
 
                 // Initialize Custom Selects using Kaiarasa Component if available
                 if (popup && window.Kaiarasa && window.Kaiarasa.components.Select) {
-                     const selects = popup.querySelectorAll('select');
+                     const selects = popup.querySelectorAll('select:not([data-native])');
                      selects.forEach(el => {
                          if (!el.classList.contains('custom-select')) {
                              el.classList.add('custom-select');

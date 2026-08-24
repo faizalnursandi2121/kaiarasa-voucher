@@ -4,6 +4,12 @@
   "flag": "id"
  },
  "common": {
+  "account": "Akun",
+  "access": "Akses",
+  "limits": "Batasan",
+  "general": "Umum",
+  "bandwidth": "Bandwidth",
+  "expiry_pricing": "Kedaluwarsa & Harga",
   "dashboard": "Dashboard",
   "save": "Simpan",
   "cancel": "Batal",

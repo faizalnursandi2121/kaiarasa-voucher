@@ -416,118 +416,149 @@ $toolbar_html .= '
 <template id="profile-form-template">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
         <!-- Form Column -->
-        <div class="lg:col-span-2">
+        <div class="lg:col-span-2 min-w-0">
             <form id="profile-form" action="/<?= htmlspecialchars($session) ?>/hotspot/profile/store" method="POST" class="space-y-4">
                 <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
                 <input type="hidden" name="id" id="form-id" disabled>
 
-                <!-- Name -->
-                <div class="space-y-1">
-                    <label class="form-label" data-i18n="common.name">Name</label>
-                    <input type="text" name="name" required class="w-full" data-i18n-placeholder="hotspot_profiles.form.name_placeholder" placeholder="e.g. 1Hour-Package">
+                                <div class="flex items-center gap-3 pt-2">
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.general">General</span>
+                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
                 </div>
 
-                <!-- Pools & Shared Users -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_profiles.form.address_pool">Address Pool</label>
-                        <select name="address-pool" class="w-full">
-                            <option value="none" data-i18n="common.forms.none">none</option>
-                            <?php foreach ($pools as $pool) { ?>
-                                <?php if (isset($pool['name'])) { ?>
-                                <option value="<?= htmlspecialchars($pool['name']) ?>"><?= htmlspecialchars($pool['name']) ?></option>
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="common.name">Name</label>
+                    <input type="text" name="name" required class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" data-i18n-placeholder="hotspot_profiles.form.name_placeholder" placeholder="e.g. 1Hour-Package">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.address_pool">Address Pool</label>
+                        <div class="relative">
+                            <select name="address-pool" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <option value="none" data-i18n="common.forms.none">none</option>
+                                <?php foreach ($pools as $pool) { ?>
+                                    <?php if (isset($pool['name'])) { ?>
+                                    <option value="<?= htmlspecialchars($pool['name']) ?>"><?= htmlspecialchars($pool['name']) ?></option>
+                                    <?php } ?>
                                 <?php } ?>
-                            <?php } ?>
-                        </select>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                        </div>
                     </div>
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_profiles.form.shared_users">Shared Users</label>
-                        <input type="number" name="shared-users" value="1" min="1" class="w-full" placeholder="1">
-                    </div>
-                </div>
-
-                <!-- Rate Limit & Parent Queue -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_profiles.form.rate_limit">Rate Limit (Rx/Tx)</label>
-                        <input type="text" name="rate-limit" class="w-full" data-i18n-placeholder="hotspot_profiles.form.rate_limit_help" placeholder="e.g. 512k/1M">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_profiles.form.parent_queue">Parent Queue</label>
-                        <select name="parent-queue" class="w-full">
-                            <option value="none" data-i18n="common.forms.none">none</option>
-                            <?php foreach ($queues as $q) { ?>
-                                <option value="<?= htmlspecialchars($q) ?>"><?= htmlspecialchars($q) ?></option>
-                            <?php } ?>
-                        </select>
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.shared_users">Shared Users</label>
+                        <input type="number" name="shared-users" value="1" min="1" placeholder="1" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
                 </div>
 
-                <!-- Expired Mode & Validity -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_profiles.form.expired_mode">Expired Mode</label>
-                        <select name="expired_mode" id="expired-mode" class="w-full">
-                            <option value="none" data-i18n="common.forms.none" selected>none</option>
-                            <option value="rem">Remove</option>
-                            <option value="ntf">Notice</option>
-                            <option value="remc">Remove & Record</option>
-                            <option value="ntfc">Notice & Record</option>
-                        </select>
+                                <div class="flex items-center gap-3 pt-2">
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.bandwidth">Bandwidth</span>
+                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.rate_limit">Rate Limit (Rx/Tx)</label>
+                        <input type="text" name="rate-limit" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" data-i18n-placeholder="hotspot_profiles.form.rate_limit_help" placeholder="e.g. 512k/1M">
                     </div>
-                    <div id="validity-group" class="hidden space-y-1 transition-all">
-                        <label class="form-label" data-i18n="hotspot_profiles.form.validity">Validity</label>
-                        <div class="flex w-full">
-                             <input type="number" name="validity_d" min="0" class="w-full text-center rounded-r-none border-r-0" placeholder="0D">
-                             <input type="number" name="validity_h" min="0" class="w-full text-center rounded-none border-r-0" placeholder="0H">
-                             <input type="number" name="validity_m" min="0" class="w-full text-center rounded-l-none" placeholder="0M">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.parent_queue">Parent Queue</label>
+                        <div class="relative">
+                            <select name="parent-queue" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <option value="none" data-i18n="common.forms.none">none</option>
+                                <?php foreach ($queues as $q) { ?>
+                                    <option value="<?= htmlspecialchars($q) ?>"><?= htmlspecialchars($q) ?></option>
+                                <?php } ?>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- Prices -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_profiles.form.price">Price (Rp)</label>
-                        <input type="number" name="price" class="w-full" placeholder="e.g. 5000">
+                                <div class="flex items-center gap-3 pt-2">
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.expiry_pricing">Expiry & Pricing</span>
+                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.expired_mode">Expired Mode</label>
+                        <div class="relative">
+                            <select name="expired_mode" id="expired-mode" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <option value="none" data-i18n="common.forms.none" selected>none</option>
+                                <option value="rem">Remove</option>
+                                <option value="ntf">Notice</option>
+                                <option value="remc">Remove &amp; Record</option>
+                                <option value="ntfc">Notice &amp; Record</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                        </div>
                     </div>
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_profiles.form.selling_price">Selling Price (Rp)</label>
-                        <input type="number" name="selling_price" class="w-full" placeholder="e.g. 7000">
+                    <div id="validity-group" class="hidden space-y-2 transition-all">
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.validity">Validity</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="relative">
+                                <input type="number" name="validity_d" min="0" placeholder="0D" aria-label="Validity days"
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-6 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            </div>
+                            <div class="relative">
+                                <input type="number" name="validity_h" min="0" placeholder="0H" aria-label="Validity hours"
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            </div>
+                            <div class="relative">
+                                <input type="number" name="validity_m" min="0" placeholder="0M" aria-label="Validity minutes"
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Lock User -->
-                <div class="space-y-1">
-                    <label class="form-label" data-i18n="hotspot_profiles.form.lock_user">Lock User</label>
-                    <select name="lock_user" class="w-full">
-                        <option value="Disable" data-i18n="common.forms.disabled">Disable</option>
-                        <option value="Enable" data-i18n="common.forms.enabled">Enable</option>
-                    </select>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.price">Price (Rp)</label>
+                        <input type="number" name="price" placeholder="e.g. 5000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.selling_price">Selling Price (Rp)</label>
+                        <input type="number" name="selling_price" placeholder="e.g. 7000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    </div>
                 </div>
-                
-                <div class="h-12"></div> <!-- Spacer for selects -->
+
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.lock_user">Lock User</label>
+                    <div class="relative sm:max-w-xs">
+                        <select name="lock_user" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            <option value="Disable" data-i18n="common.forms.disabled">Disable</option>
+                            <option value="Enable" data-i18n="common.forms.enabled">Enable</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                    </div>
+                </div>
             </form>
         </div>
 
-        <!-- Tips Column -->
-        <div class="hidden lg:block space-y-4 border-l border-accents-2 dark:border-white/10 pl-6">
-            <h3 class="text-sm font-bold text-foreground flex items-center gap-2">
-                <i data-lucide="lightbulb" class="w-4 h-4 text-yellow-500"></i>
+        <!-- Quick Tips -->
+        <aside class="self-start rounded-2xl border border-dashed border-black/[.08] dark:border-white/[.08] bg-white/50 dark:bg-white/[.03] p-5">
+            <h3 class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-3">
+                <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-yellow-500"></i>
                 <span data-i18n="hotspot_profiles.form.quick_tips">Quick Tips</span>
             </h3>
-            <ul class="text-xs text-accents-5 space-y-3 list-disc pl-4">
-                <li data-i18n="hotspot_profiles.form.tip_rate_limit">
-                    <strong>Rate Limit</strong>: Rx/Tx (Upload/Download). Example: <code>512k/1M</code>
+            <ul class="space-y-1.5 text-xs opacity-70 leading-relaxed list-none p-0 m-0">
+                <li class="flex gap-2">
+                    <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
+                    <span data-i18n="hotspot_profiles.form.tip_rate_limit"><strong>Rate Limit</strong>: Rx/Tx (Upload/Download). Example: <code>512k/1M</code></span>
                 </li>
-                <li data-i18n="hotspot_profiles.form.tip_expired_mode">
-                    <strong>Expired Mode</strong>: Select 'Remove' or 'Notice' to enable Validity.
+                <li class="flex gap-2">
+                    <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
+                    <span data-i18n="hotspot_profiles.form.tip_expired_mode"><strong>Expired Mode</strong>: Select 'Remove' or 'Notice' to enable Validity.</span>
                 </li>
-                <li data-i18n="hotspot_profiles.form.tip_parent_queue">
-                    <strong>Parent Queue</strong>: Assigns users to a specific parent queue for bandwidth management.
+                <li class="flex gap-2">
+                    <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
+                    <span data-i18n="hotspot_profiles.form.tip_parent_queue"><strong>Parent Queue</strong>: Assigns users to a specific parent queue for bandwidth management.</span>
                 </li>
             </ul>
-        </div>
+        </aside>
     </div>
 </template>
 

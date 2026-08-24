@@ -228,128 +228,153 @@ $toolbar_html .= '
 <template id="user-form-template">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
         <!-- Form Column -->
-        <div class="lg:col-span-2">
+        <div class="lg:col-span-2 min-w-0">
             <form id="user-form" action="/<?= htmlspecialchars($session) ?>/hotspot/store" method="POST" class="space-y-4">
                 <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
                 <input type="hidden" name="id" id="form-id" disabled> <!-- Disabled for Add -->
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Name & Password -->
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_users.form.username">Username</label>
-                        <div class="input-group">
-                            <span class="input-icon"><i data-lucide="user" class="w-4 h-4"></i></span>
-                            <input type="text" name="name" required class="pl-10 w-full" data-i18n-placeholder="hotspot_users.form.username_placeholder" placeholder="e.g. voucher123">
+
+                                <div class="flex items-center gap-3 pt-2">
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.account">Account</span>
+                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.username">Username</label>
+                        <div class="relative">
+                            <i data-lucide="user" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                            <input type="text" name="name" required class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" data-i18n-placeholder="hotspot_users.form.username_placeholder" placeholder="e.g. voucher123">
                         </div>
                     </div>
-
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_users.form.password">Password</label>
-                        <div class="input-group">
-                            <span class="input-icon"><i data-lucide="key" class="w-4 h-4"></i></span>
-                            <input type="text" name="password" required class="pl-10 w-full" data-i18n-placeholder="hotspot_users.form.password_placeholder" placeholder="e.g. 123456">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.password">Password</label>
+                        <div class="relative">
+                            <i data-lucide="key" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                            <input type="text" name="password" required class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" data-i18n-placeholder="hotspot_users.form.password_placeholder" placeholder="e.g. 123456">
                         </div>
                     </div>
+                </div>
 
-                     <!-- Profile -->
-                    <div class="space-y-1 col-span-1 md:col-span-2">
-                        <label class="form-label" data-i18n="hotspot_users.form.profile">Profile</label>
-                        <select name="profile" class="w-full" data-search="true">
+                                <div class="flex items-center gap-3 pt-2">
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.access">Access</span>
+                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.profile">Profile</label>
+                    <div class="relative">
+                        <i data-lucide="layers" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                        <select name="profile" data-native required class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                             <?php foreach ($uniqueProfiles as $p) { ?>
                                 <option value="<?= htmlspecialchars($p) ?>"><?= htmlspecialchars($p) ?></option>
                             <?php } ?>
                         </select>
+                        <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                     </div>
+                </div>
 
-                    <!-- Server -->
-                     <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_users.form.server">Server</label>
-                        <select name="server" class="w-full">
-                            <option value="all">all</option>
-                            <?php
-                            if (! empty($servers)) {
-                                foreach ($servers as $s) {
-                                    $sName = $s['name'] ?? '';
-                                    if ($sName === 'all' || empty($sName)) {
-                                        continue;
-                                    }
-                                    ?>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.server">Server</label>
+                        <div class="relative">
+                            <i data-lucide="server" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                            <select name="server" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <option value="all">all</option>
+                                <?php
+                                if (! empty($servers)) {
+                                    foreach ($servers as $s) {
+                                        $sName = $s['name'] ?? '';
+                                        if ($sName === 'all' || empty($sName)) {
+                                            continue;
+                                        }
+                                        ?>
                                 <option value="<?= htmlspecialchars($sName) ?>"><?= htmlspecialchars($sName) ?></option>
                             <?php
+                                    }
                                 }
-                            }
 ?>
-                        </select>
-                    </div>
-
-                    <!-- Comment -->
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_users.form.comment">Comment</label>
-                        <div class="input-group">
-                            <span class="input-icon"><i data-lucide="message-square" class="w-4 h-4"></i></span>
-                            <input type="text" name="comment" class="pl-10 w-full" placeholder="Optional note">
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         </div>
                     </div>
-                    
-                     <!-- Time Limit -->
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_users.form.time_limit">Time Limit</label>
-                        <div class="flex w-full">
-                            <div class="relative flex-1">
-                                <span class="absolute right-2 top-2 text-xs font-bold text-accents-4 pointer-events-none">D</span>
-                                <input type="number" name="timelimit_d" min="0" class="w-full pr-6 rounded-r-none border-r-0 text-center" placeholder="0">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.comment">Comment</label>
+                        <div class="relative">
+                            <i data-lucide="message-square" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                            <input type="text" name="comment" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" placeholder="Optional note">
+                        </div>
+                    </div>
+                </div>
+
+                                <div class="flex items-center gap-3 pt-2">
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.limits">Limits</span>
+                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <span class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.time_limit">Time Limit</span>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="relative">
+                                <input type="number" name="timelimit_d" min="0" placeholder="0" aria-label="Days"
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">D</span>
                             </div>
-                            <div class="relative flex-1">
-                                <span class="absolute right-2 top-2 text-xs font-bold text-accents-4 pointer-events-none">H</span>
-                                <input type="number" name="timelimit_h" min="0" max="23" class="w-full pr-6 rounded-none border-r-0 text-center" placeholder="0">
+                            <div class="relative">
+                                <input type="number" name="timelimit_h" min="0" max="23" placeholder="0" aria-label="Hours"
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">H</span>
                             </div>
-                            <div class="relative flex-1">
-                                <span class="absolute right-2 top-2 text-xs font-bold text-accents-4 pointer-events-none">M</span>
-                                <input type="number" name="timelimit_m" min="0" max="59" class="w-full pr-6 rounded-l-none text-center" placeholder="0">
+                            <div class="relative">
+                                <input type="number" name="timelimit_m" min="0" max="59" placeholder="0" aria-label="Minutes"
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">M</span>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Data Limit -->
-                    <div class="space-y-1">
-                        <label class="form-label" data-i18n="hotspot_users.form.data_limit">Data Limit</label>
-                        <div class="flex relative w-full">
-                            <div class="relative flex-grow z-0">
-                                <span class="input-icon"><i data-lucide="database" class="w-4 h-4"></i></span>
-                                <input type="number" name="datalimit_val" min="0" class="form-input w-full pl-10 rounded-r-none" placeholder="0">
+                    <div>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.data_limit">Data Limit</label>
+                        <div class="flex gap-2">
+                            <div class="relative flex-1 min-w-0">
+                                <i data-lucide="database" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                                <input type="number" name="datalimit_val" min="0" placeholder="0"
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                             </div>
-                            <div class="relative -ml-px w-20 z-0">
-                                <select name="datalimit_unit" class="w-full rounded-l-none bg-accents-1 text-center font-medium">
+                            <div class="relative w-24 shrink-0">
+                                <select name="datalimit_unit" data-native aria-label="Data limit unit"
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-8 text-[14px] text-center appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                                     <option value="MB" selected>MB</option>
                                     <option value="GB">GB</option>
                                 </select>
+                                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Spacer for dropdowns -->
-                <div class="h-24"></div>
             </form>
         </div>
 
-        <!-- Tips Column -->
-        <div class="hidden lg:block space-y-4 border-l border-accents-2 dark:border-white/10 pl-6">
-            <h3 class="text-sm font-bold text-foreground flex items-center gap-2">
-                <i data-lucide="lightbulb" class="w-4 h-4 text-yellow-400"></i>
+        <!-- Quick Tips -->
+        <aside class="self-start rounded-2xl border border-dashed border-black/[.08] dark:border-white/[.08] bg-white/50 dark:bg-white/[.03] p-5">
+            <h3 class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-3">
+                <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-yellow-500"></i>
                 <span data-i18n="hotspot_users.form.quick_tips">Quick Tips</span>
             </h3>
-            <ul class="text-xs text-accents-5 space-y-3 list-disc pl-4">
-                <li data-i18n="hotspot_users.form.tip_profiles">
-                    <strong>Profiles</strong> define the default speed limits, session timeout, and shared users policy.
+            <ul class="space-y-1.5 text-xs opacity-70 leading-relaxed list-none p-0 m-0">
+                <li class="flex gap-2">
+                    <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
+                    <span data-i18n="hotspot_users.form.tip_profiles"><strong>Profiles</strong> define the default speed limits, session timeout, and shared users policy.</span>
                 </li>
-                <li data-i18n="hotspot_users.form.tip_time_limit">
-                    <strong>Time Limit</strong> is the total accumulated uptime allowed for this user.
+                <li class="flex gap-2">
+                    <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
+                    <span data-i18n="hotspot_users.form.tip_time_limit"><strong>Time Limit</strong> is the total accumulated uptime allowed for this user.</span>
                 </li>
-                <li data-i18n="hotspot_users.form.tip_data_limit">
-                    <strong>Data Limit</strong> will override the profile's data limit settings if specified here. Set to 0 to use profile default.
+                <li class="flex gap-2">
+                    <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
+                    <span data-i18n="hotspot_users.form.tip_data_limit"><strong>Data Limit</strong> will override the profile's data limit settings if specified here. Set to 0 to use profile default.</span>
                 </li>
             </ul>
-        </div>
+        </aside>
     </div>
 </template>
 

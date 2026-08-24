@@ -4,6 +4,12 @@
   "flag": "us"
  },
  "common": {
+  "account": "Account",
+  "access": "Access",
+  "limits": "Limits",
+  "general": "General",
+  "bandwidth": "Bandwidth",
+  "expiry_pricing": "Expiry & Pricing",
   "dashboard": "Dashboard",
   "save": "Save",
   "cancel": "Cancel",
