@@ -28,8 +28,10 @@ class DashboardController extends Controller
 
         // Mock Data for Demo (SQLite or Legacy)
         if ($session === 'demo') {
+            $todaySales = (new \App\Services\SalesReportService($session))->getTodaySummary(isset($_GET['refresh']));
             $data = [
                 'session' => $session,
+                'today_sales' => $todaySales,
                 'clock' => ['time' => '12:00:00', 'date' => 'jan/01/2024'],
                 'resource' => [
                     'board-name' => 'CHR (Demo SQLite)',
@@ -87,8 +89,10 @@ class DashboardController extends Controller
 
             $API->disconnect();
 
+            $todaySales = (new \App\Services\SalesReportService($session))->getTodaySummary(isset($_GET['refresh']));
             $data = [
                 'session' => $session,
+                'today_sales' => $todaySales,
                 'clock' => $clock,
                 'resource' => $resource,
                 'routerboard' => $routerboard,
