@@ -169,21 +169,32 @@ class QuickPrintController extends Controller
             $dataLimit = (int) round((float) $datalimit_val * (($datalimit_unit === 'GB') ? 1073741824 : 1048576));
         }
 
+        $qpModel = new QuickPrintModel;
+
+        // Field limit/selling sudah tidak ada di form (arsitektur baru):
+        // pertahankan nilai lama agar tidak terhapus saat edit.
+        $existing = $qpModel->getById($id);
+        if ($timeLimit === '') {
+            $timeLimit = $existing['time_limit'] ?? '';
+        }
+        if ($dataLimit === 0) {
+            $dataLimit = intval($existing['data_limit'] ?? 0);
+        }
+
         $data = [
             'name' => $_POST['name'] ?? 'Package',
             'profile' => $_POST['profile'] ?? 'default',
             'prefix' => $_POST['prefix'] ?? '',
             'char_length' => $_POST['char_length'] ?? 4,
             'price' => $_POST['price'] ?? 0,
-            'selling_price' => $_POST['selling_price'] ?? ($_POST['price'] ?? 0),
+            'selling_price' => $_POST['selling_price'] ?? ($existing['selling_price'] ?? ($_POST['price'] ?? 0)),
             'time_limit' => $timeLimit,
             'data_limit' => $dataLimit,
             'comment' => $_POST['comment'] ?? '',
             'color' => $_POST['color'] ?? 'bg-blue-500',
         ];
 
-        $qpModel = new QuickPrintModel;
-        $qpModel->update($id, $data); // Assuming update method exists in simple JSON model
+        $qpModel->update($id, $data);
 
         FlashHelper::set('success', 'toasts.package_updated', 'toasts.package_updated_desc', [], true);
         header('Location: /'.$session.'/quick-print/manage');
