@@ -1983,11 +1983,6 @@ input:-webkit-autofill,
   grid-column: 1 / -1;
 }
 
-.-mx-4 {
-  margin-left: -1rem;
-  margin-right: -1rem;
-}
-
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -3523,10 +3518,6 @@ input:-webkit-autofill,
   background-color: rgb(255 255 255 / 0.5);
 }
 
-.bg-white\/95 {
-  background-color: rgb(255 255 255 / 0.95);
-}
-
 .bg-yellow-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity, 1));
@@ -4492,11 +4483,6 @@ input:-webkit-autofill,
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.backdrop-blur {
-  --tw-backdrop-blur: blur(8px);
-  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 .backdrop-blur-2xl {
@@ -6054,11 +6040,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 }
 
 @media (min-width: 640px) {
-  .sm\:-mx-6 {
-    margin-left: -1.5rem;
-    margin-right: -1.5rem;
-  }
-
   .sm\:mb-10 {
     margin-bottom: 2.5rem;
   }
@@ -6167,10 +6148,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 }
 
 @media (min-width: 768px) {
-  .md\:static {
-    position: static;
-  }
-
   .md\:col-span-2 {
     grid-column: span 2 / span 2;
   }
@@ -6209,11 +6186,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
   .md\:w-auto {
     width: auto;
-  }
-
-  .md\:translate-x-0 {
-    --tw-translate-x: 0px;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
   .md\:grid-cols-2 {
@@ -6283,11 +6255,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
     grid-column: span 2 / span 2;
   }
 
-  .lg\:-mx-8 {
-    margin-left: -2rem;
-    margin-right: -2rem;
-  }
-
   .lg\:block {
     display: block;
   }
@@ -6318,6 +6285,11 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
   .lg\:w-auto {
     width: auto;
+  }
+
+  .lg\:translate-x-0 {
+    --tw-translate-x: 0px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
   .lg\:grid-cols-1 {

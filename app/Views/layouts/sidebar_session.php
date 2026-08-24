@@ -117,21 +117,10 @@ $getInitials = function ($name) {
     <!-- Sidebar -->
     <aside id="sidebar" data-session="<?= htmlspecialchars($session ?? '') ?>" class="w-64 flex-shrink-0 border-r border-white/20 bg-[#5f7f67] fixed inset-y-0 left-0 z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 flex flex-col">
         <!-- Sidebar Header -->
-        <!-- Sidebar Header -->
-        <div id="sidebar-header" class="group flex flex-col items-center py-5 border-b border-accents-2 flex-shrink-0 relative cursor-default overflow-hidden">
+        <div id="sidebar-header" class="flex flex-col items-center py-5 border-b border-accents-2 flex-shrink-0 relative cursor-default">
             <div class="relative w-full h-10 flex items-center justify-center">
-                <!-- Brand (Slides out to the Left) -->
-                <div class="flex items-center gap-2 font-bold text-2xl tracking-tighter transition-all duration-500 ease-in-out group-hover:-translate-x-full group-hover:opacity-0">
-                    <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" width="120" height="32" class="h-10 w-auto block dark:hidden">
-                    <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" width="120" height="32" class="h-10 w-auto hidden dark:block">
-                </div>
-
-                            <div class="segmented-switch-btn theme-toggle-dark-icon">
-                                <i data-lucide="moon" class="w-4 h-4" stroke-width="3.5"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <img src="/assets/img/logo-sage.webp" alt="Kaiarasa Logo" width="120" height="32" class="h-10 w-auto block dark:hidden">
+                <img src="/assets/img/logo-white.webp" alt="Kaiarasa Logo" width="120" height="32" class="h-10 w-auto hidden dark:block">
             </div>
 
             <!-- Mobile Close Button -->
@@ -292,6 +281,7 @@ $getInitials = function ($name) {
 
 
         </div>
+        </div> <!-- /.flex-1.overflow-y-auto (Sidebar Content RTL) -->
 
             <style>
     /* Sage sidebar overrides */
@@ -346,18 +336,6 @@ foreach ($languages as $lang) {
                         </div>
                     </div>
 
-                    <div class="pill-divider"></div>
-
-                    <!-- Theme Toggle (Segmented) -->
-                    <div class="segmented-switch theme-toggle" title="Toggle Theme">
-                        <div class="segmented-switch-slider"></div>
-                        <div class="segmented-switch-btn theme-toggle-light-icon">
-                            <i data-lucide="sun" class="w-4 h-4" stroke-width="3.5"></i>
-                        </div>
-                        <div class="segmented-switch-btn theme-toggle-dark-icon">
-                            <i data-lucide="moon" class="w-4 h-4" stroke-width="3.5"></i>
-                        </div>
-                    </div>
                 </div>
                  <button id="mobile-menu-toggle" aria-label="Open menu" class="text-accents-5 hover:text-foreground">
                     <i data-lucide="menu" class="w-6 h-6"></i>
