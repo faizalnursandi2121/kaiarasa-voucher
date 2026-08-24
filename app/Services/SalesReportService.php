@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helpers\EncryptionHelper;
+use App\Libraries\RouterOSAPI;
 
 /**
  * SalesReportService — satu sumber kalkulasi Sold/Revenue (issuance = sale).
@@ -323,7 +324,7 @@ class SalesReportService
         $config['password'] = \App\Helpers\EncryptionHelper::decrypt($config['password']);
 
         try {
-            $api = \App\Services\RouterOSAPI::fromSession($config);
+            $api = \App\Libraries\RouterOSAPI::fromSession($config);
             $api->attempts = 1;
             $api->timeout = 5;
             if (! $api->connect($config['ip_address'], $config['username'], $config['password'])) {
