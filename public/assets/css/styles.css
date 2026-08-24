@@ -3681,6 +3681,10 @@ input:-webkit-autofill,
   padding-left: 0.875rem;
 }
 
+.pl-6 {
+  padding-left: 1.5rem;
+}
+
 .pl-9 {
   padding-left: 2.25rem;
 }
@@ -4189,6 +4193,10 @@ input:-webkit-autofill,
 
 .text-white\/70 {
   color: rgb(255 255 255 / 0.7);
+}
+
+.text-white\/90 {
+  color: rgb(255 255 255 / 0.9);
 }
 
 .text-yellow-500 {
@@ -5393,6 +5401,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-white\/10:hover {
+  background-color: rgb(255 255 255 / 0.1);
+}
+
 .hover\:bg-white\/20:hover {
   background-color: rgb(255 255 255 / 0.2);
 }
@@ -5426,11 +5438,6 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 .hover\:text-red-300:hover {
   --tw-text-opacity: 1;
   color: rgb(252 165 165 / var(--tw-text-opacity, 1));
-}
-
-.hover\:text-red-500:hover {
-  --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity, 1));
 }
 
 .hover\:text-red-600:hover {
