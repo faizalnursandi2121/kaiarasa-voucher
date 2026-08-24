@@ -321,7 +321,7 @@ $toolbar_html .= '
     // If openProfileModal were defined after whenReady(), it would not yet
     // be assigned to window when the user clicks Add -> ReferenceError.
     window.openProfileModal = function(mode, btn = null) {
-        const template = document.getElementById('profile-form-template').innerHTML;
+        const tplNode = document.getElementById('profile-form-template').content.cloneNode(true);
         
         let title = window.i18n ? window.i18n.t('hotspot_profiles.form.add_title') : 'Add Profile';
         let saveBtn = window.i18n ? window.i18n.t('common.save') : 'Save';
@@ -395,7 +395,12 @@ $toolbar_html .= '
              }
         };
 
-        Kaiarasa.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
+        tplNode.querySelector('[data-modal-title]').textContent = title;
+        const holder = document.createElement('div');
+        holder.appendChild(tplNode);
+        const template = holder.innerHTML;
+
+        Kaiarasa.modal.form('', template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
     }
 
     // DOM-dependent initialization (CustomSelect + TableManager).
@@ -414,6 +419,17 @@ $toolbar_html .= '
 </script>
 
 <template id="profile-form-template">
+    <!-- Modal Head (pattern Add Router) -->
+    <div class="flex items-start justify-between gap-4 mb-5 pr-1 text-left">
+        <div>
+            <h3 class="text-xl font-bold tracking-tight" data-modal-title>Add Profile</h3>
+            <p class="text-xs opacity-50 mt-1" data-i18n="common.profile_form_subtitle">Speed limits, expiry &amp; pricing</p>
+        </div>
+        <button type="button" onclick="Swal.close()" aria-label="Close"
+            class="w-8 h-8 rounded-lg inline-flex items-center justify-center hover:bg-black/[.05] dark:hover:bg-white/[.06] transition-colors shrink-0">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
         <!-- Form Column -->
         <div class="lg:col-span-2 min-w-0">

@@ -636,8 +636,8 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
     @apply text-accents-8 dark:text-accents-2 font-bold mb-2;
 }
 
-.swal2-premium-card input:not([type="checkbox"]):not([type="radio"]), 
-.swal2-premium-card select, 
+.swal2-premium-card input:not([type="checkbox"]):not([type="radio"]):not(.h-11), 
+.swal2-premium-card select:not(.h-11), 
 .swal2-premium-card textarea {
   display: block;
   width: 100%;
@@ -657,8 +657,8 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   transition-duration: 200ms;
 }
 
-.swal2-premium-card input:not([type="checkbox"]):not([type="radio"]):focus, 
-.swal2-premium-card select:focus, 
+.swal2-premium-card input:not([type="checkbox"]):not([type="radio"]):not(.h-11):focus, 
+.swal2-premium-card select:not(.h-11):focus, 
 .swal2-premium-card textarea:focus {
   border-color: var(--foreground);
   background-color: rgb(255 255 255 / 0.8);
@@ -670,15 +670,15 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   --tw-ring-color: var(--accents-2);
 }
 
-.dark .swal2-premium-card input:not([type="checkbox"]):not([type="radio"]), 
-.dark .swal2-premium-card select, 
+.dark .swal2-premium-card input:not([type="checkbox"]):not([type="radio"]):not(.h-11), 
+.dark .swal2-premium-card select:not(.h-11), 
 .dark .swal2-premium-card textarea {
   background-color: rgb(0 0 0 / 0.2);
   border-color: var(--accents-2);
 }
 
-.dark .swal2-premium-card input:not([type="checkbox"]):not([type="radio"]):focus, 
-.dark .swal2-premium-card select:focus, 
+.dark .swal2-premium-card input:not([type="checkbox"]):not([type="radio"]):not(.h-11):focus, 
+.dark .swal2-premium-card select:not(.h-11):focus, 
 .dark .swal2-premium-card textarea:focus {
   background-color: rgb(0 0 0 / 0.4);
   border-color: var(--foreground);

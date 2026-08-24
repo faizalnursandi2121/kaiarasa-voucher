@@ -170,7 +170,7 @@ class AlertModule {
             cancelButtonText: window.i18n ? window.i18n.t('common.cancel') : 'Cancel',
             customClass: {
                 popup: `swal2-premium-card ${customClass}`,
-                title: 'text-xl font-bold text-foreground mb-4',
+                title: title ? 'text-xl font-bold text-foreground mb-4' : 'hidden',
                 htmlContainer: 'text-left overflow-visible', // overflow-visible for selects
                 confirmButton: 'btn btn-primary px-6',
                 cancelButton: 'btn btn-secondary px-6',
