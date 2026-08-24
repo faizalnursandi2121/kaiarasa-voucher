@@ -115,7 +115,7 @@ $getInitials = function ($name) {
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity opacity-0"></div>
 
     <!-- Sidebar -->
-    <aside id="sidebar" data-session="<?= htmlspecialchars($session ?? '') ?>" class="w-64 flex-shrink-0 border-r border-white/20 dark:border-accents-2 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-[40px] fixed md:static inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200 flex flex-col h-full">
+    <aside id="sidebar" data-session="<?= htmlspecialchars($session ?? '') ?>" class="w-64 flex-shrink-0 border-r border-white/20 dark:border-accents-2 dark:border-white/10 bg-[#5f7f67] fixed md:static inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200 flex flex-col h-full">
         <!-- Sidebar Header -->
         <!-- Sidebar Header -->
         <div id="sidebar-header" class="group flex flex-col items-center py-5 border-b border-accents-2 flex-shrink-0 relative cursor-default overflow-hidden">
@@ -307,25 +307,29 @@ $getInitials = function ($name) {
 
         </div>
 
-        <!-- Sidebar Footer -->
-        <div class="p-4 border-t border-accents-2 dark:border-white/10">
-            <a href="/" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-6 hover:text-foreground hover:bg-white/5" title="Exit Session">
-                <i data-lucide="cast" class="w-4 h-4"></i>
-                <span data-i18n="sidebar.disconnect">Disconnect</span>
-            </a>
-            <a href="/logout" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors text-red-500/90 hover:text-red-500 hover:bg-red-500/10" title="Keluar aplikasi">
-                <i data-lucide="log-out" class="w-4 h-4"></i>
-                <span data-i18n="sidebar.logout">Logout</span>
-            </a>
-        </div>
-
-
-    </aside>
+            <style>
+    /* Sage sidebar overrides */
+    #sidebar a { color: rgba(255,255,255,.85); }
+    #sidebar a:hover { color: #fff; background: rgba(255,255,255,.10); }
+    #sidebar a.bg-white\/40 { background: rgba(255,255,255,.16) !important; color: #fff !important; }
+    #sidebar a.text-foreground { color: #fff !important; }
+    #sidebar .text-accents-6 { color: rgba(255,255,255,.92) !important; }
+    #sidebar .text-accents-5 { color: rgba(255,255,255,.72) !important; }
+    #sidebar .text-accents-4 { color: rgba(255,255,255,.55) !important; }
+    #sidebar .border-accents-2 { border-color: rgba(255,255,255,.22) !important; }
+    #sidebar .bg-accents-2\/50, #sidebar .group-hover\:bg-accents-2 { background: rgba(255,255,255,.16) !important; }
+    #sidebar .hover\:bg-accents-2\/50:hover { background: rgba(255,255,255,.12) !important; }
+    #sidebar .bg-accents-1\/30, #sidebar .bg-accents-1\/50 { background: rgba(255,255,255,.10) !important; }
+    #sidebar .hover\:bg-accents-1:hover { background: rgba(255,255,255,.12) !important; }
+    #sidebar .ring-white\/10 { --tw-ring-color: rgba(255,255,255,.25); }
+    .session-mobile-header { background: #5f7f67 !important; backdrop-filter: none !important; }
+    </style>
+</aside>
 
     <!-- Main Content Wrapper -->
     <div class="flex-1 flex flex-col overflow-hidden w-full">
         <!-- Mobile Header (Visible only on small screens) -->
-        <header class="h-16 flex items-center justify-between px-4 border-b border-accents-2 bg-background md:hidden z-20 sticky top-0">
+        <header class="session-mobile-header h-14 flex items-center justify-between px-4 border-b border-white/20 md:hidden z-20 sticky top-0">
              <div class="flex items-center gap-2">
                 <img src="/assets/img/logo-sage.webp" class="h-6 w-auto block dark:hidden">
                 <img src="/assets/img/logo-white.webp" class="h-6 w-auto hidden dark:block">

@@ -90,7 +90,8 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
     </div>
     <?php
     if (isset($session) && ! empty($session)) {
-        // Session Layout (Sidebar)
+        // Session Layout: Topbar + Sidebar
+        include ROOT.'/app/Views/layouts/navbar_session.php';
         include ROOT.'/app/Views/layouts/sidebar_session.php';
     } else {
         // Global Layout (Navbar)
