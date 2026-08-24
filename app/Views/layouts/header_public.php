@@ -44,14 +44,6 @@ use App\Core\Hooks;
         <div class="absolute inset-0 bg-gradient-to-b from-black/[.02] to-transparent dark:from-white/[.02]"></div>
     </div>
 
-    <!-- Top Right Controls (Pill Theme Toggle & Lang Switcher) -->
-    <div class="fixed top-4 right-4 z-50 flex items-center space-x-3">
-         <!-- Language Switcher -->
-         <div class="relative group">
-            
-
-
-    </div>
 
     <script>
         // Toggle Menu Helper (Reuse or define for public if main footer not loaded)
