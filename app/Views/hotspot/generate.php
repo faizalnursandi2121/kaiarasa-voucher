@@ -8,12 +8,7 @@
     <div class="rounded-2xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] shadow-xl overflow-hidden">
         <!-- Panel Header (Sage) -->
         <div class="bg-[#5f7f67] px-6 py-5">
-            <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
-                    <i data-lucide="layers" class="w-4 h-4 text-white"></i>
-                </div>
-                <h3 class="text-base font-bold text-white tracking-tight" data-i18n="hotspot_generate.title">Generate Vouchers</h3>
-            </div>
+            <h3 class="text-base font-bold text-white tracking-tight" data-i18n="hotspot_generate.title">Generate Vouchers</h3>
             <p class="text-xs text-white/70 mt-1.5" data-i18n="hotspot_generate.form.subtitle" data-i18n-params='{"name": "<?= htmlspecialchars($session) ?>"}'>Create multiple hotspot vouchers in batch for: <?= htmlspecialchars($session) ?></p>
         </div>
 
@@ -30,8 +25,7 @@
                     <label for="gv-qty" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.qty">Quantity</label>
                     <div class="relative">
                         <input type="number" name="qty" id="gv-qty" value="1" min="1" required placeholder="1"
-                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-14 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                        <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none" data-i18n="hotspot_users.title">Users</span>
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
                 </div>
                 <div>
