@@ -325,7 +325,7 @@ $toolbar_html .= '
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <span class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_users.form.time_limit">Time limit</span>
+                        <span class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_users.form.time_limit">Validity</span>
                         <div class="grid grid-cols-3 gap-2">
                             <div class="relative">
                                 <input type="number" name="timelimit_d" min="0" placeholder="0" aria-label="Days"
@@ -379,7 +379,7 @@ $toolbar_html .= '
                 </li>
                 <li class="flex gap-2">
                     <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
-                    <span data-i18n="hotspot_users.form.tip_time_limit"><strong>Time Limit</strong> is the total accumulated uptime allowed for this user.</span>
+                    <span data-i18n="hotspot_users.form.tip_time_limit"><strong>Validity</strong> is the total accumulated uptime allowed for this user.</span>
                 </li>
                 <li class="flex gap-2">
                     <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>

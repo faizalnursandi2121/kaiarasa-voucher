@@ -156,7 +156,7 @@
             </div>
 
             <div>
-                <span class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.time_limit">Time limit</span>
+                <span class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.time_limit">Validity</span>
                 <div class="grid grid-cols-3 gap-2">
                     <div class="relative">
                         <input type="number" name="timelimit_d" min="0" placeholder="0" aria-label="Time limit days"
