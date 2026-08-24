@@ -118,7 +118,6 @@ $toolbar_html .= '
             </div>
         </div>
     </div>
-</div>
 
 <script>
     window.TableManager = window.TableManager || class TableManager {

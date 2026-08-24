@@ -11,7 +11,8 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "build:editor": "esbuild src/js/editor.js --bundle --minify --outfile=public/assets/js/vendor/editor.bundle.js",
-    "sync:assets": "node scripts/sync-assets.js"
+    "sync:assets": "node scripts/sync-assets.js",
+    "check:views": "php scripts/check-view-tags.php"
   },
   "keywords": [],
   "author": "",

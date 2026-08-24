@@ -155,21 +155,21 @@ $getInitials = function ($name) {
                 </button>
 
                 <!-- Dropdown -->
-                <div id="session-dropdown" class="absolute top-full left-3 w-[calc(100%-1.5rem)] z-50 mt-1 bg-background border border-accents-2 rounded-lg shadow-lg overflow-hidden transition-all duration-200 ease-out origin-top opacity-0 scale-95 invisible pointer-events-none dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
+                <div id="session-dropdown" class="absolute top-full left-3 w-[calc(100%-1.5rem)] z-50 mt-1 bg-white dark:bg-[#1a1c19] border border-black/10 dark:border-white/10 rounded-lg shadow-lg overflow-hidden transition-all duration-200 ease-out origin-top opacity-0 scale-95 invisible pointer-events-none dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
                     <div class="py-1 max-h-60 overflow-y-auto">
-                        <div class="px-3 py-2 text-xs font-semibold text-accents-5 uppercase tracking-wider bg-accents-1/50 border-b border-accents-2" data-i18n="sidebar.switch_session">
+                        <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50 border-b border-gray-200" data-i18n="sidebar.switch_session">
                             Switch Session
                         </div>
                         <?php foreach ($allSessions as $s) { ?>
-                        <a href="/<?= htmlspecialchars($s['session_name']) ?>/dashboard" class="flex items-center gap-3 px-3 py-2 text-sm hover:bg-accents-1 transition-colors group/item">
-                            <div class="h-6 w-6 rounded flex-shrink-0 bg-accents-2 flex items-center justify-center text-[10px] font-bold">
+                        <a href="/<?= htmlspecialchars($s['session_name']) ?>/dashboard" class="flex items-center gap-3 px-3 py-2 text-sm hover:bg-gray-100 transition-colors group/item text-gray-700">
+                            <div class="h-6 w-6 rounded flex-shrink-0 bg-gray-200 flex items-center justify-center text-[10px] font-bold text-gray-600">
                                  <?= $getInitials($s['session_name']) ?>
                             </div>
                             <div class="flex flex-col overflow-hidden">
-                                <span class="truncate <?= ($session === $s['session_name']) ? 'font-medium text-foreground' : 'text-accents-5 group-hover/item:text-foreground' ?>">
+                                <span class="truncate font-medium text-gray-800">
                                     <?= htmlspecialchars($s['session_name']) ?>
                                 </span>
-                                <span class="text-[10px] text-accents-4 truncate">
+                                <span class="text-[10px] text-gray-400 truncate">
                                     <?= htmlspecialchars($s['hotspot_name'] ?: $s['ip_address']) ?>
                                 </span>
                             </div>

@@ -40,6 +40,14 @@ const VOID_TAGS = [
 // File parsial layout yang pembuka/penutupnya sengaja lintas-file.
 const PARTIAL_PATTERN = '/^(header_|footer_|sidebar_|navbar_|page_)/';
 
+// Footer menutup tag yang dibuka file lain; isi folder partials/
+// di-include di dalam view lain sehingga penutupnya bisa milik parent.
+function isCrossFileCloser(string $file): bool
+{
+    return (bool) (preg_match('/^footer_/', basename($file))
+        || str_contains($file, DIRECTORY_SEPARATOR.'partials'.DIRECTORY_SEPARATOR));
+}
+
 /**
  * Normalisasi sumber PHP -> HTML murni dengan MEMPERTAHANKAN jumlah baris,
  * sehingga nomor baris hasil parse tetap akurat terhadap file asli.
@@ -83,6 +91,7 @@ function analyze(string $file): array
 
     $src = normalize($raw);
     $isPartial = (bool) preg_match(PARTIAL_PATTERN, basename($file));
+    $crossFile = isCrossFileCloser($file);
 
     $stack = [];          // [tag, baris]
     $errors = [];
@@ -118,10 +127,15 @@ function analyze(string $file): array
         if (in_array($tag, array_reverse($names), true)) {
             while ($stack && end($stack)[0] !== $tag) {
                 [$popped, $openedAt] = array_pop($stack);
-                $errors[] = sprintf(
+                $msg = sprintf(
                     '%s:%d: </%s> memaksa menutup <%s> yang dibuka di baris %d',
                     $file, $line, $tag, $popped, $openedAt
                 );
+                if ($crossFile) {
+                    $notices[] = $msg.' — parsial lintas-file, kemungkinan sah';
+                } else {
+                    $errors[] = $msg;
+                }
             }
             if ($stack) {
                 array_pop($stack);
@@ -129,7 +143,12 @@ function analyze(string $file): array
             continue;
         }
 
-        $errors[] = sprintf('%s:%d: tag penutup </%s> yatim (tidak ada pembukanya)', $file, $line, $tag);
+        $msg = sprintf('%s:%d: tag penutup </%s> yatim (tidak ada pembukanya)', $file, $line, $tag);
+        if ($crossFile) {
+            $notices[] = $msg.' — menutup tag dari file lain (parsial), kemungkinan sah';
+        } else {
+            $errors[] = $msg;
+        }
     }
 
     // Sisa stack di akhir file.

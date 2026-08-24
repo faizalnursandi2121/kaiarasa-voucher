@@ -98,7 +98,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 <script src="/assets/js/qrious.min.js"></script>
 <script src="/assets/js/vendor/editor.bundle.js"></script>
-</div>
 
 <!-- Documentation Modal -->
 <div id="docsModal" class="fixed inset-0 z-50 hidden transition-all duration-200">
