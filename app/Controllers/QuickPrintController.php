@@ -269,23 +269,23 @@ class QuickPrintController extends Controller
                 'comment' => $qpComment, // Report-friendly comment
             ];
 
-            // Limits
-            if (! empty($package['time_limit'])) {
-                $userData['limit-uptime'] = $package['time_limit'];
-            } else {
-                // Validity dari Data Plan sebagai limit uptime default
-                $plans = $API->comm('/ip/hotspot/user/profile/print');
-                if (is_array($plans)) {
-                    foreach ($plans as $rp) {
-                        if (($rp['name'] ?? '') === $package['profile']) {
-                            $planMeta = \App\Helpers\HotspotHelper::parseProfileMetadata($rp['on-login'] ?? '');
-                            if (! empty($planMeta['validity_raw'])) {
-                                $userData['limit-uptime'] = $planMeta['validity_raw'];
-                            }
-                            break;
-                        }
+            // Effective uptime: override package -> Validity Data Plan
+            $planValidityRaw = '';
+            $plans = $API->comm('/ip/hotspot/user/profile/print');
+            if (is_array($plans)) {
+                foreach ($plans as $rp) {
+                    if (($rp['name'] ?? '') === $package['profile']) {
+                        $planMeta = \App\Helpers\HotspotHelper::parseProfileMetadata($rp['on-login'] ?? '');
+                        $planValidityRaw = $planMeta['validity_raw'] ?? '';
+                        break;
                     }
                 }
+            }
+            $effectiveUptime = ! empty($package['time_limit']) ? $package['time_limit'] : $planValidityRaw;
+
+            // Limits
+            if (! empty($effectiveUptime)) {
+                $userData['limit-uptime'] = $effectiveUptime;
             }
             if (! empty($package['data_limit'])) {
                 // data_limit is stored as bytes
@@ -325,8 +325,8 @@ class QuickPrintController extends Controller
             'username' => $username,
             'password' => $password,
             'price' => $package['price'],
-            'validity' => $package['time_limit'],
-            'timelimit' => HotspotHelper::formatValidity($package['time_limit']),
+            'validity' => $effectiveUptime,
+            'timelimit' => HotspotHelper::formatValidity($effectiveUptime),
             'datalimit' => HotspotHelper::formatBytes($bytes),
             'profile' => $package['profile'],
             'comment' => 'Quick Print',

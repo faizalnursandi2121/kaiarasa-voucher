@@ -66,9 +66,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                              <div class="font-bold text-foreground">
                                 <?= htmlspecialchars($pkg['price'] > 0 ? number_format($pkg['price'], 0, ',', '.') : 'Free') ?>
                             </div>
-                               <div class="text-xs text-accents-5" data-i18n="<?= $pkg['time_limit'] ?: 'common.unlimited' ?>">
-                                <?= htmlspecialchars($pkg['time_limit'] ?: 'Unlimited') ?>
-                            </div>
                         </div>
                     </div>
 
