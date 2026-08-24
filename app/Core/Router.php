@@ -159,10 +159,21 @@ class Router
         }
         $path = $this->normalizePath($path);
 
-        // Global Install Check
+        // Global Install Check (DB-aware: file SQLite kosong tetap diarahkan
+        // ke installer — PDO bisa menciptakan file tanpa tabel)
         $dbPath = ROOT.'/app/Database/database.sqlite';
-        if (! file_exists($dbPath)) {
-            if ($path !== '/install' && strpos($path, '/assets/') !== 0) {
+        if ($path !== '/install' && strpos($path, '/assets/') !== 0) {
+            try {
+                $pdoCheck = new \PDO('sqlite:'.$dbPath);
+                $pdoCheck->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                $tableCount = (int) $pdoCheck->query(
+                    "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='users'"
+                )->fetchColumn();
+                $needsInstall = $tableCount === 0;
+            } catch (\Throwable $e) {
+                $needsInstall = false; // jangan blokir bila DB sedang bermasalah
+            }
+            if ($needsInstall && $path !== '/install' && strpos($path, '/assets/') !== 0) {
                 header('Location: /install');
                 exit;
             }

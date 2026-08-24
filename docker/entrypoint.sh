@@ -21,5 +21,13 @@ if [ -f "/var/www/html/.env" ]; then
     chmod 664 /var/www/html/.env
 fi
 
+# Database migrations — buat semua tabel bila belum ada
+# (deploy fresh: setelah ini kunjungi /install untuk membuat admin)
+if [ -f "/var/www/html/scripts/migrate-home-v2.php" ]; then
+    cd /var/www/html
+    php scripts/migrate-home-v2.php || echo "migration gagal — lanjut tetap"
+    cd /
+fi
+
 # Execute the command passed to docker run (usually supervisor)
 exec "$@"
