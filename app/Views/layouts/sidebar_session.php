@@ -234,43 +234,47 @@ $getInitials = function ($name) {
                 <span data-i18n="sales.report">Sales Report</span>
             </a>
 
-            <!-- Administration Separator -->
-             <div class="pt-4 pb-1 px-3">
-                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.administration">Administration</div>
-            </div>
-             <!-- Administration Group (Collapsible) -->
-             <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('administration-menu', this)" aria-expanded="" aria-controls="administration-menu">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="settings-2" class="w-4 h-4"></i>
+            <!-- Administration (Collapsible Group) -->
+             <div class="pt-4 space-y-1">
+                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-xs font-semibold uppercase tracking-wider text-accents-5 hover:text-foreground hover:bg-accents-2/50 transition-colors" onclick="toggleMenu('administration-menu', this)" aria-expanded="<?= $isSecurityActive ? 'true' : 'false' ?>" aria-controls="administration-menu">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
                         <span data-i18n="sidebar.administration"><?= LanguageHelper::t('sidebar.administration', 'Administration') ?></span>
-                    </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isSecurityActive ? 'rotate-180' : '' ?>"></i>
+                    </span>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 transition-transform duration-300 <?= $isSecurityActive ? 'rotate-180' : '' ?>"></i>
                 </button>
 
-                <div id="administration-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSecurityActive ? '800px' : '0px' ?>">
-                    <a href="/<?= htmlspecialchars($session ?? '') ?>/voucher-templates" class="block px-3 py-2 rounded-md text-sm transition-colors <?= $isTemplates ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                <div id="administration-menu" data-nav-group class="space-y-1 pl-6 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isSecurityActive ? '800px' : '0px' ?>">
+                    <a href="/<?= htmlspecialchars($session ?? '') ?>/voucher-templates" class="flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors <?= $isTemplates ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <i data-lucide="ticket" class="w-4 h-4 opacity-60"></i>
                         <span data-i18n="sidebar.templates"><?= LanguageHelper::t('sidebar.templates', 'Voucher Templates') ?></span>
                     </a>
-                    <a href="/<?= htmlspecialchars($session ?? '') ?>/logos" class="block px-3 py-2 rounded-md text-sm transition-colors <?= $isLogos ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                    <a href="/<?= htmlspecialchars($session ?? '') ?>/logos" class="flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors <?= $isLogos ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <i data-lucide="image" class="w-4 h-4 opacity-60"></i>
                         <span data-i18n="sidebar.logos"><?= LanguageHelper::t('sidebar.logos', 'Logos') ?></span>
                     </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/network/dhcp" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/network/dhcp') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                    <a href="/<?= htmlspecialchars($session) ?>/network/dhcp" class="flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/network/dhcp') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <i data-lucide="network" class="w-4 h-4 opacity-60"></i>
                         <span data-i18n="sidebar.network"><?= LanguageHelper::t('sidebar.network', 'Network — DHCP') ?></span>
                     </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/bindings" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/bindings') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/bindings" class="flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/bindings') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <i data-lucide="link" class="w-4 h-4 opacity-60"></i>
                         <span data-i18n="hotspot_menu.bindings"><?= LanguageHelper::t('hotspot_menu.bindings', 'IP Bindings') ?></span>
                     </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/walled-garden" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/walled-garden') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/walled-garden" class="flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/walled-garden') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <i data-lucide="shield" class="w-4 h-4 opacity-60"></i>
                         <span data-i18n="hotspot_menu.walled_garden"><?= LanguageHelper::t('hotspot_menu.walled_garden', 'Walled Garden') ?></span>
                     </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/system/scheduler" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/system/scheduler') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                    <a href="/<?= htmlspecialchars($session) ?>/system/scheduler" class="flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/system/scheduler') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <i data-lucide="clock" class="w-4 h-4 opacity-60"></i>
                         <span data-i18n="system_menu.scheduler"><?= LanguageHelper::t('system_menu.scheduler', 'Scheduler') ?></span>
                     </a>
-                    <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/reboot', 'Reboot Router?')" class="w-full text-left block px-3 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
+                    <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/reboot', 'Reboot Router?')" class="w-full flex items-center gap-3 px-2 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
+                        <i data-lucide="rotate-cw" class="w-4 h-4 opacity-60"></i>
                         <span data-i18n="system_menu.reboot"><?= LanguageHelper::t('system_menu.reboot', 'Reboot') ?></span>
                     </button>
-                    <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/shutdown', 'Shutdown Router?')" class="w-full text-left block px-3 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
+                    <button onclick="confirmAction('/<?= htmlspecialchars($session) ?>/system/shutdown', 'Shutdown Router?')" class="w-full flex items-center gap-3 px-2 py-2 rounded-md text-sm text-accents-5 hover:text-red-500 transition-colors">
+                        <i data-lucide="power" class="w-4 h-4 opacity-60"></i>
                         <span data-i18n="system_menu.shutdown"><?= LanguageHelper::t('system_menu.shutdown', 'Shutdown') ?></span>
                     </button>
                 </div>
