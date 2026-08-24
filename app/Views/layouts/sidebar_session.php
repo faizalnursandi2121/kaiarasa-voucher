@@ -219,12 +219,6 @@ $getInitials = function ($name) {
                 <span data-i18n="sidebar.dashboard"><?= LanguageHelper::t('sidebar.dashboard', 'Dashboard') ?></span>
             </a>
 
-            <!-- Quick Print -->
-             <a href="/<?= htmlspecialchars($session) ?>/quick-print" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/quick-print') !== false) ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
-                <i data-lucide="printer" class="w-4 h-4"></i>
-                <span data-i18n="sidebar.quick_print"><?= LanguageHelper::t('sidebar.quick_print', 'Quick Print') ?></span>
-            </a>
-
             <!-- Access -->
             <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
                 <i data-lucide="users" class="w-4 h-4"></i>
@@ -295,9 +289,6 @@ $getInitials = function ($name) {
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/walled-garden" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/walled-garden') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="hotspot_menu.walled_garden"><?= LanguageHelper::t('hotspot_menu.walled_garden', 'Walled Garden') ?></span>
                     </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/reports/user-log" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="reports_menu.user_log"><?= LanguageHelper::t('reports_menu.user_log', 'User Log') ?></span>
-                    </a>
                     <a href="/<?= htmlspecialchars($session) ?>/system/scheduler" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/system/scheduler') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="system_menu.scheduler"><?= LanguageHelper::t('system_menu.scheduler', 'Scheduler') ?></span>
                     </a>
@@ -308,11 +299,6 @@ $getInitials = function ($name) {
                         <span data-i18n="system_menu.shutdown"><?= LanguageHelper::t('system_menu.shutdown', 'Shutdown') ?></span>
                     </button>
                 </div>
-            </div>
-
-            <!-- Administration Separator -->
-             <div class="pt-4 pb-1 px-3">
-                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.administration"><?= LanguageHelper::t('sidebar.administration', 'Administration') ?></div>
             </div>
 
             <!-- Settings -->

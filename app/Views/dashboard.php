@@ -78,13 +78,12 @@ function dashRp(int $v): string
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
         <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
             <h3 class="font-bold tracking-tight mb-4">Quick Actions</h3>
-            <div class="space-y-2">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <?php foreach (($quick_actions ?? []) as $qa): ?>
                 <a href="<?= $qa['href'] ?>"
-                    class="flex items-center gap-3 rounded-xl border border-black/[.07] dark:border-white/[.08] p-3.5 hover:bg-[#5f7f67]/[.08] hover:border-[#5f7f67]/40 transition-colors group">
-                    <i data-lucide="<?= $qa['icon'] ?>" class="w-5 h-5 text-[#47614d] dark:text-[#92aa96]"></i>
+                    class="flex flex-col items-center justify-center gap-2 min-h-[110px] rounded-xl border border-black/[.07] dark:border-white/[.08] p-4 text-center hover:bg-[#5f7f67]/[.08] hover:border-[#5f7f67]/40 transition-colors group">
+                    <i data-lucide="<?= $qa['icon'] ?>" class="w-6 h-6 text-[#47614d] dark:text-[#92aa96]"></i>
                     <span class="text-[13px] font-semibold group-hover:text-[#47614d] dark:group-hover:text-[#92aa96] transition-colors"><?= $qa['label'] ?></span>
-                    <i data-lucide="chevron-right" class="w-4 h-4 ml-auto opacity-30"></i>
                 </a>
                 <?php endforeach; ?>
             </div>
