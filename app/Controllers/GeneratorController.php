@@ -109,8 +109,10 @@ class GeneratorController extends Controller
             $commentPrefix = ($userMode === 'vc') ? 'vc-' : 'up-';
             $batchId = rand(100, 999);
             $date = date('m.d.y');
+            $time = date('H:i');
             $commentBody = $comment ?: $profile;
-            $finalComment = "{$commentPrefix}{$batchId}-{$date}- {$commentBody}";
+            // Format: prefix-batchId-m.d.yy H:i- body  (jam utk Sales Report datetime)
+            $finalComment = "{$commentPrefix}{$batchId}-{$date} {$time}- {$commentBody}";
 
             for ($i = 0; $i < $qty; $i++) {
                 $username = $prefix.$this->generateRandomString($userLength, $char);

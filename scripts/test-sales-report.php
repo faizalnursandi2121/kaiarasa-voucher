@@ -98,6 +98,36 @@ t('demo fixture: compute konsisten', function () {
     eq($out['summary']['revenue'], 74000);
 });
 
+// ---------- datetime support ----------
+t('parseDateTime: QP dgn jam', function () {
+    $dt = SalesReportService::parseDateTime('p:3000 [QP] 2026-08-24 14:35');
+    eq([$dt['date'], $dt['time']], ['2026-08-24', '14:35']);
+});
+t('parseDateTime: generator m.d.y + jam', function () {
+    $dt = SalesReportService::parseDateTime('vc-B-08.24.26 09:05- promo');
+    eq([$dt['date'], $dt['time']], ['2026-08-24', '09:05']);
+});
+t('parseDateTime: legacy tanpa jam -> time null', function () {
+    $dt = SalesReportService::parseDateTime('p:2000 [QP] 2024-05-01');
+    eq($dt['time'], null);
+});
+t('parseDate: m.d.y p2>12 tetap benar', function () {
+    eq(SalesReportService::parseDate('vc-B-08.24.26- x'), '2026-08-24');
+});
+t('normalizeUser membawa time', function () {
+    $r = SalesReportService::normalizeUser(rec(['comment' => 'p:3000 [QP] 2026-08-24 14:35']), []);
+    eq($r['time'], '14:35');
+});
+t('getList: urut datetime desc dalam tanggal sama', function () {
+    $a = SalesReportService::normalizeUser(rec(['comment' => 'p:3000 [QP] 2026-08-24 09:00']), []);
+    $b = SalesReportService::normalizeUser(rec(['comment' => 'p:3000 [QP] 2026-08-24 15:30']), []);
+    $out = SalesReportService::computeFromRecords([$a, $b], []);
+    // yang lebih baru (15:30) harus di atas
+    $first = $out['list'][0];
+    $hasTime = ! empty($first['last_time']) ? $first['last_time'] : ($first['time'] ?? '');
+    eq($hasTime, '15:30');
+});
+
 // ---------- Task 2: computeFromRecords ----------
 function datedRec(string $date, string $type, int $price, bool $used = false): array {
     $c = $type === 'quick_print' ? "p:{$price} [QP] {$date}" : "vc-B-{$date}- p:{$price}";

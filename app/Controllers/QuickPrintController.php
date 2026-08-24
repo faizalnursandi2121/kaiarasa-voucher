@@ -244,7 +244,8 @@ class QuickPrintController extends Controller
             // This ensures the Selling Report and Resume Report can detect price and date.
             $price = intval($package['price'] ?? 0);
             $dateStr = date('Y-m-d');
-            $qpComment = 'p:'.$price.' [QP] '.$dateStr;
+            $timeStr = date('H:i');
+            $qpComment = 'p:'.$price.' [QP] '.$dateStr.' '.$timeStr;
             // Append original package comment if set
             if (! empty($package['comment'])) {
                 $qpComment .= ' '.$package['comment'];

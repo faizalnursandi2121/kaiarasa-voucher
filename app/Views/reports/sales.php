@@ -250,13 +250,14 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                 </thead>
                 <tbody id="sales-tbody">
                     <?php foreach ($report['list'] as $row): ?>
-                    <tr data-date="<?= htmlspecialchars($row['date']) ?>"
+                    <tr data-date="<?= htmlspecialchars($row['date'].(! empty($row['time']) ? ' '.$row['time'] : '')) ?>"
                         data-package="<?= htmlspecialchars($row['package']) ?>"
                         data-quantity="<?= (int) $row['quantity'] ?>"
                         data-unit_price="<?= (int) $row['unit_price'] ?>"
                         data-total="<?= (int) $row['total'] ?>"
                         data-sale_type="<?= htmlspecialchars($row['sale_type']) ?>">
-                        <td><?= date('d M Y', strtotime($row['date'])) ?></td>
+                        <?php $dtLabel = date('d M Y', strtotime($row['date'])) . (! empty($row['time']) ? ' · '.substr($row['time'], 0, 5) : ''); ?>
+                        <td class="whitespace-nowrap"><?= $dtLabel ?></td>
                         <td class="font-medium"><?= htmlspecialchars($row['package']) ?></td>
                         <td class="text-right tabular-nums"><?= $row['quantity'] ?></td>
                         <td class="text-right tabular-nums"><?= salesFmtRp((int) $row['unit_price']) ?></td>

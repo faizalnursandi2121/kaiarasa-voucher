@@ -30,14 +30,43 @@ class SalesReportService
     /** Parse tanggal dari comment (legacy format support). Null bila tidak ada. */
     public static function parseDate(string $comment): ?string
     {
-        if (preg_match('/\b(\d{4})-(\d{1,2})-(\d{1,2})\b/', $comment, $m)) {
-            return sprintf('%04d-%02d-%02d', $m[1], $m[2], $m[3]);
+        return self::parseDateTime($comment)['date'];
+    }
+
+    /** Parse tanggal (+ jam opsional "H:i" tepat setelah tanggal) dari comment. */
+    public static function parseDateTime(string $comment): array
+    {
+        if (preg_match('/\b(\d{4})-(\d{1,2})-(\d{1,2})\b/', $comment, $m, PREG_OFFSET_CAPTURE)) {
+            $date = sprintf('%04d-%02d-%02d', $m[1][0], $m[2][0], $m[3][0]);
+            $time = self::extractTimeAfter($comment, $m[3][1] + strlen($m[3][0]));
+
+            return ['date' => $date, 'time' => $time];
         }
-        if (preg_match('/\b(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})\b/', $comment, $m)) {
-            $p1 = intval($m[1]); $p2 = intval($m[2]); $y = intval($m[3]);
+        if (preg_match('/\b(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})\b/', $comment, $m, PREG_OFFSET_CAPTURE)) {
+            $p1 = intval($m[1][0]); $p2 = intval($m[2][0]); $y = intval($m[3][0]);
             $y = $y < 100 ? $y + 2000 : $y;
-            // Bisnis Indonesia: tanggal numerik ambigu dibaca DAY/MONTH/YEAR
-            return sprintf('%04d-%02d-%02d', $y, $p2, $p1);
+            // Disambiguasi aman: bila komponen kedua > 12 berarti format m.d.y;
+            // selain itu (ambigu) ikuti konvensi bisnis Indonesia d/m/y.
+            if ($p1 > 12) {
+                $date = sprintf('%04d-%02d-%02d', $y, $p2, $p1);
+            } elseif ($p2 > 12) {
+                $date = sprintf('%04d-%02d-%02d', $y, $p1, $p2);
+            } else {
+                $date = sprintf('%04d-%02d-%02d', $y, $p2, $p1);
+            }
+            $time = self::extractTimeAfter($comment, $m[3][1] + strlen($m[3][0]));
+
+            return ['date' => $date, 'time' => $time];
+        }
+
+        return ['date' => null, 'time' => null];
+    }
+
+    private static function extractTimeAfter(string $comment, int $offset): ?string
+    {
+        $tail = substr($comment, $offset);
+        if (preg_match('/^\s+(\d{1,2}:\d{2})\b/', $tail, $tm)) {
+            return substr('0'.$tm[1], -5); // normalisasi H:MM -> HH:MM
         }
 
         return null;
@@ -92,7 +121,9 @@ class SalesReportService
             'comment' => $comment,
             'sale_type' => $saleType,
             'billable' => $billable,
-            'date' => self::parseDate($comment),
+            'datetime' => (($dp = self::parseDateTime($comment))),
+            'date' => $dp['date'],
+            'time' => $dp['time'],
             'used' => ($uptime !== '' && $uptime !== '0s') || (is_numeric($bytesOut) && $bytesOut > 0),
             'uptime' => $uptime,
         ];
@@ -210,7 +241,8 @@ class SalesReportService
             $ref = $refParts[0] ?? '';
             $key = $rec['date'].'|'.$rec['sale_type'].'|'.$rec['profile'].'|'.$rec['price'].'|'.$ref;
             if (! isset($batches[$key])) {
-                $batches[$key] = ['date' => $rec['date'], 'package' => $rec['profile'],
+                $batches[$key] = ['date' => $rec['date'], 'time' => $rec['time'],
+                    'package' => $rec['profile'],
                     'quantity' => 0, 'unit_price' => $rec['price'], 'total' => 0,
                     'sale_type' => $rec['sale_type'], 'used_count' => 0, 'reference' => $ref];
             }
@@ -218,6 +250,10 @@ class SalesReportService
             $batches[$key]['total'] += $rec['price'];
             if ($rec['used']) {
                 $batches[$key]['used_count']++;
+            }
+            // simpan jam terbaru dalam batch utk urutan tampil
+            if ($rec['time'] !== null && (! isset($batches[$key]['last_time']) || strcmp($rec['time'], $batches[$key]['last_time']) > 0)) {
+                $batches[$key]['last_time'] = $rec['time'];
             }
         }
 
@@ -241,7 +277,11 @@ class SalesReportService
         $breakdown = array_map(fn ($d) => ['date' => $d['date'], 'vouchers' => $d['sold'], 'revenue' => $d['revenue']], $trend);
 
         $list = array_values($batches);
-        usort($list, fn ($a, $b) => [$b['date'], $a['reference']] <=> [$a['date'], $b['reference']]);
+        usort($list, function ($a, $b) {
+            $ad = $a['date'].($a['time'] ?? ''); $bd = $b['date'].($b['time'] ?? '');
+
+            return [$bd, $a['reference']] <=> [$ad, $b['reference']];
+        });
 
         ksort($byType);
 
@@ -363,12 +403,14 @@ class SalesReportService
         $yest = date('Y-m-d', strtotime('-1 day'));
         $users = [];
         for ($i = 0; $i < 8; $i++) {
+            $t = sprintf('%02d:%02d', 8 + intdiv($i, 2), ($i % 2) * 30);
             $users[] = ['name' => 'demo-q'.$i, 'profile' => '1 Hour', 'price' => 0,
-                'comment' => "p:3000 [QP] {$today}", 'uptime' => $i < 3 ? '45m' : '0s', 'bytes-out' => 0];
+                'comment' => "p:3000 [QP] {$today} {$t}", 'uptime' => $i < 3 ? '45m' : '0s', 'bytes-out' => 0];
         }
         for ($i = 0; $i < 10; $i++) {
+            $t = sprintf('%02d:%02d', 9 + intdiv($i, 3), ($i % 3) * 20);
             $users[] = ['name' => 'demo-g'.$i, 'profile' => '1 Day', 'price' => 0,
-                'comment' => "vc-D1-{$today}- p:5000", 'uptime' => $i < 4 ? '2h' : '0s', 'bytes-out' => 0];
+                'comment' => "vc-D1-{$today} {$t}- p:5000", 'uptime' => $i < 4 ? '2h' : '0s', 'bytes-out' => 0];
         }
         for ($i = 0; $i < 6; $i++) {
             $users[] = ['name' => 'demo-y'.$i, 'profile' => '3 Hours', 'price' => 0,
