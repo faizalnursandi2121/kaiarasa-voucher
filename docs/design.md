@@ -268,6 +268,7 @@ gunakan namanya saat diskusi desain & review kode.
 
 ## 11. Changelog Pattern
 
+- 2026-08: Light-only lock — dark mode dinonaktifkan permanen di semua konteks (boot script membersihkan class & localStorage);
 - 2026-08: Table head global -> sage tint; btn-primary -> sage; Swal solid card;
   toast Kaiarasa sebagai mekanisme feedback; navbar solid + search sebelah logo;
   settings hub bertab; templates/logos pindah per-session; login card direvamp;

@@ -5,7 +5,7 @@ use App\Core\Hooks;
 
 // Initialize variables to avoid undefined notices if not set
 $hotspotname = isset($hotspotname) ? $hotspotname : SiteConfig::APP_NAME;
-$themecolor = isset($themecolor) ? $themecolor : '#000000';
+$themecolor = isset($themecolor) ? $themecolor : '#fafaf8'; // light-only
 $theme = 'light'; // Default theme
 $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
 ?>
@@ -49,12 +49,9 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
     </style>
 
     <script>
-        // Check local storage or system preference on load
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
+        // Light-only lock — dark mode dinonaktifkan permanen
+        document.documentElement.classList.remove('dark');
+        try { localStorage.removeItem('theme'); } catch (e) {}
     </script>
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/lucide.min.js"></script>

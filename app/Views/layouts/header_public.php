@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="theme-color" content="#fafaf8"> <!-- light-only -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/assets/img/favicon.png" />
     <title><?php
@@ -28,12 +29,9 @@ use App\Core\Hooks;
         }
     </style>
     <script>
-        // Check local storage for theme
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
+        // Light-only lock — dark mode dinonaktifkan permanen
+        document.documentElement.classList.remove('dark');
+        try { localStorage.removeItem('theme'); } catch (e) {}
     </script>
     <?php Hooks::doAction('kaiarasa_head'); ?>
 </head>
@@ -66,18 +64,7 @@ use App\Core\Hooks;
             </div>
         </div>
 
-        <!-- Theme Toggle Pill -->
-        <div class="h-9 p-1 bg-accents-2/50 backdrop-blur-md border border-accents-2 rounded-full flex items-center relative" id="theme-pill">
-            <!-- Gliding Background -->
-            <div class="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-background rounded-full shadow-sm transition-all duration-300 ease-in-out" id="theme-glider" style="left: 4px;"></div>
-            
-            <button onclick="setTheme('light')" class="relative z-10 w-8 h-full flex items-center justify-center text-accents-5 hover:text-foreground transition-colors rounded-full" id="btn-light">
-                <i data-lucide="sun" class="w-4 h-4"></i>
-            </button>
-            <button onclick="setTheme('dark')" class="relative z-10 w-8 h-full flex items-center justify-center text-accents-5 hover:text-foreground transition-colors rounded-full" id="btn-dark">
-                <i data-lucide="moon" class="w-4 h-4"></i>
-            </button>
-        </div>
+
     </div>
 
     <script>
@@ -116,46 +103,10 @@ use App\Core\Hooks;
             const btnDark = document.getElementById('btn-dark');
             const htmlElement = document.documentElement;
 
-            window.setTheme = (theme) => {
-                if (theme === 'dark') {
-                    htmlElement.classList.add('dark');
-                    localStorage.theme = 'dark';
-                    glider.style.transform = 'translateX(100%)'; 
-                    // adjustment: logic depends on width. 
-                    // container is w-8+w-8+padding. 
-                    // simplest is just left/right toggle classes or transform.
-                    // using transform translateX(100%) works if width is exactly 50% parent minus padding.
-                    // padding is 1 (4px). buttons are w-8 (32px).
-                    // let's use explicit left style or class-based positioning if easier.
-                    // Tailwind 'translate-x-full' moves 100% of own width.
-                    // If glider is w-[calc(50%-4px)], moving 100% of itself is almost correct but includes gap.
-                    // Let's rely on simple pixel math or percentage relative to parent?
-                    // actually `left: 4px` vs `left: calc(100% - width - 4px)`.
-                    glider.style.left = 'auto';
-                    glider.style.right = '4px';
-                } else {
-                    htmlElement.classList.remove('dark');
-                    localStorage.theme = 'light';
-                    glider.style.right = 'auto';
-                    glider.style.left = '4px';
-                }
-                
-                // Update Active Colors
-                if (theme === 'dark') {
-                    btnDark.classList.add('text-foreground');
-                    btnLight.classList.remove('text-foreground');
-                } else {
-                    btnLight.classList.add('text-foreground');
-                    btnDark.classList.remove('text-foreground');
-                }
+            window.setTheme = () => {
+                // Light-only lock — abaikan tema apapun yang diminta
+                htmlElement.classList.remove('dark');
             };
-
-            // Init
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
 
             // Language Init (Mock)
             const currentLang = localStorage.getItem('kaiarasa_lang') || 'en';
