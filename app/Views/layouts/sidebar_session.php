@@ -302,10 +302,6 @@ $getInitials = function ($name) {
             </div>
 
             <!-- Settings -->
-            <a href="/settings" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= $isSettings ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
-                 <i data-lucide="settings" class="w-4 h-4"></i>
-                 <span data-i18n="sidebar.settings"><?= LanguageHelper::t('sidebar.settings', 'Settings') ?></span>
-            </a>
 
 
 
