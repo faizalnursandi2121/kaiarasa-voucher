@@ -146,17 +146,15 @@ class ProfileController extends Controller
 
         $price = $_POST['price'] ?? '';
         $sellingPrice = $_POST['selling_price'] ?? '';
-        $lockUser = $_POST['lock_user'] ?? 'Disable';
 
         // Construct on-login script
         // Construct on-login script
         $metaScript = sprintf(
-            ':put (",%s,%s,%s,%s,,%s,")',
+            ':put (",%s,%s,%s,%s,,")',
             $expiredMode,
             $price,
             $validity,
-            $sellingPrice,
-            $lockUser
+            $sellingPrice
         );
 
         // Logic Script (The "Enforcer") - Enforces Calendar Validity
@@ -356,15 +354,13 @@ class ProfileController extends Controller
 
         $price = $_POST['price'] ?? '';
         $sellingPrice = $_POST['selling_price'] ?? '';
-        $lockUser = $_POST['lock_user'] ?? 'Disable';
 
         $metaScript = sprintf(
-            ':put (",%s,%s,%s,%s,,%s,")',
+            ':put (",%s,%s,%s,%s,,")',
             $expiredMode,
             $price,
             $validity,
-            $sellingPrice,
-            $lockUser
+            $sellingPrice
         );
 
         // Logic Script (The "Enforcer")

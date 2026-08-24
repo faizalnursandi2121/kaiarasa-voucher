@@ -74,7 +74,6 @@ $toolbar_html .= '
                     <th data-i18n="hotspot_profiles.parent_queue">Parent Queue</th>
                     <th data-sort="mode" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="hotspot_profiles.expired_mode">Expired Mode</th>
                     <th data-i18n="hotspot_profiles.validity">Validity</th>
-                    <th data-i18n="hotspot_profiles.lock_user">Lock User</th>
                     <th class="text-right" data-i18n="common.actions">Actions</th>
                 </tr>
             </thead>
@@ -92,7 +91,6 @@ $toolbar_html .= '
                         data-val-d="<?= htmlspecialchars($profile['val_d'] ?? '') ?>"
                         data-val-h="<?= htmlspecialchars($profile['val_h'] ?? '') ?>"
                         data-val-m="<?= htmlspecialchars($profile['val_m'] ?? '') ?>"
-                        data-lock-user="<?= htmlspecialchars($profile['meta']['lock_user'] ?? 'Disable') ?>"
                         data-search-name="<?= strtolower($profile['name'] ?? '') ?>"
                         data-mode="<?= htmlspecialchars($profile['meta']['expired_mode_formatted'] ?? '') ?>">
                         
@@ -129,9 +127,6 @@ $toolbar_html .= '
                         </td>
                         <td class="text-sm text-accents-6">
                            <?= htmlspecialchars($profile['meta']['validity'] ?? '') ?>
-                        </td>
-                         <td class="text-sm text-accents-6">
-                           <?= htmlspecialchars($profile['meta']['lock_user'] ?? '') ?>
                         </td>
                         
                         <td class="text-right text-sm font-medium">
@@ -399,7 +394,6 @@ $toolbar_html .= '
                  if (form.querySelector('[name="expired_mode"]')) form.querySelector('[name="expired_mode"]').value = (legacyMode === 'none') ? 'none' : 'remc';
                  if (autoToggle) autoToggle.checked = (legacyMode !== 'none');
                  toggleValidity();
-                 if(form.querySelector('[name="lock_user"]')) form.querySelector('[name="lock_user"]').value = row.dataset.lockUser;
 
                  // Validity
                  form.querySelector('[name="validity_d"]').value = row.dataset.valD || '';
@@ -547,16 +541,6 @@ $toolbar_html .= '
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.lock_user">Lock user</label>
-                        <div class="relative">
-                            <select name="lock_user" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                                <option value="Disable" data-i18n="common.forms.disabled">Disable</option>
-                                <option value="Enable" data-i18n="common.forms.enabled">Enable</option>
-                            </select>
-                            <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
-                        </div>
-                    </div>
                     <div>
                         <label class="block text-[13px] font-semibold mb-2" for="auto-disable-toggle" data-i18n="common.auto_disable">Auto-disable after expiry</label>
                         <div class="h-11 flex items-center">

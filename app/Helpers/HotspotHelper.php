@@ -6,7 +6,7 @@ class HotspotHelper
 {
     /**
      * Parse profile on-login script metadata (Standard format)
-     * Format: :put (",mode,price,validity,selling_price,lock_user,")
+     * Format: :put (",mode,price,validity,selling_price,,")
      */
     public static function parseProfileMetadata($script)
     {
@@ -17,7 +17,7 @@ class HotspotHelper
         // Look for :put (",...,") pattern
         preg_match('/:put \("([^"]+)"\)/', $script, $matches);
         if (isset($matches[1])) {
-            // Explode CSV: ,mode,price,validity,selling_price,lock_user,
+            // Explode CSV: ,mode,price,validity,selling_price,,
             $data = explode(',', $matches[1]);
 
             $clean = function ($val) {
@@ -29,7 +29,6 @@ class HotspotHelper
                 'price' => $clean($data[2] ?? ''),
                 'validity' => self::formatValidity($clean($data[3] ?? '')),
                 'selling_price' => $clean($data[4] ?? ''),
-                'lock_user' => $data[6] ?? '',
             ];
         }
 
