@@ -104,7 +104,20 @@ class GeneratorController extends Controller
         $API = RouterOSAPI::fromSession($creds);
         if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
 
-            // Format Comment: prefix-rand-date- comment
+            // Validity default dari Data Plan terpilih (bila form Time Limit kosong)
+            $planValidity = '';
+            $routerPlans = $API->comm('/ip/hotspot/user/profile/print');
+            if (is_array($routerPlans)) {
+                foreach ($routerPlans as $rp) {
+                    if (($rp['name'] ?? '') === $profile) {
+                        $planMeta = \App\Helpers\HotspotHelper::parseProfileMetadata($rp['on-login'] ?? '');
+                        $planValidity = $planMeta['validity_raw'] ?? '';
+                        break;
+                    }
+                }
+            }
+
+                        // Format Comment: prefix-rand-date- comment
             // Example: up-123-12.01.26- premium
             $commentPrefix = ($userMode === 'vc') ? 'vc-' : 'up-';
             $batchId = rand(100, 999);
@@ -132,6 +145,8 @@ class GeneratorController extends Controller
 
                 if (! empty($timeLimit)) {
                     $user['limit-uptime'] = $timeLimit;
+                } elseif (! empty($planValidity)) {
+                    $user['limit-uptime'] = $planValidity;
                 }
                 if (! empty($dataLimit)) {
                     $user['limit-bytes-total'] = $dataLimit;

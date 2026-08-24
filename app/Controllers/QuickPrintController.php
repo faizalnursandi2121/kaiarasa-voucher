@@ -261,6 +261,20 @@ class QuickPrintController extends Controller
             // Limits
             if (! empty($package['time_limit'])) {
                 $userData['limit-uptime'] = $package['time_limit'];
+            } else {
+                // Validity dari Data Plan sebagai limit uptime default
+                $plans = $API->comm('/ip/hotspot/user/profile/print');
+                if (is_array($plans)) {
+                    foreach ($plans as $rp) {
+                        if (($rp['name'] ?? '') === $package['profile']) {
+                            $planMeta = \App\Helpers\HotspotHelper::parseProfileMetadata($rp['on-login'] ?? '');
+                            if (! empty($planMeta['validity_raw'])) {
+                                $userData['limit-uptime'] = $planMeta['validity_raw'];
+                            }
+                            break;
+                        }
+                    }
+                }
             }
             if (! empty($package['data_limit'])) {
                 // data_limit is stored as bytes

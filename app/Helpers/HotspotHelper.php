@@ -28,6 +28,7 @@ class HotspotHelper
                 'expired_mode' => $data[1] ?? '',
                 'price' => $clean($data[2] ?? ''),
                 'validity' => self::formatValidity($clean($data[3] ?? '')),
+                'validity_raw' => $clean($data[3] ?? ''),
                 'selling_price' => $clean($data[4] ?? ''),
             ];
         }
