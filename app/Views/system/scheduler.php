@@ -11,9 +11,8 @@ $page_title = 'Scheduler';
 $page_desc_key = 'system_tools.scheduler_subtitle';
 $page_desc = 'Manage RouterOS automated tasks for: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
-    ['label' => LanguageHelper::t('sidebar.system', 'System'), 'href' => null],
-    ['label' => LanguageHelper::t('system_menu.scheduler', 'Scheduler'), 'href' => null],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => 'Scheduler', 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>

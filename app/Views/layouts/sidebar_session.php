@@ -271,35 +271,25 @@ $getInitials = function ($name) {
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/hosts" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/hosts') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="activity.devices"><?= LanguageHelper::t('activity.devices', 'Connected Devices') ?></span>
                     </a>
-                </div>
-            </div>
-
-                        <!-- Sales Separator -->
-             <div class="pt-4 pb-1 px-3">
-                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.sales"><?= LanguageHelper::t('sidebar.sales', 'Sales') ?></div>
-            </div>
-
-            <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('reports-menu', this)" aria-expanded="" aria-controls="reports-menu">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="receipt" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.sales_report"><?= LanguageHelper::t('sidebar.sales_report', 'Sales') ?></span>
-                    </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isSecurityActive && strpos($uri, '/reports/sales') !== false ? 'rotate-180' : '' ?>"></i>
-                </button>
-
-                <div id="reports-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= strpos($uri, '/reports/sales') !== false ? '500px' : '0px' ?>">
-                    <a href="/<?= htmlspecialchars($session) ?>/reports/sales" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/sales') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="sidebar.sales"><?= LanguageHelper::t('sidebar.sales_report', 'Sales Report') ?></span>
+                    <a href="/<?= htmlspecialchars($session) ?>/reports/user-log" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <span data-i18n="activity.activity_log"><?= LanguageHelper::t('activity.activity_log', 'Activity Log') ?></span>
                     </a>
                 </div>
+
+            <!-- Sales Separator -->
+             <div class="pt-4 pb-1 px-3">
+                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.sales">Sales</div>
             </div>
+
+            <a href="/<?= htmlspecialchars($session) ?>/reports/sales" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/reports/sales') !== false) ? 'bg-white/40 dark:bg-white/5 shadow-sm text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
+                <i data-lucide="receipt" class="w-4 h-4"></i>
+                <span data-i18n="sales.report">Sales Report</span>
+            </a>
 
             <!-- Administration Separator -->
              <div class="pt-4 pb-1 px-3">
-                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.administration"><?= LanguageHelper::t('sidebar.administration', 'Administration') ?></div>
+                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.administration">Administration</div>
             </div>
-
              <!-- Administration Group (Collapsible) -->
              <div class="space-y-1">
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('administration-menu', this)" aria-expanded="" aria-controls="administration-menu">
@@ -339,6 +329,11 @@ $getInitials = function ($name) {
                         <span data-i18n="system_menu.shutdown"><?= LanguageHelper::t('system_menu.shutdown', 'Shutdown') ?></span>
                     </button>
                 </div>
+            </div>
+
+            <!-- Administration Separator -->
+             <div class="pt-4 pb-1 px-3">
+                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.administration"><?= LanguageHelper::t('sidebar.administration', 'Administration') ?></div>
             </div>
 
             <!-- Settings -->

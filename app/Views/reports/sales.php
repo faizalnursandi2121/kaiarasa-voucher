@@ -39,9 +39,8 @@ $page_title_key = 'sales.title';
 $page_title = 'Sales Report';
 $page_desc = 'Track voucher sales and revenue for this location.';
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => '/'.htmlspecialchars($session).'/dashboard'],
-    ['label' => LanguageHelper::t('sidebar.sales', 'Sales'), 'href' => null],
-    ['label' => LanguageHelper::t('sales.title', 'Sales Report'), 'href' => null],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => 'Sales Report', 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>

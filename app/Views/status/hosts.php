@@ -23,9 +23,8 @@ $page_title = 'Connected Devices';
 $page_desc_key = 'hotspot_hosts.subtitle';
 $page_desc = 'Devices connected to the hotspot network for: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
-    ['label' => LanguageHelper::t('sidebar.status', 'Status'), 'href' => null],
-    ['label' => LanguageHelper::t('hotspot_menu.hosts', 'Hosts'), 'href' => null],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => 'Connected Devices', 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>

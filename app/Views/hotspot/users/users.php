@@ -38,9 +38,8 @@ $page_title = 'User Accounts';
 $page_desc_key = 'hotspot_users.subtitle';
 $page_desc = 'Manage vouchers and user accounts for session: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
-    ['label' => LanguageHelper::t('sidebar.hotspot', 'Hotspot'), 'href' => null],
-    ['label' => LanguageHelper::t('hotspot_menu.users', 'Users'), 'href' => null],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => 'User Accounts', 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>

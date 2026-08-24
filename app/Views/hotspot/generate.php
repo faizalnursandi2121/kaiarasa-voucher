@@ -10,9 +10,8 @@ $page_desc_key = 'hotspot_generate.form.subtitle';
 $page_desc_params = ['name' => htmlspecialchars($session)];
 $page_desc = 'Create multiple hotspot vouchers in batch for: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
-    ['label' => LanguageHelper::t('sidebar.hotspot', 'Hotspot'), 'href' => null],
-    ['label' => LanguageHelper::t('hotspot_menu.generate', 'Generate'), 'href' => null],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => 'Generate Vouchers', 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>

@@ -11,9 +11,8 @@ $page_title = 'Hotspot Cookies';
 $page_desc_key = 'cookies.subtitle';
 $page_desc = 'Active authentication cookies for: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
-    ['label' => LanguageHelper::t('sidebar.hotspot', 'Hotspot'), 'href' => null],
-    ['label' => LanguageHelper::t('hotspot_menu.cookies', 'Cookies'), 'href' => null],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => 'Cookies', 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>

@@ -20,9 +20,8 @@ $page_title_key = 'security.bindings.title';
 $page_title = 'IP Bindings';
 $page_desc = 'Manage IP bindings (bypass/blocked) for: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
-    ['label' => LanguageHelper::t('sidebar.security', 'Security'), 'href' => null],
-    ['label' => LanguageHelper::t('hotspot_menu.bindings', 'IP Bindings'), 'href' => null],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => 'IP Bindings', 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>
