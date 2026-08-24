@@ -1,5 +1,5 @@
 <?php
-$title = 'User Profiles';
+$title = 'Access Packages';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 
 use App\Helpers\LanguageHelper;
@@ -19,7 +19,7 @@ sort($uniqueModes);
 
 <?php
 $page_title_key = 'hotspot_profiles.title';
-$page_title = 'User Profiles';
+$page_title = 'Access Packages';
 $page_desc_key = 'hotspot_profiles.subtitle';
 $page_desc = 'Manage hotspot rate limits and pricing for session: ' . htmlspecialchars($session);
 $breadcrumbs = [

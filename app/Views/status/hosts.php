@@ -1,5 +1,5 @@
 <?php
-$title = 'Hotspot Hosts';
+$title = 'Connected Devices';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 
 use App\Helpers\LanguageHelper;
@@ -19,7 +19,7 @@ sort($uniqueServers);
 
 <?php
 $page_title_key = 'hotspot_hosts.title';
-$page_title = 'Hotspot Hosts';
+$page_title = 'Connected Devices';
 $page_desc_key = 'hotspot_hosts.subtitle';
 $page_desc = 'Devices connected to the hotspot network for: ' . htmlspecialchars($session);
 $breadcrumbs = [

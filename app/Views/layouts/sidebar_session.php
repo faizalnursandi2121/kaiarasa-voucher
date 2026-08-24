@@ -230,7 +230,7 @@ $getInitials = function ($name) {
                 <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.access"><?= LanguageHelper::t('sidebar.access', 'Access') ?></div>
             </div>
 
-            <!-- Hotspot Group (Collapsible) -->
+            <!-- Access Group (Collapsible) -->
             <div class="space-y-1">
                 <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('hotspot-menu', this)" aria-expanded="" aria-controls="hotspot-menu">
                     <div class="flex items-center gap-3">
@@ -244,12 +244,13 @@ $getInitials = function ($name) {
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="access.user_accounts"><?= LanguageHelper::t('access.user_accounts', 'User Accounts') ?></span>
                     </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/profiles" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/profile') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="access.packages"><?= LanguageHelper::t('access.packages', 'Access Packages') ?></span>
-                    </a>
                     <a href="/<?= htmlspecialchars($session) ?>/hotspot/generate" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/generate') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
                         <span data-i18n="access.vouchers"><?= LanguageHelper::t('access.vouchers', 'Vouchers') ?></span>
                     </a>
+                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/profiles" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/profile') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
+                        <span data-i18n="access.packages"><?= LanguageHelper::t('access.packages', 'Access Packages') ?></span>
+                    </a>
+                
                 </div>
             </div>
 

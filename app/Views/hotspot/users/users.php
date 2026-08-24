@@ -5,7 +5,7 @@ use App\Helpers\HotspotHelper;
 use App\Helpers\ViewHelper;
 use App\Helpers\LanguageHelper;
 
-$title = 'Hotspot Users';
+$title = 'User Accounts';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 
 // Prepare Filters Data
@@ -34,7 +34,7 @@ sort($uniqueComments);
 
 <?php
 $page_title_key = 'hotspot_users.title';
-$page_title = 'Hotspot Users';
+$page_title = 'User Accounts';
 $page_desc_key = 'hotspot_users.subtitle';
 $page_desc = 'Manage vouchers and user accounts for session: ' . htmlspecialchars($session);
 $breadcrumbs = [
