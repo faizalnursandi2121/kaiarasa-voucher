@@ -1,14 +1,17 @@
-version: '3.8'
-
 services:
   app:
     build: .
     container_name: kaiarasa_app
     restart: unless-stopped
     ports:
-      - "8080:80"
-    volumes:
-      - ./app/Database:/var/www/html/app/Database
-      - ./.env:/var/www/html/.env
+      - "8081:80"   # host:container — ganti kiri bila port bentrok
     environment:
       - APP_ENV=production
+      # APP_KEY WAJIB diisi lewat Environment Variables di panel Dokploy
+      # (jangan ditulis di file ini agar tidak ter-commit ke repo)
+      # contoh: APP_KEY=***LEAKED-KEY-REMOVED***...
+    volumes:
+      - kaiarasa_db:/var/www/html/app/Database
+
+volumes:
+  kaiarasa_db:
