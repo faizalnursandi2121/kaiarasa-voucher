@@ -42,7 +42,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     <th data-i18n="quick_print.profile">Profile</th>
                     <th data-i18n="quick_print.prefix">Prefix</th>
                     <th data-sort="price" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="quick_print.price">Price</th>
-                    <th data-i18n="quick_print.time_limit">Time Limit</th>
+                    <th data-i18n="quick_print.time_limit">Time limit</th>
                     <th class="text-right" data-i18n="common.actions">Actions</th>
                 </tr>
             </thead>
@@ -135,14 +135,14 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 </div>
 
         <div>
-            <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.package_name">Package Name</label>
+            <label class="block text-[13px] font-semibold mb-2" data-i18n="common.name">Name</label>
             <input type="text" name="name" required placeholder="e.g. 3 Hours Voucher"
                 class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.select_profile">Select Profile</label>
+                <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.select_profile">Select profile</label>
                 <div class="relative">
                     <select name="profile" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <?php foreach ($profiles as $p) { ?>
@@ -153,7 +153,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 </div>
             </div>
             <div>
-                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.card_color">Card Color</label>
+                <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.card_color">Card color</label>
                 <div class="relative">
                     <select name="color" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <option value="bg-blue-500" data-i18n="colors.blue">Blue</option>
@@ -177,11 +177,11 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.price">Price (Rp)</label>
+                <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.price">Price (Rp)</label>
                 <input type="number" name="price" placeholder="5000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
             </div>
             <div>
-                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.selling_price">Selling Price</label>
+                <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.selling_price">Selling Price</label>
                 <input type="number" name="selling_price" placeholder="Default same" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
             </div>
         </div>
@@ -193,11 +193,11 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.prefix">Prefix</label>
+                <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.prefix">Prefix</label>
                 <input type="text" name="prefix" placeholder="Example: VIP-" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
             </div>
             <div>
-                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.char_length">Char Length</label>
+                <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.char_length">Char length</label>
                 <div class="relative">
                     <select name="char_length" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <option value="4" selected data-i18n="common.char_length" data-i18n-params='{"n": 4}'>4 Characters</option>
@@ -215,7 +215,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 </div>
 
         <div>
-            <span class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.time_limit">Time Limit</span>
+            <span class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.time_limit">Time limit</span>
             <div class="grid grid-cols-3 gap-2">
                 <div class="relative">
                     <input type="number" name="timelimit_d" min="0" placeholder="0" aria-label="Days"
@@ -236,7 +236,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         </div>
 
         <div>
-            <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.data_limit">Data Limit</label>
+            <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.data_limit">Data limit</label>
             <div class="flex gap-2">
                 <div class="relative flex-1 min-w-0">
                     <i data-lucide="database" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
@@ -255,7 +255,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         </div>
 
         <div>
-            <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="system_tools.comment">Comment</label>
+            <label class="block text-[13px] font-semibold mb-2" data-i18n="system_tools.comment">Comment</label>
             <input type="text" name="comment" placeholder="Description or Note" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
         </div>
     </form>

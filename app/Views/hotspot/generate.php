@@ -22,14 +22,14 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="gv-qty" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.qty">Quantity</label>
+                    <label for="gv-qty" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.qty">Quantity</label>
                     <div class="relative">
                         <input type="number" name="qty" id="gv-qty" value="1" min="1" required placeholder="1"
                             class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
                 </div>
                 <div>
-                    <label for="gv-server" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.server">Server</label>
+                    <label for="gv-server" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.server">Server</label>
                     <div class="relative">
                         <i data-lucide="server" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <select name="server" id="gv-server"
@@ -50,7 +50,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="gv-usermode" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.user_mode">User Mode</label>
+                    <label for="gv-usermode" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.user_mode">User mode</label>
                     <div class="relative">
                         <select name="userModel" id="gv-usermode"
                             class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition appearance-none">
@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div>
-                    <label for="gv-comment" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.comment">Comment</label>
+                    <label for="gv-comment" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.comment">Comment</label>
                     <div class="relative">
                         <i data-lucide="message-square" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <input type="text" name="comment" id="gv-comment" data-i18n-placeholder="hotspot_generate.form.comment_help" placeholder="Batch note..."
@@ -77,7 +77,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="gv-length" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.user_length">Name Length</label>
+                    <label for="gv-length" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.user_length">Name Length</label>
                     <div class="relative">
                         <select name="userLength" id="gv-length"
                             class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition appearance-none">
@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 <div>
-                    <label for="gv-prefix" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.prefix">Prefix</label>
+                    <label for="gv-prefix" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.prefix">Prefix</label>
                     <div class="relative">
                         <i data-lucide="type" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <input type="text" name="prefix" id="gv-prefix" data-i18n-placeholder="hotspot_generate.form.prefix_placeholder" placeholder="e.g. VIP-"
@@ -99,7 +99,7 @@
             </div>
 
             <div>
-                <label for="gv-char" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.characters">Character Set</label>
+                <label for="gv-char" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.characters">Character set</label>
                 <div class="relative">
                     <select name="char" id="gv-char"
                         class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition appearance-none">
@@ -121,7 +121,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="gv-profile" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.profile">Profile *</label>
+                    <label for="gv-profile" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.profile">Profile *</label>
                     <div class="relative">
                         <i data-lucide="layers" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <select name="profile" id="gv-profile" required
@@ -136,7 +136,7 @@
                     </div>
                 </div>
                 <div>
-                    <label for="gv-datalimit" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.data_limit">Data Limit</label>
+                    <label for="gv-datalimit" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.data_limit">Data limit</label>
                     <div class="flex gap-2">
                         <div class="relative flex-1 min-w-0">
                             <i data-lucide="database" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
@@ -156,7 +156,7 @@
             </div>
 
             <div>
-                <span class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.time_limit">Time Limit</span>
+                <span class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.time_limit">Time limit</span>
                 <div class="grid grid-cols-3 gap-2">
                     <div class="relative">
                         <input type="number" name="timelimit_d" min="0" placeholder="0" aria-label="Time limit days"

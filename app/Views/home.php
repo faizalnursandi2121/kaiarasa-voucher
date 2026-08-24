@@ -162,7 +162,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             </div>
 
             <div>
-                <label for="rf-sessname" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Session Name *</label>
+                <label for="rf-sessname" class="block text-[13px] font-semibold mb-2">Session name *</label>
                 <div class="relative">
                     <i data-lucide="tag" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                     <input name="sessname" id="rf-sessname" required placeholder="e.g. router-jakarta-1"
@@ -173,7 +173,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
             <div class="flex flex-col sm:flex-row sm:items-end gap-4">
                 <div class="flex-1 min-w-0">
-                    <label for="rf-ipmik" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">IP Address *</label>
+                    <label for="rf-ipmik" class="block text-[13px] font-semibold mb-2">IP address *</label>
                     <div class="relative">
                         <i data-lucide="globe" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <input name="ipmik" id="rf-ipmik" required placeholder="192.168.88.1"
@@ -182,13 +182,13 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     <p class="hidden text-xs text-red-600 mt-1.5" data-err="ipmik"></p>
                 </div>
                 <div class="w-full sm:w-36 shrink-0">
-                    <label for="rf-port" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">API Port *</label>
+                    <label for="rf-port" class="block text-[13px] font-semibold mb-2">API port *</label>
                     <input type="number" name="port" id="rf-port" min="1" max="65535" value="8728"
                         class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                 </div>
                 <div class="w-full sm:w-auto shrink-0">
-                    <label for="rf-ssl" class="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider mb-2">
-                        <span class="opacity-50">SSL</span>
+                    <label for="rf-ssl" class="flex items-center gap-1 text-[13px] font-semibold mb-2">
+                        <span>SSL</span>
                         <span class="relative group/tip inline-flex items-center cursor-help" tabindex="0">
                             <i data-lucide="help-circle" class="w-3.5 h-3.5 opacity-60 hover:opacity-100 transition-opacity"></i>
                             <span class="pointer-events-none absolute right-0 top-full mt-2 w-64 normal-case tracking-normal rounded-lg bg-[#1a1c19] dark:bg-black text-left text-white text-[11px] leading-relaxed p-3 opacity-0 group-hover/tip:opacity-100 group-focus-within/tip:opacity-100 transition-opacity z-30 shadow-xl">
@@ -213,7 +213,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="rf-usermik" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Username *</label>
+                    <label for="rf-usermik" class="block text-[13px] font-semibold mb-2">Username *</label>
                     <div class="relative">
                         <i data-lucide="user" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <input name="usermik" id="rf-usermik" required placeholder="admin"
@@ -221,7 +221,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     </div>
                 </div>
                 <div>
-                    <label for="rf-passmik" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Password <span class="normal-case font-normal" id="rf-pass-hint"></span></label>
+                    <label for="rf-passmik" class="block text-[13px] font-semibold mb-2">Password <span class="normal-case font-normal" id="rf-pass-hint"></span></label>
                     <div class="relative">
                         <i data-lucide="lock" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <input type="password" name="passmik" id="rf-passmik" autocomplete="new-password" placeholder="••••••••"
@@ -241,7 +241,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="rf-hotspotname" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Hotspot Name *</label>
+                    <label for="rf-hotspotname" class="block text-[13px] font-semibold mb-2">Hotspot name *</label>
                     <div class="relative">
                         <i data-lucide="share-2" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <input name="hotspotname" id="rf-hotspotname" required placeholder="My Hotspot ID"
@@ -249,7 +249,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     </div>
                 </div>
                 <div>
-                    <label for="rf-dnsname" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">DNS Name *</label>
+                    <label for="rf-dnsname" class="block text-[13px] font-semibold mb-2">DNS name *</label>
                     <div class="relative">
                         <i data-lucide="globe" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <input name="dnsname" id="rf-dnsname" required placeholder="hotspot.net"
@@ -273,7 +273,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             <div id="rf-test-status" class="hidden"></div>
 
             <div>
-                <label for="rf-iface" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Traffic Interface *</label>
+                <label for="rf-iface" class="block text-[13px] font-semibold mb-2">Traffic interface *</label>
                 <div class="relative">
                     <i data-lucide="network" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                     <select name="iface" id="rf-iface" required disabled
