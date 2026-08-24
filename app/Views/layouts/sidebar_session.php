@@ -308,6 +308,10 @@ $getInitials = function ($name) {
     #sidebar .bg-accents-1\/30, #sidebar .bg-accents-1\/50 { background: rgba(255,255,255,.10) !important; }
     #sidebar .hover\:bg-accents-1:hover { background: rgba(255,255,255,.12) !important; }
     #sidebar .ring-white\/10 { --tw-ring-color: rgba(255,255,255,.25); }
+    /* Dorong seluruh konten melewati sidebar fixed (desktop) */
+    @media (min-width: 1024px) {
+        body:has(#sidebar) > *:not(#sidebar) { margin-left: 16rem; }
+    }
     .session-mobile-header { background: #5f7f67 !important; backdrop-filter: none !important; }
     </style>
 </aside>
