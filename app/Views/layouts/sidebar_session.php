@@ -181,8 +181,8 @@ $getInitials = function ($name) {
                     </div>
                     <div class="border-t border-gray-200 dark:border-white/10 p-1 bg-gray-50 dark:bg-white/5">
                          <a href="/settings/add" class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-100 hover:text-gray-800 rounded-md transition-colors text-gray-600 dark:text-gray-300 dark:hover:bg-white/5">
-                            <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                            <span data-i18n="settings.add_router"><?= LanguageHelper::t('settings.add_router', 'Connect Router') ?></span>
+                            <i data-lucide="plus-circle" class="w-4 h-4 text-gray-600 dark:text-gray-300"></i>
+                            <span data-i18n="settings.add_router" class="text-gray-600 dark:text-gray-300"><?= LanguageHelper::t('settings.add_router', 'Connect Router') ?></span>
                         </a>
                     </div>
                 </div>
