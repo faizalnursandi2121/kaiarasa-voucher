@@ -90,30 +90,59 @@ class HotspotHelper
      */
     public static function getUserStatus($user)
     {
-        // 1. Check for specific comment keywords (Highest Priority - usually set by scripts)
+        // Stempel "exp:" ditulis saat LOGIN PERTAMA sebagai penanda terjadwal,
+        // BUKAN berarti sudah expired. Yang menentukan: flag disabled / limit.
         $comment = strtolower($user['comment'] ?? '');
+        $disabled = in_array(strtolower((string) ($user['disabled'] ?? 'false')), ['true', 'yes'], true);
 
-        // "exp" explicitly means expired by script
-        if (strpos($comment, 'exp') !== false) {
+        // 1. Disabled + stempel exp = expired oleh scheduler
+        if ($disabled && strpos($comment, 'exp') !== false) {
             return 'expired';
         }
 
-        // 2. Check Data Limit (Quota)
-        $limitBytes = isset($user['limit-bytes-total']) ? (int) $user['limit-bytes-total'] : 0;
+        // 2. Kuota data habis
+        $limitBytes = (int) ($user['limit-bytes-total'] ?? 0);
         if ($limitBytes > 0) {
-            $bytesIn = isset($user['bytes-in']) ? (int) $user['bytes-in'] : 0;
-            $bytesOut = isset($user['bytes-out']) ? (int) $user['bytes-out'] : 0;
-            if (($bytesIn + $bytesOut) >= $limitBytes) {
+            $usedBytes = (int) ($user['bytes-in'] ?? 0) + (int) ($user['bytes-out'] ?? 0);
+            if ($usedBytes >= $limitBytes) {
                 return 'limited';
             }
         }
 
-        // 3. Check Disabled state
-        if (($user['disabled'] ?? 'false') === 'true') {
+        // 3. Uptime habis (sesi diputus router; disabled menyusul via scheduler)
+        $limitUp = self::parseUptimeToSeconds((string) ($user['limit-uptime'] ?? ''));
+        if ($limitUp > 0) {
+            $usedUp = self::parseUptimeToSeconds((string) ($user['uptime'] ?? ''));
+            if ($usedUp >= $limitUp) {
+                return 'limited';
+            }
+        }
+
+        // 4. Disabled manual tanpa stempel exp
+        if ($disabled) {
             return 'locked';
         }
 
-        // 4. Default
+        // 5. Masih dalam masa aktif
         return 'active';
+    }
+
+    /**
+     * Parse uptime RouterOS (e.g. 1w2d3h4m5s) menjadi detik
+     */
+    public static function parseUptimeToSeconds($val)
+    {
+        $val = strtolower(trim((string) $val));
+        if ($val === '' || $val === '-') {
+            return 0;
+        }
+        $multipliers = ['w' => 604800, 'd' => 86400, 'h' => 3600, 'm' => 60, 's' => 1];
+        $total = 0;
+        if (preg_match_all('/(\d+)([wdhms])/', $val, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $m) {
+                $total += ((int) $m[1]) * $multipliers[$m[2]];
+            }
+        }
+        return $total;
     }
 }
