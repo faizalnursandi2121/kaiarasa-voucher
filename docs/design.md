@@ -148,6 +148,11 @@ input padding-left 40-44px.
 - IA: CRUD router = Home; Voucher Templates & Logos = sidebar dashboard
   (/{session}/voucher-templates, /{session}/logos); /settings config-only.
 - Konten max-w-7xl center, px-4 sm:px-6 lg:px-8
+- MEKANISME LAYOUT SESSION (wajib dipahami): aside sidebar berupa FIXED overlay
+  (bukan static in-flow). Konten digeser via CSS:
+  `body:has(#sidebar) > *:not(#sidebar) { margin-left:16rem }` pada ≥1024px.
+  JANGAN mengubah aside menjadi md:static — itu yang menyebabkan konten turun
+  ke bawah sidebar (stacking vertikal).
 
 ## 7. Mapping Tailwind (cheatsheet)
 
