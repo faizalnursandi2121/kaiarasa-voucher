@@ -157,6 +157,11 @@ $getInitials = function ($name) {
         <!-- Sidebar Content (RTL for left scrollbar) -->
         <div class="flex-1 overflow-y-auto" style="direction: rtl;">
             <div class="py-4 px-3 space-y-1" style="direction: ltr;">
+            <!-- Brand -->
+            <div class="px-3 mb-5">
+                <img src="/assets/img/logo-white.webp" alt="Kaiarasa" class="h-9 w-auto drop-shadow">
+            </div>
+
             <!-- Session Switcher -->
             <div class="px-3 mb-6 relative" onmouseleave="closeMenu('session-dropdown')">
                 <button type="button" class="w-full group grid grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-accents-2 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all decoration-0 overflow-hidden shadow-sm" onclick="toggleMenu('session-dropdown', this)">

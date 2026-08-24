@@ -14,12 +14,6 @@ $sessionInitials = strtoupper(substr($sessionUser, 0, 2));
 <!-- ===== Session Topbar ===== -->
 <header class="h-16 bg-white dark:bg-[#1a1c19] border-b border-black/[.07] dark:border-white/[.08] flex items-center gap-4 px-4 sm:px-6 sticky top-0 z-30">
 
-    <!-- Logo + Global Search -->
-    <a href="/" class="flex items-center shrink-0 group" title="Home — NOC Overview">
-        <img src="/assets/img/logo-sage.webp" alt="<?= SiteConfig::APP_NAME ?>" class="h-8 w-auto block dark:hidden">
-        <img src="/assets/img/logo-white.webp" alt="<?= SiteConfig::APP_NAME ?>" class="h-8 w-auto hidden dark:block">
-    </a>
-
     <div class="hidden md:block w-full max-w-sm relative">
         <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40"></i>
         <input type="search" placeholder="Search routers, users, vouchers…"
@@ -31,7 +25,7 @@ $sessionInitials = strtoupper(substr($sessionUser, 0, 2));
         <div class="relative" id="topbar-notif-wrap">
             <button type="button"
                 class="relative w-10 h-10 inline-flex items-center justify-center rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 hover:border-[#92aa96] transition-colors"
-                onclick="toggleMenu('topbar-notif-dropdown', this)" aria-label="Notifications">
+                id="tb-notif-btn" aria-label="Notifications">
                 <i data-lucide="bell" class="w-[18px] h-[18px]"></i>
                 <span id="topbar-notif-dot" class="hidden absolute top-2 right-2.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-background"></span>
             </button>
@@ -50,7 +44,7 @@ $sessionInitials = strtoupper(substr($sessionUser, 0, 2));
         <div class="relative" id="topbar-profile-wrap">
             <button type="button"
                 class="flex items-center gap-2 h-10 pl-1 pr-2 rounded-xl hover:bg-black/[.04] dark:hover:bg-white/[.06] transition-colors"
-                onclick="toggleMenu('topbar-profile-dropdown', this)" aria-label="Account menu">
+                id="tb-profile-btn" aria-label="Account menu">
                 <span class="w-8 h-8 rounded-full bg-[#5f7f67] text-white text-xs font-bold flex items-center justify-center uppercase"><?= $sessionInitials ?></span>
                 <span class="hidden sm:block text-sm font-semibold max-w-[120px] truncate"><?= htmlspecialchars($sessionUser) ?></span>
                 <i data-lucide="chevron-down" class="w-4 h-4 opacity-50"></i>
@@ -116,12 +110,33 @@ $sessionInitials = strtoupper(substr($sessionUser, 0, 2));
         });
     }
 
-    // tutup dropdown saat klik di luar
+    // Buka/tutup dropdown: satu handler eksklusif, independen dari toggleMenu global
+    var pairs = [
+        ['tb-notif-btn', 'topbar-notif-dropdown'],
+        ['tb-profile-btn', 'topbar-profile-dropdown'],
+    ];
+    pairs.forEach(function (pair) {
+        var btn = document.getElementById(pair[0]);
+        var dd = document.getElementById(pair[1]);
+        if (! btn || ! dd) return;
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var willOpen = dd.classList.contains('hidden');
+            pairs.forEach(function (other) {
+                var od = document.getElementById(other[1]);
+                if (od && other[1] !== pair[1]) od.classList.add('hidden');
+            });
+            dd.classList.toggle('hidden', ! willOpen);
+        });
+    });
+
+    // Tutup semua saat klik di luar area dropdown+trigger
     document.addEventListener('click', function (e) {
-        ['topbar-notif-dropdown','topbar-profile-dropdown'].forEach(function (id) {
-            var dd = document.getElementById(id);
+        pairs.forEach(function (pair) {
+            var dd = document.getElementById(pair[1]);
+            var btn = document.getElementById(pair[0]);
             if (! dd || dd.classList.contains('hidden')) return;
-            if (! dd.parentElement.contains(e.target)) dd.classList.add('hidden');
+            if (! dd.contains(e.target) && ! btn.contains(e.target)) dd.classList.add('hidden');
         });
     });
 })();
