@@ -34,7 +34,7 @@ sort($uniqueComments);
 
 <?php
 $page_title_key = 'hotspot_users.title';
-$page_title = 'User Accounts';
+$page_title = 'Vouchers';
 $page_desc_key = 'hotspot_users.subtitle';
 $page_desc = 'Manage vouchers and user accounts for session: ' . htmlspecialchars($session);
 $breadcrumbs = [

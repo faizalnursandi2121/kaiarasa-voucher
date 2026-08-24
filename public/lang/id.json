@@ -462,7 +462,7 @@
  "hotspot_users": {
   "add_user": "Tambah Pengguna",
   "edit_user": "Edit Pengguna",
-  "title": "Pengguna Hotspot",
+  "title": "Voucher",
   "subtitle": "Kelola pengguna dan voucher",
   "name": "Nama",
   "profile": "Profil",
@@ -749,8 +749,8 @@
  },
  "access": {
   "title": "Akun User & Voucher",
-  "user_accounts": "Akun User",
-  "vouchers": "Voucher",
+  "user_accounts": "Voucher",
+  "vouchers": "Buat Voucher",
   "packages": "Paket Data"
  }
 }

@@ -450,7 +450,7 @@
  "hotspot_users": {
   "add_user": "Add User",
   "edit_user": "Edit User",
-  "title": "Hotspot Users",
+  "title": "Vouchers",
   "subtitle": "Manage users and vouchers",
   "name": "Name",
   "profile": "Profile",
@@ -747,8 +747,8 @@
  },
  "access": {
   "title": "User Accounts & Vouchers",
-  "user_accounts": "User Accounts",
-  "vouchers": "Vouchers",
+  "user_accounts": "Vouchers",
+  "vouchers": "Generate Vouchers",
   "packages": "Data Plans"
  }
 }

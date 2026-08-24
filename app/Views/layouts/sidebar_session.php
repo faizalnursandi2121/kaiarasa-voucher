@@ -196,18 +196,18 @@ $getInitials = function ($name) {
 
             <!-- Access -->
             <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
-                <i data-lucide="users" class="w-4 h-4"></i>
-                <span data-i18n="access.user_accounts">User Accounts</span>
+                <i data-lucide="ticket" class="w-4 h-4"></i>
+                <span data-i18n="access.user_accounts">Vouchers</span>
             </a>
 
             <a href="/<?= htmlspecialchars($session) ?>/hotspot/generate" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/hotspot/generate') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
                 <i data-lucide="ticket-plus" class="w-4 h-4"></i>
-                <span data-i18n="access.vouchers">Vouchers</span>
+                <span data-i18n="access.vouchers">Generate Vouchers</span>
             </a>
 
             <a href="/<?= htmlspecialchars($session) ?>/hotspot/profiles" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/hotspot/profile') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
                 <i data-lucide="package-open" class="w-4 h-4"></i>
-                <span data-i18n="access.packages">Access Packages</span>
+                <span data-i18n="access.packages">Data Plans</span>
             </a>
             <!-- Activity -->
             <a href="/<?= htmlspecialchars($session) ?>/hotspot/active" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
