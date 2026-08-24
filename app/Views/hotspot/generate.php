@@ -1,27 +1,23 @@
 <?php require_once ROOT.'/app/Views/layouts/header_main.php'; ?>
 <?php require_once ROOT.'/app/Views/layouts/sidebar_session.php'; ?>
 
-<?php
-use App\Helpers\LanguageHelper;
-
-$page_title_key = 'hotspot_generate.title';
-$page_title = 'Generate Vouchers';
-$page_desc_key = 'hotspot_generate.form.subtitle';
-$page_desc_params = ['name' => htmlspecialchars($session)];
-$page_desc = 'Create multiple hotspot vouchers in batch for: ' . htmlspecialchars($session);
-$breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
-    ['label' => 'Generate Vouchers', 'href' => null],
-];
-require_once ROOT.'/app/Views/layouts/page_header.php';
-?>
-
 <!-- ===== Generate Vouchers (pattern: Home / Add Router Modal) ===== -->
 <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
     <!-- Form Column -->
     <div class="lg:col-span-2 min-w-0">
-    <div class="rounded-2xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-6 shadow-xl">
-        <form action="/<?= htmlspecialchars($session) ?>/hotspot/generate/process" method="POST" class="space-y-4">
+    <div class="rounded-2xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] shadow-xl overflow-hidden">
+        <!-- Panel Header (Sage) -->
+        <div class="bg-[#5f7f67] px-6 py-5">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
+                    <i data-lucide="layers" class="w-4 h-4 text-white"></i>
+                </div>
+                <h3 class="text-base font-bold text-white tracking-tight" data-i18n="hotspot_generate.title">Generate Vouchers</h3>
+            </div>
+            <p class="text-xs text-white/70 mt-1.5" data-i18n="hotspot_generate.form.subtitle" data-i18n-params='{"name": "<?= htmlspecialchars($session) ?>"}'>Create multiple hotspot vouchers in batch for: <?= htmlspecialchars($session) ?></p>
+        </div>
+
+        <form action="/<?= htmlspecialchars($session) ?>/hotspot/generate/process" method="POST" class="space-y-4 p-6">
             <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
 
             <div class="flex items-center gap-3 pt-1">
@@ -37,7 +33,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                             class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-14 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none" data-i18n="hotspot_users.title">Users</span>
                     </div>
-                    <p class="text-xs opacity-50 mt-1.5" data-i18n="hotspot_generate.form.qty_help">Count of vouchers to generate.</p>
                 </div>
                 <div>
                     <label for="gv-server" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.server">Server</label>
@@ -56,7 +51,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                     </div>
-                    <p class="text-xs opacity-50 mt-1.5" data-i18n="hotspot_generate.form.server_help">Target Hotspot Instance.</p>
                 </div>
             </div>
 
@@ -71,7 +65,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                     </div>
-                    <p class="text-xs opacity-50 mt-1.5" data-i18n="hotspot_generate.form.user_mode_help">Login credential format.</p>
                 </div>
                 <div>
                     <label for="gv-comment" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.comment">Comment</label>
@@ -80,7 +73,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         <input type="text" name="comment" id="gv-comment" data-i18n-placeholder="hotspot_generate.form.comment_help" placeholder="Batch note..."
                             class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
-                    <p class="text-xs opacity-50 mt-1.5" data-i18n="hotspot_generate.form.comment_help">Note for this batch.</p>
                 </div>
             </div>
 
@@ -101,7 +93,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                     </div>
-                    <p class="text-xs opacity-50 mt-1.5" data-i18n="hotspot_generate.form.name_length_help">Length of username/password.</p>
                 </div>
                 <div>
                     <label for="gv-prefix" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.prefix">Prefix</label>
@@ -110,7 +101,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         <input type="text" name="prefix" id="gv-prefix" data-i18n-placeholder="hotspot_generate.form.prefix_placeholder" placeholder="e.g. VIP-"
                             class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
-                    <p class="text-xs opacity-50 mt-1.5" data-i18n="hotspot_generate.form.prefix_help">Prefix for generated usernames.</p>
                 </div>
             </div>
 
@@ -128,7 +118,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                     </select>
                     <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                 </div>
-                <p class="text-xs opacity-50 mt-1.5" data-i18n="hotspot_generate.form.characters_help">Character types to include.</p>
             </div>
 
             <div class="flex items-center gap-3 pt-2">
@@ -151,7 +140,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                     </div>
-                    <p class="text-xs opacity-50 mt-1.5" data-i18n="hotspot_generate.form.profile_help">Apply speed limits from profile.</p>
                 </div>
                 <div>
                     <label for="gv-datalimit" class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_generate.form.data_limit">Data Limit</label>
@@ -170,7 +158,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                             <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         </div>
                     </div>
-                    <p class="text-xs opacity-50 mt-1.5" data-i18n="hotspot_generate.form.data_limit_help">Max data transfer (MB).</p>
                 </div>
             </div>
 
@@ -193,7 +180,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">M</span>
                     </div>
                 </div>
-                <p class="text-xs opacity-50 mt-1.5" data-i18n="hotspot_generate.form.time_limit_help">Max uptime (e.g. 1h, 30m).</p>
             </div>
 
             <div class="flex items-center justify-end gap-2.5 pt-5 border-t border-black/[.06] dark:border-white/[.06]">
@@ -201,7 +187,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                     class="h-10 px-4 inline-flex items-center rounded-xl border border-black/10 dark:border-white/10 text-[13px] font-semibold hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors" data-i18n="common.cancel">Cancel</a>
                 <button type="submit"
                     class="h-10 px-5 rounded-xl bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[13px] font-semibold transition-colors disabled:opacity-60 disabled:cursor-wait inline-flex items-center gap-2">
-                    <i data-lucide="zap" class="w-3.5 h-3.5"></i>
                     <span data-i18n="hotspot_generate.form.generate">Generate Vouchers</span>
                 </button>
             </div>
