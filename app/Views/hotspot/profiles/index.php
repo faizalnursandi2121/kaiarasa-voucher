@@ -423,7 +423,7 @@ $toolbar_html .= '
     <div class="flex items-start justify-between gap-4 mb-5 pr-1 text-left">
         <div>
             <h3 class="text-xl font-bold tracking-tight" data-modal-title>Add Profile</h3>
-            <p class="text-xs opacity-50 mt-1" data-i18n="common.profile_form_subtitle">Speed limits, expiry &amp; pricing</p>
+            <p class="text-xs mt-1" data-i18n="common.profile_form_subtitle">Speed limits, expiry &amp; pricing</p>
         </div>
         <button type="button" onclick="Swal.close()" aria-label="Close"
             class="w-8 h-8 rounded-lg inline-flex items-center justify-center hover:bg-black/[.05] dark:hover:bg-white/[.06] transition-colors shrink-0">
@@ -438,18 +438,18 @@ $toolbar_html .= '
                 <input type="hidden" name="id" id="form-id" disabled>
 
                                 <div class="flex items-center gap-3 pt-2">
-                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.general">General</span>
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.general">General</span>
                     <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="common.name">Name</label>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="common.name">Name</label>
                     <input type="text" name="name" required class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" data-i18n-placeholder="hotspot_profiles.form.name_placeholder" placeholder="e.g. 1Hour-Package">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.address_pool">Address Pool</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_profiles.form.address_pool">Address Pool</label>
                         <div class="relative">
                             <select name="address-pool" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                                 <option value="none" data-i18n="common.forms.none">none</option>
@@ -463,23 +463,23 @@ $toolbar_html .= '
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.shared_users">Shared Users</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_profiles.form.shared_users">Shared Users</label>
                         <input type="number" name="shared-users" value="1" min="1" placeholder="1" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
                 </div>
 
                                 <div class="flex items-center gap-3 pt-2">
-                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.bandwidth">Bandwidth</span>
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.bandwidth">Bandwidth</span>
                     <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.rate_limit">Rate Limit (Rx/Tx)</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_profiles.form.rate_limit">Rate Limit (Rx/Tx)</label>
                         <input type="text" name="rate-limit" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" data-i18n-placeholder="hotspot_profiles.form.rate_limit_help" placeholder="e.g. 512k/1M">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.parent_queue">Parent Queue</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_profiles.form.parent_queue">Parent Queue</label>
                         <div class="relative">
                             <select name="parent-queue" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                                 <option value="none" data-i18n="common.forms.none">none</option>
@@ -493,13 +493,13 @@ $toolbar_html .= '
                 </div>
 
                                 <div class="flex items-center gap-3 pt-2">
-                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.expiry_pricing">Expiry & Pricing</span>
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.expiry_pricing">Expiry & Pricing</span>
                     <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.expired_mode">Expired Mode</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_profiles.form.expired_mode">Expired Mode</label>
                         <div class="relative">
                             <select name="expired_mode" id="expired-mode" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                                 <option value="none" data-i18n="common.forms.none" selected>none</option>
@@ -512,7 +512,7 @@ $toolbar_html .= '
                         </div>
                     </div>
                     <div id="validity-group" class="hidden space-y-2 transition-all">
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.validity">Validity</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_profiles.form.validity">Validity</label>
                         <div class="grid grid-cols-3 gap-2">
                             <div class="relative">
                                 <input type="number" name="validity_d" min="0" placeholder="0D" aria-label="Validity days"
@@ -532,17 +532,17 @@ $toolbar_html .= '
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.price">Price (Rp)</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_profiles.form.price">Price (Rp)</label>
                         <input type="number" name="price" placeholder="e.g. 5000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.selling_price">Selling Price (Rp)</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_profiles.form.selling_price">Selling Price (Rp)</label>
                         <input type="number" name="selling_price" placeholder="e.g. 7000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_profiles.form.lock_user">Lock User</label>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_profiles.form.lock_user">Lock User</label>
                     <div class="relative sm:max-w-xs">
                         <select name="lock_user" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                             <option value="Disable" data-i18n="common.forms.disabled">Disable</option>
@@ -556,11 +556,11 @@ $toolbar_html .= '
 
         <!-- Quick Tips -->
         <aside class="self-start rounded-2xl border border-dashed border-black/[.08] dark:border-white/[.08] bg-white/50 dark:bg-white/[.03] p-5">
-            <h3 class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-3">
+            <h3 class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider mb-3">
                 <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-yellow-500"></i>
                 <span data-i18n="hotspot_profiles.form.quick_tips">Quick Tips</span>
             </h3>
-            <ul class="space-y-1.5 text-xs opacity-70 leading-relaxed list-none p-0 m-0">
+            <ul class="space-y-1.5 text-xs leading-relaxed list-none p-0 m-0">
                 <li class="flex gap-2">
                     <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
                     <span data-i18n="hotspot_profiles.form.tip_rate_limit"><strong>Rate Limit</strong>: Rx/Tx (Upload/Download). Example: <code>512k/1M</code></span>

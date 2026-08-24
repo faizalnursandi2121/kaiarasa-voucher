@@ -230,7 +230,7 @@ $toolbar_html .= '
     <div class="flex items-start justify-between gap-4 mb-5 pr-1 text-left">
         <div>
             <h3 class="text-xl font-bold tracking-tight" data-modal-title>Add User</h3>
-            <p class="text-xs opacity-50 mt-1" data-i18n="common.users_form_subtitle">Voucher login credentials &amp; limits</p>
+            <p class="text-xs mt-1" data-i18n="common.users_form_subtitle">Voucher login credentials &amp; limits</p>
         </div>
         <button type="button" onclick="Swal.close()" aria-label="Close"
             class="w-8 h-8 rounded-lg inline-flex items-center justify-center hover:bg-black/[.05] dark:hover:bg-white/[.06] transition-colors shrink-0">
@@ -245,20 +245,20 @@ $toolbar_html .= '
                 <input type="hidden" name="id" id="form-id" disabled> <!-- Disabled for Add -->
 
                                 <div class="flex items-center gap-3 pt-2">
-                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.account">Account</span>
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.account">Account</span>
                     <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.username">Username</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_users.form.username">Username</label>
                         <div class="relative">
                             <i data-lucide="user" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                             <input type="text" name="name" required class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" data-i18n-placeholder="hotspot_users.form.username_placeholder" placeholder="e.g. voucher123">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.password">Password</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_users.form.password">Password</label>
                         <div class="relative">
                             <i data-lucide="key" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                             <input type="text" name="password" required class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" data-i18n-placeholder="hotspot_users.form.password_placeholder" placeholder="e.g. 123456">
@@ -267,12 +267,12 @@ $toolbar_html .= '
                 </div>
 
                                 <div class="flex items-center gap-3 pt-2">
-                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.access">Access</span>
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.access">Access</span>
                     <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.profile">Profile</label>
+                    <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_users.form.profile">Profile</label>
                     <div class="relative">
                         <i data-lucide="layers" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <select name="profile" data-native required class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
@@ -286,7 +286,7 @@ $toolbar_html .= '
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.server">Server</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_users.form.server">Server</label>
                         <div class="relative">
                             <i data-lucide="server" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                             <select name="server" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
@@ -309,7 +309,7 @@ $toolbar_html .= '
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.comment">Comment</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_users.form.comment">Comment</label>
                         <div class="relative">
                             <i data-lucide="message-square" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                             <input type="text" name="comment" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition" placeholder="Optional note">
@@ -318,13 +318,13 @@ $toolbar_html .= '
                 </div>
 
                                 <div class="flex items-center gap-3 pt-2">
-                    <span class="text-[13px] font-bold uppercase tracking-[0.14em] opacity-90" data-i18n="common.limits">Limits</span>
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.limits">Limits</span>
                     <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <span class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.time_limit">Time Limit</span>
+                        <span class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_users.form.time_limit">Time Limit</span>
                         <div class="grid grid-cols-3 gap-2">
                             <div class="relative">
                                 <input type="number" name="timelimit_d" min="0" placeholder="0" aria-label="Days"
@@ -344,7 +344,7 @@ $toolbar_html .= '
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2" data-i18n="hotspot_users.form.data_limit">Data Limit</label>
+                        <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="hotspot_users.form.data_limit">Data Limit</label>
                         <div class="flex gap-2">
                             <div class="relative flex-1 min-w-0">
                                 <i data-lucide="database" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
@@ -367,11 +367,11 @@ $toolbar_html .= '
 
         <!-- Quick Tips -->
         <aside class="self-start rounded-2xl border border-dashed border-black/[.08] dark:border-white/[.08] bg-white/50 dark:bg-white/[.03] p-5">
-            <h3 class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-3">
+            <h3 class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider mb-3">
                 <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-yellow-500"></i>
                 <span data-i18n="hotspot_users.form.quick_tips">Quick Tips</span>
             </h3>
-            <ul class="space-y-1.5 text-xs opacity-70 leading-relaxed list-none p-0 m-0">
+            <ul class="space-y-1.5 text-xs leading-relaxed list-none p-0 m-0">
                 <li class="flex gap-2">
                     <span class="w-1 h-1 rounded-full bg-[#5f7f67] mt-1.5 flex-shrink-0"></span>
                     <span data-i18n="hotspot_users.form.tip_profiles"><strong>Profiles</strong> define the default speed limits, session timeout, and shared users policy.</span>
