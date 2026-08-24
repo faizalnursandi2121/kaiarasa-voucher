@@ -134,7 +134,7 @@ $getInitials = function ($name) {
             <div class="py-4 px-3 space-y-1" style="direction: ltr;">
             <!-- Session Switcher -->
             <div class="px-3 mb-6 relative" onmouseleave="closeMenu('session-dropdown')">
-                <button type="button" class="w-full group grid grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 rounded-xl bg-white/50 dark:bg-white/5 border border-accents-2 dark:border-accents-2 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all decoration-0 overflow-hidden shadow-sm" onclick="toggleMenu('session-dropdown', this)">
+                <button type="button" class="w-full group grid grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 rounded-xl bg-white/10 border-white/20 hover:bg-white/20 transition-all decoration-0 overflow-hidden shadow-sm" onclick="toggleMenu('session-dropdown', this)">
                     <!-- Initials -->
                     <div class="h-8 w-8 rounded-lg bg-white/15 group-hover:bg-white/25 flex items-center justify-center text-xs font-bold text-white transition-colors flex-shrink-0">
                         <?= $getInitials($session ?? '') ?>
