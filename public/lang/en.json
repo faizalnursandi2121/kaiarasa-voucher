@@ -409,7 +409,7 @@
   "edit_profile": "Edit Profile",
   "all_modes": "All Expired Modes",
   "name": "Name",
-  "shared_users": "Shared Users",
+  "shared_users": "Max. devices",
   "rate_limit": "Rate Limit",
   "parent_queue": "Parent Queue",
   "expired_mode": "Expired Mode",
@@ -443,7 +443,7 @@
    "price": "Price (Rp)",
    "rate_limit": "Rate Limit (Rx/Tx)",
    "selling_price": "Selling Price (Rp)",
-   "shared_users": "Shared Users",
+   "shared_users": "Max. devices",
    "validity": "Validity"
   }
  },

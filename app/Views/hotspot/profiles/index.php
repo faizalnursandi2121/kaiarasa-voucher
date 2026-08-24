@@ -69,7 +69,7 @@ $toolbar_html .= '
             <thead>
                 <tr>
                     <th data-sort="name" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="hotspot_profiles.name">Name</th>
-                    <th data-i18n="hotspot_profiles.shared_users">Shared Users</th>
+                    <th data-i18n="hotspot_profiles.shared_users">Max. devices</th>
                     <th data-i18n="hotspot_profiles.rate_limit">Rate Limit</th>
                     <th data-i18n="hotspot_profiles.parent_queue">Parent Queue</th>
                     <th data-sort="mode" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="hotspot_profiles.expired_mode">Expired Mode</th>
@@ -478,7 +478,7 @@ $toolbar_html .= '
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.shared_users">Shared users</label>
+                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.shared_users">Max. devices</label>
                         <input type="number" name="shared-users" value="1" min="1" placeholder="1" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                     </div>
                 </div>

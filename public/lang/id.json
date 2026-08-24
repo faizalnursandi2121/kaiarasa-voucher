@@ -421,7 +421,7 @@
   "edit_profile": "Edit Profil",
   "all_modes": "Semua Mode Kedaluwarsa",
   "name": "Nama",
-  "shared_users": "User Bersama",
+  "shared_users": "Maks. perangkat",
   "rate_limit": "Batas Kecepatan",
   "parent_queue": "Antrean Induk",
   "expired_mode": "Mode Kedaluwarsa",
@@ -455,7 +455,7 @@
    "price": "Harga (Rp)",
    "rate_limit": "Batas Kecepatan (Rx/Tx)",
    "selling_price": "Harga Jual (Rp)",
-   "shared_users": "Pengguna Bersama",
+   "shared_users": "Maks. perangkat",
    "validity": "Masa Berlaku"
   }
  },
