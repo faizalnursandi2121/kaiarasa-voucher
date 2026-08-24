@@ -12,7 +12,9 @@ class EncryptionHelper
             return '';
         }
 
-        $key = SiteConfig::getSecretKey();
+        // Normalisasi ke 32 byte (AES-256) — fallback default berukuran 36 byte
+        // menyebabkan "invalid key length" pada beberapa runtime PHP.
+        $key = substr(SiteConfig::getSecretKey(), 0, 32);
 
         // Simple OpenSSL encryption
         $iv_length = openssl_cipher_iv_length('aes-256-cbc');
@@ -28,7 +30,7 @@ class EncryptionHelper
             return '';
         }
 
-        $key = SiteConfig::getSecretKey();
+        $key = substr(SiteConfig::getSecretKey(), 0, 32);
 
         try {
             $decoded = base64_decode($text, true);
