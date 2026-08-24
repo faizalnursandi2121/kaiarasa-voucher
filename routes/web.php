@@ -182,8 +182,12 @@ $redirectToSessionRoute = function (string $suffix) {
         $router->get('/{session}/traffic/interfaces', [TrafficController::class, 'getInterfaces']);
 
         // Reports
-        $router->get('/{session}/reports/financial', [ReportController::class, 'index']);
-        $router->get('/{session}/reports/financial/export/{type}', [ReportController::class, 'sellingExport']);
+        $router->get('/{session}/reports/sales', [ReportController::class, 'sales']);
+        $router->get('/{session}/reports/sales/export/{type}', [ReportController::class, 'sellingExport']);
+        $router->get('/{session}/reports/financial', function ($session) {
+            header('Location: /'.rawurlencode($session).'/reports/sales');
+            exit;
+        });
         $router->get('/{session}/reports/user-log', [LogController::class, 'index']);
 
         // System Tools

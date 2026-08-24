@@ -56,14 +56,14 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
         </div>
     </div>
     
-    <!-- Realized Income -->
+    <!-- Revenue -->
     <div class="card !bg-green-500/10 !border-green-500/20">
-        <div class="text-sm text-green-600 dark:text-green-400 uppercase font-bold tracking-wide" data-i18n="reports.realized_income">Realized Income</div>
+        <div class="text-sm text-green-600 dark:text-green-400 uppercase font-bold tracking-wide" data-i18n="reports.realized_income">Revenue</div>
         <div class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">
             <?= FormatHelper::formatCurrency($realizedIncome ?? 0, $currency) ?>
         </div>
         <div class="text-xs text-green-600/70 dark:text-green-400/70 mt-1">
-            <?= number_format($realizedVouchers ?? 0) ?> vouchers (Quick Print + Used)
+            <?= number_format($realizedVouchers ?? 0) ?> vouchers (Issued vouchers)
         </div>
     </div>
     
@@ -74,7 +74,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
             <?= FormatHelper::formatCurrency($inventoryIncome ?? 0, $currency) ?>
         </div>
         <div class="text-xs text-yellow-600/70 dark:text-yellow-400/70 mt-1">
-            <?= number_format($inventoryVouchers ?? 0) ?> unused vouchers
+            <?= number_format($inventoryVouchers ?? 0) ?> vouchers not yet used
         </div>
     </div>
     
@@ -208,7 +208,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                     <th class="text-right" data-i18n="reports.qty">Qty</th>
                     <th class="text-right text-green-500" data-i18n="reports.realized_short">Realized</th>
                     <th class="text-right text-yellow-500" data-i18n="reports.pending_income_short">Inventory</th>
-                    <th class="text-right text-green-500" data-i18n="reports.realized_income">Realized Income</th>
+                    <th class="text-right text-green-500" data-i18n="reports.realized_income">Revenue</th>
                     <th class="text-right" data-i18n="reports.total">Total</th>
                 </tr>
             </thead>
@@ -235,7 +235,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                     <th class="text-right" data-i18n="reports.qty">Qty</th>
                     <th class="text-right text-green-500" data-i18n="reports.realized_short">Realized</th>
                     <th class="text-right text-yellow-500" data-i18n="reports.pending_income_short">Inventory</th>
-                    <th class="text-right text-green-500" data-i18n="reports.realized_income">Realized Income</th>
+                    <th class="text-right text-green-500" data-i18n="reports.realized_income">Revenue</th>
                     <th class="text-right" data-i18n="reports.total">Total</th>
                 </tr>
             </thead>
@@ -262,7 +262,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                     <th class="text-right" data-i18n="reports.qty">Qty</th>
                     <th class="text-right text-green-500" data-i18n="reports.realized_short">Realized</th>
                     <th class="text-right text-yellow-500" data-i18n="reports.pending_income_short">Inventory</th>
-                    <th class="text-right text-green-500" data-i18n="reports.realized_income">Realized Income</th>
+                    <th class="text-right text-green-500" data-i18n="reports.realized_income">Revenue</th>
                     <th class="text-right" data-i18n="reports.total">Total</th>
                 </tr>
             </thead>
