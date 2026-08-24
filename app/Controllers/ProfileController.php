@@ -150,7 +150,7 @@ class ProfileController extends Controller
         // Construct on-login script
         // Construct on-login script
         $metaScript = sprintf(
-            ':put (",%s,%s,%s,%s,,")',
+            ':put (",%s,%s,%s,%s,,");',
             $expiredMode,
             $price,
             $validity,
@@ -356,7 +356,7 @@ class ProfileController extends Controller
         $sellingPrice = $_POST['selling_price'] ?? '';
 
         $metaScript = sprintf(
-            ':put (",%s,%s,%s,%s,,")',
+            ':put (",%s,%s,%s,%s,,");',
             $expiredMode,
             $price,
             $validity,

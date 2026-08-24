@@ -209,7 +209,12 @@ class RouterOSAPI
         $RESPONSE = [];
         $receiveddone = false;
         while (true) {
-            $BYTE = ord(fread($this->socket, 1));
+            $rawByte = fread($this->socket, 1);
+            if ($rawByte === false || $rawByte === '') {
+                // Koneksi mati/timeout — cegah infinite loop
+                break;
+            }
+            $BYTE = ord($rawByte);
             $LENGTH = 0;
             if ($BYTE & 128) {
                 if (($BYTE & 192) == 128) {
@@ -258,7 +263,9 @@ class RouterOSAPI
                 $this->debug('>>> ['.$LENGTH.', '.$STATUS['unread_bytes'].']'.$_);
             }
 
-            if ((! $this->connected && ! $STATUS['unread_bytes']) || ($this->connected && ! $STATUS['unread_bytes'] && $receiveddone)) {
+            // FIX: jangan bergantung pada unread_bytes (respons multi-segmen TCP
+            // membuat pembacaan terpotong acak). Cukup berhenti setelah !done.
+            if ($receiveddone) {
                 break;
             }
         }
