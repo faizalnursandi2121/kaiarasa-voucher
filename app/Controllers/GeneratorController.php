@@ -28,11 +28,16 @@ class GeneratorController extends Controller
             $servers = $API->comm('/ip/hotspot/print');
             $API->disconnect();
 
+            // Packages (sumber harga & profile untuk voucher)
+            $qpModel = new \App\Models\QuickPrintModel;
+            $packages = $qpModel->getAllByRouterId((int) $creds['id']);
+
             $data = [
                 'session' => $session,
                 'title' => 'Generate Vouchers - '.$session,
                 'profiles' => $profiles,
                 'servers' => $servers,
+                'packages' => $packages,
             ];
 
             $this->view('hotspot/generate', $data);
@@ -54,6 +59,19 @@ class GeneratorController extends Controller
         $char = $_POST['char'] ?? 'mix';
         $profile = $_POST['profile'] ?? '';
         $comment = $_POST['comment'] ?? '';
+
+        // Resolusi Package: profile + harga (SSOT pricing)
+        $packageId = intval($_POST['package'] ?? 0);
+        $pkgPrice = 0;
+        if ($packageId > 0) {
+            $qp = (new \App\Models\QuickPrintModel)->getById($packageId);
+            if ($qp) {
+                if (! empty($qp['profile'])) {
+                    $profile = $qp['profile'];
+                }
+                $pkgPrice = intval($qp['price'] ?? 0);
+            }
+        }
 
         // Time Limit Logic (d, h, m)
         $timelimit_d = $_POST['timelimit_d'] ?? '';
@@ -125,7 +143,8 @@ class GeneratorController extends Controller
             $time = date('H:i');
             $commentBody = $comment ?: $profile;
             // Format: prefix-batchId-m.d.yy H:i- body  (jam utk Sales Report datetime)
-            $finalComment = "{$commentPrefix}{$batchId}-{$date} {$time}- {$commentBody}";
+            $priceTag = $pkgPrice > 0 ? 'p:'.$pkgPrice.' ' : '';
+            $finalComment = "{$commentPrefix}{$batchId}-{$date} {$time}- {$priceTag}{$commentBody}";
 
             for ($i = 0; $i < $qty; $i++) {
                 $username = $prefix.$this->generateRandomString($userLength, $char);
