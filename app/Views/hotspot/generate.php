@@ -121,7 +121,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label for="gv-profile" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.profile">Profile *</label>
+                    <label for="gv-profile" class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_generate.form.profile">Data plan *</label>
                     <div class="relative">
                         <i data-lucide="layers" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <select name="profile" id="gv-profile" required

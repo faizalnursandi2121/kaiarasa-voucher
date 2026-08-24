@@ -413,8 +413,6 @@ $toolbar_html .= '
                  form.querySelector('[name="validity_m"]').value = row.dataset.valM || '';
 
                  // Prices
-                 form.querySelector('[name="price"]').value = row.dataset.price || '';
-                 form.querySelector('[name="selling_price"]').value = row.dataset.sellingPrice || '';
 
                  // Initial Toggle Check
                  toggleValidity();
@@ -552,17 +550,6 @@ $toolbar_html .= '
                 <div class="flex items-center gap-3 pt-2">
                     <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.expiry_pricing">Expiry & Pricing</span>
                     <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.price">Price (Rp)</label>
-                        <input type="number" name="price" placeholder="e.g. 5000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                    </div>
-                    <div>
-                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.selling_price">Selling Price (Rp)</label>
-                        <input type="number" name="selling_price" placeholder="e.g. 7000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

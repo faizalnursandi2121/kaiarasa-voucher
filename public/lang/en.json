@@ -9,7 +9,7 @@
   "limits": "Limits",
   "general": "General",
   "bandwidth": "Bandwidth",
-  "expiry_pricing": "Expiry & Pricing",
+  "expiry_pricing": "Expiry & Policy",
   "users_form_subtitle": "Voucher login credentials & limits",
   "package": "Package",
   "voucher_format": "Voucher Format",
@@ -239,7 +239,7 @@
   "name": "Name",
   "package_name": "Package Name",
   "profile": "Profile",
-  "select_profile": "Select Profile",
+  "select_profile": "Select data plan",
   "prefix": "Prefix",
   "server": "Server",
   "price": "Price",
@@ -403,7 +403,7 @@
   "type": "Type"
  },
  "hotspot_profiles": {
-  "title": "User Profiles",
+  "title": "Data Plans",
   "subtitle": "Manage hotspot rate limits and pricing",
   "add_profile": "Add Profile",
   "edit_profile": "Edit Profile",
@@ -418,8 +418,8 @@
   "selling_price": "Selling Price",
   "lock_user": "Lock User",
   "form": {
-   "add_title": "Add Profile",
-   "edit_title": "Edit Profile",
+   "add_title": "Add data plan",
+   "edit_title": "Edit data plan",
    "add_subtitle": "Create a new hotspot user profile for: {name}",
    "edit_subtitle": "Edit hotspot user profile: {name}",
    "settings": "Profile Settings",
@@ -465,7 +465,7 @@
    "edit_subtitle": "Update user details for: {name}",
    "username": "Username",
    "password": "Password",
-   "profile": "Profile",
+   "profile": "Data plan",
    "server": "Server",
    "time_limit": "Time Limit",
    "data_limit": "Data Limit",
@@ -495,7 +495,7 @@
    "user_length": "User Length",
    "prefix": "Prefix",
    "characters": "Characters",
-   "profile": "Profile",
+   "profile": "Data plan *",
    "time_limit": "Time Limit",
    "data_limit": "Data Limit",
    "comment": "Comment",
@@ -749,6 +749,6 @@
   "title": "User Accounts & Vouchers",
   "user_accounts": "User Accounts",
   "vouchers": "Vouchers",
-  "packages": "Access Packages"
+  "packages": "Data Plans"
  }
 }

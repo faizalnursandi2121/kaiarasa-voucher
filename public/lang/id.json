@@ -9,7 +9,7 @@
   "limits": "Batasan",
   "general": "Umum",
   "bandwidth": "Bandwidth",
-  "expiry_pricing": "Kedaluwarsa & Harga",
+  "expiry_pricing": "Kedaluwarsa & Kebijakan",
   "users_form_subtitle": "Kredensial login voucher & batasannya",
   "package": "Paket",
   "voucher_format": "Format Voucher",
@@ -241,7 +241,7 @@
   "name": "Nama",
   "package_name": "Nama Paket",
   "profile": "Profil",
-  "select_profile": "Pilih Profil",
+  "select_profile": "Pilih paket data",
   "prefix": "Awalan",
   "server": "Server",
   "price": "Harga",
@@ -415,7 +415,7 @@
   "dark": "Gelap"
  },
  "hotspot_profiles": {
-  "title": "Profil User",
+  "title": "Paket Data",
   "subtitle": "Kelola batas kecepatan dan harga hotspot",
   "add_profile": "Tambah Profil",
   "edit_profile": "Edit Profil",
@@ -430,8 +430,8 @@
   "selling_price": "Harga Jual",
   "lock_user": "Kunci User",
   "form": {
-   "add_title": "Tambah Profil",
-   "edit_title": "Edit Profil",
+   "add_title": "Tambah paket data",
+   "edit_title": "Ubah paket data",
    "add_subtitle": "Buat profil user hotspot baru untuk: {name}",
    "edit_subtitle": "Ubah profil user hotspot: {name}",
    "settings": "Pengaturan Profil",
@@ -477,7 +477,7 @@
    "edit_subtitle": "Perbarui detail user untuk: {name}",
    "username": "Username",
    "password": "Kata Sandi",
-   "profile": "Profil",
+   "profile": "Paket data",
    "server": "Server",
    "time_limit": "Batas Waktu",
    "data_limit": "Batas Data",
@@ -507,7 +507,7 @@
    "user_length": "Panjang User",
    "prefix": "Awalan",
    "characters": "Karakter",
-   "profile": "Profil",
+   "profile": "Paket data *",
    "time_limit": "Batas Waktu",
    "data_limit": "Batas Data",
    "comment": "Komentar",
@@ -751,6 +751,6 @@
   "title": "Akun User & Voucher",
   "user_accounts": "Akun User",
   "vouchers": "Voucher",
-  "packages": "Paket Akses"
+  "packages": "Paket Data"
  }
 }

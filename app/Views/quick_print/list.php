@@ -180,10 +180,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.price">Price (Rp)</label>
                 <input type="number" name="price" placeholder="5000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
             </div>
-            <div>
-                <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.selling_price">Selling Price</label>
-                <input type="number" name="selling_price" placeholder="Default same" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-            </div>
+
         </div>
 
                         <div class="flex items-center gap-3 pt-2">
@@ -208,53 +205,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                 </div>
             </div>
         </div>
-
-                        <div class="flex items-center gap-3 pt-2">
-                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.limits">Limits</span>
-                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
-                </div>
-
-        <div>
-            <span class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.time_limit">Time limit</span>
-            <div class="grid grid-cols-3 gap-2">
-                <div class="relative">
-                    <input type="number" name="timelimit_d" min="0" placeholder="0" aria-label="Days"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">D</span>
-                </div>
-                <div class="relative">
-                    <input type="number" name="timelimit_h" min="0" max="23" placeholder="0" aria-label="Hours"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">H</span>
-                </div>
-                <div class="relative">
-                    <input type="number" name="timelimit_m" min="0" max="59" placeholder="0" aria-label="Minutes"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">M</span>
-                </div>
-            </div>
-        </div>
-
-        <div>
-            <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.data_limit">Data limit</label>
-            <div class="flex gap-2">
-                <div class="relative flex-1 min-w-0">
-                    <i data-lucide="database" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
-                    <input type="number" name="datalimit_val" min="0" placeholder="0"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                </div>
-                <div class="relative w-24 shrink-0">
-                    <select name="datalimit_unit" data-native aria-label="Data limit unit"
-                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-8 text-[14px] text-center appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                        <option value="MB" selected>MB</option>
-                        <option value="GB">GB</option>
-                    </select>
-                    <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
-                </div>
-            </div>
-        </div>
-
-        <div>
+<div>
             <label class="block text-[13px] font-semibold mb-2" data-i18n="system_tools.comment">Comment</label>
             <input type="text" name="comment" placeholder="Description or Note" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
         </div>
