@@ -163,7 +163,47 @@ class ProfileController extends Controller
         // even if user was manually deleted from Winbox.
         $logicScript = '';
         if (! empty($validity)) {
-            $logicScript = ' {:local v "'.$validity.'"; :local u $user; :local c [/ip hotspot user get [find name=$u] comment]; :if ([:len [/sys sch find where name=$u]] = 0) do={ /sys sch add name=$u interval=$v on-event=":do { /ip hotspot user set [find name=$u] disabled=yes } on-error={}; /sys sch remove [find name=$u]"; /ip hotspot user set [find name=$u] comment=("exp: " . $v . " " . $c); }}';
+            $logicScript = ' 
+:log warning ("ONLOGIN START user=" . $user)
+        :local v "' . $validity . '"
+:local u $user
+
+:log warning ("USER=" . $u)
+
+:local uid [/ip hotspot user find where name=$u]
+
+:if ([:len $uid] = 0) do={
+    :log error ("HOTSPOT USER NOT FOUND: " . $u)
+} else={
+
+    :log warning ("HOTSPOT USER FOUND: " . $u)
+
+    :local c [/ip hotspot user get $uid comment]
+    :log warning ("COMMENT=" . $c)
+
+    :local sname ("exp-" . $u)
+
+    :log warning ("CHECK SCHEDULER=" . $sname)
+
+    :if ([:len [/system scheduler find where name=$sname]] = 0) do={
+
+        :log warning ("CREATING SCHEDULER=" . $sname)
+
+        /system scheduler add \
+            name=$sname \
+            interval=$v \
+            on-event=("/ip hotspot user set [find where name=\"" . $u . "\"] disabled=yes; /system scheduler remove [find where name=\"" . $sname . "\"]")
+
+        /ip hotspot user set $uid comment=("exp: " . $v . " " . $c)
+
+        :log warning ("SCHEDULER CREATED=" . $sname)
+
+    } else={
+        :log warning ("SCHEDULER ALREADY EXISTS=" . $sname)
+    }
+}
+
+:log warning ("ONLOGIN END user=" . $u)';
         }
 
         $onLogin = $metaScript.$logicScript;
@@ -366,7 +406,47 @@ class ProfileController extends Controller
         // Logic Script (The "Enforcer")
         $logicScript = '';
         if (! empty($validity)) {
-            $logicScript = ' {:local v "'.$validity.'"; :local u $user; :local c [/ip hotspot user get [find name=$u] comment]; :if ([:len [/sys sch find where name=$u]] = 0) do={ /sys sch add name=$u interval=$v on-event=":do { /ip hotspot user set [find name=$u] disabled=yes } on-error={}; /sys sch remove [find name=$u]"; /ip hotspot user set [find name=$u] comment=("exp: " . $v . " " . $c); }}';
+            $logicScript = ' 
+:log warning ("ONLOGIN START user=" . $user)
+        :local v "' . $validity . '"
+:local u $user
+
+:log warning ("USER=" . $u)
+
+:local uid [/ip hotspot user find where name=$u]
+
+:if ([:len $uid] = 0) do={
+    :log error ("HOTSPOT USER NOT FOUND: " . $u)
+} else={
+
+    :log warning ("HOTSPOT USER FOUND: " . $u)
+
+    :local c [/ip hotspot user get $uid comment]
+    :log warning ("COMMENT=" . $c)
+
+    :local sname ("exp-" . $u)
+
+    :log warning ("CHECK SCHEDULER=" . $sname)
+
+    :if ([:len [/system scheduler find where name=$sname]] = 0) do={
+
+        :log warning ("CREATING SCHEDULER=" . $sname)
+
+        /system scheduler add \
+            name=$sname \
+            interval=$v \
+            on-event=("/ip hotspot user set [find where name=\"" . $u . "\"] disabled=yes; /system scheduler remove [find where name=\"" . $sname . "\"]")
+
+        /ip hotspot user set $uid comment=("exp: " . $v . " " . $c)
+
+        :log warning ("SCHEDULER CREATED=" . $sname)
+
+    } else={
+        :log warning ("SCHEDULER ALREADY EXISTS=" . $sname)
+    }
+}
+
+:log warning ("ONLOGIN END user=" . $u)';
         }
 
         $onLogin = $metaScript.$logicScript;
