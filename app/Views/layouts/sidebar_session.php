@@ -225,57 +225,36 @@ $getInitials = function ($name) {
                 <span data-i18n="sidebar.quick_print"><?= LanguageHelper::t('sidebar.quick_print', 'Quick Print') ?></span>
             </a>
 
-            <!-- Access Separator -->
-            <div class="pt-4 pb-1 px-3">
-                <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.access"><?= LanguageHelper::t('sidebar.access', 'Access') ?></div>
-            </div>
+            <!-- Access -->
+            <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
+                <i data-lucide="users" class="w-4 h-4"></i>
+                <span data-i18n="access.user_accounts">User Accounts</span>
+            </a>
 
-            <!-- Access Group (Collapsible) -->
-            <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('hotspot-menu', this)" aria-expanded="" aria-controls="hotspot-menu">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="key-round" class="w-4 h-4"></i>
-                        <span data-i18n="access.title"><?= LanguageHelper::t('access.title', 'User Accounts & Vouchers') ?></span>
-                    </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isHotspotActive ? 'rotate-180' : '' ?>"></i>
-                </button>
-                
-                <div id="hotspot-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isHotspotActive ? '500px' : '0px' ?>">
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/users" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="access.user_accounts"><?= LanguageHelper::t('access.user_accounts', 'User Accounts') ?></span>
-                    </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/generate" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/generate') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="access.vouchers"><?= LanguageHelper::t('access.vouchers', 'Vouchers') ?></span>
-                    </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/profiles" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/profile') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="access.packages"><?= LanguageHelper::t('access.packages', 'Access Packages') ?></span>
-                    </a>
-                
-                </div>
-            </div>
+            <a href="/<?= htmlspecialchars($session) ?>/hotspot/generate" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/hotspot/generate') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
+                <i data-lucide="ticket-plus" class="w-4 h-4"></i>
+                <span data-i18n="access.vouchers">Vouchers</span>
+            </a>
 
-            <!-- Activity Group (Collapsible) -->
-             <div class="space-y-1">
-                <button type="button" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors text-accents-5 hover:text-foreground hover:bg-accents-2/50 group" onclick="toggleMenu('status-menu', this)" aria-expanded="" aria-controls="status-menu">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="activity" class="w-4 h-4"></i>
-                        <span data-i18n="sidebar.activity"><?= LanguageHelper::t('sidebar.activity', 'Activity') ?></span>
-                    </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 <?= $isStatusActive ? 'rotate-180' : '' ?>"></i>
-                </button>
-                
-                <div id="status-menu" data-nav-group class="space-y-1 pl-9 overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: <?= $isStatusActive ? '500px' : '0px' ?>">
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/active" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="activity.active_users"><?= LanguageHelper::t('activity.active_users', 'Active Users') ?></span>
-                    </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/hotspot/hosts" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/hotspot/hosts') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="activity.devices"><?= LanguageHelper::t('activity.devices', 'Connected Devices') ?></span>
-                    </a>
-                    <a href="/<?= htmlspecialchars($session) ?>/reports/user-log" class="block px-3 py-2 rounded-md text-sm transition-colors <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10 font-medium' : 'text-accents-6 hover:text-foreground' ?>">
-                        <span data-i18n="activity.activity_log"><?= LanguageHelper::t('activity.activity_log', 'Activity Log') ?></span>
-                    </a>
-                </div>
+            <a href="/<?= htmlspecialchars($session) ?>/hotspot/profiles" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/hotspot/profile') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
+                <i data-lucide="package-open" class="w-4 h-4"></i>
+                <span data-i18n="access.packages">Access Packages</span>
+            </a>
+            <!-- Activity -->
+            <a href="/<?= htmlspecialchars($session) ?>/hotspot/active" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
+                <i data-lucide="user-check" class="w-4 h-4"></i>
+                <span data-i18n="activity.active_users">Active Users</span>
+            </a>
 
+            <a href="/<?= htmlspecialchars($session) ?>/hotspot/hosts" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/hotspot/hosts') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
+                <i data-lucide="monitor-smartphone" class="w-4 h-4"></i>
+                <span data-i18n="activity.devices">Connected Devices</span>
+            </a>
+
+            <a href="/<?= htmlspecialchars($session) ?>/reports/user-log" class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/40 dark:bg-white/5 text-foreground ring-1 ring-white/10' : 'text-accents-6 hover:text-foreground hover:bg-white/5' ?>">
+                <i data-lucide="scroll-text" class="w-4 h-4"></i>
+                <span data-i18n="activity.activity_log">Activity Log</span>
+            </a>
             <!-- Sales Separator -->
              <div class="pt-4 pb-1 px-3">
                 <div class="text-xs font-semibold text-accents-5 uppercase tracking-wider" data-i18n="sidebar.sales">Sales</div>
