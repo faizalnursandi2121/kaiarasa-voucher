@@ -54,9 +54,6 @@ $sessionInitials = strtoupper(substr($sessionUser, 0, 2));
                     <p class="text-sm font-bold truncate"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></p>
                     <p class="text-[11px] opacity-50 truncate">Session: <?= htmlspecialchars($session ?? '-') ?></p>
                 </div>
-                <a href="/" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
-                    
-                </a>
                 <a href="/settings" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
                     <i data-lucide="settings" class="w-4 h-4 opacity-60"></i> Settings
                 </a>
