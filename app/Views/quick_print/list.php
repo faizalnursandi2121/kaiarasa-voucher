@@ -368,8 +368,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     };
 
     function openModal(mode, btn = null) {
-        const template = document.getElementById('package-form-template').innerHTML;
-        
         const tplNode = document.getElementById('package-form-template').content.cloneNode(true);
 
         let title = window.i18n ? window.i18n.t('quick_print.add_package') : 'Add Package';
