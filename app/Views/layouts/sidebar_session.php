@@ -189,72 +189,69 @@ $getInitials = function ($name) {
             </div>
 
             <!-- Dashboard -->
-                    <a href="/<?php echo htmlspecialchars($session) ?>/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all <?= ($isDashboard) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
-                        <i data-lucide="layout-dashboard" class="w-[18px] h-[18px]"></i>
-                        <span data-i18n="sidebar.dashboard">Dashboard</span>
-                    </a>
+                <a href="/<?php echo htmlspecialchars($session) ?>/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all bg-white/[.18] text-white font-semibold">
+                    <i data-lucide="layout-dashboard" class="w-[18px] h-[18px]"></i>
+                    <span data-i18n="sidebar.dashboard">Dashboard</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-white"></span>
+                </a>
+                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/users" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all bg-white/[.18] text-white font-semibold">
+                    <i data-lucide="ticket" class="w-[18px] h-[18px]"></i>
+                    <span data-i18n="access.user_accounts">Vouchers</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                </a>
+                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/generate" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all bg-white/[.18] text-white font-semibold">
+                    <i data-lucide="ticket-plus" class="w-[18px] h-[18px]"></i>
+                    <span data-i18n="access.vouchers">Generate Vouchers</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                </a>
+                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/profiles" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all bg-white/[.18] text-white font-semibold">
+                    <i data-lucide="package-open" class="w-[18px] h-[18px]"></i>
+                    <span data-i18n="access.packages">Data Plans</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                </a>
             <div class="pt-5">
-                <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Voucher</div>
+                <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Activity</div>
                 <div class="space-y-0.5">
-                    <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/users" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
-                        <i data-lucide="ticket" class="w-[18px] h-[18px]"></i>
-                        <span data-i18n="access.user_accounts">Vouchers</span>
-                    </a>
-                    <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/generate" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all <?= (strpos($uri, '/hotspot/generate') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
-                        <i data-lucide="ticket-plus" class="w-[18px] h-[18px]"></i>
-                        <span data-i18n="access.vouchers">Generate Vouchers</span>
-                    </a>
+                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/active" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all bg-white/[.18] text-white font-semibold">
+                    <i data-lucide="users" class="w-[18px] h-[18px]"></i>
+                    <span data-i18n="activity.active_users">Online Users</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                </a>
+                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/hosts" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all bg-white/[.18] text-white font-semibold">
+                    <i data-lucide="monitor-smartphone" class="w-[18px] h-[18px]"></i>
+                    <span data-i18n="activity.devices">Connected Devices</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                </a>
+                <a href="/<?php echo htmlspecialchars($session) ?>/reports/user-log" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all bg-white/[.18] text-white font-semibold">
+                    <i data-lucide="scroll-text" class="w-[18px] h-[18px]"></i>
+                    <span data-i18n="activity.activity_log">Activity Log</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                </a>
                 </div>
             </div>
             <div class="pt-5">
-                <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Data Plan</div>
+                <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Reports</div>
                 <div class="space-y-0.5">
-                    <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/profiles" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all <?= (strpos($uri, '/hotspot/profile') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
-                        <i data-lucide="package-open" class="w-[18px] h-[18px]"></i>
-                        <span data-i18n="access.packages">Data Plans</span>
-                    </a>
+                <a href="/<?php echo htmlspecialchars($session) ?>/reports/sales" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all bg-white/[.18] text-white font-semibold">
+                    <i data-lucide="receipt" class="w-[18px] h-[18px]"></i>
+                    <span data-i18n="sales.report">Sales Report</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                </a>
                 </div>
             </div>
             <div class="pt-5">
-                <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Aktivitas</div>
+                <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Branding</div>
                 <div class="space-y-0.5">
-                    <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/active" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
-                        <i data-lucide="users" class="w-[18px] h-[18px]"></i>
-                        <span data-i18n="activity.active_users">Online Users</span>
-                    </a>
-                    <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/hosts" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all <?= (strpos($uri, '/hotspot/hosts') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
-                        <i data-lucide="monitor-smartphone" class="w-[18px] h-[18px]"></i>
-                        <span data-i18n="activity.devices">Connected Devices</span>
-                    </a>
-                    <a href="/<?php echo htmlspecialchars($session) ?>/reports/user-log" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
-                        <i data-lucide="scroll-text" class="w-[18px] h-[18px]"></i>
-                        <span data-i18n="activity.activity_log">Activity Log</span>
-                    </a>
-                </div>
-            </div>
-            <div class="pt-5">
-                <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Laporan</div>
-                <div class="space-y-0.5">
-                    <a href="/<?php echo htmlspecialchars($session) ?>/reports/sales" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all <?= (strpos($uri, '/reports/sales') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
-                        <i data-lucide="receipt" class="w-[18px] h-[18px]"></i>
-                        <span data-i18n="sales.report">Sales Report</span>
-                    </a>
-                </div>
-            </div>
-            <div class="pt-5">
-                <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55 px-3 flex items-center gap-2" style="margin-bottom:0.25rem">
-                    <i data-lucide="palette" class="w-3.5 h-3.5"></i>
-                    <span data-i18n="sidebar.administration">Branding</span>
-                </div>
-                <div class="space-y-0.5 pl-7">
-                    <a href="/<?php echo htmlspecialchars($session) ?>/voucher-templates" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all <?= ($isTemplates) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
-                        <i data-lucide="ticket" class="w-[18px] h-[18px]"></i>
-                        <span data-i18n="sidebar.templates">Voucher Templates</span>
-                    </a>
-                    <a href="/<?php echo htmlspecialchars($session) ?>/logos" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all <?= ($isLogos) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
-                        <i data-lucide="image" class="w-[18px] h-[18px]"></i>
-                        <span data-i18n="sidebar.logos">Logos</span>
-                    </a>
+                <a href="/<?php echo htmlspecialchars($session ?? "") ?>/voucher-templates" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all bg-white/[.18] text-white font-semibold">
+                    <i data-lucide="ticket" class="w-[18px] h-[18px]"></i>
+                    <span data-i18n="sidebar.templates">Voucher Templates</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                </a>
+                <a href="/<?php echo htmlspecialchars($session ?? "") ?>/logos" class="flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-all bg-white/[.18] text-white font-semibold">
+                    <i data-lucide="image" class="w-[18px] h-[18px]"></i>
+                    <span data-i18n="sidebar.logos">Logos</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                </a>
                 </div>
             </div>
         </div>
