@@ -104,7 +104,6 @@ class DashboardController extends Controller
             'quick_actions' => [
                 ['label' => 'Generate Vouchers', 'icon' => 'ticket-plus', 'href' => '/'.htmlspecialchars($session).'/hotspot/generate'],
                 ['label' => 'Quick Print', 'icon' => 'printer', 'href' => '/'.htmlspecialchars($session).'/quick-print'],
-                ['label' => 'Create User', 'icon' => 'user-plus', 'href' => '/'.htmlspecialchars($session).'/hotspot/users/add'],
             ],
             'activity' => $unreachable ? [] : $this->getActivityFeed($records, $session),
             'charts' => [

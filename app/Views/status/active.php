@@ -55,12 +55,7 @@ foreach ($uniqueServers as $s) {
 }
 $toolbar_html .= '</select>
         </div>
-        <a href="/' . htmlspecialchars($session) . '/hotspot/users" class="btn btn-secondary">' .
-    '<i data-lucide="users" class="w-4 h-4 mr-2"></i> <span data-i18n="hotspot_menu.users">Users List</span>' .
-    '</a>';
-$toolbar_html .= '
-    </div>
-';
+    </div>';
 ?>
 <div class="page-toolbar">
 <?php echo $toolbar_html; ?>
