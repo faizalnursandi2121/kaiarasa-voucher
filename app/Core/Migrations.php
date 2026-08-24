@@ -132,6 +132,16 @@ class Migrations
         self::ensureColumn($pdo, 'voucher_templates', 'session_id', 'INTEGER NULL REFERENCES routers(id)');
         self::ensureColumn($pdo, 'logos', 'session_id', 'INTEGER NULL REFERENCES routers(id)');
 
+        // Session Dashboard: active-users snapshots (sampler 5 menit)
+        $pdo->exec("CREATE TABLE IF NOT EXISTS session_activity_snapshots (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_name TEXT NOT NULL,
+            active_users INTEGER NOT NULL DEFAULT 0,
+            recorded_at TEXT NOT NULL DEFAULT (datetime('now','localtime'))
+        )");
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_sas_session_time
+            ON session_activity_snapshots(session_name, recorded_at)');
+
         return true;
     }
 
