@@ -9,7 +9,7 @@
         <!-- Panel Header (Sage Tint — senada table-glass thead) -->
         <div class="bg-[#5f7f67]/[.07] dark:bg-[#5f7f67]/[.12] border-b border-[#5f7f67]/20 px-6 py-5">
             <h3 class="text-base font-bold tracking-tight" data-i18n="hotspot_generate.title">Generate Vouchers</h3>
-            <p class="text-xs opacity-60 mt-1.5" data-i18n="hotspot_generate.form.subtitle" data-i18n-params='{"name": "<?= htmlspecialchars($session) ?>"}'>Create multiple hotspot vouchers in batch for: <?= htmlspecialchars($session) ?></p>
+            <p class="text-xs opacity-60 mt-1.5" data-i18n="hotspot_generate.form.subtitle">Create multiple hotspot vouchers</p>
         </div>
 
         <form action="/<?= htmlspecialchars($session) ?>/hotspot/generate/process" method="POST" class="space-y-4 p-6">

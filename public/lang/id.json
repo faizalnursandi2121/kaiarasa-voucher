@@ -498,7 +498,7 @@
    "data_limit": "Batas Data",
    "comment": "Komentar",
    "generate": "Buat Voucher",
-   "subtitle": "Buat voucher hotspot dalam jumlah banyak untuk: {name}",
+   "subtitle": "Buat voucher hotspot dalam jumlah banyak",
    "batch_settings": "Pengaturan Pembuatan Batch",
    "core_config": "Konfigurasi Inti",
    "qty_help": "Jumlah voucher yang akan dibuat.",

@@ -486,7 +486,7 @@
    "data_limit": "Data Limit",
    "comment": "Comment",
    "generate": "Generate Vouchers",
-   "subtitle": "Create multiple hotspot vouchers in batch for: {name}",
+   "subtitle": "Create multiple hotspot vouchers",
    "batch_settings": "Batch Generation Settings",
    "core_config": "Core Config",
    "qty_help": "Count of vouchers to generate.",
