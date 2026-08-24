@@ -422,6 +422,10 @@ $getInitials = function ($name) {
                 <img src="/assets/img/logo-white.webp" class="h-6 w-auto hidden dark:block">
             </div>
             <div class="flex items-center gap-4">
+                <a href="/logout" aria-label="Logout" title="Logout"
+                   class="w-9 h-9 inline-flex items-center justify-center rounded-xl hover:bg-white/10 transition-colors">
+                    <i data-lucide="log-out" class="w-[18px] h-[18px]"></i>
+                </a>
                 <button id="mobile-menu-toggle" aria-label="Open menu" class="text-accents-5 hover:text-foreground">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                  </button>
