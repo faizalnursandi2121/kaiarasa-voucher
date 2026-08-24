@@ -16,9 +16,11 @@ $breadcrumbs = [
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>
 
-<!-- ===== Generate Vouchers Panel (pattern: Home / Add Router Modal) ===== -->
-<div class="max-w-2xl mx-auto">
-    <div class="rounded-2xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-6 sm:p-8 shadow-2xl">
+<!-- ===== Generate Vouchers (pattern: Home / Add Router Modal) ===== -->
+<div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+    <!-- Form Column -->
+    <div class="lg:col-span-2 min-w-0">
+    <div class="rounded-2xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-6 shadow-xl">
         <form action="/<?= htmlspecialchars($session) ?>/hotspot/generate/process" method="POST" class="space-y-4">
             <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
 
@@ -205,10 +207,10 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
             </div>
         </form>
     </div>
-</div>
+    </div>
 
-<!-- ===== Quick Tips (compact) ===== -->
-<div class="max-w-2xl mx-auto mt-4">
+    <!-- Quick Tips Column -->
+    <aside class="lg:sticky lg:top-24 self-start">
     <div class="rounded-2xl border border-dashed border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
         <h3 class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-3">
             <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-yellow-500"></i>
@@ -229,6 +231,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
             </li>
         </ul>
     </div>
+    </aside>
 </div>
 
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

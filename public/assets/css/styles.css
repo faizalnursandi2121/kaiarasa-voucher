@@ -6211,6 +6211,14 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 }
 
 @media (min-width: 1024px) {
+  .lg\:sticky {
+    position: sticky;
+  }
+
+  .lg\:top-24 {
+    top: 6rem;
+  }
+
   .lg\:col-span-1 {
     grid-column: span 1 / span 1;
   }
