@@ -48,21 +48,7 @@ use App\Core\Hooks;
     <div class="fixed top-4 right-4 z-50 flex items-center space-x-3">
          <!-- Language Switcher -->
          <div class="relative group">
-            <button onclick="toggleMenu('lang-dropdown-public', this)" class="h-9 px-3 rounded-full bg-background/50 backdrop-blur-md border border-accents-2 hover:border-foreground/20 text-accents-5 hover:text-foreground transition-all flex items-center shadow-sm">
-                <i data-lucide="globe" class="w-4 h-4 mr-2"></i>
-                <span class="text-xs font-semibold uppercase tracking-wider" id="current-lang-label">EN</span>
-                <i data-lucide="chevron-down" class="w-3 h-3 ml-2 opacity-50"></i>
-            </button>
-            <!-- Dropdown -->
-            <div id="lang-dropdown-public" class="hidden absolute right-0 mt-2 w-32 bg-background/95 backdrop-blur-2xl border border-accents-2 dark:border-white/10 rounded-xl shadow-2xl py-1 z-50 transform origin-top-right transition-all duration-200" onmouseleave="closeMenu('lang-dropdown-public')">
-                <button onclick="changeLanguage('en')" class="w-full text-left px-4 py-2 text-xs font-medium text-accents-5 hover:text-foreground hover:bg-white/5 flex items-center group">
-                    <span class="mr-2 text-lg">🇺🇸</span> English
-                </button>
-                <button onclick="changeLanguage('id')" class="w-full text-left px-4 py-2 text-xs font-medium text-accents-5 hover:text-foreground hover:bg-white/5 flex items-center group">
-                    <span class="mr-2 text-lg">🇮🇩</span> Indonesia
-                </button>
-            </div>
-        </div>
+            
 
 
     </div>

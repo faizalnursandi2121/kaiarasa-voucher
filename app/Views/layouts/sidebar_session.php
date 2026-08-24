@@ -290,29 +290,7 @@ $getInitials = function ($name) {
                 <img src="/assets/img/logo-white.webp" class="h-6 w-auto hidden dark:block">
             </div>
             <div class="flex items-center gap-4">
-                <!-- Mobile Premium Control Pill -->
-                <div class="control-pill scale-90 origin-right transition-transform hover:scale-95">
-                    <!-- Language Switcher -->
-                    <div class="relative group">
-                        <button type="button" class="pill-lang-btn" onclick="toggleMenu('lang-dropdown-mobile', this)" aria-expanded="false" aria-controls="lang-dropdown-mobile" title="Change Language">
-                             <i data-lucide="languages" class="w-4 h-4"></i>
-                        </button>
-                         <div id="lang-dropdown-mobile" class="absolute right-0 top-full mt-3 w-48 bg-background/90 backdrop-blur-xl border border-accents-2 rounded-xl shadow-xl overflow-hidden transition-all duration-200 ease-out origin-top-right opacity-0 scale-95 invisible pointer-events-none z-50 dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
-                            <div class="px-3 py-2 text-[10px] font-bold text-accents-4 uppercase tracking-widest border-b border-accents-2/50 bg-accents-1/50" data-i18n="sidebar.switch_language"><?= LanguageHelper::t('sidebar.switch_language', 'Select Language') ?></div>
-                            <?php
-                            $languages = LanguageHelper::getAvailableLanguages();
-foreach ($languages as $lang) {
-    ?>
-                            <button onclick="changeLanguage('<?= $lang['code'] ?>')" class="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-accents-1 transition-colors text-accents-6 hover:text-foreground group/lang">
-                                <span class="fi fi-<?= $lang['flag'] ?> rounded-sm shadow-sm transition-transform group-hover/lang:scale-110"></span>
-                                <span><?= $lang['name'] ?></span>
-                            </button>
-                            <?php } ?>
-                        </div>
-                    </div>
-
-                </div>
-                 <button id="mobile-menu-toggle" aria-label="Open menu" class="text-accents-5 hover:text-foreground">
+                <button id="mobile-menu-toggle" aria-label="Open menu" class="text-accents-5 hover:text-foreground">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                  </button>
             </div>
