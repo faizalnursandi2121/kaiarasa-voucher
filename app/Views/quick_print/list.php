@@ -142,7 +142,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.select_profile">Select profile</label>
+                <label class="block text-[13px] font-semibold mb-2" data-i18n="quick_print.select_profile">Select data plan</label>
                 <div class="relative">
                     <select name="profile" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <?php foreach ($profiles as $p) { ?>
