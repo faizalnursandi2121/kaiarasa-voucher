@@ -35,11 +35,20 @@ function dashRp(int $v): string
         </a>
     </div>
 
-    <?php if (! empty($unreachable)): ?>
+    <?php if (! empty($cred_issue)): ?>
+    <div class="mt-6 rounded-2xl border border-amber-500/30 bg-amber-500/[.07] p-6 text-center">
+        <i data-lucide="key-round" class="w-8 h-8 mx-auto text-amber-600 mb-2"></i>
+        <p class="font-semibold">Router password needs to be re-entered.</p>
+        <p class="text-xs opacity-60 mt-1">Stored credentials cannot be decrypted (encryption key may have changed).</p>
+        <a href="/?refresh=1" class="inline-flex items-center gap-2 mt-4 h-9 px-4 rounded-xl bg-[#5f7f67] hover:bg-[#6b8b73] text-white text-[13px] font-semibold transition-colors">
+            <i data-lucide="pencil" class="w-4 h-4"></i> Edit Router on Home
+        </a>
+    </div>
+    <?php elseif (! empty($unreachable)): ?>
     <div class="mt-6 rounded-2xl border border-amber-500/30 bg-amber-500/[.07] p-6 text-center">
         <i data-lucide="wifi-off" class="w-8 h-8 mx-auto text-amber-600 mb-2"></i>
         <p class="font-semibold">Live data unavailable — router cannot be reached.</p>
-        <p class="text-xs opacity-60 mt-1">KPI values may be stale.</p>
+        <p class="text-xs opacity-60 mt-1">KPI values may be stale. <a href="?refresh=1" class="underline">Retry</a></p>
     </div>
     <?php endif; ?>
 

@@ -33,6 +33,7 @@ class DashboardController extends Controller
 
         // ---------- Active Users (live count + sampler) ----------
         $unreachable = false;
+        $credIssue = trim((string) ($creds['password'] ?? '')) === '';
         $activeUsers = null;
 
         if ($demo) {
@@ -119,6 +120,7 @@ class DashboardController extends Controller
                     0, 5),
             ],
             'unreachable' => $unreachable,
+            'cred_issue' => $credIssue,
             'ua_mode' => $uaMode,
         ];
 
