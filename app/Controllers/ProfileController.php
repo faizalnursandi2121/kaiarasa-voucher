@@ -165,7 +165,7 @@ class ProfileController extends Controller
         // even if user was manually deleted from Winbox.
         $logicScript = '';
         if (! empty($validity)) {
-            $logicScript = ' :local v "'.$validity.'"; :local u $user; :local c [/ip hotspot user get [find name=$u] comment]; :if ([:find $c "exp"] = -1) do={ /sys sch add name=$u interval=$v on-event=":do { /ip hotspot user set [find name=$u] disabled=yes } on-error={}; /sys sch remove [find name=$u]"; /ip hotspot user set [find name=$u] comment=("exp: " . $v . " " . $c); }';
+            $logicScript = ' :local v "'.$validity.'"; :local u $username; :local c [/ip hotspot user get [find name=$u] comment]; :if ([:find $c "exp"] = -1) do={ /sys sch add name=$u interval=$v on-event=":do { /ip hotspot user set [find name=$u] disabled=yes } on-error={}; /sys sch remove [find name=$u]"; /ip hotspot user set [find name=$u] comment=("exp: " . $v . " " . $c); }';
         }
 
         $onLogin = $metaScript.$logicScript;
@@ -370,7 +370,7 @@ class ProfileController extends Controller
         // Logic Script (The "Enforcer")
         $logicScript = '';
         if (! empty($validity)) {
-            $logicScript = ' :local v "'.$validity.'"; :local u $user; :local c [/ip hotspot user get [find name=$u] comment]; :if ([:find $c "exp"] = -1) do={ /sys sch add name=$u interval=$v on-event=":do { /ip hotspot user set [find name=$u] disabled=yes } on-error={}; /sys sch remove [find name=$u]"; /ip hotspot user set [find name=$u] comment=("exp: " . $v . " " . $c); }';
+            $logicScript = ' :local v "'.$validity.'"; :local u $username; :local c [/ip hotspot user get [find name=$u] comment]; :if ([:find $c "exp"] = -1) do={ /sys sch add name=$u interval=$v on-event=":do { /ip hotspot user set [find name=$u] disabled=yes } on-error={}; /sys sch remove [find name=$u]"; /ip hotspot user set [find name=$u] comment=("exp: " . $v . " " . $c); }';
         }
 
         $onLogin = $metaScript.$logicScript;
