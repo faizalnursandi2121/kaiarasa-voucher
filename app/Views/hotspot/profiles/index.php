@@ -400,7 +400,7 @@ $toolbar_html .= '
         holder.appendChild(tplNode);
         const template = holder.innerHTML;
 
-        Kaiarasa.modal.form('', template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide');
+        Kaiarasa.modal.form('', template, saveBtn, preConfirmFn, onOpenedFn, 'swal-wide swal-flush');
     }
 
     // DOM-dependent initialization (CustomSelect + TableManager).
@@ -419,18 +419,19 @@ $toolbar_html .= '
 </script>
 
 <template id="profile-form-template">
-    <!-- Modal Head (pattern Add Router) -->
-    <div class="flex items-start justify-between gap-4 mb-5 pr-1 text-left">
+    <!-- Modal Head (Sage Tint — pattern Generate Vouchers) -->
+    <div class="bg-[#5f7f67]/[.07] dark:bg-[#5f7f67]/[.12] border-b border-[#5f7f67]/20 px-6 py-4 flex items-start justify-between gap-4 text-left">
         <div>
-            <h3 class="text-xl font-bold tracking-tight" data-modal-title>Add Profile</h3>
-            <p class="text-xs mt-1" data-i18n="common.profile_form_subtitle">Speed limits, expiry &amp; pricing</p>
+            <h3 class="text-base font-bold tracking-tight" data-modal-title>Add Profile</h3>
+            <p class="text-xs opacity-60 mt-1" data-i18n="common.profile_form_subtitle">Speed limits, expiry &amp; pricing</p>
         </div>
         <button type="button" onclick="Swal.close()" aria-label="Close"
             class="w-8 h-8 rounded-lg inline-flex items-center justify-center hover:bg-black/[.05] dark:hover:bg-white/[.06] transition-colors shrink-0">
             <i data-lucide="x" class="w-4 h-4"></i>
         </button>
     </div>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
+    <div class="p-6 text-left">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Form Column -->
         <div class="lg:col-span-2 min-w-0">
             <form id="profile-form" action="/<?= htmlspecialchars($session) ?>/hotspot/profile/store" method="POST" class="space-y-4">
@@ -575,6 +576,7 @@ $toolbar_html .= '
                 </li>
             </ul>
         </aside>
+        </div>
     </div>
 </template>
 

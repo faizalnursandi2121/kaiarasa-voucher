@@ -632,6 +632,12 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
     border-color: rgba(255, 255, 255, 0.08) !important;
 }
 /* SweetAlert2 Premium Input Styles Override */
+.swal2-popup.swal-flush {
+  --swal2-padding: 0;
+  --swal2-html-container-padding: 0;
+  --swal2-actions-padding: 0 1.5rem 1.25rem;
+}
+
 .swal2-premium-card .form-label {
     @apply text-accents-8 dark:text-accents-2 font-bold mb-2;
 }

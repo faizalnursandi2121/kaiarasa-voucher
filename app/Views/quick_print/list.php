@@ -113,108 +113,150 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
 <!-- Template for Add/Edit Package Form -->
 <template id="package-form-template">
-    <form id="qp-form" action="/<?= htmlspecialchars($session) ?>/quick-print/store" method="POST" class="space-y-4 text-left">
-         <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
-         <!-- Hidden ID for Edit Mode (will be disabled/removed for Add) -->
-         <input type="hidden" name="id" id="form-id" disabled> 
-        
-        <!-- Quick Inputs Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="col-span-1 md:col-span-2">
-                <label class="form-label" data-i18n="quick_print.package_name">Package Name</label>
-                <input type="text" name="name" required class="w-full" placeholder="e.g. 3 Hours Voucher">
-            </div>
-            
-            <div>
-                 <label class="form-label" data-i18n="quick_print.select_profile">Select Profile</label>
-                 <select name="profile" class="w-full" data-search="true">
-                    <?php foreach ($profiles as $p) { ?>
-                        <option value="<?= htmlspecialchars($p['name']) ?>"><?= htmlspecialchars($p['name']) ?></option>
-                    <?php } ?>
-                 </select>
-            </div>
+    <!-- Modal Head (Sage Tint — pattern Generate Vouchers) -->
+    <div class="bg-[#5f7f67]/[.07] dark:bg-[#5f7f67]/[.12] border-b border-[#5f7f67]/20 px-6 py-4 flex items-start justify-between gap-4 text-left">
+        <div>
+            <h3 class="text-base font-bold tracking-tight" data-modal-title>Add Package</h3>
+            <p class="text-xs opacity-60 mt-1" data-i18n="common.package_form_subtitle">Quick print card settings</p>
+        </div>
+        <button type="button" onclick="Swal.close()" aria-label="Close"
+            class="w-8 h-8 rounded-lg inline-flex items-center justify-center hover:bg-black/[.05] dark:hover:bg-white/[.06] transition-colors shrink-0">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
 
-             <div>
-                <label class="form-label" data-i18n="quick_print.card_color">Card Color</label>
-                <select name="color" class="w-full">
-                    <option value="bg-blue-500" data-i18n="colors.blue">Blue</option>
-                    <option value="bg-red-500" data-i18n="colors.red">Red</option>
-                    <option value="bg-green-500" data-i18n="colors.green">Green</option>
-                    <option value="bg-yellow-500" data-i18n="colors.yellow">Yellow</option>
-                    <option value="bg-purple-500" data-i18n="colors.purple">Purple</option>
-                    <option value="bg-pink-500" data-i18n="colors.pink">Pink</option>
-                    <option value="bg-indigo-500" data-i18n="colors.indigo">Indigo</option>
-                    <option value="bg-gray-800" data-i18n="colors.dark">Dark</option>
-                </select>
-            </div>
+    <form id="qp-form" action="/<?= htmlspecialchars($session) ?>/quick-print/store" method="POST" class="space-y-4 p-6 text-left">
+        <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
+        <input type="hidden" name="id" id="form-id" disabled>
 
-            <div>
-                <label class="form-label" data-i18n="quick_print.price">Price (Rp)</label>
-                <input type="number" name="price" class="w-full" placeholder="5000">
-            </div>
-
-             <div>
-                <label class="form-label" data-i18n="quick_print.selling_price">Selling Price</label>
-                <input type="number" name="selling_price" class="w-full" placeholder="Default same">
-            </div>
-
-            <div>
-                <label class="form-label" data-i18n="quick_print.prefix">Prefix</label>
-                <input type="text" name="prefix" class="w-full" placeholder="Example: VIP-">
-            </div>
-
-            <div>
-                <label class="form-label" data-i18n="quick_print.char_length">Char Length</label>
-                <select name="char_length" class="w-full">
-                    <option value="4" selected data-i18n="common.char_length" data-i18n-params='{"n": 4}'>4 Characters</option>
-                    <option value="6" data-i18n="common.char_length" data-i18n-params='{"n": 6}'>6 Characters</option>
-                    <option value="8" data-i18n="common.char_length" data-i18n-params='{"n": 8}'>8 Characters</option>
-                </select>
-            </div>
-            
-            <div class="col-span-1 md:col-span-2">
-                <label class="form-label" data-i18n="quick_print.time_limit">Time Limit</label>
-                <div class="flex w-full">
-                    <!-- Day -->
-                    <div class="input-group flex-1">
-                        <input type="number" name="timelimit_d" min="0" class="form-input w-full pr-8 rounded-r-none border-r-0 focus:z-10 font-mono text-center" placeholder="0">
-                        <div class="input-suffix text-xs font-bold w-8 justify-center">D</div>
-                    </div>
-                    <!-- Hour -->
-                    <div class="input-group flex-1">
-                        <input type="number" name="timelimit_h" min="0" max="23" class="form-input w-full pr-8 rounded-none border-r-0 focus:z-10 font-mono text-center" placeholder="0">
-                        <div class="input-suffix text-xs font-bold w-8 justify-center">H</div>
-                    </div>
-                    <!-- Minute -->
-                    <div class="input-group flex-1">
-                        <input type="number" name="timelimit_m" min="0" max="59" class="form-input w-full pr-8 rounded-l-none focus:z-10 font-mono text-center" placeholder="0">
-                        <div class="input-suffix text-xs font-bold w-8 justify-center">M</div>
-                    </div>
+                        <div class="flex items-center gap-3 pt-2">
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.package">Package</span>
+                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
                 </div>
-                <p class="text-xs text-accents-5 mt-1" data-i18n="quick_print.time_limit_help">Max uptime (e.g. 1d, 3h, 30m).</p>
-            </div>
 
-            <div class="col-span-1 md:col-span-2">
-                <label class="form-label" data-i18n="quick_print.data_limit">Data Limit</label>
-                <div class="flex w-full">
-                    <div class="input-group flex-grow z-0 focus-within:z-10">
-                        <div class="input-icon">
-                            <i data-lucide="database" class="w-4 h-4"></i>
-                        </div>
-                        <input type="number" name="datalimit_val" min="0" class="form-input w-full rounded-r-none border-r-0" placeholder="0">
-                    </div>
-                    <select name="datalimit_unit" class="custom-select w-32 bg-accents-1 font-medium text-accents-6 text-center rounded-l-none border-l-0 -ml-px z-0 focus:z-10">
+        <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.package_name">Package Name</label>
+            <input type="text" name="name" required placeholder="e.g. 3 Hours Voucher"
+                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.select_profile">Select Profile</label>
+                <div class="relative">
+                    <select name="profile" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                        <?php foreach ($profiles as $p) { ?>
+                            <option value="<?= htmlspecialchars($p['name']) ?>"><?= htmlspecialchars($p['name']) ?></option>
+                        <?php } ?>
+                    </select>
+                    <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                </div>
+            </div>
+            <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.card_color">Card Color</label>
+                <div class="relative">
+                    <select name="color" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                        <option value="bg-blue-500" data-i18n="colors.blue">Blue</option>
+                        <option value="bg-red-500" data-i18n="colors.red">Red</option>
+                        <option value="bg-green-500" data-i18n="colors.green">Green</option>
+                        <option value="bg-yellow-500" data-i18n="colors.yellow">Yellow</option>
+                        <option value="bg-purple-500" data-i18n="colors.purple">Purple</option>
+                        <option value="bg-pink-500" data-i18n="colors.pink">Pink</option>
+                        <option value="bg-indigo-500" data-i18n="colors.indigo">Indigo</option>
+                        <option value="bg-gray-800" data-i18n="colors.dark">Dark</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                </div>
+            </div>
+        </div>
+
+                        <div class="flex items-center gap-3 pt-2">
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.pricing">Pricing</span>
+                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
+                </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.price">Price (Rp)</label>
+                <input type="number" name="price" placeholder="5000" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+            </div>
+            <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.selling_price">Selling Price</label>
+                <input type="number" name="selling_price" placeholder="Default same" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+            </div>
+        </div>
+
+                        <div class="flex items-center gap-3 pt-2">
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.voucher_format">Voucher Format</span>
+                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
+                </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.prefix">Prefix</label>
+                <input type="text" name="prefix" placeholder="Example: VIP-" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+            </div>
+            <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.char_length">Char Length</label>
+                <div class="relative">
+                    <select name="char_length" data-native class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                        <option value="4" selected data-i18n="common.char_length" data-i18n-params='{"n": 4}'>4 Characters</option>
+                        <option value="6" data-i18n="common.char_length" data-i18n-params='{"n": 6}'>6 Characters</option>
+                        <option value="8" data-i18n="common.char_length" data-i18n-params='{"n": 8}'>8 Characters</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                </div>
+            </div>
+        </div>
+
+                        <div class="flex items-center gap-3 pt-2">
+                    <span class="text-[13px] font-bold uppercase tracking-[0.14em]" data-i18n="common.limits">Limits</span>
+                    <span class="h-px flex-1 bg-black/[.06] dark:bg-white/[.06]"></span>
+                </div>
+
+        <div>
+            <span class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.time_limit">Time Limit</span>
+            <div class="grid grid-cols-3 gap-2">
+                <div class="relative">
+                    <input type="number" name="timelimit_d" min="0" placeholder="0" aria-label="Days"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">D</span>
+                </div>
+                <div class="relative">
+                    <input type="number" name="timelimit_h" min="0" max="23" placeholder="0" aria-label="Hours"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">H</span>
+                </div>
+                <div class="relative">
+                    <input type="number" name="timelimit_m" min="0" max="59" placeholder="0" aria-label="Minutes"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">M</span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="quick_print.data_limit">Data Limit</label>
+            <div class="flex gap-2">
+                <div class="relative flex-1 min-w-0">
+                    <i data-lucide="database" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
+                    <input type="number" name="datalimit_val" min="0" placeholder="0"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                </div>
+                <div class="relative w-24 shrink-0">
+                    <select name="datalimit_unit" data-native aria-label="Data limit unit"
+                        class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-8 text-[14px] text-center appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
                         <option value="MB" selected>MB</option>
                         <option value="GB">GB</option>
                     </select>
+                    <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                 </div>
-                <p class="text-xs text-accents-5 mt-1" data-i18n="quick_print.data_limit_help">Max data transfer (MB).</p>
             </div>
+        </div>
 
-             <div class="col-span-1 md:col-span-2">
-                <label class="form-label" data-i18n="system_tools.comment">Comment</label>
-                <input type="text" name="comment" class="w-full" placeholder="Description or Note">
-            </div>
+        <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider mb-2" data-i18n="system_tools.comment">Comment</label>
+            <input type="text" name="comment" placeholder="Description or Note" class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
         </div>
     </form>
 </template>
@@ -328,6 +370,8 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     function openModal(mode, btn = null) {
         const template = document.getElementById('package-form-template').innerHTML;
         
+        const tplNode = document.getElementById('package-form-template').content.cloneNode(true);
+
         let title = window.i18n ? window.i18n.t('quick_print.add_package') : 'Add Package';
         let saveBtn = window.i18n ? window.i18n.t('quick_print.save_package') : 'Save Package';
         
@@ -406,7 +450,12 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
         }
         
         // Pass callbacks to helper
-        Kaiarasa.modal.form(title, template, saveBtn, preConfirmFn, onOpenedFn);
+        tplNode.querySelector('[data-modal-title]').textContent = title;
+        const holder = document.createElement('div');
+        holder.appendChild(tplNode);
+        const template = holder.innerHTML;
+
+        Kaiarasa.modal.form('', template, saveBtn, preConfirmFn, onOpenedFn, 'swal-flush');
     }
     
     window.whenReady(() => {
