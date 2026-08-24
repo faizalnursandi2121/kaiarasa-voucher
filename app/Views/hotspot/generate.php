@@ -6,10 +6,10 @@
     <!-- Form Column -->
     <div class="lg:col-span-2 min-w-0">
     <div class="rounded-2xl border border-black/[.08] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] shadow-xl overflow-hidden">
-        <!-- Panel Header (Sage) -->
-        <div class="bg-[#5f7f67] px-6 py-5">
-            <h3 class="text-base font-bold text-white tracking-tight" data-i18n="hotspot_generate.title">Generate Vouchers</h3>
-            <p class="text-xs text-white/70 mt-1.5" data-i18n="hotspot_generate.form.subtitle" data-i18n-params='{"name": "<?= htmlspecialchars($session) ?>"}'>Create multiple hotspot vouchers in batch for: <?= htmlspecialchars($session) ?></p>
+        <!-- Panel Header (Sage Tint — senada table-glass thead) -->
+        <div class="bg-[#5f7f67]/[.07] dark:bg-[#5f7f67]/[.12] border-b border-[#5f7f67]/20 px-6 py-5">
+            <h3 class="text-base font-bold tracking-tight" data-i18n="hotspot_generate.title">Generate Vouchers</h3>
+            <p class="text-xs opacity-60 mt-1.5" data-i18n="hotspot_generate.form.subtitle" data-i18n-params='{"name": "<?= htmlspecialchars($session) ?>"}'>Create multiple hotspot vouchers in batch for: <?= htmlspecialchars($session) ?></p>
         </div>
 
         <form action="/<?= htmlspecialchars($session) ?>/hotspot/generate/process" method="POST" class="space-y-4 p-6">
