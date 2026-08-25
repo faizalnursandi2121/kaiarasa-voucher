@@ -294,7 +294,7 @@ window.whenReady(function () {
 
     function baseChart(extra) {
         var base = {
-            chart: Object.assign({ fontFamily: 'inherit', foreColor: isDark() ? '#e9ebe7' : '#1c2420', toolbar: { show: false } }, extra.chart || {}),
+            chart: Object.assign({ width: '100%', fontFamily: 'inherit', foreColor: isDark() ? '#e9ebe7' : '#1c2420', toolbar: { show: false } }, extra.chart || {}),
             grid: { borderColor: gridColor() },
             tooltip: { theme: isDark() ? 'dark' : 'light' },
         };
