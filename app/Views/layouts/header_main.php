@@ -42,6 +42,7 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
         .kai-pop > *:not([class*="opacity-0"]) { animation: kaiRowIn .3s ease both; }
         @media (prefers-reduced-motion: reduce) {
             .kai-pop > * { animation: none !important; }
+        }
         @font-face {
             font-family: 'Geist';
             src: url('/assets/fonts/Geist-Regular.woff2') format('woff2');
