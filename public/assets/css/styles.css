@@ -1844,6 +1844,10 @@ input:-webkit-autofill,
   margin-bottom: auto;
 }
 
+.-ml-1 {
+  margin-left: -0.25rem;
+}
+
 .mb-0\.5 {
   margin-bottom: 0.125rem;
 }
@@ -5313,6 +5317,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
 .hover\:bg-white\/20:hover {
   background-color: rgb(255 255 255 / 0.2);
+}
+
+.hover\:bg-white\/25:hover {
+  background-color: rgb(255 255 255 / 0.25);
 }
 
 .hover\:text-accents-2:hover {
