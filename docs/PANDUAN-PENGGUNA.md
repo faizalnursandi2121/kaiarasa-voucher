@@ -270,4 +270,4 @@ Seluruh fitur tetap nyaman diakses dari HP. Susunan bilah atas versi mobile:
 
 ---
 
-*Dokumen pendamping: `LAPORAN-TEKNIS.md` (khusus tim internal) · `PANDUAN-PELANGGAN.md` (panduan singkat untuk pelanggan pengguna voucher).*
+*Dokumen pendamping: `LAPORAN-PROYEK.md` (laporan proyek untuk pimpinan) · `PANDUAN-PELANGGAN.md` (panduan singkat untuk pelanggan pengguna voucher).*
