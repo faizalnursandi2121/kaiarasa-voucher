@@ -554,7 +554,7 @@ $toolbar_html .= '
 
                 <input type="hidden" name="expired_mode" id="expired-mode" value="remc">
 
-                <div id="validity-group" class="hidden space-y-2 transition-all">
+                <div id="validity-group" class="hidden space-y-2 transition-colors">
                     <span class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.validity">Validity</span>
                     <div class="grid grid-cols-3 gap-2">
                         <div class="relative">

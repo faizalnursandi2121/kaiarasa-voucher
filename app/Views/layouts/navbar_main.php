@@ -40,7 +40,7 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
                 <!-- Notifikasi Bell -->
                 <div class="relative" id="notif-wrap">
                     <button type="button" onclick="KaiarasaNav.toggle('notif-dropdown')"
-                        class="relative w-10 h-10 inline-flex items-center justify-center rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/[.08] dark:border-white/[.08] text-accents-6 hover:text-foreground hover:border-[#92aa96] transition-all">
+                        class="relative w-10 h-10 inline-flex items-center justify-center rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/[.08] dark:border-white/[.08] text-accents-6 hover:text-foreground hover:border-[#92aa96] transition-colors">
                         <i data-lucide="bell" class="w-[18px] h-[18px]"></i>
                         <span id="notif-dot" class="hidden absolute top-2 right-2.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-background"></span>
                     </button>

@@ -56,7 +56,6 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
         document.documentElement.classList.remove('dark');
         try { localStorage.removeItem('theme'); } catch (e) {}
     </script>
-    <script src="/assets/js/jquery.min.js" defer></script>
     <script src="/assets/js/lucide.min.js" defer></script>
     <script>
         window.currentVersion = '<?= SiteConfig::APP_VERSION ?>';

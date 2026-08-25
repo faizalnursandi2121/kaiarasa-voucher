@@ -103,7 +103,7 @@
         <div class="max-w-4xl mx-auto w-full space-y-16">
             
             <!-- Error Card -->
-            <div class="card !border-red-500/30 !bg-red-50/50 dark:!bg-red-900/10 p-6 md:p-8 shadow-lg transition-all">
+            <div class="card !border-red-500/30 !bg-red-50/50 dark:!bg-red-900/10 p-6 md:p-8 shadow-lg transition-colors">
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-red-100 dark:bg-red-900/40 rounded-xl text-red-600 dark:text-red-400 ring-1 ring-red-200 dark:ring-red-800/50 shadow-sm">
@@ -156,7 +156,7 @@
                         <i data-lucide="activity" class="w-4 h-4"></i>
                         Stack Trace
                     </h3>
-                    <button onclick="navigator.clipboard.writeText(document.getElementById('stacktrace').innerText); this.innerHTML = 'Copied!';" class="text-xs btn btn-sm btn-secondary h-8 px-4 transition-all">
+                    <button onclick="navigator.clipboard.writeText(document.getElementById('stacktrace').innerText); this.innerHTML = 'Copied!';" class="text-xs btn btn-sm btn-secondary h-8 px-4 transition-colors">
                         Copy Trace
                     </button>
                 </div>

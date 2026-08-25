@@ -60,7 +60,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
     <?php } else { ?>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
             <?php foreach ($logos as $logo) { ?>
-            <div class="group relative card !p-0 overflow-hidden border border-accents-2 bg-background hover:shadow-md transition-all">
+            <div class="group relative card !p-0 overflow-hidden border border-accents-2 bg-background hover:shadow-md transition-shadow">
                 <!-- Image Preview -->
                 <div class="aspect-square flex items-center justify-center p-4 bg-accents-1 relative" style="background-image: linear-gradient(45deg, #e5e5e5 25%, transparent 25%), linear-gradient(-45deg, #e5e5e5 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e5e5e5 75%), linear-gradient(-45deg, transparent 75%, #e5e5e5 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px;">
                     <img src="<?= $logo['path'] ?>" alt="<?= htmlspecialchars($logo['name']) ?>" class="max-w-full max-h-full object-contain">
