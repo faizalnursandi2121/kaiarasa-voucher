@@ -82,6 +82,19 @@ if (isset($session) && ! empty($session)) { ?>
                 if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
             }
             
+            // Bersihkan kelas animasi masuk setelah selesai — tanpa ini,
+            // fill-mode 'both' mengunci opacity/transform dan menimpa
+            // kelas utility semacam opacity-0 (kasus: batch toolbar).
+            ['session-dynamic', 'table-scroll'].forEach(function (id) {
+                var host = document.getElementById(id);
+                if (! host || host.dataset.kaiPopBound) return;
+                host.dataset.kaiPopBound = '1';
+                host.addEventListener('animationend', function (ev) {
+                    if (ev.animationName !== 'kaiRowIn') return;
+                    host.classList.remove('kai-pop');
+                });
+            });
+
             // Initialize Lucide Icons
             if (typeof lucide !== 'undefined') {
                 try { lucide.createIcons(); } catch (e) { /* subtree bisa saja sudah diganti */ }
