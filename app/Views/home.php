@@ -328,7 +328,7 @@ window.whenReady(function () {
     var gridColor = function () { return isDark() ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.06)'; };
     var labelColor = function () { return isDark() ? '#9aa39b' : '#6b7280'; };
     var baseChart = function (opts) {
-        opts.chart = Object.assign({ fontFamily: 'inherit', foreColor: labelColor(),
+        opts.chart = Object.assign({ width: '100%', fontFamily: 'inherit', foreColor: labelColor(),
             toolbar: { show: false }, zoom: { enabled: false }, background: 'transparent' }, opts.chart || {});
         return opts;
     };
