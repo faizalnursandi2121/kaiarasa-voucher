@@ -345,6 +345,44 @@ $getInitials = function ($name) {
     </div>
 </header>
 
+        <!-- Mobile Header (Visible only on small screens) -->
+        <header class="session-mobile-header relative h-14 flex items-center justify-between px-4 border-b border-white/20 md:hidden z-20 sticky top-0">
+            <!-- Kiri: hamburger -->
+            <button id="mobile-menu-toggle" aria-label="Open menu"
+                class="w-9 h-9 -ml-1 inline-flex items-center justify-center rounded-xl text-white hover:bg-white/10 transition-colors">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Tengah: logo putih -->
+            <a href="/<?= htmlspecialchars($session ?? '') ?>/dashboard" class="absolute left-1/2 -translate-x-1/2" aria-label="MIVO">
+                <img src="/assets/img/logo-white.webp" class="h-6 w-auto block" alt="MIVO">
+            </a>
+
+            <!-- Kanan: avatar profile -->
+            <div class="relative" id="mob-profile-wrap">
+                <button type="button" id="mob-profile-btn" aria-label="Account menu"
+                    class="flex items-center justify-center w-9 h-9 rounded-full bg-white text-[#47614d] shadow-sm hover:bg-white/90 transition-colors">
+                    <span class="text-xs font-bold uppercase"><?= $sessionInitials ?></span>
+                </button>
+                <div id="mob-profile-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-background dark:bg-[#1a1c19] border border-black/[.08] dark:border-white/[.08] rounded-xl shadow-xl z-50 overflow-hidden">
+                    <div class="px-4 py-3 border-b border-black/[.06] dark:border-white/[.06]">
+                        <p class="text-sm font-bold truncate"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></p>
+                        <p class="text-[11px] opacity-50 truncate">Session: <?= htmlspecialchars($session ?? '-') ?></p>
+                    </div>
+                    <a href="/settings" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
+                        <i data-lucide="settings" class="w-4 h-4 opacity-60"></i> Settings
+                    </a>
+                    <div class="border-t border-black/[.06] dark:border-white/[.06]"></div>
+                    <a href="/" title="Exit session — back to Home" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
+                        <i data-lucide="cast" class="w-4 h-4 opacity-60"></i> Disconnect
+                    </a>
+                    <a href="/logout" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/[.07] transition-colors">
+                        <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </header>
+
 <script>
 // Notifikasi topbar session: pola sama dengan navbar global
 (function () {
@@ -415,44 +453,6 @@ $getInitials = function ($name) {
     });
 })();
 </script>
-
-        <!-- Mobile Header (Visible only on small screens) -->
-        <header class="session-mobile-header relative h-14 flex items-center justify-between px-4 border-b border-white/20 md:hidden z-20 sticky top-0">
-            <!-- Kiri: hamburger -->
-            <button id="mobile-menu-toggle" aria-label="Open menu"
-                class="w-9 h-9 -ml-1 inline-flex items-center justify-center rounded-xl text-white hover:bg-white/10 transition-colors">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
-
-            <!-- Tengah: logo putih -->
-            <a href="/<?= htmlspecialchars($session ?? '') ?>/dashboard" class="absolute left-1/2 -translate-x-1/2" aria-label="MIVO">
-                <img src="/assets/img/logo-white.webp" class="h-6 w-auto block" alt="MIVO">
-            </a>
-
-            <!-- Kanan: avatar profile -->
-            <div class="relative" id="mob-profile-wrap">
-                <button type="button" id="mob-profile-btn" aria-label="Account menu"
-                    class="flex items-center justify-center w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 transition-colors">
-                    <span class="text-xs font-bold uppercase"><?= $sessionInitials ?></span>
-                </button>
-                <div id="mob-profile-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-background dark:bg-[#1a1c19] border border-black/[.08] dark:border-white/[.08] rounded-xl shadow-xl z-50 overflow-hidden">
-                    <div class="px-4 py-3 border-b border-black/[.06] dark:border-white/[.06]">
-                        <p class="text-sm font-bold truncate"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></p>
-                        <p class="text-[11px] opacity-50 truncate">Session: <?= htmlspecialchars($session ?? '-') ?></p>
-                    </div>
-                    <a href="/settings" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
-                        <i data-lucide="settings" class="w-4 h-4 opacity-60"></i> Settings
-                    </a>
-                    <div class="border-t border-black/[.06] dark:border-white/[.06]"></div>
-                    <a href="/" title="Exit session — back to Home" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
-                        <i data-lucide="cast" class="w-4 h-4 opacity-60"></i> Disconnect
-                    </a>
-                    <a href="/logout" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/[.07] transition-colors">
-                        <i data-lucide="log-out" class="w-4 h-4"></i> Logout
-                    </a>
-                </div>
-            </div>
-        </header>
 
         <!-- Session SPA navigation (persistent; lives outside #session-dynamic) -->
         <script>
