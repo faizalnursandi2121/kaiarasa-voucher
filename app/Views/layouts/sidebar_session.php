@@ -493,9 +493,16 @@ $getInitials = function ($name) {
                 if (hrefPath.indexOf(prefix) !== 0) return false;
                 var rest = hrefPath.slice(prefix.length); // e.g. /hotspot/users
                 if (!rest) return false;
-                // PHP matches /hotspot/profile (singular) for both profile & profiles.
-                var match = (rest === '/hotspot/profiles') ? '/hotspot/profile' : rest;
-                return pathname.indexOf(match) !== -1;
+
+                // Dashboard hanya aktif pada alamat yang persis.
+                if (rest === '/dashboard') {
+                    return pathname === prefix + '/dashboard';
+                }
+
+                // Halaman seksi tetap aktif pada subhalamannya (edit/detail).
+                // Catatan PHP: profile (tunggal) ikut dianggap profiles.
+                var probe = (rest === '/hotspot/profiles') ? '/hotspot/profile' : rest;
+                return pathname.indexOf(prefix + probe) === 0;
             }
 
             function setClasses(el, add, remove) {
@@ -515,6 +522,14 @@ $getInitials = function ($name) {
                     var on = inGroup ? SUB_ON : TOP_ON;
                     var off = inGroup ? SUB_OFF : TOP_OFF;
                     setClasses(a, active ? on : off, active ? off : on);
+
+                    // Titik indikator wajib mengikuti menu aktif — sebelumnya
+                    // tidak disentuh SPA sehingga membeku/menumpuk.
+                    var dot = a.querySelector('span.ml-auto.rounded-full');
+                    if (dot) {
+                        dot.classList.toggle('bg-white', active);
+                        dot.classList.toggle('bg-transparent', !active);
+                    }
                 });
                 // Expand active groups, collapse others (matches PHP initial state).
                 document.querySelectorAll('#sidebar [data-nav-group]').forEach(function (menu) {
