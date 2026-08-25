@@ -197,7 +197,7 @@ window.whenReady(function () {
         if (! uaSeries.length) {
             uaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">Not enough data yet — activity is sampled every few minutes.</p>';
         } else if (uaMode === 'today') {
-            var __c = document.getElementById('ua'); __c.innerHTML = '';
+            var __c = document.getElementById('chart-ua'); __c.innerHTML = '';
             new ApexCharts(uaEl, baseChart({
                 series: [{ name: 'Active users', data: uaSeries.map(function (p) { return [p.label, p.value]; }) }],
                 chart: Object.assign({ type: 'area', height: 240 }, {}),
@@ -229,7 +229,7 @@ window.whenReady(function () {
         if ((va.daily || []).length === 0) {
             vaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No voucher activity yet.</p>';
         } else {
-            var __c = document.getElementById('va'); __c.innerHTML = '';
+            var __c = document.getElementById('chart-va'); __c.innerHTML = '';
             new ApexCharts(vaEl, baseChart({
                 series: [{ name: 'Vouchers created', data: va.daily.map(function (d) { return d.count; }) }],
                 chart: Object.assign({ type: 'bar', height: 240 }, {}),
@@ -248,7 +248,7 @@ window.whenReady(function () {
         if (! topPkgs.length) {
             pkgEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No package data yet.</p>';
         } else {
-            var __c = document.getElementById('packages'); __c.innerHTML = '';
+            var __c = document.getElementById('chart-packages'); __c.innerHTML = '';
             new ApexCharts(pkgEl, baseChart({
                 series: topPkgs.map(function (p) { return p.count; }),
                 labels: topPkgs.map(function (p) { return p.name; }),

@@ -64,7 +64,7 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
         try { localStorage.removeItem('theme'); } catch (e) {}
     </script>
     <link rel="preload" as="script" href="/assets/js/lucide.min.js">
-    <script src="/assets/js/lucide.min.js" defer onload="if(window.lucide&&window.lucide.createIcons){window.lucide.createIcons()}"></script>
+    <script src="/assets/js/lucide.min.js" defer onload="try{if(window.lucide&&window.lucide.createIcons){window.lucide.createIcons()}}catch(e){}"></script>
     <script>
         window.currentVersion = '<?= SiteConfig::APP_VERSION ?>';
         // Run a callback now if the DOM is already parsed, otherwise on DOMContentLoaded.
@@ -101,7 +101,12 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
     </div>
 </div>
 <script>
-window.kaiRouteLoading = function (show, label) {
+// Fallback awal: atribut on* di sidebar bisa terpicu sebelum footer
+        // (tempat definisi asli toggleMenu/closeMenu) selesai di-stream.
+        window.toggleMenu = window.toggleMenu || function () {};
+        window.closeMenu  = window.closeMenu  || function () {};
+
+        window.kaiRouteLoading = function (show, label) {
     var el = document.getElementById('kai-route-loading');
     if (!el) return;
     if (label) { var t = el.querySelector('[data-label]'); if (t) t.textContent = label; }
