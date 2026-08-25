@@ -131,7 +131,7 @@ function dashRp(int $v): string
                     <?php endforeach; ?>
                 </div>
             </div>
-            <div id="chart-ua"></div>
+            <div id="chart-ua"><div class="rounded-xl bg-black/[.04] dark:bg-white/[.04] animate-pulse" style="height:240px"></div></div>
         </div>
 
         <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
@@ -139,14 +139,14 @@ function dashRp(int $v): string
                 <h3 class="font-bold tracking-tight">Voucher Activity</h3>
                 <span class="text-[11px] opacity-50">created · last 30 days</span>
             </div>
-            <div id="chart-va"></div>
+            <div id="chart-va"><div class="rounded-xl bg-black/[.04] dark:bg-white/[.04] animate-pulse" style="height:240px"></div></div>
         </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4 mb-4">
         <div class="lg:col-span-2 rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
             <h3 class="font-bold tracking-tight mb-3">Top Packages</h3>
-            <div id="chart-packages"></div>
+            <div id="chart-packages"><div class="rounded-xl bg-black/[.04] dark:bg-white/[.04] animate-pulse" style="height:260px"></div></div>
         </div>
         <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
             <h3 class="font-bold tracking-tight mb-4">Top Packages — List</h3>
@@ -197,6 +197,7 @@ window.whenReady(function () {
         if (! uaSeries.length) {
             uaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">Not enough data yet — activity is sampled every few minutes.</p>';
         } else if (uaMode === 'today') {
+            var __c = document.getElementById('ua'); __c.innerHTML = '';
             new ApexCharts(uaEl, baseChart({
                 series: [{ name: 'Active users', data: uaSeries.map(function (p) { return [p.label, p.value]; }) }],
                 chart: Object.assign({ type: 'area', height: 240 }, {}),
@@ -207,6 +208,7 @@ window.whenReady(function () {
                 yaxis: { min: 0, tickAmount: 4, labels: { formatter: function (v) { return Math.round(v); } } },
             })).render();
         } else {
+            var __c = document.getElementById('ua'); __c.innerHTML = '';
             new ApexCharts(uaEl, baseChart({
                 series: [
                     { name: 'Avg active', data: uaSeries.map(function (p) { return p.avg; }) },
@@ -227,6 +229,7 @@ window.whenReady(function () {
         if ((va.daily || []).length === 0) {
             vaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No voucher activity yet.</p>';
         } else {
+            var __c = document.getElementById('va'); __c.innerHTML = '';
             new ApexCharts(vaEl, baseChart({
                 series: [{ name: 'Vouchers created', data: va.daily.map(function (d) { return d.count; }) }],
                 chart: Object.assign({ type: 'bar', height: 240 }, {}),
@@ -245,6 +248,7 @@ window.whenReady(function () {
         if (! topPkgs.length) {
             pkgEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No package data yet.</p>';
         } else {
+            var __c = document.getElementById('packages'); __c.innerHTML = '';
             new ApexCharts(pkgEl, baseChart({
                 series: topPkgs.map(function (p) { return p.count; }),
                 labels: topPkgs.map(function (p) { return p.name; }),

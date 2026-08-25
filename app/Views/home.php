@@ -81,11 +81,11 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     <h3 class="font-bold tracking-tight">Network Availability</h3>
                     <span class="text-[11px] opacity-50">Last 24 hours</span>
                 </div>
-                <div id="chart-availability"></div>
+                <div id="chart-availability"><div class="rounded-xl bg-black/[.04] dark:bg-white/[.04] animate-pulse" style="height:190px"></div></div>
                 <div class="grid grid-cols-3 gap-2 pt-4 mt-2 border-t border-black/[.05] dark:border-white/[.05] text-center">
-                    <div><p class="text-[10px] uppercase tracking-wide opacity-50 mb-1">Avg Uptime</p><p class="font-bold text-emerald-600 dark:text-emerald-400 text-sm tabular-nums" id="avg-uptime">—</p></div>
-                    <div><p class="text-[10px] uppercase tracking-wide opacity-50 mb-1">Downtime</p><p class="font-bold text-red-600 dark:text-red-400 text-sm tabular-nums" id="downtime">—</p></div>
-                    <div><p class="text-[10px] uppercase tracking-wide opacity-50 mb-1">Incidents</p><p class="font-bold text-sm tabular-nums" id="incidents">—</p></div>
+                    <div><p class="text-[10px] uppercase tracking-wide opacity-50 mb-1">Avg Uptime</p><p class="font-bold text-emerald-600 dark:text-emerald-400 text-sm tabular-nums animate-pulse" id="avg-uptime">—</p></div>
+                    <div><p class="text-[10px] uppercase tracking-wide opacity-50 mb-1">Downtime</p><p class="font-bold text-red-600 dark:text-red-400 text-sm tabular-nums animate-pulse" id="downtime">—</p></div>
+                    <div><p class="text-[10px] uppercase tracking-wide opacity-50 mb-1">Incidents</p><p class="font-bold text-sm tabular-nums animate-pulse" id="incidents">—</p></div>
                 </div>
             </div>
 
@@ -106,14 +106,14 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
             <h3 class="font-bold tracking-tight mb-3">Status Distribution</h3>
-            <div id="chart-distribution"></div>
+            <div id="chart-distribution"><div class="rounded-xl bg-black/[.04] dark:bg-white/[.04] animate-pulse" style="height:230px"></div></div>
         </div>
         <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
             <div class="flex items-center justify-between mb-3">
                 <h3 class="font-bold tracking-tight">Top Router by CPU</h3>
                 <span class="text-[11px] opacity-50">top 5</span>
             </div>
-            <div id="chart-topcpu"></div>
+            <div id="chart-topcpu"><div class="rounded-xl bg-black/[.04] dark:bg-white/[.04] animate-pulse" style="height:230px"></div></div>
         </div>
         <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
             <div class="flex items-center justify-between mb-4">
@@ -485,6 +485,7 @@ window.whenReady(function () {
 
     /* ================= charts ================= */
     function chartAvail(series, agg) {
+        ['avg-uptime','downtime','incidents'].forEach(function(i){var q=document.getElementById(i); if(q) q.classList.remove('animate-pulse');});
         document.getElementById('avg-uptime').textContent =
             (agg.avg_uptime_pct !== undefined ? Math.round(agg.avg_uptime_pct*10)/10 : '-') + '%';
         document.getElementById('downtime').textContent = fmtDown(agg.downtime_seconds);
@@ -492,6 +493,7 @@ window.whenReady(function () {
         var el = document.getElementById('chart-availability');
         if (charts.avail) charts.avail.destroy();
         if (!series.length) { el.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No history yet.</p>'; return; }
+        el.innerHTML = '';
         el.innerHTML = '';
         charts.avail = new ApexCharts(el, baseChart({
             series: [{ name: 'Availability', data: series.map(function (s) { return [s.ts * 1000, s.availability_pct]; }) }],
@@ -510,6 +512,7 @@ window.whenReady(function () {
     function chartDonut(counts) {
         var el = document.getElementById('chart-distribution');
         if (charts.donut) charts.donut.destroy();
+        el.innerHTML = '';
         charts.donut = new ApexCharts(el, baseChart({
             series: [counts.online, counts.offline, counts.error, counts.connecting],
             labels: ['Online', 'Offline', 'Error', 'Connecting'],
@@ -534,6 +537,7 @@ window.whenReady(function () {
         var el = document.getElementById('chart-topcpu');
         if (charts.topcpu) charts.topcpu.destroy();
         if (!top.length) { el.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No CPU data available.</p>'; return; }
+        el.innerHTML = '';
         charts.topcpu = new ApexCharts(el, baseChart({
             series: [{ name: 'CPU %', data: top.map(function (r) { return r.cpu_load; }) }],
             chart: { type: 'bar', height: 220 },
