@@ -34,6 +34,9 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
         #table-scroll, #session-dynamic { transition: opacity .22s ease; }
         @keyframes kaiRowIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
         @keyframes kaiSlide { from { transform: translateX(-110%); } to { transform: translateX(320%); } }
+        /* Ikon: ruang ter-reserve (ukuran dari kelas), muncul halus saat lucide siap */
+        [data-lucide] { opacity: 0; transition: opacity .18s ease; }
+        html.lucide-ready [data-lucide] { opacity: 1; }
         .kai-pop > * { animation: kaiRowIn .3s ease both; }
         @font-face {
             font-family: 'Geist';
@@ -64,7 +67,7 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
         try { localStorage.removeItem('theme'); } catch (e) {}
     </script>
     <link rel="preload" as="script" href="/assets/js/lucide.min.js">
-    <script src="/assets/js/lucide.min.js" defer onload="try{if(window.lucide&&window.lucide.createIcons){window.lucide.createIcons()}}catch(e){}"></script>
+    <script src="/assets/js/lucide.min.js" defer onload="try{if(window.lucide&&window.lucide.createIcons){window.lucide.createIcons()}}catch(e){}document.documentElement.classList.add('lucide-ready')"></script>
     <script>
         window.currentVersion = '<?= SiteConfig::APP_VERSION ?>';
         // Run a callback now if the DOM is already parsed, otherwise on DOMContentLoaded.

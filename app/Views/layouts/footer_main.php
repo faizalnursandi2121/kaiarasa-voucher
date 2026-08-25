@@ -85,6 +85,7 @@ if (isset($session) && ! empty($session)) { ?>
             // Initialize Lucide Icons
             if (typeof lucide !== 'undefined') {
                 try { lucide.createIcons(); } catch (e) { /* subtree bisa saja sudah diganti */ }
+                document.documentElement.classList.add('lucide-ready');
             }
         });
         

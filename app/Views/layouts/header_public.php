@@ -15,6 +15,8 @@ use App\Core\Hooks;
     <link rel="stylesheet" href="/assets/css/styles.css?v=<?= filemtime(ROOT.'/public/assets/css/styles.css') ?>">
     <link rel="preload" as="script" href="/assets/js/lucide.min.js">
     <script src="/assets/js/lucide.min.js" defer onload="if(window.lucide&&window.lucide.createIcons){window.lucide.createIcons()}"></script>
+    <style>[data-lucide]{opacity:0;transition:opacity .18s ease}html.lucide-ready [data-lucide]{opacity:1}</style>
+    <script>window.addEventListener('DOMContentLoaded',function(){if(window.lucide){try{lucide.createIcons()}catch(e){}}document.documentElement.classList.add('lucide-ready')});</script>
     <script src="/assets/js/sweetalert2.all.min.js" defer></script>
     <script src="/assets/js/kaiarasa.js" defer></script>
     <script src="/assets/js/modules/alert.js" defer></script>
