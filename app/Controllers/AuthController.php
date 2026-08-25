@@ -20,6 +20,17 @@ class AuthController extends Controller
 
     public function login()
     {
+        // Cloudflare Turnstile (anti-bot): tolak lebih dulu bila verifikasi
+        // gagal — kredensial tidak disentuh sama sekali.
+        if (\App\Config\SiteConfig::turnstileEnabled()) {
+            $ts = \App\Services\TurnstileService::verify($_POST['cf-turnstile-response'] ?? '');
+            if (! $ts['success']) {
+                FlashHelper::set('error', 'Verifikasi Gagal', 'Centang verifikasi Cloudflare terlebih dahulu.');
+                header('Location: /login');
+                exit;
+            }
+        }
+
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
 

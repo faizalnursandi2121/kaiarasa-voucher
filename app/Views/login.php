@@ -94,6 +94,18 @@ include ROOT.'/app/Views/layouts/header_public.php';
                         </button>
                     </div>
 
+                    <?php if (\App\Config\SiteConfig::turnstileEnabled()): ?>
+                    <!-- Cloudflare Turnstile -->
+                    <div class="mt-6">
+                        <div class="cf-turnstile"
+                             data-sitekey="<?= htmlspecialchars(\App\Config\SiteConfig::getTurnstileSiteKey()) ?>"
+                             data-theme="light"
+                             data-callback="kaiTsOk"
+                             data-expired-callback="kaiTsBad"></div>
+                    </div>
+                    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+                    <?php endif; ?>
+
                     <!-- Submit (Metronic: d-grid; dengan loading state) -->
                     <div class="mt-6">
                         <button type="submit" id="login-submit"
@@ -149,6 +161,26 @@ include ROOT.'/app/Views/layouts/header_public.php';
     // Loading state saat submit (UI States #1 + #16)
     var form = document.querySelector('form[action="/login"]');
     if (form) {
+        // Cloudflare Turnstile: tombol terkunci sampai kotak verifikasi dicentang
+        var tsEnabled = <?= \App\Config\SiteConfig::turnstileEnabled() ? 'true' : 'false' ?>;
+        if (tsEnabled) {
+            var tsBtn = document.getElementById('login-submit');
+            if (tsBtn) tsBtn.disabled = true;
+            window.kaiTsOk  = function () { var b = document.getElementById('login-submit'); if (b) b.disabled = false; };
+            window.kaiTsBad = function () { var b = document.getElementById('login-submit'); if (b) b.disabled = true; };
+            form.addEventListener('submit', function (e) {
+                var tok = form.querySelector('[name="cf-turnstile-response"]');
+                if (! tok || ! tok.value) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    if (tsBtn) tsBtn.disabled = true;
+                    if (window.Kaiarasa && Kaiarasa.alert) {
+                        Kaiarasa.alert('warning', 'Verifikasi Diperlukan', 'Centang kotak verifikasi Cloudflare terlebih dahulu.');
+                    }
+                }
+            }, true);
+        }
+
         form.addEventListener('submit', function () {
             var submitBtn = document.getElementById('login-submit');
             var label = document.getElementById('login-btn-label');

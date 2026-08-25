@@ -38,6 +38,22 @@ class SiteConfig
         return 'kaiarasa_official_secret_key_32bytes';
     }
 
+    public static function getTurnstileSiteKey(): string
+    {
+        return trim((string) getenv('TURNSTILE_SITE_KEY'));
+    }
+
+    public static function getTurnstileSecretKey(): string
+    {
+        return trim((string) getenv('TURNSTILE_SECRET_KEY'));
+    }
+
+    /** Anti-bot aktif hanya bila kedua kunci Turnstile terisi. */
+    public static function turnstileEnabled(): bool
+    {
+        return self::getTurnstileSiteKey() !== '' && self::getTurnstileSecretKey() !== '';
+    }
+
     /**
      * Kunci aplikasi masih placeholder default?
      */
