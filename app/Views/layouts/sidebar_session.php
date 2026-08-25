@@ -689,7 +689,13 @@ $getInitials = function ($name) {
                 try {
                     var u = new URL(href, window.location.href);
                     if (u.origin !== window.location.origin) return;
-                    if (!isSessionPath(u.pathname, session)) return; // settings/disconnect/logout -> full load
+                    var xsw = /^\/([^\/]+)\/dashboard$/.exec(u.pathname);
+                    if (!isSessionPath(u.pathname, session)) {
+                        if (xsw && xsw[1] !== session && window.kaiRouteLoading) {
+                            window.kaiRouteLoading(true, 'Entering ' + xsw[1] + '\u2026');
+                        }
+                        return; // settings/disconnect/logout -> full load
+                    }
                     if (u.pathname === window.location.pathname && u.search === window.location.search) { e.preventDefault(); return; }
                     e.preventDefault();
                     loadSession(u.href, true);

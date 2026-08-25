@@ -33,6 +33,7 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
         /* Transisi konten dinamis — Home (#table-scroll) & sesi (#session-dynamic) */
         #table-scroll, #session-dynamic { transition: opacity .22s ease; }
         @keyframes kaiRowIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+        @keyframes kaiSlide { from { transform: translateX(-110%); } to { transform: translateX(320%); } }
         .kai-pop > * { animation: kaiRowIn .3s ease both; }
         @font-face {
             font-family: 'Geist';
@@ -88,6 +89,26 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
     <?php Hooks::doAction('kaiarasa_head'); ?>
 </head>
 <body class="flex flex-col min-h-screen bg-background text-foreground antialiased relative">
+
+<!-- Loading state perpindahan rute berat (Home -> Dashboard, pindah sesi) -->
+<div id="kai-route-loading" class="fixed inset-0 hidden items-center justify-center" style="z-index:100;background:rgba(250,250,248,.85)">
+    <div class="flex flex-col items-center gap-4 px-6 text-center">
+        <div class="w-12 h-12 rounded-full border-[3px] border-black/[.08]" style="border-top-color:#5f7f67;animation:spin .8s linear infinite"></div>
+        <p class="text-sm font-semibold opacity-70" data-label>Preparing…</p>
+        <div class="w-44 h-1.5 rounded-full overflow-hidden" style="background:rgba(0,0,0,.07)">
+            <div class="h-full w-1/3 rounded-full" style="background:#5f7f67;animation:kaiSlide 1.1s ease-in-out infinite alternate"></div>
+        </div>
+    </div>
+</div>
+<script>
+window.kaiRouteLoading = function (show, label) {
+    var el = document.getElementById('kai-route-loading');
+    if (!el) return;
+    if (label) { var t = el.querySelector('[data-label]'); if (t) t.textContent = label; }
+    el.classList.toggle('hidden', !show);
+    el.classList.toggle('flex', !!show);
+};
+</script>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <!-- Background Elements (Global Sci-Fi Grid) -->
     <div class="fixed inset-0 z-0 pointer-events-none">

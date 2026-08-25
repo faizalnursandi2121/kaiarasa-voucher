@@ -808,7 +808,10 @@ window.whenReady(function () {
             var act = actBtn.getAttribute('data-act');
             var snapshot = JSON.parse(JSON.stringify(r));
             closeFloatMenu();
-            if (act === 'open') location.href = '/' + r.session_name + '/dashboard';
+            if (act === 'open') {
+                if (window.kaiRouteLoading) window.kaiRouteLoading(true, 'Opening ' + (r.hotspot_name || r.session_name) + '\u2026');
+                location.href = '/' + r.session_name + '/dashboard';
+            }
             if (act === 'edit') openModal('edit', snapshot);
             if (act === 'delete') deleteRouter(snapshot);
         });
