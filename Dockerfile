@@ -12,6 +12,10 @@ RUN apk add --no-cache \
 # Install PHP extensions
 RUN docker-php-ext-install pdo_sqlite zip
 
+# Worker PHP-FPM mewarisi environment kontainer (APP_KEY, TURNSTILE_*, dll
+# dari panel deployment) tanpa dibersihkan clear_env.
+RUN echo "clear_env = no" >> /usr/local/etc/php-fpm.d/www.conf
+
 # Configure Nginx
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 
