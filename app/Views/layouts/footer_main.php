@@ -95,19 +95,6 @@ if (isset($session) && ! empty($session)) { ?>
                 });
             });
 
-            // Refresh di subhalaman sesi kembali ke Dashboard
-            // (halaman kerja seperti edit/preview/print tidak ikut dialihkan)
-            try {
-                var navEntry = performance.getEntriesByType('navigation')[0];
-                var segs = location.pathname.split('/').filter(Boolean);
-                if (navEntry && navEntry.type === 'reload'
-                    && segs.length >= 2 && segs[1] !== 'dashboard'
-                    && ['settings','login','logout'].indexOf(segs[0]) === -1
-                    && location.pathname.search(/(edit|preview|print|add)/) === -1) {
-                    location.replace('/' + segs[0] + '/dashboard');
-                }
-            } catch (e) {}
-
             // Initialize Lucide Icons
             if (typeof lucide !== 'undefined') {
                 try { lucide.createIcons(); } catch (e) { /* subtree bisa saja sudah diganti */ }

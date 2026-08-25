@@ -81,6 +81,20 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
         }
     </script>
     <script>
+        // Refresh di subhalaman sesi -> langsung ke Dashboard
+        // (dipasang di head agar tidak ada kilasan konten lama)
+        try {
+            var __nav = performance.getEntriesByType('navigation')[0];
+            var __seg = location.pathname.split('/').filter(Boolean);
+            if (__nav && __nav.type === 'reload'
+                && __seg.length >= 2 && __seg[1] !== 'dashboard'
+                && ['settings','login','logout'].indexOf(__seg[0]) === -1
+                && location.pathname.search(/(edit|preview|print|add)/) === -1) {
+                location.replace('/' + __seg[0] + '/dashboard');
+            }
+        } catch (e) {}
+    </script>
+    <script>
         // Light-only lock — dark mode dinonaktifkan permanen
         document.documentElement.classList.remove('dark');
         try { localStorage.removeItem('theme'); } catch (e) {}
