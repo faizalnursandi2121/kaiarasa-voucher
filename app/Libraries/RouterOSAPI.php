@@ -24,7 +24,7 @@ class RouterOSAPI
 
     public $attempts = 5;     //  Connection attempt count
 
-    public $delay = 3;     //  Delay between connection attempts in seconds
+    public $delay = 0; // tanpa jeda antar percobaan — penalti sleep tak perlu bagi pemakaian web     //  Delay between connection attempts in seconds
 
     public $socket;            //  Variable for storing socket resource
 

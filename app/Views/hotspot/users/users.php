@@ -472,7 +472,7 @@ $toolbar_html .= '
             });
 
              // Listen for language change
-             window.addEventListener('languageChanged', () => {
+             window.kaiarasaOnLangChange( () => {
                 this.render();
             });
         }

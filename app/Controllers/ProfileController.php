@@ -22,6 +22,8 @@ class ProfileController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($creds);
+        $API->attempts = 1;
+        $API->delay = 0;
         // Use default port 8728 if not specified
         if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
             $profiles = $API->comm('/ip/hotspot/user/profile/print');
@@ -78,6 +80,8 @@ class ProfileController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($creds);
+        $API->attempts = 1;
+        $API->delay = 0;
         $pools = [];
         $queues = [];
 
@@ -175,6 +179,8 @@ class ProfileController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($creds);
+        $API->attempts = 1;
+        $API->delay = 0;
         if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
             $profileData = [
                 'name' => $name,
@@ -224,6 +230,8 @@ class ProfileController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($creds);
+        $API->attempts = 1;
+        $API->delay = 0;
         if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
             $API->comm('/ip/hotspot/user/profile/remove', [
                 '.id' => $id,
@@ -246,6 +254,8 @@ class ProfileController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($creds);
+        $API->attempts = 1;
+        $API->delay = 0;
         $profile = null;
         $pools = [];
         $queues = [];
@@ -378,6 +388,8 @@ class ProfileController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($creds);
+        $API->attempts = 1;
+        $API->delay = 0;
         if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
             $profileData = [
                 '.id' => $id,

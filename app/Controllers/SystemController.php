@@ -32,6 +32,8 @@ class SystemController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($config);
+        $API->attempts = 1;
+        $API->delay = 0;
         if ($API->connect($config['ip_address'], $config['username'], $config['password'])) {
             $API->write($command);
             // Wait for command to be processed before cutting connection

@@ -267,7 +267,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
             this.update();
 
             // Listen for language change
-            window.addEventListener('languageChanged', () => {
+            window.kaiarasaOnLangChange( () => {
                 const searchInput = document.getElementById('global-search');
                 if (searchInput && window.i18n) {
                     searchInput.placeholder = window.i18n.t('common.table.search_placeholder');

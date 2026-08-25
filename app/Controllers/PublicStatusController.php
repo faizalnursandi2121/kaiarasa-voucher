@@ -76,6 +76,8 @@ class PublicStatusController extends Controller
         }
 
         $api = RouterOSAPI::fromSession($creds);
+        $api->attempts = 1;
+        $api->delay = 0;
         if (! $api->connect($creds['ip'], $creds['user'], $password)) {
             http_response_code(500);
             echo json_encode(['error' => 'Router Connection Failed']);

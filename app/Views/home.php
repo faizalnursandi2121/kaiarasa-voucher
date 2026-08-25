@@ -892,7 +892,8 @@ window.whenReady(function () {
     // Catatan: klik baris TIDAK membuka dashboard — hanya lewat aksi ⋮ → Open Dashboard
 
     var REFETCH_MS = 60000;
-    setInterval(function () { if (!document.hidden) load(false); }, REFETCH_MS);
+    var pollTimer = setInterval(function () { if (!document.hidden) load(false); }, REFETCH_MS);
+    window.addEventListener('pagehide', function () { if (pollTimer) clearInterval(pollTimer); });
 
     renderTable();          // skeleton awal (server-side str_repeat sudah diganti)
     load(false);

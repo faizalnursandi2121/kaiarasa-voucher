@@ -21,6 +21,8 @@ class GeneratorController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($creds);
+        $API->attempts = 1;
+        $API->delay = 0;
         if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
             // Fetch Profiles for Dropdown
             $profiles = $API->comm('/ip/hotspot/user/profile/print');
@@ -120,6 +122,8 @@ class GeneratorController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($creds);
+        $API->attempts = 1;
+        $API->delay = 0;
         if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
 
             // Validity default dari Data Plan terpilih (bila form Time Limit kosong)

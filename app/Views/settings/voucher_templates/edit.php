@@ -429,7 +429,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     });
 
     // Theme Switch Recognition
-    window.addEventListener('languageChanged', () => {
+    window.kaiarasaOnLangChange( () => {
         // Not language, but theme toggle button often triggers layout shifts. 
         // We might need a MutationObserver if we want to live-toggle CM theme.
         // For now, reload or manual re-init on theme toggle could work.

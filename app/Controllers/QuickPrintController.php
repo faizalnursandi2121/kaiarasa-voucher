@@ -65,6 +65,8 @@ class QuickPrintController extends Controller
         $profiles = [];
         if ($creds) {
             $API = RouterOSAPI::fromSession($creds);
+        $API->attempts = 1;
+        $API->delay = 0;
             $password = $creds['password'];
             if (isset($creds['source']) && $creds['source'] === 'legacy') {
                 $password = RouterOSAPI::decrypt($password);
@@ -245,6 +247,8 @@ class QuickPrintController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($creds);
+        $API->attempts = 1;
+        $API->delay = 0;
         $password_router = $creds['password'];
         if (isset($creds['source']) && $creds['source'] === 'legacy') {
             $password_router = RouterOSAPI::decrypt($password_router);

@@ -20,6 +20,8 @@ class SchedulerController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($config);
+        $API->attempts = 1;
+        $API->delay = 0;
         $schedulers = [];
 
         if ($API->connect($config['ip_address'], $config['username'], $config['password'])) {
@@ -42,6 +44,8 @@ class SchedulerController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($config);
+        $API->attempts = 1;
+        $API->delay = 0;
         if ($API->connect($config['ip_address'], $config['username'], $config['password'])) {
             $API->comm('/system/scheduler/add', [
                 'name' => $_POST['name'],
@@ -67,6 +71,8 @@ class SchedulerController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($config);
+        $API->attempts = 1;
+        $API->delay = 0;
         if ($API->connect($config['ip_address'], $config['username'], $config['password'])) {
             $API->comm('/system/scheduler/set', [
                 '.id' => $_POST['id'],
@@ -92,6 +98,8 @@ class SchedulerController extends Controller
         }
 
         $API = RouterOSAPI::fromSession($config);
+        $API->attempts = 1;
+        $API->delay = 0;
         if ($API->connect($config['ip_address'], $config['username'], $config['password'])) {
             $API->comm('/system/scheduler/remove', [
                 '.id' => $_POST['id'],

@@ -263,7 +263,14 @@ window.whenReady(function () {
         }
     }
 
-    if (window.lucide) lucide.createIcons();
+    // Bereskan seluruh instance chart saat meninggalkan dashboard via SPA
+    // (mencegah akumulasi memori & handler resize antar kunjungan).
+    window.__kaiarasaSessionCleanup = function () {
+        try {
+            if (!window.ApexCharts || !window.ApexCharts.getCharts) return;
+            window.ApexCharts.getCharts().forEach(function (c) { try { c.destroy(); } catch (e) {} });
+        } catch (e) {}
+    };
 });
 </script>
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

@@ -20,6 +20,7 @@ class DhcpController extends Controller
 
         $leases = [];
         $API = RouterOSAPI::fromSession($config);
+        $API->delay = 0;
         $API->attempts = 1;
         $API->timeout = 3;
 

@@ -23,6 +23,7 @@ class TrafficController extends Controller
 
         // 2. Connect to RouterOS
         $API = RouterOSAPI::fromSession($config);
+        $API->delay = 0;
         // $API->debug = true;
 
         // Fast Fail for Traffic Monitor to prevent blocking PHP server
@@ -70,6 +71,8 @@ class TrafficController extends Controller
 
         // 2. Connect
         $API = RouterOSAPI::fromSession($config);
+        $API->attempts = 1;
+        $API->delay = 0;
         if ($API->connect($config['ip_address'], $config['username'], $config['password'])) {
             // 3. Fetch Interfaces
             // Use comm() to safely handle response parsing and filtering

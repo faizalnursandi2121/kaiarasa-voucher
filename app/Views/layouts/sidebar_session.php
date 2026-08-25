@@ -586,7 +586,28 @@ $getInitials = function ($name) {
                     try { window.__kaiarasaSessionCleanup(); } catch (e) {}
                     window.__kaiarasaSessionCleanup = null;
                 }
+                // Handler bahasa milik halaman sebelumnya dibuang;
+                // halaman yang baru akan mendaftarkan ulang lewat helper di bawah.
+                if (window.__kaiarasaLangFns) window.__kaiarasaLangFns.length = 0;
             }
+
+            // Pendaftaran handler 'languageChanged' bebas-duplikasi lintas navigasi SPA.
+            // Satu listener window saja; fungsi dideduplikasi berdasarkan isinya.
+            window.kaiarasaOnLangChange = function (fn) {
+                if (!window.__kaiarasaLangListener) {
+                    window.__kaiarasaLangFns = [];
+                    window.__kaiarasaLangListener = function () {
+                        window.__kaiarasaLangFns.forEach(function (f) { try { f(); } catch (e) {} });
+                    };
+                    window.addEventListener('languageChanged', window.__kaiarasaLangListener);
+                }
+                var sig = null;
+                try { sig = fn.toString(); } catch (e) {}
+                for (var i = 0; i < window.__kaiarasaLangFns.length; i++) {
+                    try { if (window.__kaiarasaLangFns[i].toString() === sig) return; } catch (e2) {}
+                }
+                window.__kaiarasaLangFns.push(fn);
+            };
 
             function setLoading(on) {
                 var root = document.getElementById(DYNAMIC_ID);
