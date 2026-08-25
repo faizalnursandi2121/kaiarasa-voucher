@@ -194,7 +194,7 @@ $getInitials = function ($name) {
                 <a href="/<?php echo htmlspecialchars($session) ?>/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= ($isDashboard) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="layout-dashboard" class="w-[18px] h-[18px]"></i>
                     <span data-i18n="sidebar.dashboard">Dashboard</span>
-                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-white"></span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full <?= ($isDashboard) ? 'bg-white' : 'bg-transparent' ?>"></span>
                 </a>
             <div class="pt-5">
                 <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Voucher</div>
