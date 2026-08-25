@@ -12,6 +12,16 @@ use App\Config\SiteConfig;
  */
 class TurnstileService
 {
+    /** IP klien sebenarnya (mendukung rantai X-Forwarded-For). */
+    private static function clientIp(): string
+    {
+        $fwd = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
+        if ($fwd !== '') {
+            return trim(explode(',', $fwd)[0]);
+        }
+        return $_SERVER['REMOTE_ADDR'] ?? '';
+    }
+
     /** @return array{success:bool,error_codes?:array} */
     public static function verify(string $token): array
     {
@@ -24,7 +34,9 @@ class TurnstileService
             http_build_query([
                 'secret'   => SiteConfig::getTurnstileSecretKey(),
                 'response' => $token,
-                'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
+                // Di belakang Traefik/reverse-proxy, IP asli ada di header
+                // forwarded — ambil IP pertama dari rantai.
+                'remoteip' => self::clientIp(),
             ])
         );
 
