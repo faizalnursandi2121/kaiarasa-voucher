@@ -37,7 +37,11 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
         /* Ikon: ruang ter-reserve (ukuran dari kelas), muncul halus saat lucide siap */
         [data-lucide] { opacity: 0; transition: opacity .18s ease; }
         html.lucide-ready [data-lucide] { opacity: 1; }
-        .kai-pop > * { animation: kaiRowIn .3s ease both; }
+        /* Elemen yang memang dimulai tersembunyi (mis. batch toolbar)
+           TIDAK ikut dianimasikan — deterministik di semua kondisi. */
+        .kai-pop > *:not([class*="opacity-0"]) { animation: kaiRowIn .3s ease both; }
+        @media (prefers-reduced-motion: reduce) {
+            .kai-pop > * { animation: none !important; }
         @font-face {
             font-family: 'Geist';
             src: url('/assets/fonts/Geist-Regular.woff2') format('woff2');
