@@ -37,3 +37,7 @@ deploy.ps1
 
 # Brainstorm/mockup workspace
 .superpowers/
+
+# Runtime installer artifacts
+app/Database/installed.lock
+app/Database/app_key
