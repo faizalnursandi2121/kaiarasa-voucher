@@ -186,6 +186,20 @@ window.whenReady(function () {
         return Object.assign(base, extra);
     }
 
+    // Amankan data & pastikan kontainer terukur sebelum menggambar.
+    function safeNum(v) { var n = Number(v); return isFinite(n) ? n : 0; }
+    function drawWhenReady(el, makeOpts) {
+        var attempt = function (left) {
+            if (! el.isConnected) return;                 // halaman sudah berganti
+            if (el.clientWidth < 10 && left > 0) {
+                setTimeout(function () { attempt(left - 1); }, 250);
+                return;
+            }
+            new ApexCharts(el, makeOpts()).render();
+        };
+        attempt(6);
+    }
+
     var uaSeries = <?= json_encode($charts['user_activity']['series'] ?? []) ?>;
     var uaMode = <?= json_encode($ua_mode ?? 'today') ?>;
     var va = <?= json_encode($charts['voucher_activity'] ?? []) ?>;
@@ -199,28 +213,33 @@ window.whenReady(function () {
         } else if (uaMode === 'today') {
             if (window.kaiMark) window.kaiMark('chart-ua-init');
             var __c = document.getElementById('chart-ua'); __c.innerHTML = '';
-            new ApexCharts(uaEl, baseChart({
-                series: [{ name: 'Active users', data: uaSeries.map(function (p) { return [p.label, p.value]; }) }],
+            // tickAmount 0 (bila titik data hanya 1) memicu pembagian
+            // nol di dalam Apex -> deretan NaN. Hanya set bila cukup banyak.
+            var uaXaxis = { categories: uaSeries.map(function (p) { return p.label; }) };
+            if (uaSeries.length > 10) uaXaxis.tickAmount = 10;
+
+            drawWhenReady(uaEl, function () { return baseChart({
+                series: [{ name: 'Active users', data: uaSeries.map(function (p) { return [String(p.label), safeNum(p.value)]; }) }],
                 chart: Object.assign({ type: 'area', height: 240 }, {}),
                 colors: ['#5f7f67'],
                 stroke: { curve: 'smooth', width: 2 },
                 fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: .35, opacityTo: .02 } },
-                xaxis: { categories: uaSeries.map(function (p) { return p.label; }), tickAmount: Math.min(10, uaSeries.length - 1) },
+                xaxis: uaXaxis,
                 yaxis: { min: 0, tickAmount: 4, labels: { formatter: function (v) { return Math.round(v); } } },
-            })).render();
+            }); });
         } else {
-            var __c = document.getElementById('ua'); __c.innerHTML = '';
-            new ApexCharts(uaEl, baseChart({
+            var __c = document.getElementById('chart-ua'); __c.innerHTML = '';
+            drawWhenReady(uaEl, function () { return baseChart({
                 series: [
-                    { name: 'Avg active', data: uaSeries.map(function (p) { return p.avg; }) },
-                    { name: 'Peak', data: uaSeries.map(function (p) { return p.max; }) },
+                    { name: 'Avg active', data: uaSeries.map(function (p) { return safeNum(p.avg); }) },
+                    { name: 'Peak', data: uaSeries.map(function (p) { return safeNum(p.max); }) },
                 ],
                 chart: Object.assign({ type: 'bar', height: 240 }, {}),
                 colors: ['#5f7f67', '#92aa96'],
                 plotOptions: { bar: { borderRadius: 4, columnWidth: '55%' } },
-                xaxis: { categories: uaSeries.map(function (p) { return p.label.slice(5); }) },
+                xaxis: { categories: uaSeries.map(function (p) { return String(p.label).slice(5); }) },
                 legend: { position: 'top' },
-            })).render();
+            }); });
         }
     }
 
@@ -231,15 +250,15 @@ window.whenReady(function () {
             vaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No voucher activity yet.</p>';
         } else {
             var __c = document.getElementById('chart-va'); __c.innerHTML = '';
-            new ApexCharts(vaEl, baseChart({
-                series: [{ name: 'Vouchers created', data: va.daily.map(function (d) { return d.count; }) }],
+            drawWhenReady(vaEl, function () { return baseChart({
+                series: [{ name: 'Vouchers created', data: va.daily.map(function (d) { return safeNum(d.count); }) }],
                 chart: Object.assign({ type: 'bar', height: 240 }, {}),
                 colors: ['#5f7f67'],
                 plotOptions: { bar: { borderRadius: 6, columnWidth: '55%' } },
                 xaxis: { categories: va.daily.map(function (d) { return d.date.slice(5); }) },
                 yaxis: { min: 0, labels: { formatter: function (v) { return Math.round(v); } } },
                 dataLabels: { enabled: false },
-            })).render();
+            }); });
         }
     }
 
@@ -250,8 +269,8 @@ window.whenReady(function () {
             pkgEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No package data yet.</p>';
         } else {
             var __c = document.getElementById('chart-packages'); __c.innerHTML = '';
-            new ApexCharts(pkgEl, baseChart({
-                series: topPkgs.map(function (p) { return p.count; }),
+            drawWhenReady(pkgEl, function () { return baseChart({
+                series: topPkgs.map(function (p) { return safeNum(p.count); }),
                 labels: topPkgs.map(function (p) { return p.name; }),
                 chart: Object.assign({ type: 'donut', height: 260 }, {}),
                 colors: ['#5f7f67', '#92aa96', '#6b8b73', '#47614d', '#c9d6cc'],
@@ -264,7 +283,7 @@ window.whenReady(function () {
                         formatter: function (w) { return w.globals.seriesTotals.reduce(function (a, b) { return a + b; }, 0); } },
                 } } } },
                 dataLabels: { enabled: false },
-            })).render();
+            }); });
         }
     }
 
