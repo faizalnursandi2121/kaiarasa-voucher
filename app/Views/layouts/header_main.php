@@ -62,12 +62,26 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
     </style>
 
     <script>
+        // Diagnosa performa (aktif bila URL mengandung debug=1)
+        if (location.search.indexOf('debug=1') !== -1) {
+            window.__kaiDiag = { marks: [] };
+            window.kaiMark = function (n) { window.__kaiDiag.marks.push([n, Math.round(performance.now())]); };
+            window.kaiMark('head');
+            document.addEventListener('DOMContentLoaded', function(){ window.kaiMark('DCL'); });
+            window.addEventListener('load', function(){
+                window.kaiMark('load');
+                if (document.fonts) document.fonts.ready.then(function(){ window.kaiMark('fonts-ready'); });
+                console.log('[DIAG]', JSON.stringify(window.__kaiDiag.marks));
+            });
+        }
+    </script>
+    <script>
         // Light-only lock — dark mode dinonaktifkan permanen
         document.documentElement.classList.remove('dark');
         try { localStorage.removeItem('theme'); } catch (e) {}
     </script>
     <link rel="preload" as="script" href="/assets/js/lucide.min.js">
-    <script src="/assets/js/lucide.min.js" defer onload="try{if(window.lucide&&window.lucide.createIcons){window.lucide.createIcons()}}catch(e){}document.documentElement.classList.add('lucide-ready')"></script>
+    <script src="/assets/js/lucide.min.js" defer onload="try{if(window.kaiMark)window.kaiMark('lucide-exec');if(window.lucide&&window.lucide.createIcons){window.lucide.createIcons();}if(window.kaiMark)window.kaiMark('icons-drawn');document.documentElement.classList.add('lucide-ready')}catch(e){}"></script>
     <script>
         window.currentVersion = '<?= SiteConfig::APP_VERSION ?>';
         // Run a callback now if the DOM is already parsed, otherwise on DOMContentLoaded.

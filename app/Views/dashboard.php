@@ -179,7 +179,7 @@ window.whenReady(function () {
 
     function baseChart(extra) {
         var base = {
-            chart: Object.assign({ width: '100%', fontFamily: 'inherit', foreColor: isDark() ? '#e9ebe7' : '#1c2420', toolbar: { show: false } }, extra.chart || {}),
+            chart: Object.assign({ width: '100%', animations: { enabled: false }, fontFamily: 'inherit', foreColor: isDark() ? '#e9ebe7' : '#1c2420', toolbar: { show: false } }, extra.chart || {}),
             grid: { borderColor: gridColor() },
             tooltip: { theme: isDark() ? 'dark' : 'light' },
         };
@@ -197,6 +197,7 @@ window.whenReady(function () {
         if (! uaSeries.length) {
             uaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">Not enough data yet — activity is sampled every few minutes.</p>';
         } else if (uaMode === 'today') {
+            if (window.kaiMark) window.kaiMark('chart-ua-init');
             var __c = document.getElementById('chart-ua'); __c.innerHTML = '';
             new ApexCharts(uaEl, baseChart({
                 series: [{ name: 'Active users', data: uaSeries.map(function (p) { return [p.label, p.value]; }) }],
