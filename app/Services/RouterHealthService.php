@@ -20,14 +20,26 @@ class RouterHealthService
         if (! $forceRefresh) {
             $cached = $this->readCache();
             if ($cached !== null) {
+                if ((time() - (int) $cached['checked_at']) <= self::CACHE_TTL) {
+                    return $cached; // masih segar
+                }
+                // STALE-WHILE-REVALIDATE: sajikan data basi seketika supaya UI
+                // tidak pernah menunggu probe berurutan; bangun ulang diam-diam
+                // setelah respons terkirim (lock mencegah rebuild berlomba).
+                $this->scheduleRebuild();
                 return $cached;
             }
         }
 
+        return $this->buildAndCache();
+    }
+
+    /** Probe semua router lalu simpan hasil ke cache. */
+    private function buildAndCache(): array
+    {
         $results = [];
         foreach ((new Config)->getAllSessions() as $session) {
-            $row = $this->probeRouter($session);
-            $results[] = $row;
+            $results[] = $this->probeRouter($session);
         }
 
         $this->detectTransitions($results);
@@ -52,8 +64,29 @@ class RouterHealthService
         ];
 
         $this->writeCache($payload);
+        @unlink($this->cachePath().'.lock');
 
         return $payload;
+    }
+
+    /** Jadwalkan rebuild latar belakang tanpa membuat pengunjung menunggu. */
+    private function scheduleRebuild(): void
+    {
+        $lock = $this->cachePath().'.lock';
+        if (is_file($lock) && (time() - (int) filemtime($lock)) < self::CACHE_TTL) {
+            return; // sudah ada rebuild lain yang baru berjalan
+        }
+        @touch($lock);
+        register_shutdown_function(function (): void {
+            try {
+                // Tutup koneksi HTTP lebih dulu (php-fpm) supaya pengunjung
+                // tidak ikut menunggu probe latar belakang selesai.
+                if (function_exists('fastcgi_finish_request')) {
+                    fastcgi_finish_request();
+                }
+                $this->buildAndCache();
+            } catch (\Throwable $e) { /* best-effort */ }
+        });
     }
 
     private function probeRouter(array $session): array
@@ -85,7 +118,7 @@ class RouterHealthService
         try {
             $API = RouterOSAPI::fromSession($session);
             $API->attempts = 1;
-            $API->timeout = 3;
+            $API->timeout = 1.5;
             $API->delay = 0;
 
             if (! $API->connect($session['ip_address'], $session['username'], $session['password'])) {
@@ -382,10 +415,7 @@ class RouterHealthService
             return null;
         }
 
-        if (time() - (int) $data['checked_at'] > self::CACHE_TTL) {
-            return null;
-        }
-
+        
         return $data;
     }
 

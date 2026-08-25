@@ -5,6 +5,11 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <!-- =============================================================
      HOME v2 — NOC Dashboard (spec H1–H6, mockup ui home.png)
 ============================================================== -->
+<style>
+      #table-scroll { transition: opacity .22s ease; }
+      @keyframes kaiRowIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+      #table-scroll.kai-pop > * { animation: kaiRowIn .3s ease both; }
+  </style>
 <div class="w-full max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
 
     <!-- ===== 1. NAV TILES ===== -->
@@ -335,7 +340,7 @@ window.whenReady(function () {
 
     /* ================= router table ================= */
     var PAGE_SIZE = 25;
-    var state = { routers: [], page: 1, query: '', filter: '', checkedAt: null };
+    var state = { routers: [], page: 1, query: '', filter: '', checkedAt: null, loading: true };
     var grid = document.getElementById('table-scroll');
 
     // "3w1d02:11:45" / "22d3h14m" / "5h12m30s" -> "22d 3h" / "5h 12m" / "43m"
@@ -425,6 +430,13 @@ window.whenReady(function () {
     }
 
     function renderTable() {
+        if (state.loading) {
+            grid.innerHTML = '<div class="py-8 space-y-2">'
+                + Array.from({ length: 4 }, function () {
+                    return '<div class="h-10 rounded-xl bg-black/[.04] dark:bg-white/[.05] animate-pulse"></div>';
+                }).join('') + '</div>';
+            return;
+        }
         var list = filtered();
         var pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
         if (state.page > pages) state.page = pages;
@@ -578,14 +590,23 @@ window.whenReady(function () {
         fetch('/api/routers/health' + (force ? '?refresh=1' : ''), { headers: { Accept: 'application/json' } })
             .then(function (res) { if (!res.ok) throw new Error(res.status); renderSysHealth(true); return res.json(); })
             .then(function (data) {
-                state.routers = data.routers || [];
-                state.checkedAt = data.checked_at;
-                state.page = 1;
-                renderTable();
-                var counts = renderStats(state.routers);
-                chartDonut(counts);
-                chartTopCPU(state.routers);
-                renderSysHealth(true);
+                var apply = function () {
+                    state.routers = data.routers || [];
+                    state.checkedAt = data.checked_at;
+                    state.page = 1;
+                    state.loading = false;
+                    renderTable();
+                    var counts = renderStats(state.routers);
+                    chartDonut(counts);
+                    chartTopCPU(state.routers);
+                    grid.classList.remove('kai-pop');
+                    void grid.offsetWidth; // restart animasi masuk
+                    grid.classList.add('kai-pop');
+                    grid.style.opacity = '1';
+                    renderSysHealth(true);
+                };
+                grid.style.opacity = '0';
+                setTimeout(apply, 160); // fade halus, tanpa pop-in mendadak
                 // history & events hanya perlu sesekali
                 return Promise.all([
                     fetch('/api/routers/history?hours=24').then(function (r) { return r.json(); }),
@@ -597,6 +618,9 @@ window.whenReady(function () {
                 });
             })
             .catch(function () {
+                state.loading = false;
+                renderTable();
+                grid.style.opacity = '1';
                 renderSysHealth(false);
             })
             .finally(function () {
