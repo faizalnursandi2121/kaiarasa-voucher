@@ -296,9 +296,9 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     </div>
 </div>
 
-<script src="/assets/js/vendor/apexcharts.min.js"></script>
+<script src="/assets/js/vendor/apexcharts.min.js" defer></script>
 <script>
-(function () {
+window.whenReady(function () {
     'use strict';
 
     /* ================= helpers ================= */
@@ -896,7 +896,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 
     renderTable();          // skeleton awal (server-side str_repeat sudah diganti)
     load(false);
-})();
+});
 </script>
 
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

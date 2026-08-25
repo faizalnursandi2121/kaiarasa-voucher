@@ -136,7 +136,7 @@ $getInitials = function ($name) {
             <div class="py-4 px-3 space-y-1" style="direction: ltr;">
             <!-- Session Switcher -->
             <div class="px-3 mb-6 relative" onmouseleave="closeMenu('session-dropdown')">
-                <button type="button" class="w-full group grid grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 rounded-xl bg-white/10 border-white/20 hover:bg-white/20 transition-all decoration-0 overflow-hidden shadow-sm" onclick="toggleMenu('session-dropdown', this)">
+                <button type="button" class="w-full group grid grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 rounded-xl bg-white/10 border-white/20 hover:bg-white/20 transition-colors decoration-0 overflow-hidden shadow-sm" onclick="toggleMenu('session-dropdown', this)">
                     <!-- Initials -->
                     <div class="h-8 w-8 rounded-lg bg-white/15 group-hover:bg-white/25 flex items-center justify-center text-xs font-bold text-white transition-colors flex-shrink-0">
                         <?= $getInitials($session ?? '') ?>
@@ -157,7 +157,7 @@ $getInitials = function ($name) {
                 </button>
 
                 <!-- Dropdown -->
-                <div id="session-dropdown" class="absolute top-full left-3 w-[calc(100%-1.5rem)] z-50 mt-1 bg-white dark:bg-[#1a1c19] border border-black/10 dark:border-white/10 rounded-lg shadow-lg overflow-hidden transition-all duration-200 ease-out origin-top opacity-0 scale-95 invisible pointer-events-none dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
+                <div id="session-dropdown" class="absolute top-full left-3 w-[calc(100%-1.5rem)] z-50 mt-1 bg-white dark:bg-[#1a1c19] border border-black/10 dark:border-white/10 rounded-lg shadow-lg overflow-hidden transition-colors duration-200 ease-out origin-top opacity-0 scale-95 invisible pointer-events-none dropdown-bridge" onmouseenter="if(typeof menuTimeout !== 'undefined') clearTimeout(menuTimeout)">
                     <div class="py-1 max-h-60 overflow-y-auto">
                         <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50 border-b border-gray-200 dark:text-gray-400 dark:bg-white/5 dark:border-white/10" data-i18n="sidebar.switch_session">
                             Switch Session
@@ -191,7 +191,7 @@ $getInitials = function ($name) {
             </div>
 
             <!-- Dashboard -->
-                <a href="/<?php echo htmlspecialchars($session) ?>/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all <?= ($isDashboard) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
+                <a href="/<?php echo htmlspecialchars($session) ?>/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= ($isDashboard) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="layout-dashboard" class="w-[18px] h-[18px]"></i>
                     <span data-i18n="sidebar.dashboard">Dashboard</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full bg-white"></span>
@@ -199,12 +199,12 @@ $getInitials = function ($name) {
             <div class="pt-5">
                 <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Voucher</div>
                 <div class="space-y-0.5">
-                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/users" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
+                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/users" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="ticket" class="w-[18px] h-[18px]"></i>
                     <span data-i18n="access.user_accounts">Vouchers</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= (strpos($uri, '/hotspot/users') !== false) ? 'bg-white' : 'bg-transparent' ?>"></span>
                 </a>
-                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/generate" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all <?= (strpos($uri, '/hotspot/generate') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
+                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/generate" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= (strpos($uri, '/hotspot/generate') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="ticket-plus" class="w-[18px] h-[18px]"></i>
                     <span data-i18n="access.vouchers">Generate Vouchers</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= (strpos($uri, '/hotspot/generate') !== false) ? 'bg-white' : 'bg-transparent' ?>"></span>
@@ -212,7 +212,7 @@ $getInitials = function ($name) {
 
                 </div>
             </div>
-                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/profiles" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all <?= (strpos($uri, '/hotspot/profiles') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
+                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/profiles" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= (strpos($uri, '/hotspot/profiles') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="package-open" class="w-[18px] h-[18px]"></i>
                     <span data-i18n="access.packages">Data Plans</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= (strpos($uri, '/hotspot/profiles') !== false) ? 'bg-white' : 'bg-transparent' ?>"></span>
@@ -220,17 +220,17 @@ $getInitials = function ($name) {
             <div class="pt-5">
                 <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Activity</div>
                 <div class="space-y-0.5">
-                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/active" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
+                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/active" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="users" class="w-[18px] h-[18px]"></i>
                     <span data-i18n="activity.active_users">Online Users</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white' : 'bg-transparent' ?>"></span>
                 </a>
-                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/hosts" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all <?= (strpos($uri, '/hotspot/hosts') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
+                <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/hosts" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= (strpos($uri, '/hotspot/hosts') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="monitor-smartphone" class="w-[18px] h-[18px]"></i>
                     <span data-i18n="activity.devices">Connected Devices</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= (strpos($uri, '/hotspot/hosts') !== false) ? 'bg-white' : 'bg-transparent' ?>"></span>
                 </a>
-                <a href="/<?php echo htmlspecialchars($session) ?>/reports/user-log" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
+                <a href="/<?php echo htmlspecialchars($session) ?>/reports/user-log" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="scroll-text" class="w-[18px] h-[18px]"></i>
                     <span data-i18n="activity.activity_log">Activity Log</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white' : 'bg-transparent' ?>"></span>
@@ -240,7 +240,7 @@ $getInitials = function ($name) {
             <div class="pt-5">
                 <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Reports</div>
                 <div class="space-y-0.5">
-                <a href="/<?php echo htmlspecialchars($session) ?>/reports/sales" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all <?= (strpos($uri, '/reports/sales') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
+                <a href="/<?php echo htmlspecialchars($session) ?>/reports/sales" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= (strpos($uri, '/reports/sales') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="receipt" class="w-[18px] h-[18px]"></i>
                     <span data-i18n="sales.report">Sales Report</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= (strpos($uri, '/reports/sales') !== false) ? 'bg-white' : 'bg-transparent' ?>"></span>
@@ -250,10 +250,10 @@ $getInitials = function ($name) {
             <div class="pt-5">
                 <div class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-widest text-white/55">Branding</div>
                 <div class="space-y-0.5">
-                <a href="/<?php echo htmlspecialchars($session ?? '') ?>/voucher-templates" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all <?= ($isTemplates) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>" data-x="1"><i data-lucide="ticket" class="w-[18px] h-[18px]"></i><span data-i18n="sidebar.templates">Voucher Templates</span>
+                <a href="/<?php echo htmlspecialchars($session ?? '') ?>/voucher-templates" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= ($isTemplates) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>" data-x="1"><i data-lucide="ticket" class="w-[18px] h-[18px]"></i><span data-i18n="sidebar.templates">Voucher Templates</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= ($isTemplates) ? 'bg-white' : 'bg-transparent' ?>"></span>
                 </a>
-                <a href="/<?php echo htmlspecialchars($session ?? '') ?>/logos" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-all <?= ($isLogos) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>" data-y="1"><i data-lucide="image" class="w-[18px] h-[18px]"></i><span data-i18n="sidebar.logos">Logos</span>
+                <a href="/<?php echo htmlspecialchars($session ?? '') ?>/logos" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= ($isLogos) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>" data-y="1"><i data-lucide="image" class="w-[18px] h-[18px]"></i><span data-i18n="sidebar.logos">Logos</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= ($isLogos) ? 'bg-white' : 'bg-transparent' ?>"></span>
                 </a>
                 </div>
@@ -600,16 +600,26 @@ $getInitials = function ($name) {
                 document.body.style.cursor = on ? 'wait' : '';
             }
 
+            var navSeq = 0;
+            var navCtrl = null;
+
             function loadSession(url, push) {
                 if (push === undefined) push = true;
                 var u = new URL(url, window.location.href);
                 u.hash = '';
                 var target = u.pathname + u.search;
+
+                var seq = ++navSeq;              // token urutan navigasi
+                if (navCtrl) navCtrl.abort();    // hentikan fetch sebelumnya yang masih berjalan
+                navCtrl = new AbortController();
+                var signal = navCtrl.signal;
+
                 cleanupSession();
                 setLoading(true);
-                fetch(target, { credentials: 'same-origin' })
+                fetch(target, { credentials: 'same-origin', signal: signal })
                     .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.text(); })
                     .then(function (html) {
+                        if (seq !== navSeq) return; // respons basi — abaikan
                         var doc = new DOMParser().parseFromString(html, 'text/html');
                         var fresh = doc.getElementById(DYNAMIC_ID);
                         if (!fresh) { window.location.href = url; return; } // cross-layout / not a session page -> full nav
@@ -620,6 +630,7 @@ $getInitials = function ($name) {
                         updateSidebarActive(u.pathname);
                         if (doc.title) document.title = doc.title;
                         executeScriptsAsync(imported).then(function () {
+                            if (seq !== navSeq) return; // basi setelah eksekusi skrip
                             reinitScope(imported);
                             if (push) history.pushState({ sessionSpa: true, url: u.href }, '', u.href);
                             setLoading(false);
@@ -628,8 +639,9 @@ $getInitials = function ($name) {
                         });
                     })
                     .catch(function (err) {
+                        if (err && err.name === 'AbortError') return; // dibatalkan oleh navigasi baru
                         console.error('[session-spa] load failed, falling back to full navigation:', err);
-                        window.location.href = url;
+                        if (seq === navSeq) window.location.href = url;
                     });
             }
 

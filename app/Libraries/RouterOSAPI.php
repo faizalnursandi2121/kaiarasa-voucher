@@ -130,7 +130,9 @@ class RouterOSAPI
                 }
                 fclose($this->socket);
             }
-            sleep($this->delay);
+            if ($ATTEMPT < $this->attempts && $this->delay > 0) {
+                sleep($this->delay);
+            }
         }
 
         if ($this->connected) {

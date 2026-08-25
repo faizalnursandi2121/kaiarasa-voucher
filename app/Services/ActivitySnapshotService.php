@@ -32,11 +32,23 @@ class ActivitySnapshotService
         }
         $config['password'] = \App\Helpers\EncryptionHelper::decrypt($config['password']);
 
+        // Negative-cache: bila koneksi baru saja gagal, jangan mencoba ulang
+        // pada setiap muat halaman (hindari penalti timeout berulang).
+        $failFile = sys_get_temp_dir().'/mivo-snap-fail-'.md5($this->session).'.json';
+        if (is_file($failFile)) {
+            $fj = json_decode((string) file_get_contents($failFile), true);
+            if (is_array($fj) && isset($fj['ts']) && (time() - $fj['ts']) < 60) {
+                return null;
+            }
+        }
+
         try {
             $api = RouterOSAPI::fromSession($config);
             $api->attempts = 1;
             $api->timeout = 5;
+            $api->delay = 0;
             if (! $api->connect($config['ip_address'], $config['username'], $config['password'])) {
+                @file_put_contents($failFile, json_encode(['ts' => time()]));
                 return null;
             }
 
@@ -45,6 +57,7 @@ class ActivitySnapshotService
 
             return is_array($active) && ! isset($active['!trap']) ? count($active) : null;
         } catch (\Throwable $e) {
+            @file_put_contents($failFile, json_encode(['ts' => time()]));
             return null;
         }
     }

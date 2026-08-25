@@ -278,9 +278,9 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
     <?php endif; ?>
 </div>
 
-<script src="/assets/js/vendor/apexcharts.min.js"></script>
+<script src="/assets/js/vendor/apexcharts.min.js" defer></script>
 <script>
-(function () {
+window.whenReady(function () {
     'use strict';
 
     var chartData = <?= json_encode([
@@ -432,6 +432,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
     }
 
     if (window.lucide) lucide.createIcons();
-})();
+});
 </script>
 <?php require_once ROOT.'/app/Views/layouts/footer_public.php'; ?>

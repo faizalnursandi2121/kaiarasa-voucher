@@ -182,34 +182,57 @@ class DashboardController extends Controller
             }
         }
 
-        // Connection events dari hotspot log (best-effort)
-        try {
-            $config = (new Config)->getSession($session);
-            if ($config) {
-                $api = RouterOSAPI::fromSession($config);
-                $api->attempts = 1;
-                $api->timeout = 3;
-                if ($api->connect($config['ip_address'], $config['username'], $config['password'])) {
-                    $logs = $api->comm('/log/print', ['?topics' => 'hotspot,info,debug']);
-                    if (empty($logs) || isset($logs['!trap'])) {
-                        $logs = $api->comm('/log/print', []);
-                    }
-                    $api->disconnect();
+        // Connection events dari hotspot log (best-effort).
+        // Hasil di-cache pada berkas agar koneksi RouterOS API tidak dibuka
+        // pada SETIAP render dashboard (penyebab utama TTFB lambat).
+        $cacheFile = sys_get_temp_dir().'/mivo-feed-'.md5($session).'.json';
+        $events = null;
+        if (is_file($cacheFile)) {
+            $json = json_decode((string) file_get_contents($cacheFile), true);
+            if (is_array($json) && isset($json['ts'], $json['events']) && is_array($json['events'])) {
+                $ttl = empty($json['events']) ? 30 : 60; // hasil kosong (router down) ber-TTL lebih pendek
+                if ((time() - $json['ts']) < $ttl) {
+                    $events = $json['events'];
+                }
+            }
+        }
 
-                    if (is_array($logs)) {
-                        foreach (array_reverse($logs) as $log) {
-                            $msg = (string) ($log['message'] ?? '');
-                            if (stripos($msg, 'logged in') !== false) {
-                                $items[] = ['icon' => 'log-in', 'text' => 'User connected', 'detail' => $msg];
-                            } elseif (stripos($msg, 'logged out') !== false) {
-                                $items[] = ['icon' => 'log-out', 'text' => 'User disconnected', 'detail' => $msg];
+        if ($events === null) {
+            $events = [];
+            try {
+                $config = (new Config)->getSession($session);
+                if ($config) {
+                    $api = RouterOSAPI::fromSession($config);
+                    $api->attempts = 1;
+                    $api->timeout = 2;
+                    $api->delay = 0;
+                    if ($api->connect($config['ip_address'], $config['username'], $config['password'])) {
+                        $logs = $api->comm('/log/print', ['?topics' => 'hotspot']);
+                        if (empty($logs) || isset($logs['!trap'])) {
+                            $logs = []; // hindari fallback unduh seluruh log
+                        }
+                        $api->disconnect();
+
+                        if (is_array($logs)) {
+                            foreach (array_reverse($logs) as $log) {
+                                $msg = (string) ($log['message'] ?? '');
+                                if (stripos($msg, 'logged in') !== false) {
+                                    $events[] = ['icon' => 'log-in', 'text' => 'User connected', 'detail' => $msg];
+                                } elseif (stripos($msg, 'logged out') !== false) {
+                                    $events[] = ['icon' => 'log-out', 'text' => 'User disconnected', 'detail' => $msg];
+                                }
                             }
                         }
                     }
                 }
+            } catch (\Throwable $e) {
+                // log feed bersifat best-effort
             }
-        } catch (\Throwable $e) {
-            // log feed bersifat best-effort
+            @file_put_contents($cacheFile, json_encode(['ts' => time(), 'events' => $events]));
+        }
+
+        foreach ($events as $ev) {
+            $items[] = $ev;
         }
 
         return array_slice($items, 0, 12);

@@ -327,6 +327,7 @@ class SalesReportService
             $api = \App\Libraries\RouterOSAPI::fromSession($config);
             $api->attempts = 1;
             $api->timeout = 5;
+            $api->delay = 0;
             if (! $api->connect($config['ip_address'], $config['username'], $config['password'])) {
                 return ['__unreachable' => true];
             }
@@ -348,13 +349,13 @@ class SalesReportService
         return ['users' => (array) $users, 'price_map' => $map];
     }
 
-    /** Records ternormalisasi + cache 60 detik. */
+    /** Records ternormalisasi + cache 300 detik. */
     public function getVoucherRecords(bool $force = false): array
     {
         $file = $this->cachePath();
         if (! $force && is_file($file)) {
             $json = json_decode((string) file_get_contents($file), true);
-            if (isset($json['ts']) && (time() - $json['ts']) < 60) {
+            if (isset($json['ts']) && (time() - $json['ts']) < 300) {
                 return $json['payload'];
             }
         }

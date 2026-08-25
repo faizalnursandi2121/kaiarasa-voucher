@@ -169,9 +169,9 @@ function dashRp(int $v): string
     </div>
 </div>
 
-<script src="/assets/js/vendor/apexcharts.min.js"></script>
+<script src="/assets/js/vendor/apexcharts.min.js" defer></script>
 <script>
-(function () {
+window.whenReady(function () {
     'use strict';
 
     var isDark = function () { return document.documentElement.classList.contains('dark'); };
@@ -264,6 +264,6 @@ function dashRp(int $v): string
     }
 
     if (window.lucide) lucide.createIcons();
-})();
+});
 </script>
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>
