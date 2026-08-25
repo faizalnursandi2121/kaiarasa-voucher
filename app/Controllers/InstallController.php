@@ -65,6 +65,12 @@ class InstallController extends Controller
                 $db->query('UPDATE users SET password = ? WHERE username = ?', [$hash, $username]);
             }
 
+            // 4. Tulis kunci secara permanen (tahan restart/redeploy kontainer)
+            SiteConfig::persistSecretKey(SiteConfig::getSecretKey());
+
+            // 5. Tandai instalasi selesai secara eksplisit
+            $this->writeLock();
+
             // Success
             FlashHelper::set('success', 'Installation Complete', 'System has been successfully installed. Please login.');
             header('Location: /login');
@@ -89,17 +95,32 @@ class InstallController extends Controller
         ];
     }
 
+    /**
+     * Penanda eksplisit bahwa instalasi pernah selesai.
+     * File berada di direktori Database (volume persisten) sehingga
+     * tahan terhadap restart maupun redeploy kontainer.
+     */
+    private function lockPath(): string
+    {
+        return ROOT.'/app/Database/installed.lock';
+    }
+
+    private function writeLock(): void
+    {
+        @file_put_contents($this->lockPath(), date('c'));
+        @chmod($this->lockPath(), 0644);
+    }
+
     private function isInstalled()
     {
-        // Check if .env exists and APP_KEY is set to something other than the default/example
-        $envPath = ROOT.'/.env';
-        if (! file_exists($envPath)) {
-            // Check if SiteConfig has a manual override (legacy)
-            return SiteConfig::getSecretKey() !== 'kaiarasa_official_secret_key_32bytes';
+        // 1) Sumber kebenaran utama: penanda eksplisit dari installer
+        if (file_exists($this->lockPath())) {
+            return true;
         }
 
-        $key = getenv('APP_KEY');
-        $keyChanged = ($key && $key !== 'kaiarasa_official_secret_key_32bytes');
+        // 2) Heuristik warisan untuk volume lama tanpa lock:
+        //    kunci bukan default DAN sudah ada pengguna.
+        $keyChanged = ! SiteConfig::isDefaultSecretKey();
 
         try {
             $db = Database::getInstance();
@@ -109,7 +130,13 @@ class InstallController extends Controller
             $hasUser = false;
         }
 
-        return $keyChanged && $hasUser;
+        if ($keyChanged && $hasUser) {
+            // Self-heal: tetapkan lock supaya pengecekan berikutnya eksplisit
+            $this->writeLock();
+            return true;
+        }
+
+        return false;
     }
 
     private function generateKey()

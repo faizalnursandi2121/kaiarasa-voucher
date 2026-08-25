@@ -22,7 +22,37 @@ class SiteConfig
     // Fetched from .env or fallback to default
     public static function getSecretKey()
     {
-        return getenv('APP_KEY') ?: 'kaiarasa_official_secret_key_32bytes';
+        // 1) Environment variable eksplisit (Dokploy/host) yang bukan placeholder
+        $env = getenv('APP_KEY');
+        if ($env && $env !== 'kaiarasa_official_secret_key_32bytes') {
+            return $env;
+        }
+
+        // 2) Fallback: kunci yang disimpan permanen di volume (tahan restart/redeploy)
+        $persisted = @file_get_contents(ROOT.'/app/Database/app_key');
+        if ($persisted !== false && trim($persisted) !== '') {
+            return trim($persisted);
+        }
+
+        // 3) Terakhir: placeholder default (kondisi pra-instal)
+        return 'kaiarasa_official_secret_key_32bytes';
+    }
+
+    /**
+     * Kunci aplikasi masih placeholder default?
+     */
+    public static function isDefaultSecretKey(): bool
+    {
+        return self::getSecretKey() === 'kaiarasa_official_secret_key_32bytes';
+    }
+
+    /**
+     * Simpan kunci secara permanen di direktori database (volume).
+     */
+    public static function persistSecretKey(string $key): void
+    {
+        @file_put_contents(ROOT.'/app/Database/app_key', $key);
+        @chmod(ROOT.'/app/Database/app_key', 0600);
     }
 
     const IS_DEV = false; // Set to true only for local development.
