@@ -62,6 +62,15 @@ include ROOT.'/app/Views/layouts/header_public.php';
             </div>
             <?php endif; ?>
 
+            <?php if (isset($_GET['debug'])): ?>
+            <!-- Diagnosa Turnstile (tanpa membocorkan secret) -->
+            <div style="font:11px monospace;background:#f5f5f0;padding:8px;border-radius:8px;margin-bottom:12px">
+                site_key_ditemukan : <?= \App\Config\SiteConfig::getTurnstileSiteKey() !== '' ? 'YA' : 'TIDAK' ?><br>
+                secret_key_ditemukan: <?= \App\Config\SiteConfig::getTurnstileSecretKey() !== '' ? 'YA' : 'TIDAK' ?><br>
+                fitur_aktif        : <?= \App\Config\SiteConfig::turnstileEnabled() ? 'YA' : 'NONAKTIF' ?>
+            </div>
+            <?php endif; ?>
+
             <form action="/login" method="POST" class="w-full">
 
                     <!-- Heading (rata kiri sesuai permintaan) -->

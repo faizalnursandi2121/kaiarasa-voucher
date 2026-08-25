@@ -38,14 +38,40 @@ class SiteConfig
         return 'kaiarasa_official_secret_key_32bytes';
     }
 
+    private static function envAny(string $key): string
+    {
+        foreach ([getenv($key), $_ENV[$key] ?? null, $_SERVER[$key] ?? null] as $v) {
+            if ($v !== null && $v !== false && trim((string) $v) !== '') {
+                return trim((string) $v);
+            }
+        }
+        // Fallback terakhir: baca langsung berkas .env (tanpa memicu loader).
+        static $parsed = null;
+        if ($parsed === null) {
+            $parsed = [];
+            $path = ROOT . '/.env';
+            if (is_readable($path)) {
+                foreach (file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $line) {
+                    $line = trim($line);
+                    if ($line === '' || $line[0] === '#') continue;
+                    if (strpos($line, '=') !== false) {
+                        [$k, $v] = explode('=', $line, 2);
+                        $parsed[trim($k)] = trim(trim($v), "\"'");
+                    }
+                }
+            }
+        }
+        return isset($parsed[$key]) ? $parsed[$key] : '';
+    }
+
     public static function getTurnstileSiteKey(): string
     {
-        return trim((string) getenv('TURNSTILE_SITE_KEY'));
+        return self::envAny('TURNSTILE_SITE_KEY');
     }
 
     public static function getTurnstileSecretKey(): string
     {
-        return trim((string) getenv('TURNSTILE_SECRET_KEY'));
+        return self::envAny('TURNSTILE_SECRET_KEY');
     }
 
     /** Anti-bot aktif hanya bila kedua kunci Turnstile terisi. */
