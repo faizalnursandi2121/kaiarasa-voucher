@@ -660,7 +660,6 @@ $getInitials = function ($name) {
                         if (!current) { window.location.href = url; return; }
                         var imported = document.importNode(fresh, true);
                         current.replaceWith(imported);
-                        requestAnimationFrame(function () { imported.classList.add('kai-pop'); });
                         updateSidebarActive(u.pathname);
                         if (doc.title) document.title = doc.title;
                         executeScriptsAsync(imported).then(function () {
@@ -715,6 +714,6 @@ $getInitials = function ($name) {
         <!-- Scrollable Page Content -->
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-background p-4 md:p-8">
             <div class="max-w-7xl mx-auto">
-            <div id="session-dynamic" class="contents">
+            <div id="session-dynamic" class="contents kai-pop">
 
 
