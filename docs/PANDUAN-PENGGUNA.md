@@ -1,21 +1,25 @@
-# MIVO — Panduan Pengguna
+# MIVO — Panduan Penggunaan untuk Tim Operasional
 
-**Versi Dokumen:** 1.0 · Agustus 2026
-**Untuk:** Operator, kasir, dan teknis lapangan yang mengoperasikan MIVO sehari-hari
+**Versi Dokumen:** 1.1 · Agustus 2026
+**Untuk:** Operator, kasir, dan staf lapangan yang menangani penjualan voucher serta pemantauan harian.
+
+> Panduan ini disusun persis mengikuti tampilan aplikasi. Jika Anda menemukan perbedaan, kemungkinan versi aplikasi Anda belum diperbarui — laporkan ke admin teknis.
 
 ---
 
 ## Daftar Isi
 
 1. [Memulai](#1-memulai)
-2. [Halaman Home (Pusat Kendali)](#2-halaman-home-pusat-kendali)
-3. [Tur Menu di Dalam Lokasi](#3-tur-menu-di-dalam-lokasi)
-4. [Alur Tamu WiFi](#4-alur-tamu-wifi)
-5. [Menu Security](#5-menu-security)
-6. [Notifikasi dan Aktivitas](#6-notifikasi-dan-aktivitas)
-7. [Penggunaan di Ponsel](#7-penggunaan-di-ponsel)
-8. [FAQ dan Troubleshooting](#8-faq-dan-troubleshooting)
-9. [Glosarium](#9-glosarium)
+2. [Halaman Home — Memantau Semua Lokasi](#2-halaman-home--memantau-semua-lokasi)
+3. [Dashboard Lokasi](#3-dashboard-lokasi)
+4. [Mengelola Voucher](#4-mengelola-voucher)
+5. [Data Plans](#5-data-plans)
+6. [Memantau Pengguna](#6-memantau-pengguna)
+7. [Laporan](#7-laporan)
+8. [Logos](#8-logos-branding)
+9. [Penggunaan di Ponsel](#9-penggunaan-di-ponsel)
+10. [FAQ dan Troubleshooting](#10-faq-dan-troubleshooting)
+11. [Glosarium](#11-glosarium)
 
 ---
 
@@ -23,270 +27,247 @@
 
 ### 1.1 Masuk ke Aplikasi
 
-1. Buka alamat MIVO di browser (diberikan oleh admin).
-2. Masukkan **username** dan **password** akun operator.
-3. Klik **Sign In**.
+1. Buka alamat MIVO di browser (alamat diberikan oleh admin).
+2. Ketik **username** dan **password** Anda.
+3. Tekan tombol **Sign In**.
 
 > 📷 **[SS-P01] Halaman Login** · simpan sebagai `docs/img/panduan-01-login.png`
-> Ambil: halaman login utuh di desktop.
 
-Jika lupa sandi, hubungi admin teknis untuk pengaturan ulang — jangan menebak berulang kali.
+Lupa sandi? Hubungi admin teknis untuk diatur ulang. Hindari mencoba berkali-kali.
 
-### 1.2 Home vs Dashboard Lokasi
+### 1.2 Dua Tingkat Halaman
 
-Setelah masuk, Anda berada di **Home**: pusat kendali semua lokasi.
-Klik salah satu lokasi/kartu untuk masuk ke **Dashboard lokasi** tersebut — ruang kerja harian dengan menunya sendiri.
+| Halaman | Isi | Kapan Dipakai |
+|---|---|---|
+| **Home** | Status semua router dari semua lokasi | Pagi hari: cek kondisi jaringan; saat ada keluhan lintas lokasi |
+| **Dashboard lokasi** | Ruang kerja satu lokasi: voucher, paket, laporan | Pekerjaan harian lokasi tersebut |
 
-| Halaman | Untuk Apa |
-|---|---|
-| **Home** | Pantau SEMUA router dari semua lokasi sekaligus |
-| **Dashboard lokasi** | Kelola satu lokasi: voucher, paket, laporan |
+### 1.3 Masuk & Keluar Lokasi
 
-### 1.3 Berpindah Lokasi / Keluar
-
-- Klik **avatar bulat hijau** di pojok kanan atas (desktop) → pilih:
-  - **Disconnect** — keluar dari lokasi, kembali ke Home;
-  - **Logout** — keluar dari aplikasi sepenuhnya;
+- Dari Home, pilih kartu lokasi yang ingin dikelola — Anda masuk ke Dashboard lokasi itu.
+- Untuk keluar, klik **avatar bulat hijau** di pojok kanan atas, lalu pilih:
+  - **Disconnect** — kembali ke Home (masih login di aplikasi);
+  - **Logout** — keluar sepenuhnya;
   - **Settings** — pengaturan sistem (khusus admin).
+
+> 📷 **[SS-P17] Menu Avatar (Dropdown Profil)** · simpan sebagai `docs/img/panduan-17-profil.png`
 
 ---
 
-## 2. Halaman Home (Pusat Kendali)
+## 2. Halaman Home — Memantau Semua Lokasi
 
 > 📷 **[SS-P02] Home — Tabel Router Status** · simpan sebagai `docs/img/panduan-02-home.png`
 
-### 2.1 Kartu Navigasi Atas
+### 2.1 Membaca Tabel Router Status
 
-Baris kartu di bagian atas adalah pintasan: ringkasan jaringan, pengaturan, dan fitur menyusul (bertanda *Soon*).
+Setiap baris adalah satu router beserta lokasinya. Warna statusnya:
 
-### 2.2 Tabel Router Status
+🟢 **Online** · 🔴 **Offline** · 🟠 **Error** · 🔵 **Connecting**
 
-Tabel utama berisi seluruh router lintas lokasi:
+Gunakan kotak **pencarian** untuk mencari nama router tertentu, atau **filter status** untuk menampilkan hanya yang bermasalah. Tombol **↻** menyegarkan data tanpa menunggu siklus otomatis.
 
-- **Kolom pencarian** — ketik nama router untuk memfilter cepat.
-- **Filter status** — tampilkan hanya Online / Offline / Error / Connecting.
-- **Tombol ↻** — segarkan data manual tanpa menunggu siklus otomatis.
+**Kebiasaan baik:** buka Home setiap awal shift. Jika ada router merah, tangani sebelum pelanggan berdatangan.
 
-Warna status: 🟢 online · 🔴 offline · 🟠 error · 🔵 connecting.
+### 2.2 Menambah / Mengubah Router
 
-### 2.3 Network Availability
+Pengelolaan router dilakukan dari halaman Home ini (bukan di dalam lokasi):
 
-Panel kanan menampilkan grafik ketersediaan jaringan 24 jam terakhir beserta tiga angka penting: **Avg Uptime**, **Downtime**, dan **Incidents**.
+1. Klik tombol **tambah router**, isi nama, alamat IP/host, port API, dan password router.
+2. Aktifkan opsi **SSL** hanya jika port API router memang memakai enkripsi (umumnya 8729).
+3. Simpan. Router baru akan muncul di tabel dan mulai mengirim data.
 
-### 2.4 Recent Activity
+Jika password router pernah diganti lewat Winbox, ubah juga di sini — aplikasi akan menampilkan peringatan kuning apabila kredensial tidak cocok lagi.
 
-Daftar kejadian terbaru lintas lokasi yang diperbarui langsung (*live*) — berguna memantau dari meja kasir.
+### 2.3 Panel Pendukung
 
-### 2.5 Widget Bawah
-
-**Status Distribution** (proporsi status router) dan **Top Router by CPU** (lima router tersibuk) — indikator awal bila ada perangkat yang mulai "berat".
+- **Network Availability** — grafik ketersediaan 24 jam + angka uptime, downtime, dan insiden.
+- **Recent Activity** — kejadian terbaru lintas lokasi, diperbarui langsung.
+- **Status Distribution & Top CPU** — proporsi status dan lima router tersibuk; indikator awal bila ada perangkat mulai berat.
 
 ---
 
-## 3. Tur Menu di Dalam Lokasi
+## 3. Dashboard Lokasi
 
-Masuk ke sebuah lokasi, menu tersusun rapi di sidebar kiri (desktop) atau drawer setelah tombol ☰ (ponsel):
+Halaman pertama setiap lokasi — performa hari ini dalam satu layar.
 
 > 📷 **[SS-P03] Sidebar Menu Lokasi** · simpan sebagai `docs/img/panduan-03-sidebar.png`
-
-| Grup | Menu | Fungsi |
-|---|---|---|
-| **Voucher** | Users | Daftar user/voucher hotspot aktif per router |
-| | Generate | Buat voucher massal |
-| | Quick Print | Cetak voucher instan |
-| | Voucher Templates | Atur desain struk cetak |
-| **Data Plan** | Profiles/Data Plans | Paket kecepatan & masa aktif |
-| **Aktivitas/Laporan** | Reports | Laporan penjualan & aktivitas |
-| **Security** | Walled Garden, IP Bindings | Akses pra-login & perangkat bypass |
-| **Network** | DHCP | Daftar perangkat yang sedang pinjam IP |
-| **Administration/Branding** | Settings, identitas | Konfigurasi & logo aplikasi |
-
-### 3.1 Dashboard
-
-Halaman pertama tiap lokasi — pantau performa dalam sekali lirik:
-
+>
 > 📷 **[SS-P04] KPI Dashboard** · simpan sebagai `docs/img/panduan-04-kpi.png`
 >
 > 📷 **[SS-P05] Grafik Dashboard** · simpan sebagai `docs/img/panduan-05-grafik.png`
 
-| KPI | Arti |
+### 3.1 Empat Angka Utama (KPI)
+
+| Angka | Artinya |
 |---|---|
-| **Active Users** | Jumlah tamu yang sedang online |
-| **Sold Today** | Voucher terjual hari ini |
+| **Active Users** | Tamu yang sedang online saat ini |
+| **Sold Today** | Jumlah voucher yang terjual hari ini |
 | **Revenue Today** | Pendapatan hari ini |
 | **Created Today** | Voucher baru yang dibuat hari ini |
 
-Grafik: **User Activity** (Today / 7 Days / 30 Days), **Voucher Activity** 30 hari, dan **Top Packages** (paket terlaris). Tombol ↻ di pojok judul menyegarkan data live.
+### 3.2 Grafik
 
-### 3.2 Users (Voucher Hotspot)
+- **User Activity** — ramai pengunjung per jam (Today) atau per hari (7/30 Days); gunakan pil di pojok kartu untuk berganti periode.
+- **Voucher Activity** — jumlah voucher dibuat selama 30 hari terakhir.
+- **Top Packages** — paket paling laris (grafik donat + daftar peringkat).
 
-Daftar semua kode voucher/user: status (aktif/terpakai/expired), profil, kuota, dan masa aktif. Gunakan pencarian untuk mencari kode tertentu saat pelanggan bertanya.
+Tombol **↻** di samping judul halaman menyegarkan semua data live.
 
-> 📷 **[SS-P06] Daftar Users/Vouchers** · simpan sebagai `docs/img/panduan-06-users.png`
+### 3.3 Kartu Aksi Cepat
 
-### 3.3 Generate Voucher
+Di bawah KPI terdapat dua kartu besar: **Quick Print** (cetak instan, §4.3) dan **Generate Vouchers** (pintasan ke halaman pembuatan massal, §4.2). Inilah dua tombol yang paling sering dipakai kasir.
 
-Membuat banyak voucher sekaligus: pilih **Data Plan**, isi **jumlah**, atur prefiks/nomor sesuai kebutuhan → klik generate. Voucher langsung siap dicetak dan otomatis tercatat sebagai stok.
+---
 
-> 📷 **[SS-P07] Form Generate** · simpan sebagai `docs/img/panduan-07-generate.png`
+## 4. Mengelola Voucher
 
-💡 *Tips:* generate per batch kecil (mis. 50) agar stok mudah dilacak per minggu.
+Alur kerjanya: siapkan **template cetak** sekali → **generate** stok secara massal → jual dan **quick print** sesuai pesanan → pantau penjualan di KPI.
 
-### 3.4 Quick Print
+### 4.1 Vouchers (Daftar Kode)
 
-Mode kasir: pilih paket + jumlah → cetak langsung ke printer struk. Untuk penjualan harian yang cepat, inilah menu yang paling sering dipakai.
+Menu **Vouchers** menampilkan seluruh kode hotspot pada lokasi ini: statusnya (belum terpakai / aktif / kedaluwarsa), profil paketnya, dan masa aktifnya. Gunakan pencarian saat pelanggan bertanya soal kode tertentu, misalnya lupa kode atau mengklaim belum terpakai.
+
+> 📷 **[SS-P06] Daftar Vouchers** · simpan sebagai `docs/img/panduan-06-vouchers.png`
+
+### 4.2 Generate Vouchers
+
+Untuk menyiapkan stok:
+
+1. Buka menu **Generate Vouchers**.
+2. Pilih **Data Plan** yang dijual.
+3. Tentukan jumlah, prefiks/penomoran, dan opsi lain sesuai kebutuhan.
+4. Klik generate — kode langsung jadi dan otomatis terhitung di KPI *Created Today*.
+
+💡 *Tips:* buat stok per batch kecil (misal 50) agar mudah dilacak per minggu.
+
+> 📷 **[SS-P07] Halaman Generate** · simpan sebagai `docs/img/panduan-07-generate.png`
+
+### 4.3 Quick Print (Cetak Instan)
+
+Untuk penjualan satuan di kasir: klik kartu **Quick Print** pada Dashboard, pilih paket dan jumlah, lalu cetak langsung ke printer struk. Tanpa langkah tambahan — pas untuk jam sibuk.
 
 > 📷 **[SS-P08] Quick Print** · simpan sebagai `docs/img/panduan-08-quick-print.png`
+>
+> 📷 **[SS-P19] Hasil Cetak Struk** · simpan sebagai `docs/img/panduan-19-struk.png` *(boleh foto printer)*
 
-### 3.5 Voucher Templates
+### 4.4 Voucher Templates
 
-Mengatur tampilan struk cetak: ukuran, logo, teks ucapan, susunan kolom kode.
+Mengatur bentuk struk: ukuran kertas, logo, teks sapaan, dan susunan kolom kode. Atur sekali di awal; ubah lagi bila harga/branding berubah.
 
 > 📷 **[SS-P09] Voucher Templates** · simpan sebagai `docs/img/panduan-09-template.png`
 
-### 3.6 Data Plans (Profiles)
+---
 
-Definisikan paket layanan:
+## 5. Data Plans
 
-| Kolom | Isi Contoh | Arti |
+Menu **Data Plans** berisi daftar paket layanan yang bisa dijual. Setiap paket menentukan:
+
+| Kolom | Contoh | Artinya |
 |---|---|---|
-| Nama | *Paket Harian* | Ditampilkan saat generate/cetak |
-| Harga | Rp 5.000 | Masuk KPI Revenue |
-| Rate Limit | 3M/3M (unduh/unggah) | Kecepatan maksimum tamu |
-| Validity | 1 hari | Lama hidup voucher sejak dipakai |
-| Expired Mode | Remove/Move | Nasib voucher setelah habis |
+| Nama Paket | *Paket Harian* | Yang dipilih saat generate/cetak |
+| Harga | Rp 5.000 | Sumber angka *Revenue Today* |
+| Rate Limit (Rx/Tx) | 3M/3M | Kecepatan unduh/unggah maksimum tamu |
+| Validity | 1 hari | Lama hidup voucher sejak pertama dipakai |
 
-> 📷 **[SS-P10] Data Plans** · simpan sebagai `docs/img/panduan-10-dataplan.png`
+Perubahan paket berlaku untuk voucher yang **akan** dibuat; voucher lama tetap mengikuti aturan saat kode itu dibuat.
 
-### 3.7 Routers
-
-Tambah/edit router per lokasi: nama, alamat IP/host, port API, **aktifkan SSL** bila port API router memakai enkripsi, serta opsi mode kedaluwarsa. Jika password router diganti di Winbox, masukkan ulang di sini — MIVO akan memberi tahu lewat peringatan kuning bila kredensial tidak cocok.
-
-> 📷 **[SS-P11] Form Add/Edit Router** · simpan sebagai `docs/img/panduan-11-router.png`
-
-### 3.8 Reports
-
-Laporan penjualan & aktivitas per periode — sumber data untuk rekap mingguan/bulanan.
-
-> 📷 **[SS-P19] Laporan** · simpan sebagai `docs/img/panduan-19-reports.png`
-
-### 3.9 Settings & Branding
-
-Pengaturan global (khusus admin): preferensi sistem hingga identitas/logo aplikasi.
-
-> 📷 **[SS-P20] Settings** · simpan sebagai `docs/img/panduan-20-settings.png`
+> 📷 **[SS-P10] Daftar Data Plans** · simpan sebagai `docs/img/panduan-10-dataplan.png`
 
 ---
 
-## 4. Alur Tamu WiFi
+## 6. Memantau Pengguna
 
-Beri tahu petugas lapangan alur ini agar bisa menjelaskan ke pelanggan:
+Dua menu ini menjawab pertanyaan paling sering di lapangan: *"siapa yang sedang online?"* dan *"perangkat apa saja yang terdaftar?"*
 
-1. Pelanggan menyambung WiFi Anda.
-2. Halaman **login kustom** muncul otomatis (portal milik operator — logo & warna konsisten).
-3. Pelanggan memasukkan **kode voucher** yang dibeli di kasir.
-4. Bila benar → internet aktif sesuai paket; bila gagal → cek FAQ §8.
+### 6.1 Online Users
 
-Sementara itu, situs tertentu (mis. mobile banking) tetap bisa dibuka **sebelum login** karena diizinkan lewat Walled Garden (§5).
+Daftar tamu yang **sedang terhubung**: username/kode, alamat IP, lama sesi, dan pemakaian. Berguna saat tamu melapor koneksi lambat — lihat di sini apakah ia benar-benar online dan seberapa berat pemakaiannya. Bila perlu, petugas dapat memutus sesi tertentu langsung dari daftar ini.
 
----
+> 📷 **[SS-P11] Online Users** · simpan sebagai `docs/img/panduan-11-online-users.png`
 
-## 5. Menu Security
+### 6.2 Connected Devices
 
-### 5.1 Walled Garden
+Daftar perangkat (host) yang dikenali router: alamat MAC, IP, dan hostname. Gunakan untuk melacak perangkat milik tamu maupun perangkat internal lokasi (mis. CCTV atau laptop kasir) saat melakukan pemeriksaan bersama teknis.
 
-Daftar situs/layanan yang **boleh diakses tanpa login**.
-
-- **Tambah rule** → isi domain tujuan (mis. domain bank) → simpan; rule langsung aktif di router.
-- Ada dua jenis entri: berbasis **domain** (situs) dan berbasis **IP** (layanan tertentu).
-- Gunakan secukupnya — semakin longgar walled garden, semakin besar celah pemakaian gratis.
-
-> 📷 **[SS-P12] Walled Garden** · simpan sebagai `docs/img/panduan-12-walled-garden.png`
-
-### 5.2 IP Bindings
-
-Membuat **perangkat tertentu lolos tanpa login** (bypass MAC): CCTV, laptop kasir, server lokal.
-
-- Pilih perangkat dari daftar DHCP atau masukkan MAC manual → tipe *bypassed* → simpan.
-- Cocok juga untuk pelanggan langganan tetap yang tidak ingin login tiap kali.
-
-> 📷 **[SS-P13] IP Bindings** · simpan sebagai `docs/img/panduan-13-bindings.png`
-
-### 5.3 Network → DHCP
-
-Melihat perangkat yang sedang meminjam IP di router — berguna untuk mencari MAC address saat akan membuat binding, atau mendiagnosis tamu yang "tidak mau muncul" di hotspot.
-
-> 📷 **[SS-P14] DHCP Leases** · simpan sebagai `docs/img/panduan-14-dhcp.png`
+> 📷 **[SS-P12] Connected Devices** · simpan sebagai `docs/img/panduan-12-devices.png`
 
 ---
 
-## 6. Notifikasi dan Aktivitas
+## 7. Laporan
 
-Ikon **lonceng 🔔** di bilah atas (desktop) menampilkan kejadian router terbaru:
+### 7.1 Activity Log
 
-| Kejadian | Arti |
-|---|---|
-| 🟢 Connected | Tamu baru berhasil login |
-| 🔴 Went offline | Router hilang/tidak terjangkau |
-| 🟠 High CPU | Beban router tinggi — pantau |
+Catatan kejadian pengguna secara kronologis: siapa login, logout, dan kapan. Ini rujukan utama saat menindaklanjuti klaim pelanggan ("kemarin saya beli, kok sudah habis?").
 
-Titik merah pada lonceng = ada kejadian belum dibaca. Daftar **Recent Activity** di dashboard menampilkan hal senada dalam konteks lokasi.
+> 📷 **[SS-P13] Activity Log** · simpan sebagai `docs/img/panduan-13-activity-log.png`
 
-> 📷 **[SS-P15] Notifikasi Terbuka** · simpan sebagai `docs/img/panduan-15-notifikasi.png`
->
-> 📷 **[SS-P16] Dropdown Profil Desktop** · simpan sebagai `docs/img/panduan-16-profil.png`
+### 7.2 Sales Report
+
+Rekapitulasi penjualan voucher per periode — dasar penyusunan rekap harian/mingguan untuk pemilik.
+
+> 📷 **[SS-P14] Sales Report** · simpan sebagai `docs/img/panduan-14-sales-report.png`
 
 ---
 
-## 7. Penggunaan di Ponsel
+## 8. Logos (Branding)
 
-Aplikasi penuh nyaman dibuka dari HP:
+Menu **Logos** mengatur identitas visual aplikasi dan materi cetak: logo utama, logo versi putih untuk latar gelap/hijau, serta aset pendukung lainnya. Unggah gambar dengan latar transparan (PNG/WebP) agar tampil rapi di header maupun struk.
 
-- **☰ (kiri)** — buka menu sidebar sebagai drawer;
-- **Logo tengah** — kembali ke dashboard lokasi;
-- **Avatar (kanan)** — menu akun: Settings · Disconnect · Logout.
-
-Semua tabel otomatis menyesuaikan layar; untuk tabel lebar, geser horizontal seperti biasa.
-
-> 📷 **[SS-P17] Header Mobile** · simpan sebagai `docs/img/panduan-17-mobile-header.png`
-> Ambil: tampilan HP dengan drawer sidebar TERBUKA agar menu ikut terlihat.
->
-> 📷 **[SS-P18] Hasil Cetak Voucher** · simpan sebagai `docs/img/panduan-18-struk.png`
-> Ambil: foto hasil cetakan struk voucher (boleh foto printer).
+> 📷 **[SS-P15] Halaman Logos** · simpan sebagai `docs/img/panduan-15-logos.png`
 
 ---
 
-## 8. FAQ dan Troubleshooting
+## 9. Penggunaan di Ponsel
 
-| Gejala | Kemungkinan Penyebab | Solusi |
+Seluruh fitur tetap nyaman diakses dari HP. Susunan bilah atas versi mobile:
+
+```
+┌─────────────────────────────────────┐
+│ [☰]        LOGO           avatar 👤 │
+│  kiri      tengah            kanan  │
+└─────────────────────────────────────┘
+```
+
+- **☰ (kiri)** membuka menu sebagai drawer geser;
+- **Logo (tengah)** kembali ke Dashboard lokasi;
+- **Avatar (kanan)** membuka menu akun: Settings · Disconnect · Logout.
+
+> 📷 **[SS-P16] Header Mobile + Drawer Terbuka** · simpan sebagai `docs/img/panduan-16-mobile.png`
+> Ambil: tampilan HP dengan drawer menu dalam keadaan terbuka.
+
+---
+
+## 10. FAQ dan Troubleshooting
+
+| Gejala | Kemungkinan Penyebab | Yang Dilakukan |
 |---|---|---|
-| Router berstatus **Offline/Error** | Listrik mati, kabel putus, IP berubah, port API tertutup | Cek fisik lokasi; pastikan IP/port API sesuai form router; cek firewall |
-| Kartu kuning *"password needs to be re-entered"* | Password router diganti di luar MIVO | Edit router → masukkan password baru |
-| Voucher **tidak bisa login** | Salah ketik, sudah terpakai, validity habis, profil bermasalah | Cek di menu Users; uji dengan kode lain; periksa Data Plan |
-| KPI/grafik **kosong padahal router online** | Data sampling belum cukup / cache | Klik ↻ Refresh; tunggu beberapa menit |
-| Tamu tidak mendapat halaman login | Perangkat terlanjur di-bind (bypass), atau DHCP bermasalah | Cek IP Bindings & DHCP leases |
-| Notifikasi tidak muncul | Sesi halaman lama | Segarkan halaman (F5) |
+| Router berstatus Offline/Error | Listrik mati, kabel longgar, IP berubah, port API tertutup | Periksa fisik lokasi; samakan IP/port di form router di Home; minta teknis cek firewall bila berlanjut |
+| Muncul kartu kuning *"password needs to be re-entered"* | Password router diganti di luar MIVO | Edit router di Home, masukkan password terbaru |
+| Voucher gagal login | Salah ketik, sudah terpakai, masa aktif habis | Cari kodenya di menu **Vouchers**; cek status & validity; bila perlu uji dengan kode baru |
+| KPI/grafik kosong padahal router online | Data sampling belum cukup | Klik **↻ Refresh**, tunggu beberapa menit |
+| Tamu tidak mendapat halaman login | Belum tepat tersambung ke SSID, atau perangkat bermasalah | Pastikan tersambung ke WiFi yang benar; coba matikan-nyalakan WiFi HP; bila berlanjut, laporkan ke teknis |
+| Notifikasi tidak muncul | Halaman terbuka terlalu lama | Segarkan halaman (F5 / tarik-turun) |
 | Lupa password admin | — | Hubungi admin teknis untuk reset |
 
 **Aturan emas:** sebelum panik, klik **↻ Refresh** — sebagian besar indikator basi hanya butuh penyegaran.
 
 ---
 
-## 9. Glosarium
+## 11. Glosarium
 
 | Istilah | Arti |
 |---|---|
 | **Session / Lokasi** | Ruang kerja satu cabang/titik WiFi dalam MIVO |
-| **Captive Portal** | Gerbang login wajib bagi tamu WiFi |
-| **Walled Garden** | Daftar situs yang bebas diakses sebelum login |
-| **IP Binding** | Pengecualian perangkat agar tidak perlu login |
-| **Data Plan / Profile** | Paket: kecepatan + masa aktif + harga |
+| **Captive Portal** | Gerbang login wajib yang muncul bagi tamu WiFi |
+| **Data Plan** | Paket layanan: kecepatan, masa aktif, dan harga |
 | **Rate Limit (Rx/Tx)** | Batas kecepatan unduh/unggah tamu |
-| **Validity** | Masa hidup voucher sejak pertama dipakai |
+| **Validity** | Masa hidup voucher sejak pertama kali dipakai |
 | **Quick Print** | Mode cetak voucher instan untuk kasir |
+| **Online Users** | Tamu yang sedang terhubung saat ini |
+| **Connected Devices** | Seluruh perangkat yang dikenali router |
 | **KPI** | Angka ringkasan performa (pengguna, penjualan, pendapatan) |
-| **NOC** | *Network Operations Center* — istilah layar pemantauan pusat (halaman Home) |
+| **NOC** | Layar pemantauan pusat — di MIVO berupa halaman Home |
 
 ---
 
-*Dokumen pendamping: `LAPORAN-TEKNIS.md` — arsitektur dan mekanisme internal aplikasi.*
+*Dokumen pendamping: `LAPORAN-TEKNIS.md` (khusus tim internal) · `PANDUAN-PELANGGAN.md` (panduan singkat untuk pelanggan pengguna voucher).*

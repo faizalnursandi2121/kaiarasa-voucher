@@ -1,7 +1,7 @@
 # MIVO — Laporan Teknis Aplikasi
 
 **Versi Dokumen:** 1.0 · Agustus 2026
-**Sifat:** Dokumen internal — gambaran arsitektur dan mekanisme kerja aplikasi
+**Sifat:** Dokumen internal tim — gambaran arsitektur dan mekanisme kerja aplikasi. *Tidak untuk distribusi ke pelanggan.*
 
 ---
 
@@ -35,7 +35,7 @@ Aplikasi dibangun dari nol dengan prinsip **ringan, cepat, dan mudah dioperasika
 | Voucher ditulis/dicetak manual satu per satu | Generate ratusan voucher sekaligus + cetak massal |
 | Status tiap router dicek berkunjung antar lokasi | Dashboard NOC: semua router terpantau real-time |
 | Tidak ada catatan penjualan harian | KPI pendapatan & penjualan otomatis per lokasi |
-| Tamu bebas akses jaringan sebelum login sulit dikendalikan | Walled Garden & IP Bindings dikelola dari satu tempat |
+| Akses pra-login tamu sulit dikendalikan | Kontrol akses tingkat lanjutan yang dikelola terpusat |
 
 ### 1.3 Fitur Utama
 
@@ -44,7 +44,7 @@ Aplikasi dibangun dari nol dengan prinsip **ringan, cepat, dan mudah dioperasika
 - **Data Plan / Profil Hotspot:** kendali kecepatan unggah/unduh serta masa aktif voucher.
 - **Pemantauan router:** status daring/luring, beban CPU, ketersediaan jaringan, notifikasi kejadian.
 - **Captive portal dengan halaman login kustom** milik sendiri.
-- **Keamanan jaringan pra-login:** Walled Garden dan IP Bindings.
+- **Kontrol akses pra-login** pada captive portal — fitur keamanan lanjutan yang dikelola terpusat oleh administrator.
 - **Laporan:** aktivitas pengguna, aktivitas voucher, paket terlaris, pendapatan harian.
 - **Antarmuka responsif:** penuh nyaman dipakai di desktop maupun ponsel.
 
@@ -176,9 +176,10 @@ MIVO menggunakan **halaman login kustom milik sendiri** (bukan halaman bawaan ro
  1. Sambung WiFi        →  DHCP memberi alamat IP
  2. Membuka situs apa   →  Koneksi dicegat, dialihkan
     pun                     ke halaman login kustom
- 3. Halaman LOGIN tampil ←  (situs tertentu tetap bisa
-    di perangkat tamu          diakses pra-login: Walled
-                               Garden — dikelola MIVO)
+ 3. Halaman LOGIN tampil ←  (situs tertentu seperti
+    di perangkat tamu          mobile banking tetap bisa
+                               diakses pra-login sesuai
+                               kebijakan keamanan)
  4. Memasukkan KODE     →  Autentikasi user hotspot  ←  Voucher dibuat &
     VOUCHER                                          dicetak dari MIVO
  5. SESI AKTIF          →  Kecepatan & masa aktif    ←  Data Plan (profil)
@@ -187,14 +188,9 @@ MIVO menggunakan **halaman login kustom milik sendiri** (bukan halaman bawaan ro
                            (login, offline, dsb.)        notifikasi 🔔
 ```
 
-### 5.4 Akses Pra-Login: Walled Garden dan IP Bindings
+### 5.4 Kontrol Pra-Login
 
-| Fitur | Fungsi | Contoh Pemakaian |
-|---|---|---|
-| **Walled Garden** | Menetapkan situs/layanan yang tetap terjangkau **sebelum** login | Mobile banking, WhatsApp, halaman status |
-| **IP Bindings** | Mengecualikan perangkat tertentu agar **tanpa login sama sekali** | CCTV, server kasir, perangkat langganan tetap |
-
-Keduanya dikelola dari menu **Security** di MIVO; perubahan langsung disinkronkan ke router melalui API.
+Mekanisme hotspot router mendukung pengaturan keamanan tingkat lanjut untuk fase sebelum login: mengizinkan situs/layanan tertentu (mis. mobile banking) agar tetap terjangkau, serta mengecualikan perangkat khusus (mis. CCTV atau mesin kasir) dari kewajiban login sama sekali. Pengaturan semacam ini bersifat **kebijakan jaringan** — dikelola terpusat oleh administrator, bukan bagian dari alur operasional harian operator.
 
 ### 5.5 Pengendalian Pasca-Login
 
@@ -207,8 +203,8 @@ Peristiwa penting di router — tamu baru terhubung, router mati/listrik, CPU ti
 > 📷 **[SS-T02] Dashboard Lokasi** — simpan sebagai `docs/img/teknis-02-dashboard.png`
 > Ambil: dashboard lokasi dengan KPI terisi + grafik aktif.
 >
-> 📷 **[SS-T03] Walled Garden** — simpan sebagai `docs/img/teknis-03-walled-garden.png`
-> Ambil: menu Security → Walled Garden dengan beberapa rule contoh.
+> 📷 **[SS-T03] Notifikasi Router** — simpan sebagai `docs/img/teknis-03-notifikasi.png`
+> Ambil: ikon lonceng dalam kondisi dropdown terbuka dengan daftar kejadian.
 
 ---
 
@@ -277,4 +273,4 @@ MIVO merangkum seluruh kompleksitas pengelolaan hotspot MikroTik multi-lokasi ke
 
 ---
 
-*Lampiran dokumentasi terkait: `PANDUAN-PENGGUNA.md` (buku panduan operasional harian).*
+*Dokumentasi terkait: `PANDUAN-PENGGUNA.md` (panduan tim operasional) · `PANDUAN-PELANGGAN.md` (panduan singkat pelanggan akhir).*
