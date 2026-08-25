@@ -26,7 +26,7 @@ function dashRp(int $v): string
                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#5f7f67]/10 text-[#47614d] dark:text-[#92aa96] text-[11px] font-semibold">
                     <i data-lucide="map-pin" class="w-3 h-3"></i> <?= htmlspecialchars($session) ?>
                 </span>
-                <span class="text-xs opacity-50">Operational overview for this location</span>
+                <span class="hidden sm:inline text-xs opacity-50">Operational overview for this location</span>
             </div>
         </div>
         <a href="?refresh=1" title="Refresh data"
@@ -62,14 +62,14 @@ function dashRp(int $v): string
             ['Created Today', 'ticket-plus', (string) ($kpis['created_today'] ?? 0), 'bg-amber-500/10 text-amber-600'],
         ];
         foreach ($kpis as [$label, $icon, $value, $chip]): ?>
-        <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5">
-            <div class="flex items-center gap-3 mb-4">
-                <span class="w-11 h-11 rounded-full flex items-center justify-center <?= $chip ?>">
-                    <i data-lucide="<?= $icon ?>" class="w-5 h-5"></i>
+        <div class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-4 sm:p-5">
+            <div class="flex items-center gap-2.5 mb-3">
+                <span class="w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shrink-0 <?= $chip ?>">
+                    <i data-lucide="<?= $icon ?>" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                 </span>
-                <span class="text-sm font-semibold"><?= $label ?></span>
+                <span class="text-xs sm:text-sm font-semibold leading-tight"><?= $label ?></span>
             </div>
-            <p class="text-2xl sm:text-3xl font-bold tabular-nums leading-none break-words"><?= $value ?></p>
+            <p class="text-xl sm:text-3xl font-bold tabular-nums leading-none break-words"><?= $value ?></p>
         </div>
         <?php endforeach; ?>
     </div>
@@ -81,13 +81,13 @@ function dashRp(int $v): string
             <?php foreach (($quick_actions ?? []) as $qa): ?>
             <?php $isQp = ($qa['label'] === 'Quick Print'); ?>
             <?php if ($isQp): ?>
-            <a href="<?= $qa['href'] ?>" class="rounded-2xl bg-[#5f7f67] text-white p-6 flex flex-col items-center justify-center gap-2 min-h-[150px] transition-all hover:bg-[#557359] hover:-translate-y-0.5 shadow-sm">
+            <a href="<?= $qa['href'] ?>" class="rounded-2xl bg-[#5f7f67] text-white p-5 sm:p-6 flex flex-col items-center justify-center gap-2 min-h-[118px] sm:min-h-[150px] transition-all hover:bg-[#557359] hover:-translate-y-0.5 shadow-sm">
                 <i data-lucide="<?= $qa['icon'] ?>" class="w-8 h-8"></i>
                 <span class="font-semibold text-base"><?= htmlspecialchars($qa['label']) ?></span>
                 <span class="text-[11px] text-white/70">Instant voucher printing</span>
             </a>
             <?php else: ?>
-            <a href="<?= $qa['href'] ?>" class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-6 flex flex-col items-center justify-center gap-2 min-h-[150px] transition-all group hover:bg-[#5f7f67]/[.08] hover:border-[#5f7f67]/40 hover:-translate-y-0.5">
+            <a href="<?= $qa['href'] ?>" class="rounded-2xl border border-black/[.07] dark:border-white/[.08] bg-white dark:bg-[#1a1c19] p-5 sm:p-6 flex flex-col items-center justify-center gap-2 min-h-[118px] sm:min-h-[150px] transition-all group hover:bg-[#5f7f67]/[.08] hover:border-[#5f7f67]/40 hover:-translate-y-0.5">
                 <i data-lucide="<?= $qa['icon'] ?>" class="w-8 h-8 opacity-60 group-hover:opacity-100 group-hover:text-[#47614d] dark:group-hover:text-[#92aa96] transition-colors"></i>
                 <span class="font-semibold text-base group-hover:text-[#47614d] dark:group-hover:text-[#92aa96] transition-colors"><?= htmlspecialchars($qa['label']) ?></span>
                 <span class="text-[11px] opacity-50">Bulk voucher generation</span>

@@ -2207,8 +2207,8 @@ input:-webkit-autofill,
   min-height: 110px;
 }
 
-.min-h-\[150px\] {
-  min-height: 150px;
+.min-h-\[118px\] {
+  min-height: 118px;
 }
 
 .min-h-\[300px\] {
@@ -5888,12 +5888,28 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
     display: none;
   }
 
+  .sm\:h-11 {
+    height: 2.75rem;
+  }
+
   .sm\:h-12 {
     height: 3rem;
   }
 
+  .sm\:h-5 {
+    height: 1.25rem;
+  }
+
   .sm\:h-\[500px\] {
     height: 500px;
+  }
+
+  .sm\:min-h-\[150px\] {
+    min-height: 150px;
+  }
+
+  .sm\:w-11 {
+    width: 2.75rem;
   }
 
   .sm\:w-36 {
@@ -5902,6 +5918,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
 
   .sm\:w-48 {
     width: 12rem;
+  }
+
+  .sm\:w-5 {
+    width: 1.25rem;
   }
 
   .sm\:w-64 {
@@ -5944,6 +5964,10 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
     padding: 3rem;
   }
 
+  .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
   .sm\:p-6 {
     padding: 1.5rem;
   }
@@ -5960,6 +5984,11 @@ div:where(.swal2-container) div:where(.swal2-popup).swal2-premium-card {
   .sm\:text-3xl {
     font-size: 1.875rem;
     line-height: 2.25rem;
+  }
+
+  .sm\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 }
 
