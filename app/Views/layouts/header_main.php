@@ -62,7 +62,8 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
         document.documentElement.classList.remove('dark');
         try { localStorage.removeItem('theme'); } catch (e) {}
     </script>
-    <script src="/assets/js/lucide.min.js" defer></script>
+    <link rel="preload" as="script" href="/assets/js/lucide.min.js">
+    <script src="/assets/js/lucide.min.js" defer onload="if(window.lucide&&window.lucide.createIcons){window.lucide.createIcons()}"></script>
     <script>
         window.currentVersion = '<?= SiteConfig::APP_VERSION ?>';
         // Run a callback now if the DOM is already parsed, otherwise on DOMContentLoaded.
