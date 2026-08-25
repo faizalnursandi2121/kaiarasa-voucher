@@ -52,6 +52,7 @@ class GeneratorController extends Controller
 
     public function process()
     {
+        \App\Services\RouterListCache::flushSession(isset($session) ? $session : ($_POST['session'] ?? ''));
         $session = $_POST['session'] ?? '';
         $qty = intval($_POST['qty'] ?? 1);
         $server = $_POST['server'] ?? 'all';

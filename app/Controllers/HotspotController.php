@@ -31,30 +31,36 @@ class HotspotController extends Controller
         }
 
         $userId = $session; // For view context
-        $users = [];
-        $servers = [];
-        $error = null;
 
-        $API = RouterOSAPI::fromSession($creds);
-        $API->attempts = 1;
-        $API->delay = 0;
-        // $API->debug = true; // Enable for debugging
+        try {
+            $fetched = \App\Services\RouterListCache::remember('users', $session, 45, function () use ($creds) {
+                $API = RouterOSAPI::fromSession($creds);
+                $API->attempts = 1;
+                $API->delay = 0;
 
-        // Decrypt password if from SQLite
-        $password = $creds['password'];
-        if (isset($creds['source']) && $creds['source'] === 'legacy') {
-            $password = RouterOSAPI::decrypt($password);
-        }
+                // Decrypt password if from SQLite
+                $password = $creds['password'];
+                if (isset($creds['source']) && $creds['source'] === 'legacy') {
+                    $password = RouterOSAPI::decrypt($password);
+                }
 
-        if ($API->connect($creds['ip'], $creds['user'], $password)) {
-            // Get all hotspot users
-            $users = $API->comm('/ip/hotspot/user/print');
+                if (! $API->connect($creds['ip'], $creds['user'], $password)) {
+                    throw new \RuntimeException('Connection failed');
+                }
 
-            // Get servers for dropdown
-            $servers = $API->comm('/ip/hotspot/server/print');
+                $users = $API->comm('/ip/hotspot/user/print');
+                $servers = $API->comm('/ip/hotspot/server/print');
+                $API->disconnect();
 
-            $API->disconnect();
-        } else {
+                return [
+                    'users' => is_array($users) ? $users : [],
+                    'servers' => is_array($servers) ? $servers : [],
+                ];
+            });
+
+            $users = $fetched['users'];
+            $servers = $fetched['servers'];
+        } catch (\Throwable $e) {
             FlashHelper::set('error', 'Connection Failed', 'Could not connect to router at '.$creds['ip']);
             header('Location: '.($_SERVER['HTTP_REFERER'] ?? '/'.$session.'/dashboard'));
             exit;
@@ -113,6 +119,7 @@ class HotspotController extends Controller
 
     public function store()
     {
+        \App\Services\RouterListCache::flushSession(isset($session) ? $session : ($_POST['session'] ?? ''));
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /');
             exit;
@@ -197,6 +204,7 @@ class HotspotController extends Controller
 
     public function delete()
     {
+        \App\Services\RouterListCache::flushSession(isset($session) ? $session : ($_POST['session'] ?? ''));
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /');
             exit;
@@ -355,6 +363,7 @@ class HotspotController extends Controller
 
     public function update()
     {
+        \App\Services\RouterListCache::flushSession(isset($session) ? $session : ($_POST['session'] ?? ''));
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /');
             exit;

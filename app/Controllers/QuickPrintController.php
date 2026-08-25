@@ -223,6 +223,7 @@ class QuickPrintController extends Controller
     // ACTION: Generate User & Print
     public function printPacket($session, $id)
     {
+        \App\Services\RouterListCache::flushSession(isset($session) ? $session : ($_POST['session'] ?? ''));
         // 1. Get Package Details
         $qpModel = new QuickPrintModel;
         $package = $qpModel->getById($id);

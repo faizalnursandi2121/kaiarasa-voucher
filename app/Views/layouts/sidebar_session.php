@@ -637,6 +637,18 @@ $getInitials = function ($name) {
 
                 cleanupSession();
                 setLoading(true);
+
+                // Umpan balik instan: skeleton menggantikan isi selagi menunggu.
+                var dynNow = document.getElementById(DYNAMIC_ID);
+                if (dynNow) {
+                    dynNow.innerHTML = '<div class="max-w-7xl mx-auto p-6 space-y-4">'
+                        + '<div class="h-8 w-56 rounded-lg bg-black/[.05] dark:bg-white/[.06] animate-pulse"></div>'
+                        + '<div class="rounded-2xl border border-black/[.06] dark:border-white/[.06] p-4 space-y-2">'
+                        + Array.from({ length: 5 }, function () {
+                            return '<div class="h-9 rounded-lg bg-black/[.04] dark:bg-white/[.04] animate-pulse"></div>';
+                        }).join('') + '</div></div>';
+                }
+
                 fetch(target, { credentials: 'same-origin', signal: signal })
                     .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.text(); })
                     .then(function (html) {

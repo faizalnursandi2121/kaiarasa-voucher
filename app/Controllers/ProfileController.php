@@ -21,39 +21,44 @@ class ProfileController extends Controller
             return;
         }
 
-        $API = RouterOSAPI::fromSession($creds);
-        $API->attempts = 1;
-        $API->delay = 0;
-        // Use default port 8728 if not specified
-        if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
-            $profiles = $API->comm('/ip/hotspot/user/profile/print');
+        try {
+            [$profiles, $pools, $queues] = \App\Services\RouterListCache::remember('profiles', $session, 45, function () use ($creds) {
+                $API = RouterOSAPI::fromSession($creds);
+                $API->attempts = 1;
+                $API->delay = 0;
 
-            // Fetch Pools & Queues for the Modal Form
-            $pools = $API->comm('/ip/pool/print');
-            $simple = $API->comm('/queue/simple/print');
-            $tree = $API->comm('/queue/tree/print');
-
-            $queues = [];
-            foreach ($simple as $q) {
-                if (isset($q['name'])) {
-                    $queues[] = $q['name'];
+                if (! $API->connect($creds['ip'], $creds['user'], $creds['password'])) {
+                    throw new \RuntimeException('Connection failed');
                 }
-            }
-            foreach ($tree as $q) {
-                if (isset($q['name'])) {
-                    $queues[] = $q['name'];
+
+                $profiles = $API->comm('/ip/hotspot/user/profile/print');
+                $pools = $API->comm('/ip/pool/print');
+                $simple = $API->comm('/queue/simple/print');
+                $tree = $API->comm('/queue/tree/print');
+                $API->disconnect();
+
+                $queues = [];
+                foreach ($simple as $q) {
+                    if (isset($q['name'])) {
+                        $queues[] = $q['name'];
+                    }
                 }
-            }
-            sort($queues);
+                foreach ($tree as $q) {
+                    if (isset($q['name'])) {
+                        $queues[] = $q['name'];
+                    }
+                }
+                sort($queues);
 
-            $API->disconnect();
+                foreach ($profiles as &$profile) {
+                    $meta = HotspotHelper::parseProfileMetadata($profile['on-login'] ?? '');
+                    $profile['meta'] = $meta;
+                    $profile['meta']['expired_mode_formatted'] = HotspotHelper::formatExpiredMode($meta['expired_mode'] ?? '');
+                }
+                unset($profile);
 
-            // Process profiles to add metadata from on-login script
-            foreach ($profiles as &$profile) {
-                $meta = HotspotHelper::parseProfileMetadata($profile['on-login'] ?? '');
-                $profile['meta'] = $meta;
-                $profile['meta']['expired_mode_formatted'] = HotspotHelper::formatExpiredMode($meta['expired_mode'] ?? '');
-            }
+                return [$profiles, $pools, $queues];
+            });
 
             $this->view('hotspot/profiles/index', [
                 'session' => $session,
@@ -62,7 +67,7 @@ class ProfileController extends Controller
                 'queues' => $queues,
                 'title' => 'User Profiles',
             ]);
-        } else {
+        } catch (\Throwable $e) {
             FlashHelper::set('error', 'Connection Failed', 'Could not connect to router at '.$creds['ip']);
             header('Location: '.($_SERVER['HTTP_REFERER'] ?? '/'.$session.'/dashboard'));
             exit;
@@ -117,6 +122,7 @@ class ProfileController extends Controller
 
     public function store()
     {
+        \App\Services\RouterListCache::flushSession(isset($session) ? $session : ($_POST['session'] ?? ''));
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/');
 
@@ -208,6 +214,7 @@ class ProfileController extends Controller
 
     public function delete()
     {
+        \App\Services\RouterListCache::flushSession(isset($session) ? $session : ($_POST['session'] ?? ''));
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/');
 
@@ -330,6 +337,7 @@ class ProfileController extends Controller
 
     public function update()
     {
+        \App\Services\RouterListCache::flushSession(isset($session) ? $session : ($_POST['session'] ?? ''));
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/');
 
