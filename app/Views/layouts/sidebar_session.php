@@ -648,6 +648,7 @@ $getInitials = function ($name) {
                         if (!current) { window.location.href = url; return; }
                         var imported = document.importNode(fresh, true);
                         current.replaceWith(imported);
+                        requestAnimationFrame(function () { imported.classList.add('kai-pop'); });
                         updateSidebarActive(u.pathname);
                         if (doc.title) document.title = doc.title;
                         executeScriptsAsync(imported).then(function () {

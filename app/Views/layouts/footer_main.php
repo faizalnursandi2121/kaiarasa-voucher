@@ -82,6 +82,10 @@ if (isset($session) && ! empty($session)) { ?>
                 if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
             }
             
+            // Animasi masuk konten sesi pada muat penuh
+            var sdDyn = document.getElementById('session-dynamic');
+            if (sdDyn) sdDyn.classList.add('kai-pop');
+
             // Initialize Lucide Icons
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();

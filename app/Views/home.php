@@ -5,11 +5,6 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <!-- =============================================================
      HOME v2 — NOC Dashboard (spec H1–H6, mockup ui home.png)
 ============================================================== -->
-<style>
-      #table-scroll { transition: opacity .22s ease; }
-      @keyframes kaiRowIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
-      #table-scroll.kai-pop > * { animation: kaiRowIn .3s ease both; }
-  </style>
 <div class="w-full max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
 
     <!-- ===== 1. NAV TILES ===== -->

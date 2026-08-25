@@ -27,7 +27,13 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
     <link rel="stylesheet" href="/assets/vendor/flag-icons/css/flag-icons.min.css" />
 
     
+    <link rel="preload" href="/assets/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/Geist-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <style>
+        /* Transisi konten dinamis — Home (#table-scroll) & sesi (#session-dynamic) */
+        #table-scroll, #session-dynamic { transition: opacity .22s ease; }
+        @keyframes kaiRowIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+        .kai-pop > * { animation: kaiRowIn .3s ease both; }
         @font-face {
             font-family: 'Geist';
             src: url('/assets/fonts/Geist-Regular.woff2') format('woff2');
