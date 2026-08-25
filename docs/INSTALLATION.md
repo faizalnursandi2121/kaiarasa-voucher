@@ -129,6 +129,12 @@ Most shared hosting uses Apache or OpenLiteSpeed, which is fully compatible.
 ## Post-Installation
 After setting up the server:
 1.  Copy `.env.example` to `.env` (if not already done).
+
+    **Opsional — Cloudflare Turnstile (anti-bot login):** isi
+    `TURNSTILE_SITE_KEY` dan `TURNSTILE_SECRET_KEY` pada `.env`
+    (atau Environment Variables di Dokploy). Kunci didapat dari
+    Cloudflare Dashboard → Turnstile → Add site. Bila dibiarkan
+    kosong, verifikasi login nonaktif.
 2.  **Install Application**
     *   **Option A: CLI**
         Run `php kaiarasa install` in your terminal.
