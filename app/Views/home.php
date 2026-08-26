@@ -300,6 +300,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <script>
 window.whenReady(function () {
     'use strict';
+    var trackChart = (typeof window.kaiTrackChart === 'function') ? window.kaiTrackChart : function (i) { return i; };
 
     // Bereskan seluruh instance ApexCharts saat meninggalkan halaman via SPA
     // (tanpa ini, timer chart yatim terus mengukur DOM yang sudah lepas —
@@ -499,7 +500,7 @@ window.whenReady(function () {
         if (!series.length) { el.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No history yet.</p>'; return; }
         el.innerHTML = '';
         el.innerHTML = '';
-        charts.avail = window.kaiTrackChart(new ApexCharts(el, baseChart({
+        charts.avail = trackChart(new ApexCharts(el, baseChart({
             series: [{ name: 'Availability', data: series.map(function (s) { return [s.ts * 1000, s.availability_pct]; }) }],
             chart: { type: 'area', height: 180, animations: { speed: 300 } },
             colors: ['#5f7f67'],
@@ -517,7 +518,7 @@ window.whenReady(function () {
         var el = document.getElementById('chart-distribution');
         if (charts.donut) charts.donut.destroy();
         el.innerHTML = '';
-        charts.donut = window.kaiTrackChart(new ApexCharts(el, baseChart({
+        charts.donut = trackChart(new ApexCharts(el, baseChart({
             series: [counts.online, counts.offline, counts.error, counts.connecting],
             labels: ['Online', 'Offline', 'Error', 'Connecting'],
             colors: ['#10b981', '#ef4444', '#f59e0b', '#92aa96'],
@@ -542,7 +543,7 @@ window.whenReady(function () {
         if (charts.topcpu) charts.topcpu.destroy();
         if (!top.length) { el.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No CPU data available.</p>'; return; }
         el.innerHTML = '';
-        charts.topcpu = window.kaiTrackChart(new ApexCharts(el, baseChart({
+        charts.topcpu = trackChart(new ApexCharts(el, baseChart({
             series: [{ name: 'CPU %', data: top.map(function (r) { return r.cpu_load; }) }],
             chart: { type: 'bar', height: 220 },
             colors: top.map(function (r) { return r.cpu_load > 80 ? '#ef4444' : (r.cpu_load > 50 ? '#f59e0b' : '#5f7f67'); }),

@@ -173,6 +173,7 @@ function dashRp(int $v): string
 <script>
 window.whenReady(function () {
     'use strict';
+    var trackChart = (typeof window.kaiTrackChart === 'function') ? window.kaiTrackChart : function (i) { return i; };
 
     var isDark = function () { return document.documentElement.classList.contains('dark'); };
     var gridColor = function () { return isDark() ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)'; };
@@ -195,7 +196,7 @@ window.whenReady(function () {
                 setTimeout(function () { attempt(left - 1); }, 250);
                 return;
             }
-            window.kaiTrackChart(new ApexCharts(el, makeOpts())).render();
+            trackChart(new ApexCharts(el, makeOpts())).render();
         };
         attempt(6);
     }

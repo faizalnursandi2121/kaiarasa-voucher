@@ -99,34 +99,84 @@ class CsrfHelper
     /**
      * Inject a hidden CSRF input into every HTML form served by the app.
      * Runs inside the existing output-buffer pipeline — no view edits needed.
+     *
+     * CATATAN IMPLEMENTASI: regex naif '<form[^>]*>' SALAH untuk atribut
+     * yang mengandung '>' di dalam nilai quoted — mis. arrow function
+     * "onsubmit=\"...then(res => { ... })\"". Karena itu posisi penutup tag
+     * dicari dengan pemindai sadar-kutip, karakter demi karakter.
      */
     public static function injectForms(string $html): string
     {
-        if (strpos($html, '<form') === false && strpos($html, '<FORM') === false) {
+        if (stripos($html, '<form') === false && stripos($html, '<FORM') === false) {
             return $html;
         }
 
         $token = htmlspecialchars(self::token(), ENT_QUOTES, 'UTF-8');
         $input = '<input type="hidden" name="'.self::FIELD.'" value="'.$token.'">';
 
-        return preg_replace_callback(
-            '#<form\b([^>]*)>#i',
-            function ($m) use ($input) {
-                $attrs = $m[1];
-                // Respect existing tokens (defense against double-injection).
-                if (stripos($attrs, 'name="'.self::FIELD.'"') !== false
-                    || stripos($attrs, "name='".self::FIELD."'") !== false) {
-                    return $m[0];
-                }
-                // Never inject into forms targeting external hosts.
-                if (preg_match('#action\s*=\s*(["\'])https?://#i', $attrs)) {
-                    return $m[0];
-                }
+        $out = '';
+        $pos = 0;
+        $len = strlen($html);
 
-                return '<form'.$attrs.'>'.$input;
-            },
-            $html
-        ) ?? $html;
+        while (($start = stripos($html, '<form', $pos)) !== false) {
+            // Harus '<form' sebagai tag (dibatasi batas kata).
+            $after = $start + 5;
+            if ($after >= $len || ! preg_match('/[\s\/]/', $html[$after])) {
+                // Bukan tag form (<formx dsb.) — salin apa adanya.
+                $out .= substr($html, $pos, $after - $pos);
+                $pos = $after;
+                continue;
+            }
+
+            // Pindai sampai '>' di luar kutip.
+            $i = $after;
+            $quote = null;
+            while ($i < $len) {
+                $ch = $html[$i];
+                if ($quote !== null) {
+                    if ($ch === $quote) {
+                        $quote = null;
+                    }
+                } elseif ($ch === '"' || $ch === "'") {
+                    $quote = $ch;
+                } elseif ($ch === '>') {
+                    break;
+                }
+                ++$i;
+            }
+            if ($i >= $len) {
+                break; // tag tidak tertutup — salin sisanya apa adanya
+            }
+
+            $attrs = substr($html, $after + 0, $i - $after); // isi atribut tanpa '>'
+            $tagEnd = substr($html, $i, 1); // '>'
+
+            // Salin segmen sebelum tag ini.
+            $out .= substr($html, $pos, $start - $pos);
+
+            $skip = false;
+            // Sudah berisi token (hindari injeksi ganda).
+            if (stripos($attrs, 'name="'.self::FIELD.'"') !== false
+                || stripos($attrs, "name='".self::FIELD."'") !== false) {
+                $skip = true;
+            }
+            // Jangan sentuh form menuju host eksternal.
+            if (preg_match('#action\s*=\s*(["\'])https?://#i', $attrs)) {
+                $skip = true;
+            }
+
+            if ($skip) {
+                $out .= '<form'.$attrs.$tagEnd;
+            } else {
+                $out .= '<form'.$attrs.$tagEnd.$input;
+            }
+
+            $pos = $i + 1;
+        }
+
+        $out .= substr($html, $pos);
+
+        return $out;
     }
 
     private static function isSameOrigin(string $origin): bool

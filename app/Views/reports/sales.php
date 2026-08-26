@@ -282,6 +282,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
 <script>
 window.whenReady(function () {
     'use strict';
+    var trackChart = (typeof window.kaiTrackChart === 'function') ? window.kaiTrackChart : function (i) { return i; };
 
     // Bereskan instance ApexCharts saat meninggalkan halaman via SPA
     // (mencegah timer chart yatim -> error console "width NaN").
@@ -309,7 +310,7 @@ window.whenReady(function () {
     // Revenue Trend (area)
     var trendEl = document.getElementById('chart-trend');
     if (trendEl && chartData.trend.length) {
-        window.kaiTrackChart(new ApexCharts(trendEl, baseChart({
+        trackChart(new ApexCharts(trendEl, baseChart({
             series: [{ name: 'Revenue', data: chartData.trend.map(function (d) { return [d.date, d.revenue]; }) }],
             chart: Object.assign({ type: 'area', height: 240 }, {}),
             colors: ['#5f7f67'],
@@ -324,7 +325,7 @@ window.whenReady(function () {
     // Vouchers Sold (bar)
     var volEl = document.getElementById('chart-volume');
     if (volEl && chartData.trend.length) {
-        window.kaiTrackChart(new ApexCharts(volEl, baseChart({
+        trackChart(new ApexCharts(volEl, baseChart({
             series: [{ name: 'Vouchers', data: chartData.trend.map(function (d) { return d.sold; }) }],
             chart: Object.assign({ type: 'bar', height: 240 }, {}),
             colors: ['#92aa96'],
@@ -338,7 +339,7 @@ window.whenReady(function () {
     // Top Packages (donut)
     var pkgEl = document.getElementById('chart-package');
     if (pkgEl && chartData.byPackage.length) {
-        window.kaiTrackChart(new ApexCharts(pkgEl, baseChart({
+        trackChart(new ApexCharts(pkgEl, baseChart({
             series: chartData.byPackage.map(function (p) { return p.count; }),
             labels: chartData.byPackage.map(function (p) { return p.name; }),
             chart: Object.assign({ type: 'donut', height: 260 }, {}),
