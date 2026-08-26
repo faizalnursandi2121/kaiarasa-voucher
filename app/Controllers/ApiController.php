@@ -18,6 +18,9 @@ class ApiController extends Controller
             return;
         }
 
+        // CSRF layer for this admin XHR endpoint: reject cross-origin callers.
+        \App\Helpers\CsrfHelper::enforceSameOrigin();
+
         // SECURITY: this endpoint must never be reachable unauthenticated.
         // It connects to attacker-controllable hosts and (in Edit Mode) uses
         // decrypted stored credentials — an open relay for credential theft.

@@ -8,9 +8,12 @@ use App\Core\Router;
 use App\Helpers\ErrorHelper;
 
 // Start Output Buffering
-// Process buffered HTML through server-side i18n to prevent FOUC
+// Process buffered HTML through server-side i18n to prevent FOUC,
+// then auto-inject CSRF tokens into every form (centralized CSRF fix)
 ob_start(function ($html) {
-    return \App\Helpers\LanguageHelper::translateHtml($html);
+    return \App\Helpers\CsrfHelper::injectForms(
+        \App\Helpers\LanguageHelper::translateHtml($html)
+    );
 });
 
 // Define Root Path
@@ -34,6 +37,11 @@ Autoloader::register();
 
 // Load Environment Variables
 Env::load(ROOT.'/.env');
+
+// Global CSRF defense for state-changing requests (runs before dispatch;
+// /api/* is exempt here — those endpoints enforce Origin individually and
+// public APIs are intentionally cross-origin-consumable per CORS config)
+\App\Helpers\CsrfHelper::enforceRequestSafety();
 
 // Initialize Router
 $router = new Router;
