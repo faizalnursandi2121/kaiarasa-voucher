@@ -72,9 +72,7 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
                         <a href="/settings" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
                             <i data-lucide="settings" class="w-4 h-4 opacity-60"></i> Settings
                         </a>
-                        <a href="/logout" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/[.07] transition-colors">
-                            <i data-lucide="log-out" class="w-4 h-4"></i> Logout
-                        </a>
+                        <form action="/logout" method="POST"><button type="submit" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/[.07] transition-colors w-full text-left cursor-pointer bg-transparent border-0"><i data-lucide="log-out" class="w-4 h-4"></i> Logout</button></form>
                     </div>
                 </div>
                 <?php } else { ?>
@@ -98,10 +96,8 @@ $uri = $_SERVER['REQUEST_URI'] ?? '/';
                     <i data-lucide="settings" class="w-5 h-5 text-foreground dark:text-foreground" stroke-width="2.5"></i>
                     <span>Settings</span>
                 </a>
-                <a href="/logout" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-500/[.07] transition-colors">
-                    <i data-lucide="log-out" class="w-5 h-5" stroke-width="2.5"></i>
-                    <span>Logout</span>
-                </a>
+                <form action="/logout" method="POST"><button type="submit" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-500/[.07] transition-colors w-full text-left cursor-pointer bg-transparent border-0"><i data-lucide="log-out" class="w-5 h-5" stroke-width="2.5"></i>
+                    <span>Logout</span></button></form>
             </div>
             <?php } ?>
         </div>

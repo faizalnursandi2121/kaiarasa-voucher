@@ -337,9 +337,7 @@ $getInitials = function ($name) {
                 <a href="/" title="Exit session — back to Home" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
                     <i data-lucide="cast" class="w-4 h-4 opacity-60"></i> Disconnect
                 </a>
-                <a href="/logout" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/[.07] transition-colors">
-                    <i data-lucide="log-out" class="w-4 h-4"></i> Logout
-                </a>
+                <form action="/logout" method="POST"><button type="submit" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/[.07] transition-colors w-full text-left cursor-pointer bg-transparent border-0"><i data-lucide="log-out" class="w-4 h-4"></i> Logout</button></form>
             </div>
         </div>
     </div>
@@ -376,9 +374,7 @@ $getInitials = function ($name) {
                     <a href="/" title="Exit session — back to Home" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
                         <i data-lucide="cast" class="w-4 h-4 opacity-60"></i> Disconnect
                     </a>
-                    <a href="/logout" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/[.07] transition-colors">
-                        <i data-lucide="log-out" class="w-4 h-4"></i> Logout
-                    </a>
+                    <form action="/logout" method="POST"><button type="submit" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/[.07] transition-colors w-full text-left cursor-pointer bg-transparent border-0"><i data-lucide="log-out" class="w-4 h-4"></i> Logout</button></form>
                 </div>
             </div>
         </header>

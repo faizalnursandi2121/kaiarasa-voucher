@@ -583,6 +583,16 @@ class SettingsController extends Controller
                     continue;
                 }
 
+                // SECURITY (CWE-79): SVG dari arsip backup melewati jalur upload,
+                // jadi sanitasi manual di sini — sama seperti Logo::add().
+                if ($ext === 'svg') {
+                    $clean = \App\Models\Logo::sanitizeSvg($binaryData);
+                    if ($clean === null) {
+                        continue; // hostile / tidak bisa disanitasi -> tolak entri
+                    }
+                    $binaryData = $clean;
+                }
+
                 $filename = $logoId.'.'.$ext;
                 $targetPath = rtrim($uploadDir, '/').'/'.$filename;
 

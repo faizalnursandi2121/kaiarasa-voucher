@@ -30,7 +30,7 @@ $router->post('/install', [InstallController::class, 'process']);
 // Authentication
 $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
-$router->get('/logout', [AuthController::class, 'logout']);
+$router->post('/logout', [AuthController::class, 'logout']); // POST-only: GET logout = CSRF forced-logout
 
 // Public Status Check (Requires Valid Router Session, but NO Auth)
 $router->group(['middleware' => 'router.valid'], function ($router) {
