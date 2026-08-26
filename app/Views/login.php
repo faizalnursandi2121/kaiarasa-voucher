@@ -139,26 +139,35 @@ include ROOT.'/app/Views/layouts/header_public.php';
 
     window.addEventListener('load', function () {
         setTimeout(function () {
-            if (document.documentElement.classList.contains('lucide-ready') === false && !window.turnstile) {
-                // api.js bahkan belum tiba
-            }
             var w = document.querySelector('.cf-turnstile');
-            if (!w || w.querySelector('iframe') || w.dataset.diagDone) return;
+            if (!w || w.dataset.diagDone) return;
             w.dataset.diagDone = '1';
+
+            // Challenge Cloudflare bisa memakan >5 dtk pada jaringan lambat:
+            // begitu iframe challenge muncul, pesan diagnosa dicabut otomatis.
+            var mo = new MutationObserver(function () {
+                if (w.querySelector('iframe')) {
+                    mo.disconnect();
+                    var p = w.querySelector('p[data-kai-diag]');
+                    if (p) p.remove();
+                }
+            });
+            mo.observe(w, { childList: true, subtree: true });
+
             if (!window.turnstile) {
                 w.insertAdjacentHTML('beforeend',
-                    '<p style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
+                    '<p data-kai-diag style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
                     + 'Script Cloudflare tidak berhasil dimuat oleh jaringan Anda '
                     + '(challenges.cloudflare.com terblokir?).</p>');
             } else {
                 w.insertAdjacentHTML('beforeend',
-                    '<p style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
+                    '<p data-kai-diag style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
                     + 'Widget belum selesai diverifikasi. Pastikan hostname '
                     + '<b>' + location.hostname + '</b> terdaftar pada situs Turnstile.</p>');
             }
         }, 5000);
     });
-</script></script>
+</script>
                     <?php endif; ?>
 
                     <!-- Submit (Metronic: d-grid; dengan loading state) -->
