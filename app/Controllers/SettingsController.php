@@ -223,6 +223,33 @@ class SettingsController extends Controller
     }
 
     // Update Global Settings
+
+    public function updateTurnstile()
+    {
+        $settingModel = new Setting;
+        $site   = trim($_POST['turnstile_site_key'] ?? '');
+        $secret = trim($_POST['turnstile_secret_key'] ?? '');
+
+        if ($site === '' && $secret === '') {
+            FlashHelper::set('error', 'Turnstile', 'Isi kedua kunci terlebih dahulu.');
+        } else {
+            $settingModel->set('turnstile_site_key', $site);
+            $settingModel->set('turnstile_secret_key', $secret);
+            FlashHelper::set('success', 'Turnstile', 'Kunci tersimpan — verifikasi aktif di halaman login.');
+        }
+        header('Location: /settings/system');
+        exit;
+    }
+
+    public function disableTurnstile()
+    {
+        (new Setting)->set('turnstile_site_key', '');
+        (new Setting)->set('turnstile_secret_key', '');
+        FlashHelper::set('success', 'Turnstile', 'Verifikasi Cloudflare dinonaktifkan.');
+        header('Location: /settings/system');
+        exit;
+    }
+
     public function updateGlobal()
     {
         $settingModel = new Setting;

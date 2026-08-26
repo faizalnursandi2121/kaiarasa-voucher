@@ -83,6 +83,8 @@ $redirectToSessionRoute = function (string $suffix) {
     $router->post('/settings/delete', [SettingsController::class, 'delete']);                // dipakai modal Home
     $router->post('/settings/admin/update', [SettingsController::class, 'updateAdmin']);
     $router->post('/settings/global/update', [SettingsController::class, 'updateGlobal']);
+    $router->post('/settings/turnstile/update',  [SettingsController::class, 'updateTurnstile']);
+    $router->post('/settings/turnstile/disable', [SettingsController::class, 'disableTurnstile']);
     $router->get('/settings/backup', [SettingsController::class, 'backup']);
     $router->post('/settings/restore', [SettingsController::class, 'restore']);
 

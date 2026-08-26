@@ -1,5 +1,38 @@
         <div class="space-y-8">
 
+            <!-- Cloudflare Turnstile -->
+            <div class="card">
+                <div class="mb-6 flex items-start justify-between gap-4">
+                    <div>
+                        <h4 class="text-lg font-medium text-foreground">Cloudflare Turnstile</h4>
+                        <p class="text-sm text-accents-5">Proteksi anti-bot pada halaman login.</p>
+                    </div>
+                    <?php $tsOn = \App\Config\SiteConfig::turnstileEnabled(); ?>
+                    <span class="px-2.5 py-1 rounded-full text-[11px] font-bold <?= $tsOn ? 'bg-emerald-500/15 text-emerald-600' : 'bg-black/[.06] text-accents-4' ?>">
+                        <?= $tsOn ? 'AKTIF' : 'NONAKTIF' ?>
+                    </span>
+                </div>
+                <form action="/settings/turnstile/update" method="POST" class="space-y-6">
+                    <div class="grid grid-cols-1 gap-6 w-full">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-foreground">Site Key</label>
+                            <input type="text" name="turnstile_site_key" value="<?= htmlspecialchars($settings['turnstile_site_key'] ?? '') ?>"
+                                   class="form-control w-full font-mono text-[13px]" placeholder="0x4AAAA..." autocomplete="off">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-foreground">Secret Key</label>
+                            <input type="password" name="turnstile_secret_key" value="<?= htmlspecialchars($settings['turnstile_secret_key'] ?? '') ?>"
+                                   class="form-control w-full font-mono text-[13px]" placeholder="0x4AAAA..." autocomplete="off">
+                        </div>
+                    </div>
+                    <p class="text-xs text-accents-4">Ambil kunci di Cloudflare Dashboard → Turnstile → Add site (hostname = domain aplikasi). Kosongkan keduanya lalu Simpan untuk menonaktifkan.</p>
+                    <div class="mt-6 pt-4 border-t border-accents-2 flex items-center gap-3">
+                        <button type="submit" class="btn btn-primary">Simpan Kunci</button>
+                        <button type="submit" formaction="/settings/turnstile/disable" class="btn btn-secondary">Nonaktifkan</button>
+                    </div>
+                </form>
+            </div>
+
             <!-- Admin Password -->
             <div class="card">
                 <div class="mb-6">
