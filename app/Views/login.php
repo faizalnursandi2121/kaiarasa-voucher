@@ -116,26 +116,49 @@ include ROOT.'/app/Views/layouts/header_public.php';
                              data-sitekey="<?= htmlspecialchars(\App\Config\SiteConfig::getTurnstileSiteKey()) ?>"
                              data-theme="light"
                              data-callback="kaiTsOk"
-                             data-expired-callback="kaiTsBad"></div>
+                             data-expired-callback="kaiTsBad"
+                             data-error-callback="kaiTsErr"></div>
                     </div>
                     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer
         onerror="console.error('[Turnstile] Gagal memuat api.js dari challenges.cloudflare.com')"></script>
 <script>
-    // Setelah halaman siap: bila fitur aktif tapi widget kosong, jelaskan sebabnya.
+    // Diagnosa widget: bedakan 'jaringan/CDN' vs 'sitekey/hostname ditolak'
+    window.kaiTsErr = function (code) {
+        var w = document.querySelector('.cf-turnstile');
+        if (w && !w.dataset.errDone) {
+            w.dataset.errDone = '1';
+            w.insertAdjacentHTML('beforeend',
+                '<p style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
+                + 'Cloudflare menolak widget (kode: ' + (code || '?') + '). '
+                + 'Penyebab tersering: hostname <b>' + location.hostname + '</b> '
+                + 'belum terdaftar pada situs Turnstile di dashboard Cloudflare.</p>');
+        }
+        var b = document.getElementById('login-submit');
+        if (b) b.disabled = true;
+    };
+
     window.addEventListener('load', function () {
         setTimeout(function () {
+            if (document.documentElement.classList.contains('lucide-ready') === false && !window.turnstile) {
+                // api.js bahkan belum tiba
+            }
             var w = document.querySelector('.cf-turnstile');
             if (!w || w.querySelector('iframe') || w.dataset.diagDone) return;
             w.dataset.diagDone = '1';
-            w.insertAdjacentHTML('beforeend',
-                '<p style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
-                + 'Widget Cloudflare gagal dimuat. Periksa koneksi ke challenges.cloudflare.com '
-                + 'dan pastikan hostname terdaftar pada konfigurasi Turnstile.</p>');
-            var b = document.getElementById('login-submit');
-            if (b) { b.disabled = false; }
-        }, 4000);
+            if (!window.turnstile) {
+                w.insertAdjacentHTML('beforeend',
+                    '<p style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
+                    + 'Script Cloudflare tidak berhasil dimuat oleh jaringan Anda '
+                    + '(challenges.cloudflare.com terblokir?).</p>');
+            } else {
+                w.insertAdjacentHTML('beforeend',
+                    '<p style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
+                    + 'Widget belum selesai diverifikasi. Pastikan hostname '
+                    + '<b>' + location.hostname + '</b> terdaftar pada situs Turnstile.</p>');
+            }
+        }, 5000);
     });
-</script>
+</script></script>
                     <?php endif; ?>
 
                     <!-- Submit (Metronic: d-grid; dengan loading state) -->
