@@ -669,6 +669,8 @@
         "router_deleted_desc": "Sesi berhasil dihapus.",
         "password_updated": "Kata Sandi Diperbarui",
         "password_updated_desc": "Kata sandi administrator berhasil diubah.",
+        "password_failed": "Kata Sandi Terlalu Pendek",
+        "password_min_length": "Kata sandi minimal {min} karakter.",
         "settings_saved": "Pengaturan Disimpan",
         "settings_saved_desc": "Preferensi global berhasil diperbarui.",
         "restore_success": "Restore Berhasil",

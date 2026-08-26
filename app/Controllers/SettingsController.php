@@ -208,14 +208,27 @@ class SettingsController extends Controller
     // Update Admin Password
     public function updateAdmin()
     {
+        $userId = $_SESSION['user_id'] ?? null;
+        if ($userId === null) {
+            header('Location: /login');
+            exit;
+        }
+
         $newPassword = $_POST['admin_password'] ?? '';
 
         if (! empty($newPassword)) {
-            $db = Database::getInstance();
+            // SECURITY/CWE-477: dulu hardcoded "WHERE username = 'admin'" —
+            // toast sukses tapi akun yang salah ikut terganti saat user lain
+            // (mis. faizalnursandi) mengganti passwordnya.
+            if (strlen($newPassword) < 12) {
+                FlashHelper::set('error', 'toasts.password_failed', 'toasts.password_min_length', ['min' => 12], true);
+                header('Location: /settings/system');
+                exit;
+            }
+
+            $db   = Database::getInstance();
             $hash = password_hash($newPassword, PASSWORD_DEFAULT);
-            // Assuming we are updating the default 'admin' user or the currently logged in user
-            // Original Kaiarasa usually has one main user. Let's update 'admin' for now.
-            $db->query("UPDATE users SET password = ? WHERE username = 'admin'", [$hash]);
+            $db->query('UPDATE users SET password = ? WHERE id = ?', [$hash, $userId]);
             FlashHelper::set('success', 'toasts.password_updated', 'toasts.password_updated_desc', [], true);
         }
 

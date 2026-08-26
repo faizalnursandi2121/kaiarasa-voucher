@@ -657,6 +657,8 @@
         "router_deleted_desc": "The session has been removed.",
         "password_updated": "Password Updated",
         "password_updated_desc": "Administrator password has been changed.",
+        "password_failed": "Password Too Short",
+        "password_min_length": "Password must be at least {min} characters.",
         "settings_saved": "Settings Saved",
         "settings_saved_desc": "Global preferences have been updated.",
         "restore_success": "Restore Successful",
