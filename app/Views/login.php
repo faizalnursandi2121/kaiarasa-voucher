@@ -138,35 +138,41 @@ include ROOT.'/app/Views/layouts/header_public.php';
     };
 
     window.addEventListener('load', function () {
-        setTimeout(function () {
+        var cek = function (sisa) {
             var w = document.querySelector('.cf-turnstile');
             if (!w || w.dataset.diagDone) return;
-            w.dataset.diagDone = '1';
 
-            // Challenge Cloudflare bisa memakan >5 dtk pada jaringan lambat:
-            // begitu iframe challenge muncul, pesan diagnosa dicabut otomatis.
-            var mo = new MutationObserver(function () {
-                if (w.querySelector('iframe')) {
-                    mo.disconnect();
-                    var p = w.querySelector('p[data-kai-diag]');
-                    if (p) p.remove();
-                }
-            });
-            mo.observe(w, { childList: true, subtree: true });
+            var token = '';
+            try { token = (window.turnstile && turnstile.getResponse) ? (turnstile.getResponse() || '') : ''; } catch (e) {}
+
+            // 1) Token sudah ada -> widget bekerja (termasuk mode tanpa kotak)
+            if (token !== '') {
+                w.dataset.diagDone = '1';
+                return;
+            }
+
+            // 2) Challenge berjalan bila iframe CF ada di mana pun pada dokumen
+            var cfFrame = document.querySelector('iframe[src*="challenges.cloudflare.com"]');
 
             if (!window.turnstile) {
+                if (sisa <= 0) {
+                    w.insertAdjacentHTML('beforeend',
+                        '<p data-kai-diag style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
+                        + 'Script Cloudflare tidak berhasil dimuat oleh jaringan Anda.</p>');
+                }
+            } else if (!cfFrame && sisa <= 0) {
+                w.dataset.diagDone = '1';
                 w.insertAdjacentHTML('beforeend',
                     '<p data-kai-diag style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
-                    + 'Script Cloudflare tidak berhasil dimuat oleh jaringan Anda '
-                    + '(challenges.cloudflare.com terblokir?).</p>');
-            } else {
-                w.insertAdjacentHTML('beforeend',
-                    '<p data-kai-diag style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
-                    + 'Widget belum selesai diverifikasi. Pastikan hostname '
-                    + '<b>' + location.hostname + '</b> terdaftar pada situs Turnstile.</p>');
+                    + 'Widget terpasang namun belum merender kotak. Pastikan hostname '
+                    + '<b>' + location.hostname + '</b> terdaftar dan cek jenis widget '
+                    + '(Managed/Invisible kadang tampil tanpa kotak).</p>');
             }
-        }, 5000);
+            if (sisa > 0) setTimeout(function () { cek(sisa - 1); }, 2000);
+        };
+        cek(4); // 4 putaran x 2 dtk
     });
+</script>
 </script>
                     <?php endif; ?>
 
