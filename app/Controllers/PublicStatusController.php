@@ -32,6 +32,17 @@ class PublicStatusController extends Controller
     {
         header('Content-Type: application/json');
 
+        // SECURITY (CWE-770): rate limit per IP — endpoint publik ini sebelumnya
+        // tanpa batas sehingga jadi oracle enumerasi voucher.
+        $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        if (\App\Services\IpRateLimiter::tooManyRequests($ip, 'voucher_check', 30, 60)) {
+            http_response_code(429);
+            echo json_encode(['error' => 'Too Many Requests']);
+
+            return;
+        }
+        \App\Services\IpRateLimiter::hit($ip, 'voucher_check');
+
         // Allow POST and GET
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['REQUEST_METHOD'] !== 'GET') {
             http_response_code(405);

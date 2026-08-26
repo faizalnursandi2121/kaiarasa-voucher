@@ -55,9 +55,15 @@ class GeneratorController extends Controller
         \App\Services\RouterListCache::flushSession(isset($session) ? $session : ($_POST['session'] ?? ''));
         $session = $_POST['session'] ?? '';
         $qty = intval($_POST['qty'] ?? 1);
+        // SECURITY (CWE-770): batasi ukuran batch — tanpa cap, satu request
+        // bisa membanjiri router/worker dengan ribuan user.
+        $qty = min(max($qty, 1), 500);
         $server = $_POST['server'] ?? 'all';
         $userMode = $_POST['userModel'] ?? 'up';
         $userLength = intval($_POST['userLength'] ?? 4);
+        // SECURITY (CWE-338): kode pendek + PRNG lemah = tebak-tebakan gratis
+        // lewat check API publik. Panjang minimal dipaksa di sisi server.
+        $userLength = min(max($userLength, 10), 32);
         $prefix = $_POST['prefix'] ?? '';
         $char = $_POST['char'] ?? 'mix';
         $profile = $_POST['profile'] ?? '';
@@ -143,7 +149,7 @@ class GeneratorController extends Controller
                         // Format Comment: prefix-rand-date- comment
             // Example: up-123-12.01.26- premium
             $commentPrefix = ($userMode === 'vc') ? 'vc-' : 'up-';
-            $batchId = rand(100, 999);
+            $batchId = random_int(100, 999);
             $date = date('m.d.y');
             $time = date('H:i');
             $commentBody = $comment ?: $profile;
@@ -151,6 +157,8 @@ class GeneratorController extends Controller
             $priceTag = $pkgPrice > 0 ? 'p:'.$pkgPrice.' ' : '';
             $finalComment = "{$commentPrefix}{$batchId}-{$date} {$time}- {$priceTag}{$commentBody}";
 
+            $created = 0;
+            $failed = 0;
             for ($i = 0; $i < $qty; $i++) {
                 $username = $prefix.$this->generateRandomString($userLength, $char);
                 $password = $username;
@@ -176,13 +184,26 @@ class GeneratorController extends Controller
                     $user['limit-bytes-total'] = $dataLimit;
                 }
 
-                $API->comm('/ip/hotspot/user/add', $user);
+                $result = $API->comm('/ip/hotspot/user/add', $user);
+
+                // SECURITY/UX (CWE-754): kegagalan per-item tidak boleh senyap —
+                // operator sebelumnya mengira qty voucher dibuat semuanya.
+                if ($result === false || (is_array($result) && isset($result['!trap']))) {
+                    $failed++;
+                } else {
+                    $created++;
+                }
             }
 
             $API->disconnect();
         }
 
-        FlashHelper::set('success', 'toasts.vouchers_generated', 'toasts.vouchers_generated_desc', ['qty' => $qty], true);
+        if ($failed > 0) {
+            FlashHelper::set('warning', 'toasts.vouchers_partial', 'toasts.vouchers_partial_desc',
+                ['created' => $created, 'failed' => $failed], true);
+        } else {
+            FlashHelper::set('success', 'toasts.vouchers_generated', 'toasts.vouchers_generated_desc', ['qty' => $created], true);
+        }
         $this->redirect('/'.$session.'/hotspot/users');
     }
 
@@ -213,7 +234,8 @@ class GeneratorController extends Controller
 
         $randomString = '';
         for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+            // SECURITY (CWE-338): CSPRNG wajib — rand() dapat diprediksi.
+            $randomString .= $characters[random_int(0, strlen($characters) - 1)];
         }
 
         return $randomString;

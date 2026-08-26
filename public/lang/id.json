@@ -653,6 +653,8 @@
         "package_deleted_desc": "Paket quick print berhasil dihapus.",
         "vouchers_generated": "Voucher Dibuat",
         "vouchers_generated_desc": "{qty} user berhasil dibuat.",
+        "vouchers_partial": "Sebagian Berhasil",
+        "vouchers_partial_desc": "{created} voucher dibuat, {failed} GAGAL di router. Cek log router sebelum dibagikan.",
         "schedule_added": "Jadwal Ditambahkan",
         "schedule_added_desc": "Tugas berhasil dijadwalkan.",
         "schedule_updated": "Jadwal Diperbarui",

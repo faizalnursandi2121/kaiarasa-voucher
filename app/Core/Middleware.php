@@ -20,13 +20,19 @@ class Middleware
             return;
         }
 
+        // Cache proxy tidak boleh menyajikan respons CORS satu origin
+        // kepada origin lain.
+        header('Vary: Origin');
+
         $db = Database::getInstance();
-        // Check for specific origin or wildcard '*'
-        $stmt = $db->query("SELECT * FROM api_cors WHERE origin = ? OR origin = '*' LIMIT 1", [$origin]);
+        // SECURITY (CWE-942): hanya origin eksplisit yang diizinkan. Aturan
+        // wildcard '*' tidak lagi dipakai untuk refleksi — dengan cookie
+        // sesi, refleksi origin apa pun membuka data lintas situs.
+        $stmt = $db->query('SELECT * FROM api_cors WHERE origin = ? LIMIT 1', [$origin]);
         $rule = $stmt->fetch();
 
         if ($rule) {
-            header('Access-Control-Allow-Origin: '.($rule['origin'] === '*' ? '*' : $origin));
+            header('Access-Control-Allow-Origin: '.$rule['origin']);
 
             $methods = json_decode($rule['methods'], true) ?: ['GET', 'POST'];
             header('Access-Control-Allow-Methods: '.implode(', ', $methods));

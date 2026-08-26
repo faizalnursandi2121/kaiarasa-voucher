@@ -641,6 +641,8 @@
         "package_deleted_desc": "Quick print package has been removed.",
         "vouchers_generated": "Vouchers Generated",
         "vouchers_generated_desc": "{qty} users have been created successfully.",
+        "vouchers_partial": "Partially Generated",
+        "vouchers_partial_desc": "{created} vouchers created, {failed} FAILED on the router. Check router logs before distributing.",
         "schedule_added": "Schedule Added",
         "schedule_added_desc": "The task has been scheduled.",
         "schedule_updated": "Schedule Updated",
