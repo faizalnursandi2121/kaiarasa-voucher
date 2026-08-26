@@ -110,7 +110,7 @@ class CsrfHelper
         $input = '<input type="hidden" name="'.self::FIELD.'" value="'.$token.'">';
 
         return preg_replace_callback(
-            '#<form(\b[^>]*)(>|$)#i',
+            '#<form\b([^>]*)>#i',
             function ($m) use ($input) {
                 $attrs = $m[1];
                 // Respect existing tokens (defense against double-injection).
@@ -123,7 +123,7 @@ class CsrfHelper
                     return $m[0];
                 }
 
-                return '<form'.$attrs.'>'.$input.$m[2];
+                return '<form'.$attrs.'>'.$input;
             },
             $html
         ) ?? $html;
