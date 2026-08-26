@@ -30,7 +30,8 @@ class ActivitySnapshotService
         if (! $config) {
             return null;
         }
-        $config['password'] = \App\Helpers\EncryptionHelper::decrypt($config['password']);
+        // CATATAN: Config::getSession sudah mendekripsi password — jangan
+        // dekripsi ulang; fail-closed akan mengembalikan null.
 
         // Negative-cache: bila koneksi baru saja gagal, jangan mencoba ulang
         // pada setiap muat halaman (hindari penalti timeout berulang).

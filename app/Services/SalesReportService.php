@@ -321,7 +321,8 @@ class SalesReportService
         if (! $config) {
             return ['__unreachable' => true];
         }
-        $config['password'] = \App\Helpers\EncryptionHelper::decrypt($config['password']);
+        // CATATAN: Config::getSession sudah mendekripsi password — jangan
+        // dekripsi ulang; fail-closed akan mengembalikan null.
 
         try {
             $api = \App\Libraries\RouterOSAPI::fromSession($config);
