@@ -7,19 +7,13 @@ use App\Core\PluginManager;
 use App\Core\Router;
 use App\Helpers\ErrorHelper;
 
-// Start Output Buffering
-// Process buffered HTML through server-side i18n to prevent FOUC,
-// then auto-inject CSRF tokens into every form (centralized CSRF fix)
-ob_start(function ($html) {
-    return \App\Helpers\CsrfHelper::injectForms(
-        \App\Helpers\LanguageHelper::translateHtml($html)
-    );
-});
-
 // Define Root Path
 define('ROOT', dirname(__DIR__));
 
 // Handle Static Files for PHP Built-in Server
+// HARUS sebelum output buffering apa pun: saat router script me-return false,
+// built-in server menyajikan file langsung dan buffer di-flush tanpa
+// memicu callback (autoloader belum tersedia pada titik ini).
 if (php_sapi_name() === 'cli-server') {
     $url = parse_url($_SERVER['REQUEST_URI']);
     $file = __DIR__.$url['path'];
@@ -27,6 +21,24 @@ if (php_sapi_name() === 'cli-server') {
         return false;
     }
 }
+
+// Manual require for the Autoloader class since it can't autoload itself
+require_once ROOT.'/app/Core/Autoloader.php';
+Autoloader::register();
+
+// Start Output Buffering — SETELAH autoloader siap, agar callback yang
+// memakai class (i18n + injeksi token CSRF) tidak pernah gagal load.
+// Process buffered HTML through server-side i18n to prevent FOUC,
+// then auto-inject CSRF tokens into every form (centralized CSRF fix)
+ob_start(function ($html) {
+    if (! class_exists(\App\Helpers\LanguageHelper::class)) {
+        return $html; // jaga-jaga: jangan pernah white-screen karena callback
+    }
+
+    return \App\Helpers\CsrfHelper::injectForms(
+        \App\Helpers\LanguageHelper::translateHtml($html)
+    );
+});
 
 // Start Session — hardened cookie flags (fixes vuln: cookie lacks
 // HttpOnly/Secure/SameSite). Secure hanya saat request memang HTTPS
@@ -42,10 +54,6 @@ session_set_cookie_params([
     'samesite' => 'Lax',
 ]);
 session_start();
-
-// Manual require for the Autoloader class since it can't autoload itself
-require_once ROOT.'/app/Core/Autoloader.php';
-Autoloader::register();
 
 // Load Environment Variables
 Env::load(ROOT.'/.env');

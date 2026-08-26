@@ -62,21 +62,6 @@ include ROOT.'/app/Views/layouts/header_public.php';
             </div>
             <?php endif; ?>
 
-            <?php if (isset($_GET['debug'])): ?>
-            <!-- Diagnosa Turnstile (tanpa membocorkan secret) -->
-            <div style="font:11px monospace;background:#f5f5f0;padding:8px;border-radius:8px;margin-bottom:12px">
-                    <?php
-                    $tsEnv    = trim((string) (getenv('TURNSTILE_SITE_KEY') ?: ''));
-                    $tsDbSite = (new \App\Models\Setting)->get('turnstile_site_key');
-                    $tsDbSec  = (new \App\Models\Setting)->get('turnstile_secret_key');
-                ?>
-                sumber_env_site_key  : <?= $tsEnv !== '' ? 'ADA ('.strlen($tsEnv).' karakter)' : 'KOSONG' ?><br>
-                database_site_key    : <?= $tsDbSite !== null && $tsDbSite !== '' ? 'ADA ('.strlen($tsDbSite).' karakter)' : 'KOSONG' ?><br>
-                database_secret_key  : <?= $tsDbSec !== null && $tsDbSec !== '' ? 'ADA ('.strlen($tsDbSec).' karakter)' : 'KOSONG' ?><br>
-                fitur_aktif          : <?= \App\Config\SiteConfig::turnstileEnabled() ? 'YA' : 'NONAKTIF' ?>
-            </div>
-            <?php endif; ?>
-
             <form action="/login" method="POST" class="w-full">
 
                     <!-- Heading (rata kiri sesuai permintaan) -->
