@@ -509,7 +509,7 @@ window.whenReady(function () {
             yaxis: { min: 0, max: 100, tickAmount: 4, labels: { formatter: function (v) { return v + '%'; } } },
             grid: { borderColor: gridColor() },
             tooltip: { theme: isDark() ? 'dark' : 'light', y: { formatter: function (v) { return v + '%'; } } },
-        }));
+        })));
         charts.avail.render();
     }
 
@@ -531,7 +531,7 @@ window.whenReady(function () {
                          formatter: function (w) { return w.globals.seriesTotals.reduce(function (a, b) { return a + b; }, 0); } }
             } } } },
             dataLabels: { enabled: false },
-        }));
+        })));
         charts.donut.render();
     }
 
@@ -550,7 +550,7 @@ window.whenReady(function () {
             xaxis: { categories: top.map(function (r) { return r.session_name; }), max: 100, labels: { formatter: function (v) { return v + '%'; } } },
             grid: { borderColor: gridColor() },
             dataLabels: { enabled: true, formatter: function (v) { return v + '%'; }, style: { fontSize: '11px' } },
-        }));
+        })));
         charts.topcpu.render();
     }
 
