@@ -12,16 +12,6 @@ use App\Config\SiteConfig;
  */
 class TurnstileService
 {
-    /** IP klien sebenarnya (mendukung rantai X-Forwarded-For). */
-    private static function clientIp(): string
-    {
-        $fwd = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
-        if ($fwd !== '') {
-            return trim(explode(',', $fwd)[0]);
-        }
-        return $_SERVER['REMOTE_ADDR'] ?? '';
-    }
-
     /** @return array{success:bool,error_codes?:array} */
     public static function verify(string $token): array
     {
@@ -29,14 +19,16 @@ class TurnstileService
             return ['success' => false, 'error_codes' => ['missing-input-response']];
         }
 
+        // SECURITY (CWE-345 fix): remoteip TIDAK dikirim. Sebelumnya nilai
+        // itu diambil dari entri pertama X-Forwarded-For yang sepenuhnya
+        // dikendalikan klien, sehingga penyerang bisa mencocokkan verifikasi
+        // dengan IP palsu. Parameter ini opsional di siteverify — lebih aman
+        // tidak mengirim sama sekali daripada mengirim IP yang bisa dipalsukan.
         $res = self::http(
             'https://challenges.cloudflare.com/turnstile/v0/siteverify',
             http_build_query([
                 'secret'   => SiteConfig::getTurnstileSecretKey(),
                 'response' => $token,
-                // Di belakang Traefik/reverse-proxy, IP asli ada di header
-                // forwarded — ambil IP pertama dari rantai.
-                'remoteip' => self::clientIp(),
             ])
         );
 

@@ -39,8 +39,26 @@ class InstallController extends Controller
             exit;
         }
 
-        $username = $_POST['username'] ?? 'admin';
-        $password = $_POST['password'] ?? 'admin';
+        // SECURITY (CWE-1188): jangan pernah fallback ke kredensial default.
+        // Request kosong dulu diam-diam membuat akun admin/admin.
+        $username = trim($_POST['username'] ?? '');
+        $password = $_POST['password'] ?? '';
+
+        if ($username === '' || $password === '') {
+            FlashHelper::set('error', 'Install Gagal', 'Username dan password wajib diisi.');
+            header('Location: /install');
+            exit;
+        }
+        if (! preg_match('/^[A-Za-z0-9_.\-]{3,32}$/', $username)) {
+            FlashHelper::set('error', 'Install Gagal', 'Username 3-32 karakter, hanya huruf/angka/titik/garis.');
+            header('Location: /install');
+            exit;
+        }
+        if (strlen($password) < 12 || strcasecmp($password, $username) === 0) {
+            FlashHelper::set('error', 'Install Gagal', 'Password minimal 12 karakter dan tidak boleh sama dengan username.');
+            header('Location: /install');
+            exit;
+        }
 
         try {
             // 1. Run Migrations

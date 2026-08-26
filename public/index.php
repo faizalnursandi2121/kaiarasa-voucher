@@ -28,7 +28,19 @@ if (php_sapi_name() === 'cli-server') {
     }
 }
 
-// Start Session
+// Start Session — hardened cookie flags (fixes vuln: cookie lacks
+// HttpOnly/Secure/SameSite). Secure hanya saat request memang HTTPS
+// (termasuk di belakang reverse proxy) agar deployment LAN/STB tanpa TLS
+// tetap berfungsi.
+$isHttps = ($_SERVER['HTTPS'] ?? '') !== ''
+    || strtolower($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path'     => '/',
+    'secure'   => $isHttps,
+    'httponly' => true,
+    'samesite' => 'Lax',
+]);
 session_start();
 
 // Manual require for the Autoloader class since it can't autoload itself

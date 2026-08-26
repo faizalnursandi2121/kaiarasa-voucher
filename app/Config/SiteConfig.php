@@ -106,6 +106,36 @@ class SiteConfig
     }
 
     /**
+     * SECURITY (CWE-306 fix — fail-open saat half-configured):
+     * 'disabled'     = kedua kunci kosong -> fitur dilewati + warning log.
+     * 'misconfigured'= hanya salah satu kunci terisi -> login DITOLAK total
+     *                  sampai admin memperbaiki konfigurasi (fail-closed).
+     * 'enabled'      = keduanya terisi -> verifikasi ketat.
+     */
+    public static function turnstileState(): string
+    {
+        $site = self::getTurnstileSiteKey();
+        $secret = self::getTurnstileSecretKey();
+
+        if ($site === '' && $secret === '') {
+            static $warned = false;
+            if (! $warned) {
+                error_log('Turnstile: tidak dikonfigurasi — proteksi anti-bot LOGIN NONAKTIF');
+                $warned = true;
+            }
+
+            return 'disabled';
+        }
+        if ($site === '' || $secret === '') {
+            error_log('Turnstile: konfigurasi setengah jadi (salah satu kunci kosong) — login diblokir sampai diperbaiki');
+
+            return 'misconfigured';
+        }
+
+        return 'enabled';
+    }
+
+    /**
      * Kunci aplikasi masih placeholder default?
      */
     public static function isDefaultSecretKey(): bool
