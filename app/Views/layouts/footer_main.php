@@ -61,25 +61,37 @@ if (isset($session) && ! empty($session)) { ?>
             const sidebarClose = document.getElementById('sidebar-close');
 
             if (sidebar && mobileMenuToggle) {
+                const isMobileViewport = () => window.matchMedia('(max-width: 1023px)').matches;
+                const closeMobileSidebar = () => {
+                    sidebar.classList.add('-translate-x-full');
+                    if (sidebarOverlay) {
+                        sidebarOverlay.classList.add('opacity-0');
+                        setTimeout(() => sidebarOverlay.classList.add('hidden'), 200);
+                    }
+                };
+                const openMobileSidebar = () => {
+                    sidebar.classList.remove('-translate-x-full');
+                    if (sidebarOverlay) {
+                        sidebarOverlay.classList.remove('hidden');
+                        // Small delay to allow display:block to apply before opacity transition
+                        setTimeout(() => sidebarOverlay.classList.remove('opacity-0'), 10);
+                    }
+                };
                 const toggleSidebar = () => {
-                   const isClosed = sidebar.classList.contains('-translate-x-full');
-                   if (isClosed) {
-                       // Open
-                       sidebar.classList.remove('-translate-x-full');
-                       sidebarOverlay.classList.remove('hidden');
-                       // Small delay to allow display:block to apply before opacity transition
-                       setTimeout(() => sidebarOverlay.classList.remove('opacity-0'), 10);
-                   } else {
-                       // Close
-                       sidebar.classList.add('-translate-x-full');
-                       sidebarOverlay.classList.add('opacity-0');
-                       setTimeout(() => sidebarOverlay.classList.add('hidden'), 200);
-                   }
+                    if (sidebar.classList.contains('-translate-x-full')) openMobileSidebar(); else closeMobileSidebar();
                 };
 
                 mobileMenuToggle.addEventListener('click', toggleSidebar);
-                if (sidebarClose) sidebarClose.addEventListener('click', toggleSidebar);
-                if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+                if (sidebarClose) sidebarClose.addEventListener('click', closeMobileSidebar);
+                if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeMobileSidebar);
+
+                // Dipakai loadSession() (sidebar_session) supaya drawer menutup
+                // otomatis setelah memilih menu di layar mobile.
+                window.kaiCloseMobileSidebar = function () {
+                    if (isMobileViewport() && ! sidebar.classList.contains('-translate-x-full')) {
+                        closeMobileSidebar();
+                    }
+                };
             }
             
             // Bersihkan kelas animasi masuk setelah selesai — tanpa ini,

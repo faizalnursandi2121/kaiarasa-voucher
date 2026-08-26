@@ -666,6 +666,12 @@ $getInitials = function ($name) {
                 cleanupSession();
                 setLoading(true);
 
+                // UX mobile: tutup drawer otomatis begitu menu dipilih /
+                // navigasi terjadi, agar konten langsung terlihat.
+                if (typeof window.kaiCloseMobileSidebar === 'function') {
+                    window.kaiCloseMobileSidebar();
+                }
+
                 // Umpan balik instan: skeleton menggantikan isi selagi menunggu.
                 var dynNow = document.getElementById(DYNAMIC_ID);
                 if (dynNow) {
