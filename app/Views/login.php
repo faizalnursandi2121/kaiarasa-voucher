@@ -65,9 +65,15 @@ include ROOT.'/app/Views/layouts/header_public.php';
             <?php if (isset($_GET['debug'])): ?>
             <!-- Diagnosa Turnstile (tanpa membocorkan secret) -->
             <div style="font:11px monospace;background:#f5f5f0;padding:8px;border-radius:8px;margin-bottom:12px">
-                site_key_ditemukan : <?= \App\Config\SiteConfig::getTurnstileSiteKey() !== '' ? 'YA' : 'TIDAK' ?><br>
-                secret_key_ditemukan: <?= \App\Config\SiteConfig::getTurnstileSecretKey() !== '' ? 'YA' : 'TIDAK' ?><br>
-                fitur_aktif        : <?= \App\Config\SiteConfig::turnstileEnabled() ? 'YA' : 'NONAKTIF' ?>
+                    <?php
+                    $tsEnv    = trim((string) (getenv('TURNSTILE_SITE_KEY') ?: ''));
+                    $tsDbSite = (new \App\Models\Setting)->get('turnstile_site_key');
+                    $tsDbSec  = (new \App\Models\Setting)->get('turnstile_secret_key');
+                ?>
+                sumber_env_site_key  : <?= $tsEnv !== '' ? 'ADA ('.strlen($tsEnv).' karakter)' : 'KOSONG' ?><br>
+                database_site_key    : <?= $tsDbSite !== null && $tsDbSite !== '' ? 'ADA ('.strlen($tsDbSite).' karakter)' : 'KOSONG' ?><br>
+                database_secret_key  : <?= $tsDbSec !== null && $tsDbSec !== '' ? 'ADA ('.strlen($tsDbSec).' karakter)' : 'KOSONG' ?><br>
+                fitur_aktif          : <?= \App\Config\SiteConfig::turnstileEnabled() ? 'YA' : 'NONAKTIF' ?>
             </div>
             <?php endif; ?>
 

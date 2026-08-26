@@ -64,14 +64,27 @@ class SiteConfig
         return isset($parsed[$key]) ? $parsed[$key] : '';
     }
 
+    private static function dbSetting(string $suffix): string
+    {
+        try {
+            $v = (new \App\Models\Setting)->get('turnstile_' . $suffix);
+            return $v !== null ? trim((string) $v) : '';
+        } catch (\Throwable $e) {
+            return '';
+        }
+    }
+
+    /** Urutan: env proses/.env -> database settings. */
     public static function getTurnstileSiteKey(): string
     {
-        return self::envAny('TURNSTILE_SITE_KEY');
+        $v = self::envAny('TURNSTILE_SITE_KEY');
+        return $v !== '' ? $v : self::dbSetting('site_key');
     }
 
     public static function getTurnstileSecretKey(): string
     {
-        return self::envAny('TURNSTILE_SECRET_KEY');
+        $v = self::envAny('TURNSTILE_SECRET_KEY');
+        return $v !== '' ? $v : self::dbSetting('secret_key');
     }
 
     /** Anti-bot aktif hanya bila kedua kunci Turnstile terisi. */
