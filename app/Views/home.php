@@ -883,15 +883,32 @@ window.whenReady(function () {
             body: payload,
         })
         .then(function (res) {
-            return res.json().then(function (j) { return { status: res.status, json: j }; });
+            // 403 = token CSRF halaman ini kedaluwarsa (mis. sesi baru di tab
+            // lama). Beri pesan jelas lalu muat ulang agar token segar —
+            // daripada toast "Network error" yang menyesatkan.
+            if (res.status === 403) {
+                if (window.Kaiarasa) Kaiarasa.toast('error', 'Halaman kedaluwarsa — memuat ulang…');
+                setTimeout(function () { window.location.reload(); }, 1200);
+                return { stale: true };
+            }
+            return res.text().then(function (t) {
+                var j = null;
+                try { j = JSON.parse(t); } catch (e) {
+                    console.warn('[router-form] respons bukan JSON:', res.status, t.slice(0, 200));
+                }
+                return { status: res.status, json: j };
+            });
         })
         .then(function (out) {
-            if (out.status === 200 && out.json.success) {
+            if (! out || out.stale) return; // reload sedang berjalan
+            if (out.status === 200 && out.json && out.json.success) {
                 closeModal();
                 if (window.Kaiarasa) Kaiarasa.toast('success', out.json.message);
                 load(true);
             } else {
-                if (window.Kaiarasa) Kaiarasa.toast('error', out.json.message || 'Please check your data.');
+                var msg = (out.json && out.json.message) || 'Please check your data.';
+                if (! out.json) msg = 'Server error (' + out.status + ') — cek console.';
+                if (window.Kaiarasa) Kaiarasa.toast('error', msg);
             }
         })
         .catch(function () {
