@@ -18,24 +18,54 @@ class ApiController extends Controller
             return;
         }
 
+        // SECURITY: this endpoint must never be reachable unauthenticated.
+        // It connects to attacker-controllable hosts and (in Edit Mode) uses
+        // decrypted stored credentials — an open relay for credential theft.
+        if (! isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Unauthorized']);
+
+            return;
+        }
+
         // Get JSON Input
         $input = json_decode(file_get_contents('php://input'), true);
 
-        $ip = $input['ip'] ?? '';
-        $user = $input['user'] ?? '';
         $pass = $input['password'] ?? '';
         $id = $input['id'] ?? null;
-        $port = $input['port'] ?? 8728; // Default port
-        $ssl = ! empty($input['ssl']); // api-ssl
 
-        // Fallback to stored password if empty and ID provided (Edit Mode)
-        if (empty($pass) && ! empty($id)) {
+        if (! empty($pass)) {
+            // Add Mode: fresh credentials typed by the admin — use as given.
+            $ip = trim($input['ip'] ?? '');
+            $user = trim($input['user'] ?? '');
+            $port = (int) ($input['port'] ?? 8728); // Default port
+            $ssl = ! empty($input['ssl']); // api-ssl
+        } elseif (! empty($id)) {
+            // Edit Mode: password left blank means "use the stored one".
+            // Connect ONLY to the address stored in the database for this
+            // router id. Never send stored credentials to caller-supplied
+            // ip/port — that was an unauthenticated credential exfiltration.
             $configModel = new Config;
             $session = $configModel->getSessionById($id);
-            if ($session && ! empty($session['password'])) {
-                // Config::getSessionById already decrypts the password
-                $pass = $session['password'];
+            if (! $session || empty($session['password'])) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Router not found or password not set']);
+
+                return;
             }
+
+            // Config::getSessionById already decrypts the password
+            $pass = $session['password'];
+            $ip = $session['ip_address'];
+            $user = $session['username'];
+            $port = (int) ($session['port'] ?: 8728);
+            $ssl = ! empty($session['ssl']);
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'Password is required for new routers']);
+
+            return;
         }
 
         if (empty($ip) || empty($user)) {

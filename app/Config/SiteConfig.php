@@ -34,7 +34,19 @@ class SiteConfig
             return trim($persisted);
         }
 
-        // 3) Terakhir: placeholder default (kondisi pra-instal)
+        // 3) Tidak ada sumber kunci sama sekali: buat kunci acak dan simpan
+        //    permanen. Placeholder publik TIDAK BOLEH dipakai untuk enkripsi
+        //    nyata (CWE-798: hardcoded cryptographic key).
+        $generated = bin2hex(random_bytes(32));
+        if (@file_put_contents(ROOT.'/app/Database/app_key', $generated, LOCK_EX) !== false) {
+            @chmod(ROOT.'/app/Database/app_key', 0600);
+
+            return $generated;
+        }
+
+        error_log('SiteConfig: cannot persist generated APP_KEY at '.ROOT.'/app/Database/app_key'.
+            ' — refusing strong default; using public placeholder (DO NOT USE IN PRODUCTION)');
+
         return 'kaiarasa_official_secret_key_32bytes';
     }
 

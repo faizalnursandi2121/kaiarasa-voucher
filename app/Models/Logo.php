@@ -103,7 +103,19 @@ class Logo
 
         $uploadDir = ROOT.'/public/uploads/logos/';
         if (! file_exists($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
+            mkdir($uploadDir, 0755, true);
+        }
+
+        // SECURITY: SVG can carry active content (scripts, event handlers,
+        // external references). Strip the dangerous constructs before the
+        // file ever lands in the web root. Serving is additionally hardened
+        // via nginx (no PHP handler, nosniff, CSP sandbox).
+        if ($extension === 'svg') {
+            $sanitized = self::sanitizeSvg(file_get_contents($file['tmp_name']));
+            if ($sanitized === null) {
+                throw new Exception('Invalid SVG content');
+            }
+            file_put_contents($file['tmp_name'], $sanitized);
         }
 
         $filename = $id.'.'.$extension;
@@ -123,6 +135,42 @@ class Logo
         }
 
         return false;
+    }
+
+    /**
+     * Remove active content from an SVG document. Returns null when the
+     * payload is not parseable XML or contains obviously hostile constructs
+     * that cannot be safely stripped.
+     */
+    public static function sanitizeSvg(?string $svg): ?string
+    {
+        if ($svg === null || trim($svg) === '') {
+            return null;
+        }
+
+        // Reject documents with constructs we do not whitelist away.
+        if (preg_match('/<script|<foreignObject|<!ENTITY|javascript\s*:/i', $svg)) {
+            // Strip <script> blocks first so benign files still pass.
+            $svg = preg_replace('#<script\b[^>]*>.*?</script>#is', '', $svg);
+            $svg = preg_replace('#<script\b[^>]*/?>#i', '', $svg);
+            $svg = preg_replace('#<foreignObject\b[^>]*>.*?</foreignObject>#is', '', $svg);
+            $svg = preg_replace('/<!ENTITY[^>]*>/s', '', $svg);
+            if (preg_match('/<script|<foreignObject|<!ENTITY|javascript\s*:/i', $svg)) {
+                return null; // still present after stripping -> hostile
+            }
+        }
+
+        // Drop inline event handlers (onclick=, onload=, ...)
+        $svg = preg_replace('/\son[a-z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $svg);
+
+        // Neutralize javascript:/data:text/html URLs in href/xlink:href/src
+        $svg = preg_replace(
+            '/(href|xlink:href|src)\s*=\s*("|\')\s*(javascript:|data:text\/html)[^"\']*("|\')/i',
+            '$1="#"',
+            $svg
+        );
+
+        return $svg;
     }
 
     public function syncFiles()

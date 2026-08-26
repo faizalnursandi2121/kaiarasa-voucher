@@ -486,8 +486,16 @@ class SettingsController extends Controller
             exit;
         }
 
-        // Attempt to decrypt. If file is old (JSON plaintext), decrypt() returns it as-is.
+        // Attempt to decrypt. SECURITY (fail-closed): decrypt() now returns
+        // null for anything that is not a valid encrypted envelope, so old
+        // plain-text JSON backups are rejected instead of being restored.
         $content = EncryptionHelper::decrypt($rawValue);
+
+        if ($content === null || $content === '') {
+            FlashHelper::set('error', 'toasts.restore_failed', 'toasts.file_corrupted', [], true);
+            header('Location: /settings/system');
+            exit;
+        }
 
         $json = json_decode($content, true);
 
@@ -541,36 +549,62 @@ class SettingsController extends Controller
             $logoModel = new Logo;
             $uploadDir = ROOT.'/public/uploads/logos/';
             if (! file_exists($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
+                mkdir($uploadDir, 0755, true);
             }
+
+            // SECURITY: archive-controlled fields are hostile input. A crafted
+            // backup previously allowed arbitrary file writes (RCE via .php
+            // extension / path traversal). Enforce strict id format, an
+            // extension allowlist, and directory containment before writing.
+            $allowedLogoExt = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'];
+            $maxLogoBytes = 5 * 1024 * 1024;
+            $baseReal = realpath(rtrim($uploadDir, '/'));
 
             foreach ($json['logos'] as $logo) {
                 if (empty($logo['data'])) {
                     continue;
                 }
 
-                // Decode data
-                $binaryData = base64_decode($logo['data']);
-                if (! $binaryData) {
+                // ID must be a plain token — no dots, slashes or tricks.
+                $logoId = (string) ($logo['id'] ?? '');
+                if (! preg_match('/^[A-Za-z0-9_-]{1,64}$/', $logoId)) {
                     continue;
                 }
 
-                // Determine filename (try to keep original ID/name or generate new)
-                $extension = $logo['type'] ?? 'png';
-                $filename = $logo['id'].'.'.$extension;
-                $targetPath = $uploadDir.$filename;
+                // Extension comes from a fixed allowlist, never from input.
+                $ext = strtolower((string) ($logo['type'] ?? 'png'));
+                if (! in_array($ext, $allowedLogoExt, true)) {
+                    continue;
+                }
+
+                // Decode data (strict; cap size to avoid resource exhaustion)
+                $binaryData = base64_decode((string) $logo['data'], true);
+                if ($binaryData === false || strlen($binaryData) > $maxLogoBytes) {
+                    continue;
+                }
+
+                $filename = $logoId.'.'.$ext;
+                $targetPath = rtrim($uploadDir, '/').'/'.$filename;
+
+                // Containment check: resolved parent must stay inside the
+                // canonical uploads directory.
+                $parentReal = realpath(dirname($targetPath));
+                if ($baseReal === false || $parentReal === false || ! str_starts_with($parentReal, $baseReal)) {
+                    continue;
+                }
 
                 // Save file
-                if (file_put_contents($targetPath, $binaryData)) {
+                if (file_put_contents($targetPath, $binaryData) !== false) {
+                    @chmod($targetPath, 0644);
                     // Update DB
                     $db = Database::getInstance();
                     $db->query('INSERT INTO logos (id, name, path, type, size) VALUES (:id, :name, :path, :type, :size)
                                 ON CONFLICT(id) DO UPDATE SET name=excluded.name, path=excluded.path, type=excluded.type, size=excluded.size', [
-                        'id' => $logo['id'],
-                        'name' => $logo['name'],
+                        'id' => $logoId,
+                        'name' => htmlspecialchars((string) ($logo['name'] ?? ''), ENT_QUOTES, 'UTF-8'),
                         'path' => '/uploads/logos/'.$filename,
-                        'type' => $extension,
-                        'size' => $logo['size'],
+                        'type' => $ext,
+                        'size' => strlen($binaryData),
                     ]);
                 }
             }

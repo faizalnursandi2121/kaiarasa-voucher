@@ -9,7 +9,7 @@ services:
       - APP_ENV=production
       # APP_KEY WAJIB diisi lewat Environment Variables di panel Dokploy
       # (jangan ditulis di file ini agar tidak ter-commit ke repo)
-      # contoh: APP_KEY=***LEAKED-KEY-REMOVED***...
+      # contoh: APP_KEY=<isi-dengan-key-acak-64-hex>
     volumes:
       - kaiarasa_db:/var/www/html/app/Database
 
