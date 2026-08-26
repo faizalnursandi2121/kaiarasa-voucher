@@ -15,7 +15,13 @@ class AuthController extends Controller
             exit;
         }
 
-        return $this->view('login');
+        // Konsumsi flash DI SINI supaya pesan login (salah password, rate
+        // limit, Turnstile gagal, dsb.) dirender INLINE pada kartu login —
+        // bukan sebagai toast. get() mengonsumsi flash, jadi renderer toast
+        // di footer tidak menampilkannya dobel.
+        $flash = FlashHelper::has() ? FlashHelper::get() : null;
+
+        return $this->view('login', ['flash' => $flash]);
     }
 
     public function login()

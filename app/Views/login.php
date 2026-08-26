@@ -54,11 +54,15 @@ include ROOT.'/app/Views/layouts/header_public.php';
     <section class="flex justify-center lg:justify-end items-start lg:items-center p-6 sm:p-12 lg:p-20 w-full lg:w-auto">
         <div class="bg-white dark:bg-[#1a1c19] flex flex-col items-stretch justify-center rounded-2xl w-full md:w-[440px] p-8 md:p-9 shadow-[0_1px_2px_rgba(0,0,0,.06),0_16px_40px_-12px_rgba(0,0,0,.25)] animate-fade-in-up">
 
-            <?php if (! empty($error)): ?>
-            <!-- Catatan: error login aktual dirender via FlashHelper -> SweetAlert (footer_public) -->
-            <div class="mb-8 flex items-start gap-2.5 rounded-[15px] bg-red-500/[.07] border border-red-500/20 px-4 py-3 text-[13px] text-red-600 dark:text-red-400">
-                <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0"></i>
-                <span><?= htmlspecialchars($error) ?></span>
+            <?php if (! empty($flash) && in_array(($flash['type'] ?? ''), ['error', 'warning'], true)): ?>
+            <!-- Pesan login dirender inline pada kartu (bukan toast) -->
+            <div class="mb-8 flex items-start gap-2.5 rounded-[15px] border px-4 py-3 text-[13px] <?= ($flash['type'] ?? '') === 'error'
+                ? 'bg-red-500/[.07] border-red-500/20 text-red-600 dark:text-red-400'
+                : 'bg-amber-500/[.07] border-amber-500/20 text-amber-600 dark:text-amber-400' ?>">
+                <i data-lucide="<?= ($flash['type'] ?? '') === 'error' ? 'alert-circle' : 'alert-triangle' ?>" class="w-4 h-4 mt-0.5 shrink-0"></i>
+                <span>
+                    <strong><?= htmlspecialchars($flash['title'] ?? '') ?></strong><?= ! empty($flash['message']) ? '<br>'.htmlspecialchars($flash['message']) : '' ?>
+                </span>
             </div>
             <?php endif; ?>
 
