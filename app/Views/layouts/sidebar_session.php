@@ -593,6 +593,15 @@ $getInitials = function ($name) {
             }
 
             function cleanupSession() {
+                // Sweep chart ApexCharts yang terdaftar — tanpa ini, timer
+                // internal chart yatim terus mengukur DOM lepas dan membanjiri
+                // console dengan "width: NaN" / "translate(NaN, 0)".
+                if (window.__kaiChartRegistry) {
+                    window.__kaiChartRegistry.forEach(function (c) {
+                        try { c.destroy(); } catch (e) {}
+                    });
+                    window.__kaiChartRegistry.length = 0;
+                }
                 if (window.__kaiarasaSessionCleanup) {
                     try { window.__kaiarasaSessionCleanup(); } catch (e) {}
                     window.__kaiarasaSessionCleanup = null;
@@ -601,6 +610,14 @@ $getInitials = function ($name) {
                 // halaman yang baru akan mendaftarkan ulang lewat helper di bawah.
                 if (window.__kaiarasaLangFns) window.__kaiarasaLangFns.length = 0;
             }
+
+            // Registry + helper pelacakan instance ApexCharts lintas halaman SPA
+            // (build vendor ini tidak punya ApexCharts.getCharts).
+            window.__kaiChartRegistry = window.__kaiChartRegistry || [];
+            window.kaiTrackChart = function (inst) {
+                if (inst) window.__kaiChartRegistry.push(inst);
+                return inst;
+            };
 
             // Pendaftaran handler 'languageChanged' bebas-duplikasi lintas navigasi SPA.
             // Satu listener window saja; fungsi dideduplikasi berdasarkan isinya.

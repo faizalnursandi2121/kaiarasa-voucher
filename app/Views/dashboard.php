@@ -195,7 +195,7 @@ window.whenReady(function () {
                 setTimeout(function () { attempt(left - 1); }, 250);
                 return;
             }
-            new ApexCharts(el, makeOpts()).render();
+            window.kaiTrackChart(new ApexCharts(el, makeOpts())).render();
         };
         attempt(6);
     }
@@ -289,12 +289,8 @@ window.whenReady(function () {
 
     // Bereskan seluruh instance chart saat meninggalkan dashboard via SPA
     // (mencegah akumulasi memori & handler resize antar kunjungan).
-    window.__kaiarasaSessionCleanup = function () {
-        try {
-            if (!window.ApexCharts || !window.ApexCharts.getCharts) return;
-            window.ApexCharts.getCharts().forEach(function (c) { try { c.destroy(); } catch (e) {} });
-        } catch (e) {}
-    };
+    // Sweep registry ditangani cleanupSession() di layout sidebar.
+    window.__kaiarasaSessionCleanup = null;
 });
 </script>
 <?php require_once ROOT.'/app/Views/layouts/footer_main.php'; ?>

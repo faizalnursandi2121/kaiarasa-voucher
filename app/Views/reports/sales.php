@@ -283,6 +283,11 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
 window.whenReady(function () {
     'use strict';
 
+    // Bereskan instance ApexCharts saat meninggalkan halaman via SPA
+    // (mencegah timer chart yatim -> error console "width NaN").
+    // Sweep registry ditangani cleanupSession() di layout sidebar.
+    window.__kaiarasaSessionCleanup = null;
+
     var chartData = <?= json_encode([
         'trend' => array_map(fn ($d) => ['date' => $d['date'], 'revenue' => (int) $d['revenue'], 'sold' => (int) $d['sold']], $trend),
         'byPackage' => array_map(fn ($p) => ['name' => $p['name'], 'count' => (int) $p['count']], $report['by_package'] ?? []),
@@ -304,7 +309,7 @@ window.whenReady(function () {
     // Revenue Trend (area)
     var trendEl = document.getElementById('chart-trend');
     if (trendEl && chartData.trend.length) {
-        new ApexCharts(trendEl, baseChart({
+        window.kaiTrackChart(new ApexCharts(trendEl, baseChart({
             series: [{ name: 'Revenue', data: chartData.trend.map(function (d) { return [d.date, d.revenue]; }) }],
             chart: Object.assign({ type: 'area', height: 240 }, {}),
             colors: ['#5f7f67'],
@@ -313,13 +318,13 @@ window.whenReady(function () {
             xaxis: { type: 'datetime', labels: { datetimeUTC: false }, axisBorder: { show: false }, axisTicks: { show: false } },
             yaxis: { labels: { formatter: fmtRp } },
             tooltip: { y: { formatter: function (v) { return fmtRp(v); } } },
-        })).render();
+        }))).render();
     }
 
     // Vouchers Sold (bar)
     var volEl = document.getElementById('chart-volume');
     if (volEl && chartData.trend.length) {
-        new ApexCharts(volEl, baseChart({
+        window.kaiTrackChart(new ApexCharts(volEl, baseChart({
             series: [{ name: 'Vouchers', data: chartData.trend.map(function (d) { return d.sold; }) }],
             chart: Object.assign({ type: 'bar', height: 240 }, {}),
             colors: ['#92aa96'],
@@ -327,13 +332,13 @@ window.whenReady(function () {
             xaxis: { categories: chartData.trend.map(function (d) { return d.date; }) },
             yaxis: { labels: { formatter: function (v) { return v; } } },
             dataLabels: { enabled: true },
-        })).render();
+        }))).render();
     }
 
     // Top Packages (donut)
     var pkgEl = document.getElementById('chart-package');
     if (pkgEl && chartData.byPackage.length) {
-        new ApexCharts(pkgEl, baseChart({
+        window.kaiTrackChart(new ApexCharts(pkgEl, baseChart({
             series: chartData.byPackage.map(function (p) { return p.count; }),
             labels: chartData.byPackage.map(function (p) { return p.name; }),
             chart: Object.assign({ type: 'donut', height: 260 }, {}),
@@ -347,7 +352,7 @@ window.whenReady(function () {
                     formatter: function (w) { return w.globals.seriesTotals.reduce(function (a, b) { return a + b; }, 0); } },
             } } } },
             dataLabels: { enabled: false },
-        })).render();
+        }))).render();
     }
 
     // Filter interactions
