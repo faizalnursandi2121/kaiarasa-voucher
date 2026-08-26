@@ -11,7 +11,7 @@ class EncryptionHelper
      * Anything without this marker is treated as legacy ciphertext or,
      * failing that, rejected entirely.
      */
-    private const V2_PREFIX = 'enc2::';
+    public const V2_PREFIX = 'enc2::';
 
     private const TAG_LENGTH = 16;
 
@@ -96,6 +96,51 @@ class EncryptionHelper
     private static function v2Key(): string
     {
         return hash('sha256', SiteConfig::getSecretKey(), true);
+    }
+
+    /**
+     * GCM-encrypt dengan secret EKSPLISIT — dipakai `kaiarasa key:rotate`
+     * untuk mengenkripsi ulang data saat rotasi kunci (secret baru belum
+     * tentu sudah aktif di environment).
+     */
+    public static function encryptWithSecret($text, string $secret): string
+    {
+        if ($text === null || $text === '') {
+            return '';
+        }
+        $key = hash('sha256', $secret, true);
+        $nonce = random_bytes(12);
+        $tag = '';
+        $cipher = openssl_encrypt((string) $text, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $nonce, $tag);
+        if ($cipher === false) {
+            error_log('EncryptionHelper: GCM encryption failed');
+
+            return '';
+        }
+
+        return self::V2_PREFIX.base64_encode($nonce).'::'.base64_encode($cipher.$tag);
+    }
+
+    /**
+     * Dekripsi legacy AES-256-CBC dengan secret LAMA eksplisit, fail-closed.
+     * Dipakai `kaiarasa key:rotate`; null berarti tidak terdekripsi.
+     */
+    public static function decryptLegacyWithSecret($text, string $oldSecret): ?string
+    {
+        if ($text === null || $text === '') {
+            return '';
+        }
+        $decoded = base64_decode((string) $text, true);
+        if ($decoded === false) {
+            return null;
+        }
+        $parts = explode('::', $decoded, 2);
+        if (count($parts) !== 2) {
+            return null;
+        }
+        $plain = openssl_decrypt($parts[0], 'aes-256-cbc', substr($oldSecret, 0, 32), 0, $parts[1]);
+
+        return $plain === false ? null : $plain;
     }
 
     public static function formatBytes($bytes, $precision = 2)

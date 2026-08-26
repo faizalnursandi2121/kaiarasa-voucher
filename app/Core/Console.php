@@ -37,6 +37,10 @@ class Console
                 $this->commandKeyGenerate();
                 break;
 
+            case 'key:rotate':
+                $this->commandKeyRotate($args);
+                break;
+
             case 'admin:reset':
                 $this->commandAdminReset($args);
                 break;
@@ -89,6 +93,99 @@ class Console
 
         $cmd = sprintf('php -S %s:%d -t public public/index.php', $host, $port);
         passthru($cmd);
+    }
+
+    /**
+     * Rotasi APP_KEY + migrasi data terenkripsi (opsi A: one-shot).
+     *
+     * Usage:
+     *   php kaiarasa key:rotate [OLD_KEY]
+     *   OLD_KEY opsional — bila diabaikan, dipakai key aktif saat ini
+     *   (dari .env / file persisten). Alur Dokploy: set APP_KEY baru di
+     *   panel dulu, lalu jalankan: php kaiarasa key:rotate <KEY_LAMA>
+     */
+    private function commandKeyRotate(array $args)
+    {
+        $oldSecret = $args[0] ?? null;
+        if ($oldSecret === null || $oldSecret === '') {
+            $oldSecret = \App\Config\SiteConfig::getSecretKey();
+            echo self::COLOR_YELLOW.'OLD_KEY tidak diberikan — memakai key aktif saat ini.'.self::COLOR_RESET."\n";
+        }
+
+        $newSecret = bin2hex(random_bytes(32)); // 64 hex = entropi 256-bit
+
+        echo self::COLOR_YELLOW.'=== Kaiarasa Key Rotation ==='.self::COLOR_RESET."\n";
+
+        // 1) Backup database sebelum menyentuh apa pun.
+        $dbPath = ROOT.'/app/Database/database.sqlite';
+        if (! is_file($dbPath)) {
+            echo self::COLOR_RED."Database tidak ditemukan: {$dbPath}\n".self::COLOR_RESET;
+            exit(1);
+        }
+        $backup = $dbPath.'.bak-'.date('Ymd-His');
+        if (! copy($dbPath, $backup)) {
+            echo self::COLOR_RED.'Gagal membuat backup database — dibatalkan.'.self::COLOR_RESET."\n";
+            exit(1);
+        }
+        echo 'Backup DB: '.basename($backup)."\n";
+
+        // 2) Migrasi tiap baris routers: legacy CBC -> GCM dengan key baru.
+        $db = \App\Core\Database::getInstance();
+        $rows = $db->query('SELECT id, session_name, password FROM routers')->fetchAll();
+        $migrated = 0;
+        $skipped = 0;
+        $failedRows = [];
+        foreach ($rows as $row) {
+            $stored = (string) ($row['password'] ?? '');
+            if ($stored === '') {
+                ++$skipped; // belum ada password
+                continue;
+            }
+            if (str_starts_with($stored, \App\Helpers\EncryptionHelper::V2_PREFIX ?? 'enc2::')) {
+                ++$skipped; // sudah envelope baru — idempotent
+                continue;
+            }
+            $plain = \App\Helpers\EncryptionHelper::decryptLegacyWithSecret($stored, $oldSecret);
+            if ($plain === null) {
+                $failedRows[] = $row['session_name'] ?? ('#'.$row['id']);
+                continue;
+            }
+            $enc = \App\Helpers\EncryptionHelper::encryptWithSecret($plain, $newSecret);
+            if ($enc === '') {
+                $failedRows[] = $row['session_name'] ?? ('#'.$row['id']);
+                continue;
+            }
+            $db->query('UPDATE routers SET password = ? WHERE id = ?', [$enc, $row['id']]);
+            ++$migrated;
+        }
+
+        echo "Hasil migrasi: {$migrated} dimigrasi, {$skipped} dilewati, ".count($failedRows)." gagal.\n";
+        if ($failedRows) {
+            echo self::COLOR_RED.'Gagal (input ulang manual lewat UI): '.implode(', ', $failedRows).self::COLOR_RESET."\n";
+        }
+
+        // 3a) .env tersedia -> tulis APP_KEY baru + simpan lama sbg APP_KEY_OLD.
+        $envPath = ROOT.'/.env';
+        if (is_file($envPath) && is_writable($envPath) && strpos((string) file_get_contents($envPath), 'APP_KEY=') !== false) {
+            $content = file_get_contents($envPath);
+            $content = preg_replace('/^APP_KEY=.*/m', "APP_KEY={$newSecret}", $content);
+            if (strpos($content, 'APP_KEY_OLD=') !== false) {
+                $content = preg_replace('/^APP_KEY_OLD=.*/m', "APP_KEY_OLD={$oldSecret}", $content);
+            } else {
+                $content .= "\nAPP_KEY_OLD={$oldSecret}\n";
+            }
+            file_put_contents($envPath, $content, LOCK_EX);
+            echo self::COLOR_GREEN.'.env diperbarui: APP_KEY baru diset, yang lama disimpan sebagai APP_KEY_OLD.'.self::COLOR_RESET."\n";
+            echo "Setelah verifikasi koneksi router normal, HAPUS baris APP_KEY_OLD dari .env.\n";
+        } else {
+            // 3b) Tanpa .env (Dokploy/panel env) -> cetak instruksi.
+            echo self::COLOR_YELLOW."\n.env tidak tersedia/dapat ditulis — set environment di panel:\n".self::COLOR_RESET;
+            echo "  APP_KEY={$newSecret}\n";
+            echo "\nData SUDAH dienkripsi dengan key di atas. Aplikasi akan gagal baca\n";
+            echo "kredensial sampai env ini diset dan container di-restart.\n";
+        }
+
+        echo "\nSelesai. Jangan lupa: rotasi juga password router di perangkat MikroTik.\n";
     }
 
     private function commandKeyGenerate()
@@ -274,6 +371,7 @@ class Console
         echo '  '.self::COLOR_GREEN.'install      '.self::COLOR_RESET."    Install Kaiarasa (Setup DB & Admin)\n";
         echo '  '.self::COLOR_GREEN.'serve        '.self::COLOR_RESET."    Start the development server\n";
         echo '  '.self::COLOR_GREEN.'key:generate '.self::COLOR_RESET."    Set the application key\n";
+        echo '  '.self::COLOR_GREEN.'key:rotate   '.self::COLOR_RESET."    Rotate APP_KEY + re-enkripsi data (usage: key:rotate [OLD_KEY])\n";
         echo '  '.self::COLOR_GREEN.'admin:reset  '.self::COLOR_RESET."    Reset admin password (default: admin)\n";
         echo '  '.self::COLOR_GREEN.'migrate      '.self::COLOR_RESET."    Run database migrations (upgrades/adds new columns)\n";
         echo '  '.self::COLOR_GREEN.'help         '.self::COLOR_RESET."    Show this help message\n";
