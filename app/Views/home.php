@@ -893,9 +893,7 @@ window.whenReady(function () {
             }
             return res.text().then(function (t) {
                 var j = null;
-                try { j = JSON.parse(t); } catch (e) {
-                    console.warn('[router-form] respons bukan JSON:', res.status, t.slice(0, 200));
-                }
+                try { j = JSON.parse(t); } catch (e) { /* respons non-JSON ditangani sbg server error */ }
                 return { status: res.status, json: j };
             });
         })

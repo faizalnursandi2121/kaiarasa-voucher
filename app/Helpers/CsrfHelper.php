@@ -97,6 +97,35 @@ class CsrfHelper
     }
 
     /**
+     * Buang komentar HTML (<!-- ... -->) dari output final — dokumentasi
+     * tetap ada di source code, tapi inspector/browser menerima markup
+     * bersih. Blok <script> tidak disentuh agar JS inline yang memuat
+     * string berkomentar tidak rusak.
+     */
+    public static function stripHtmlComments(string $html): string
+    {
+        if (strpos($html, '<!--') === false) {
+            return $html;
+        }
+
+        // Pisahkan blok script dari segmen lainnya.
+        $parts = preg_split('/(<script\b[^>]*>.*?<\/script>)/is', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
+        if (! is_array($parts)) {
+            return $html;
+        }
+
+        foreach ($parts as $i => $part) {
+            // Index ganjil = hasil capture (blok script) — biarkan utuh.
+            if ($i % 2 === 1) {
+                continue;
+            }
+            $parts[$i] = preg_replace('/<!--.*?-->/s', '', $part) ?? $part;
+        }
+
+        return implode('', $parts);
+    }
+
+    /**
      * Inject a hidden CSRF input into every HTML form served by the app.
      * Runs inside the existing output-buffer pipeline — no view edits needed.
      *

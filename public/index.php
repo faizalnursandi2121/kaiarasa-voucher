@@ -36,7 +36,9 @@ ob_start(function ($html) {
     }
 
     return \App\Helpers\CsrfHelper::injectForms(
-        \App\Helpers\LanguageHelper::translateHtml($html)
+        \App\Helpers\CsrfHelper::stripHtmlComments(
+            \App\Helpers\LanguageHelper::translateHtml($html)
+        )
     );
 });
 
