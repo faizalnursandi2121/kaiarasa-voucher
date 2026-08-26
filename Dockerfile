@@ -16,6 +16,15 @@ RUN docker-php-ext-install pdo_sqlite zip
 # dari panel deployment) tanpa dibersihkan clear_env.
 RUN echo "clear_env = no" >> /usr/local/etc/php-fpm.d/www.conf
 
+# Production PHP hardening: warning/notice TIDAK BOLEH tercetak ke respons
+# (merusak JSON + membocorkan path). Catat ke stderr saja.
+RUN set -eu; \
+    echo "display_errors = Off" > /usr/local/etc/php/conf.d/zz-prod.ini; \
+    echo "display_startup_errors = Off" >> /usr/local/etc/php/conf.d/zz-prod.ini; \
+    echo "log_errors = On" >> /usr/local/etc/php/conf.d/zz-prod.ini; \
+    echo "error_log = /proc/self/fd/2" >> /usr/local/etc/php/conf.d/zz-prod.ini; \
+    echo "error_reporting = E_ALL & ~E_DEPRECATED" >> /usr/local/etc/php/conf.d/zz-prod.ini
+
 # Configure Nginx
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 
