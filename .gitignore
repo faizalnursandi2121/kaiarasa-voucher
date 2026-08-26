@@ -41,3 +41,4 @@ deploy.ps1
 # Runtime installer artifacts
 app/Database/installed.lock
 app/Database/app_key
+strix_runs/
