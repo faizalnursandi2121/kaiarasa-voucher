@@ -112,7 +112,24 @@ include ROOT.'/app/Views/layouts/header_public.php';
                              data-callback="kaiTsOk"
                              data-expired-callback="kaiTsBad"></div>
                     </div>
-                    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+                    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer
+        onerror="console.error('[Turnstile] Gagal memuat api.js dari challenges.cloudflare.com')"></script>
+<script>
+    // Setelah halaman siap: bila fitur aktif tapi widget kosong, jelaskan sebabnya.
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            var w = document.querySelector('.cf-turnstile');
+            if (!w || w.querySelector('iframe') || w.dataset.diagDone) return;
+            w.dataset.diagDone = '1';
+            w.insertAdjacentHTML('beforeend',
+                '<p style="font-size:12px;color:#b91c1c;margin-top:8px;text-align:left">'
+                + 'Widget Cloudflare gagal dimuat. Periksa koneksi ke challenges.cloudflare.com '
+                + 'dan pastikan hostname terdaftar pada konfigurasi Turnstile.</p>');
+            var b = document.getElementById('login-submit');
+            if (b) { b.disabled = false; }
+        }, 4000);
+    });
+</script>
                     <?php endif; ?>
 
                     <!-- Submit (Metronic: d-grid; dengan loading state) -->
