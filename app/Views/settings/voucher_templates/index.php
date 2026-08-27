@@ -14,7 +14,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
 
     <div class="mb-8">
-        <h1 class="text-3xl font-bold tracking-tight" data-i18n="settings.templates_title">Voucher Templates</h1>
+        <h1 class="text-2xl font-bold tracking-tight" data-i18n="settings.templates_title">Voucher Templates</h1>
         <p class="text-accents-5 mt-2" data-i18n="settings.templates_subtitle">Manage and customize your voucher print designs.</p>
     </div>
 
