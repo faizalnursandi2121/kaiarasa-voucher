@@ -1,7 +1,23 @@
-<?php require_once ROOT.'/app/Views/layouts/header_main.php'; ?>
-<?php require_once ROOT.'/app/Views/layouts/sidebar_session.php'; ?>
-
-<!-- ===== Generate Vouchers (pattern: Home / Add Router Modal) ===== -->
+<?php
+$title = 'Generate Vouchers';
+require_once ROOT.'/app/Views/layouts/header_main.php';
+require_once ROOT.'/app/Views/layouts/sidebar_session.php';
+?>
+<style>
+/* Sembunyikan spinner up/down di input number — user input manual */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+            appearance: none;
+    margin: 0;
+    display: none;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    -webkit-appearance: none;
+}
+</style>
 <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
     <!-- Form Column -->
     <div class="lg:col-span-2 min-w-0">
@@ -160,18 +176,18 @@
                 <div class="grid grid-cols-3 gap-2">
                     <div class="relative">
                         <input type="number" name="timelimit_d" min="0" placeholder="0" aria-label="Time limit days"
-                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-8 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">D</span>
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-12 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                        <span class="absolute inset-y-0 right-3.5 flex items-center text-[12px] font-semibold text-accents-5 pointer-events-none">Days</span>
                     </div>
                     <div class="relative">
                         <input type="number" name="timelimit_h" min="0" max="23" placeholder="0" aria-label="Time limit hours"
-                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-8 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">H</span>
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-12 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                        <span class="absolute inset-y-0 right-3.5 flex items-center text-[12px] font-semibold text-accents-5 pointer-events-none">Hours</span>
                     </div>
                     <div class="relative">
                         <input type="number" name="timelimit_m" min="0" max="59" placeholder="0" aria-label="Time limit minutes"
-                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-8 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">M</span>
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-12 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                        <span class="absolute inset-y-0 right-3.5 flex items-center text-[12px] font-semibold text-accents-5 pointer-events-none">Minutes</span>
                     </div>
                 </div>
             </div>
