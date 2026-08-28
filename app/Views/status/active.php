@@ -100,7 +100,7 @@ $toolbar_html .= '</select>
                         </td>
                         <td>
                             <div class="text-sm text-foreground"><?= htmlspecialchars($item['address'] ?? '-') ?></div>
-                            <div class="text-xs text-accents-5 font-mono flex items-center gap-1.5"><i data-lucide="smartphone" class="w-3 h-3"></i><?= htmlspecialchars($item['mac-address'] ?? '-') ?></div>
+                            <div class="text-xs text-accents-5 font-mono"><?= htmlspecialchars($item['mac-address'] ?? '-') ?></div>
                         </td>
                         <td>
                              <div class="text-sm text-foreground"><?= FormatHelper::elapsedTime($item['uptime'] ?? '0s') ?></div>
