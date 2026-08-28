@@ -1307,29 +1307,8 @@ input:-webkit-autofill,
 
 .custom-select-dropdown.dropdown-up.open {
   --tw-translate-y: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
-
-
-/* Backdrop overlay di body saat dropdown open — bikin dropdown
-   terasa floating popover, bukan embedded di table content. */
-.custom-select-backdrop {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  z-index: 40;
-  opacity: 0;
-  transition: opacity 150ms cubic-bezier(0, 0, 0.2, 1);
-}
-.custom-select-backdrop.show {
-  opacity: 1;
-}
-
-.dark .custom-select-backdrop {
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
 
 /* Premium Control Pill & Segmented Switch */
 
