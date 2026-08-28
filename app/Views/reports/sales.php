@@ -291,7 +291,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         <th class="cursor-pointer" data-sort="package">Package ▲▼</th>
                         <th class="cursor-pointer" data-sort="server">Server ▲▼</th>
                         <th class="cursor-pointer" data-sort="sale_type">Sale Type ▲▼</th>
-                        <th class="cursor-pointer" data-sort="batch_id">Batch ID ▲▼</th>
                         <th class="text-right cursor-pointer" data-sort="price">Price ▲▼</th>
                     </tr>
                 </thead>
@@ -303,7 +302,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         data-package="<?= htmlspecialchars($row['package']) ?>"
                         data-server="<?= htmlspecialchars($row['server']) ?>"
                         data-sale_type="<?= htmlspecialchars($row['sale_type']) ?>"
-                        data-batch_id="<?= htmlspecialchars($row['batch_id']) ?>"
                         data-price="<?= (int) $row['price'] ?>">
                         <td class="whitespace-nowrap"><?= $dtLabel ?></td>
                         <td class="font-mono font-medium"><?= htmlspecialchars($row['code']) ?></td>
@@ -314,7 +312,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                                 <?= $row['sale_type'] === 'quick_print' ? 'Quick Print' : 'Bulk Generate' ?>
                             </span>
                         </td>
-                        <td class="font-mono text-[12px] opacity-80"><?= htmlspecialchars($row['batch_id'] ?: '—') ?></td>
                         <td class="text-right tabular-nums font-semibold"><?= salesFmtRp((int) $row['price']) ?></td>
                     </tr>
                     <?php endforeach; ?>

@@ -120,6 +120,7 @@ class SalesReportService
             'name' => (string) ($user['name'] ?? ''),
             'password' => (string) ($user['password'] ?? ''),
             'profile' => (string) ($user['profile'] ?? 'default'),
+            'server' => (string) ($user['server'] ?? 'all'),
             'price' => $price,
             'comment' => $comment,
             'sale_type' => $saleType,
@@ -425,19 +426,19 @@ class SalesReportService
         $users = [];
         for ($i = 0; $i < 8; $i++) {
             $t = sprintf('%02d:%02d', 8 + intdiv($i, 2), ($i % 2) * 30);
-            $users[] = ['name' => 'demo-q'.$i, 'profile' => '1 Hour', 'price' => 0,
+            $users[] = ['name' => 'demo-q'.$i, 'profile' => '1 Hour', 'price' => 0, 'server' => 'hotspot-1',
                 'comment' => "p:3000 [QP] {$today} {$t}", 'uptime' => $i < 3 ? '45m' : '0s', 'bytes-out' => 0];
         }
         for ($i = 0; $i < 10; $i++) {
             $t = sprintf('%02d:%02d', 9 + intdiv($i, 3), ($i % 3) * 20);
-            $users[] = ['name' => 'demo-g'.$i, 'profile' => '1 Day', 'price' => 0,
+            $users[] = ['name' => 'demo-g'.$i, 'profile' => '1 Day', 'price' => 0, 'server' => $i < 5 ? 'hotspot-1' : 'hotspot-2',
                 'comment' => "vc-D1-{$today} {$t}- p:5000", 'uptime' => $i < 4 ? '2h' : '0s', 'bytes-out' => 0];
         }
         for ($i = 0; $i < 6; $i++) {
-            $users[] = ['name' => 'demo-y'.$i, 'profile' => '3 Hours', 'price' => 0,
+            $users[] = ['name' => 'demo-y'.$i, 'profile' => '3 Hours', 'price' => 0, 'server' => 'hotspot-1',
                 'comment' => "vc-Y2-{$yest}- p:3500", 'uptime' => '1h', 'bytes-out' => 2048];
         }
-        $users[] = ['name' => 'demo-nodate', 'profile' => '1 Day', 'price' => 0,
+        $users[] = ['name' => 'demo-nodate', 'profile' => '1 Day', 'price' => 0, 'server' => 'all',
             'comment' => '[QP]', 'uptime' => '0s', 'bytes-out' => 0];
 
         return ['users' => $users, 'price_map' => ['1 Hour' => 3000, '1 Day' => 5000, '3 Hours' => 3500]];
