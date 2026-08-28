@@ -452,8 +452,8 @@
         }
     },
     "hotspot_users": {
-        "add_user": "Tambah Pengguna",
-        "edit_user": "Edit Pengguna",
+        "add_user": "Tambah Voucher",
+        "edit_user": "Edit Voucher",
         "title": "Voucher",
         "subtitle": "Kelola pengguna dan voucher",
         "name": "Nama",
@@ -463,8 +463,8 @@
         "comment": "Komentar",
         "no_users_selected": "Tidak ada pengguna yang dipilih.",
         "form": {
-            "add_title": "Tambah User",
-            "edit_title": "Edit User",
+            "add_title": "Tambah Voucher",
+            "edit_title": "Edit Voucher",
             "subtitle": "Akun user hotspot",
             "edit_subtitle": "Perbarui detail user untuk: {name}",
             "username": "Username",

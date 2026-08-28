@@ -89,7 +89,7 @@ foreach ($uniqueComments as $c) {
 $toolbar_html .= '</select>
         </div>
         <button onclick="openUserModal(\'add\')" class="btn btn-primary">' .
-    '<i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="hotspot_users.add_user">Add User</span>' .
+    '<i data-lucide="plus" class="w-4 h-4 mr-2"></i> <span data-i18n="hotspot_users.add_user">Add Voucher</span>' .
     '</button>';
 $toolbar_html .= '
     </div>
@@ -238,7 +238,7 @@ $toolbar_html .= '
     <!-- Modal Head (Sage Tint — pattern Generate Vouchers) -->
     <div class="bg-[#5f7f67]/[.07] dark:bg-[#5f7f67]/[.12] border-b border-[#5f7f67]/20 px-6 py-4 flex items-start justify-between gap-4 text-left">
         <div>
-            <h3 class="text-base font-bold tracking-tight" data-modal-title>Add User</h3>
+            <h3 class="text-base font-bold tracking-tight" data-modal-title>Add Voucher</h3>
             <p class="text-xs opacity-60 mt-1" data-i18n="common.users_form_subtitle">Voucher login credentials &amp; limits</p>
         </div>
         <button type="button" onclick="Swal.close()" aria-label="Close"
@@ -556,11 +556,11 @@ $toolbar_html .= '
     window.openUserModal = function(mode, btn = null) {
         const tplNode = document.getElementById('user-form-template').content.cloneNode(true);
         
-        let title = window.i18n ? window.i18n.t('hotspot_users.add_user') : 'Add User';
+        let title = window.i18n ? window.i18n.t('hotspot_users.add_user') : 'Add Voucher';
         let saveBtn = window.i18n ? window.i18n.t('common.save') : 'Save';
-        
+
         if (mode === 'edit') {
-            title = window.i18n ? window.i18n.t('hotspot_users.edit_user') : 'Edit User';
+            title = window.i18n ? window.i18n.t('hotspot_users.edit_user') : 'Edit Voucher';
             saveBtn = window.i18n ? window.i18n.t('common.forms.save_changes') : 'Save Changes';
         }
 

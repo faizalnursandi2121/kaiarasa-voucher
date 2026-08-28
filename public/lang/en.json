@@ -440,8 +440,8 @@
         }
     },
     "hotspot_users": {
-        "add_user": "Add User",
-        "edit_user": "Edit User",
+        "add_user": "Add Voucher",
+        "edit_user": "Edit Voucher",
         "title": "Vouchers",
         "subtitle": "Manage users and vouchers",
         "name": "Name",
@@ -451,8 +451,8 @@
         "comment": "Comment",
         "no_users_selected": "No users selected.",
         "form": {
-            "add_title": "Add User",
-            "edit_title": "Edit User",
+            "add_title": "Add Voucher",
+            "edit_title": "Edit Voucher",
             "subtitle": "Hotspot user account",
             "edit_subtitle": "Update user details for: {name}",
             "username": "Username",
