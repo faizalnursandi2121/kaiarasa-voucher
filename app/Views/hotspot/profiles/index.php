@@ -129,7 +129,11 @@ $toolbar_html .= '
                            <?= htmlspecialchars($profile['meta']['expired_mode_formatted'] ?? '') ?>
                         </td>
                         <td class="text-sm text-accents-6">
-                           <?= htmlspecialchars($profile['meta']['validity'] ?? '') ?>
+                            <?php $val = trim((string) ($profile['meta']['validity'] ?? '')); if ($val === ''): ?>
+                            <i data-lucide="infinity" class="w-5 h-5 text-[#5f7f67]" title="Unlimited"></i>
+                            <?php else: ?>
+                            <?= htmlspecialchars($val) ?>
+                            <?php endif; ?>
                         </td>
                         
                         <td class="text-right text-sm font-medium">
