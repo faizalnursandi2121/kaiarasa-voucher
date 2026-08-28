@@ -169,13 +169,6 @@ class CustomSelect {
         document.addEventListener('click', e => {
             if (!this.wrapper.contains(e.target)) this.close();
         });
-        // Tutup dropdown saat scroll — popover (position:fixed)
-        // tidak bergerak saat trigger scroll, jadi posisinya jadi
-        // tidak nyambung. Close + re-open saat user butuh lagi.
-        this.onScroll = () => { if (this.menu.classList.contains('open')) this.close(); };
-        window.addEventListener('scroll', this.onScroll, true);
-        this.onResize = () => { if (this.menu.classList.contains('open')) this.close(); };
-        window.addEventListener('resize', this.onResize);
     }
 
     toggle() {
@@ -185,69 +178,44 @@ class CustomSelect {
     open() {
         // Close others
         CustomSelect.instances.forEach(i => i !== this && i.close());
-
-        // Position: position:fixed popover. Compute left/top dari
-        // wrapper bounding rect (viewport coords karena fixed).
+        
+        // Smart Position
         const rect = this.wrapper.getBoundingClientRect();
-        const padding = 4; // margin dari trigger
-
-        // Estimate menu height. 15rem = 240px (CSS max-height).
-        const menuMaxHeight = 240;
-        const viewportH = window.innerHeight;
-        const spaceBelow = viewportH - rect.bottom - padding;
-        const spaceAbove = rect.top - padding;
-        // DEFAULT: open UPWARD. Toolbar dropdown umumnya ada di
-        // atas halaman — opening downward akan overlap dengan table
-        // yang ada di bawah. Opening upward = clean popover yang
-        // muncul di atas trigger, tidak embedded di content.
-        // Override ke downward HANYA kalau space above tidak cukup
-        // untuk fit menu (misal trigger di atas viewport).
-        const canGoUp = spaceAbove >= Math.min(menuMaxHeight, 200);
-        const goUp = canGoUp || spaceBelow < menuMaxHeight;
-
+        const menuHeight = 260; // Max-h-60 (240px) + padding + search if exists
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const spaceAbove = rect.top;
+        
         // Reset positioning classes
         this.menu.classList.remove(
-            'right-0', 'left-0',
-            'origin-top-right', 'origin-top-left',
+            'right-0', 'left-0', 
+            'origin-top-right', 'origin-top-left', 
             'origin-bottom-right', 'origin-bottom-left',
             'dropdown-up'
         );
-
+        
+        // Vertical check
+        const goUp = spaceBelow < menuHeight && spaceAbove > spaceBelow;
         if (goUp) {
             this.menu.classList.add('dropdown-up');
         }
 
-        // Horizontal alignment: kalau wrapper dekat tepi kanan
-        // viewport, align right edge dropdown ke right edge trigger
-        const isRightAligned = window.innerWidth - rect.right < 250;
-        this.menu.classList.add(isRightAligned ? 'origin-top-right' : 'origin-top-left');
-
-        // Compute final position. Saat measure, real height mungkin
-        // lebih kecil dari max — set top accordingly.
-        this.menu.classList.add('open');
-        const realHeight = this.menu.offsetHeight || menuMaxHeight;
-
-        if (goUp) {
-            this.menu.style.top = (rect.top - realHeight - padding) + 'px';
-        } else {
-            this.menu.style.top = (rect.bottom + padding) + 'px';
-        }
-
-        // left/right
-        const minWidth = Math.max(rect.width, 160);
+        // Horizontal check
+        const isRightAligned = window.innerWidth - rect.left < 250;
         if (isRightAligned) {
-            this.menu.style.left = (rect.right - minWidth) + 'px';
-            this.menu.style.right = 'auto';
+            this.menu.classList.add('right-0');
         } else {
-            this.menu.style.left = rect.left + 'px';
-            this.menu.style.right = 'auto';
+            this.menu.classList.add('left-0');
         }
-        this.menu.style.minWidth = minWidth + 'px';
-        this.menu.style.width = 'auto';
 
+        // Apply correct Origin for animation
+        const originY = goUp ? 'bottom' : 'top';
+        const originX = isRightAligned ? 'right' : 'left';
+        this.menu.classList.add(`origin-${originY}-${originX}`);
+
+        this.menu.classList.add('open');
         this.trigger.classList.add('ring-1', 'ring-foreground');
         this.trigger.querySelector('.custom-select-icon')?.classList.add('rotate-180');
-
+        
         if (this.searchInput) setTimeout(() => this.searchInput.focus(), 50);
     }
 
