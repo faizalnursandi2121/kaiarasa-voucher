@@ -53,6 +53,10 @@ class Console
                 $this->commandMigrate();
                 break;
 
+            case 'sales:reconcile':
+                $this->commandSalesReconcile($args);
+                break;
+
             case 'help':
             default:
                 $this->commandHelp();
@@ -374,7 +378,98 @@ class Console
         echo '  '.self::COLOR_GREEN.'key:rotate   '.self::COLOR_RESET."    Rotate APP_KEY + re-enkripsi data (usage: key:rotate [OLD_KEY])\n";
         echo '  '.self::COLOR_GREEN.'admin:reset  '.self::COLOR_RESET."    Reset admin password (default: admin)\n";
         echo '  '.self::COLOR_GREEN.'migrate      '.self::COLOR_RESET."    Run database migrations (upgrades/adds new columns)\n";
+        echo '  '.self::COLOR_GREEN.'sales:reconcile'.self::COLOR_RESET." Sync sales_records deleted_at dgn MikroTik (cron/CLI)\n";
+
         echo '  '.self::COLOR_GREEN.'help         '.self::COLOR_RESET."    Show this help message\n";
-        echo "\n";
+    }
+
+    /**
+     * sales:reconcile [session_name|--all]
+     * Sinkronkan status deleted_at di sales_records dengan MikroTik
+     * /ip/hotspot/user/print. Voucher yang hilang dari MikroTik di-
+     * set deleted_at; voucher yang muncul kembali di-unset.
+     *
+     * Use case: admin yang delete voucher langsung dari Winbox/SSH
+     * (UI hook tidak fire), bulk delete script, factory reset.
+     */
+    private function commandSalesReconcile($args)
+    {
+        echo "Reconciling sales_records ↔ MikroTik users...\n";
+        $all = in_array('--all', $args, true) || empty($args);
+        $configModel = new \App\Models\Config;
+        $sessions = $all ? $configModel->getAllSessions() : [[
+            'session_name' => $args[0],
+        ]];
+        $srModel = new \App\Models\SalesRecordModel;
+        $reconciled = 0;
+        $created = 0;
+        foreach ($sessions as $s) {
+            $session = $s['session_name'] ?? '';
+            if ($session === '') {
+                continue;
+            }
+            $routerId = $srModel->routerIdBySession($session);
+            if (! $routerId) {
+                continue;
+            }
+            $creds = $configModel->getSession($session);
+            if (! $creds) {
+                echo "  [{$session}] no credentials — skip\n";
+                continue;
+            }
+            $api = new \App\Libraries\RouterOSAPI();
+            $api->attempts = 1;
+            $api->delay = 0;
+            $password = $creds['password'];
+            if (($creds['source'] ?? '') === 'legacy') {
+                $password = \App\Libraries\RouterOSAPI::decrypt($password);
+            }
+            if (! $api->connect($creds['ip_address'], $creds['username'], $password)) {
+                echo "  [{$session}] connect fail — skip\n";
+                continue;
+            }
+            $mtUsers = $api->comm('/ip/hotspot/user/print');
+            $api->disconnect();
+            if (! is_array($mtUsers)) {
+                echo "  [{$session}] print fail — skip\n";
+                continue;
+            }
+            // Build set nama voucher yang AKTIF di MikroTik.
+            $activeNames = [];
+            foreach ($mtUsers as $u) {
+                $n = (string) ($u['name'] ?? '');
+                if ($n !== '') {
+                    $activeNames[$n] = true;
+                }
+            }
+            // Reconcile sales_records: bulk_generate + quick_print
+            $db = \App\Core\Database::getInstance();
+            $rows = $srModel->getByRouter($routerId, true);
+            foreach ($rows as $r) {
+                if (! in_array($r['sale_type'], ['bulk_generate', 'quick_print'], true)) {
+                    continue;
+                }
+                $name = (string) $r['voucher_name'];
+                $isActiveMt = isset($activeNames[$name]);
+                $isDeletedDb = ! empty($r['deleted_at']);
+                if ($isActiveMt && $isDeletedDb) {
+                    // Voucher muncul lagi di MikroTik → un-soft-delete
+                    $db->query(
+                        'UPDATE sales_records SET deleted_at = NULL WHERE id = ?',
+                        [(int) $r['id']]
+                    );
+                    $reconciled++;
+                } elseif (! $isActiveMt && ! $isDeletedDb) {
+                    // Voucher hilang dari MikroTik → soft-delete
+                    $db->query(
+                        "UPDATE sales_records SET deleted_at = datetime('now', 'localtime') WHERE id = ?",
+                        [(int) $r['id']]
+                    );
+                    $reconciled++;
+                }
+            }
+            echo "  [{$session}] reconciled: {$reconciled} rows\n";
+        }
+        echo "Done.\n";
     }
 }

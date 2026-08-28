@@ -130,10 +130,11 @@ class SalesReportService
             'time' => $dp['time'],
             'used' => ($uptime !== '' && $uptime !== '0s') || (is_numeric($bytesOut) && $bytesOut > 0),
             'uptime' => $uptime,
+            'deleted_at' => (string) ($user['deleted_at'] ?? ''),
+            'sold_at' => (string) ($user['sold_at'] ?? ''),
         ];
     }
 
-    // computeFromRecords & agregasi menyusul di Task 2.
 
     /**
      * MURNI (tanpa I/O): agregasi records hasil normalizeUser.
@@ -271,6 +272,7 @@ class SalesReportService
                 'sale_type' => $rec['sale_type'],
                 'batch_id' => $ref,
                 'price' => $rec['price'],
+                'deleted_at' => (string) ($rec['deleted_at'] ?? ''),
             ];
         }
 
@@ -378,11 +380,13 @@ class SalesReportService
             return ['__no_router' => true];
         }
 
-        $rows = $srModel->getByRouter($routerId, false); // exclude soft-deleted
+        // Include soft-deleted: sales report adalah financial record, immutable.
+        // User delete voucher dari MikroTik TIDAK menghapus row di sini —
+        // hanya flag deleted_at yang di-set (audit trail).
+        $rows = $srModel->getByRouter($routerId, true);
         if (empty($rows)) {
             return ['__empty' => true, 'router_id' => $routerId];
         }
-
         // Convert sales_records row → shape yang diharapkan normalizeUser
         $users = [];
         foreach ($rows as $r) {
@@ -395,6 +399,8 @@ class SalesReportService
                 'comment' => $comment,
                 'uptime' => '0s',
                 'bytes-out' => 0,
+                'deleted_at' => (string) ($r['deleted_at'] ?? ''),
+                'sold_at' => (string) ($r['sold_at'] ?? ''),
             ];
         }
         // price_map tidak diperlukan kalau setiap record sudah punya price (dari snapshot)

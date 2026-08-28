@@ -304,16 +304,15 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         data-server="<?= htmlspecialchars($row['server']) ?>"
                         data-sale_type="<?= htmlspecialchars($row['sale_type']) ?>"
                         data-price="<?= (int) $row['price'] ?>">
-                        <td class="whitespace-nowrap"><?= $dtLabel ?></td>
-                        <td class="font-mono font-medium"><?= htmlspecialchars($row['code']) ?></td>
-                        <td class="font-medium"><?= htmlspecialchars($row['package']) ?></td>
-                        <td><span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-black/[.04] dark:bg-white/[.05]"><?= htmlspecialchars($row['server'] ?: '—') ?></span></td>
-                        <td>
-                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold <?= $row['sale_type'] === 'quick_print' ? 'bg-sky-500/10 text-sky-600' : 'bg-purple-500/10 text-purple-600' ?>">
-                                <?= $row['sale_type'] === 'quick_print' ? 'Quick Print' : 'Bulk Generate' ?>
+                        <td class="whitespace-nowrap">
+                            <?= $dtLabel ?>
+                            <?php if (! empty($row['deleted_at'])): ?>
+                            <span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-red-500/10 text-red-600" title="Voucher deleted from MikroTik at <?= htmlspecialchars($row['deleted_at']) ?>">
+                                <i data-lucide="trash-2" class="w-2.5 h-2.5 mr-0.5"></i> DELETED
                             </span>
+                            <?php endif; ?>
                         </td>
-                        <td class="text-right tabular-nums font-semibold"><?= salesFmtRp((int) $row['price']) ?></td>
+                        <td class="font-mono font-medium <?= ! empty($row['deleted_at']) ? 'line-through opacity-50' : '' ?>"><?= htmlspecialchars($row['code']) ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
