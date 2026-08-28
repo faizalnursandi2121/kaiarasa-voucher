@@ -282,10 +282,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                     class="h-9 px-3 inline-flex items-center gap-1.5 rounded-xl border border-black/10 dark:border-white/10 text-[12px] font-semibold hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
                     <i data-lucide="download" class="w-3.5 h-3.5"></i> CSV
                 </a>
-                <button type="button" onclick="window.print()"
-                    class="h-9 px-3 inline-flex items-center gap-1.5 rounded-xl border border-black/10 dark:border-white/10 text-[12px] font-semibold hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
-                    <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print
-                </button>
             </div>
         </div>
         <div class="overflow-x-auto">
