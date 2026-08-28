@@ -15,14 +15,22 @@ if (! empty($users)) {
     foreach ($users as $u) {
         $p = $u['profile'] ?? 'default';
         $c = $u['comment'] ?? '';
-
         $uniqueProfiles[$p] = $p; // Key-Value distinct
         if (! empty($c)) {
             $uniqueComments[$c] = $c;
         }
     }
 }
+// Tambahkan semua profile valid dari MikroTik (termasuk yang
+// tidak digunakan voucher manapun) — supaya filter dropdown
+// bisa filter by profile valid manapun
+if (! empty($allProfiles ?? [])) {
+    foreach ($allProfiles as $ap) {
+        $uniqueProfiles[$ap] = $ap;
+    }
+}
 sort($uniqueProfiles);
+
 
 // $servers is passed from controller
 if (! isset($servers)) {
@@ -323,11 +331,10 @@ $toolbar_html .= '
                 <div>
                     <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_users.form.profile">Data plan</label>
                     <div class="relative">
-                        <i data-lucide="layers" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                         <select name="profile" data-native required class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-10 pr-9 text-[14px] appearance-none outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                            <?php foreach ($uniqueProfiles as $p) { ?>
-                                <option value="<?= htmlspecialchars($p) ?>"><?= htmlspecialchars($p) ?></option>
-                            <?php } ?>
+                            <?php foreach (($allProfiles ?? []) as $p): ?>
+                            <option value="<?= htmlspecialchars($p) ?>"><?= htmlspecialchars($p) ?></option>
+                            <?php endforeach; ?>
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 pointer-events-none"></i>
                     </div>

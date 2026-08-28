@@ -90,6 +90,11 @@ class HotspotController extends Controller
             'users' => $users,
             'servers' => $servers,
             'validProfiles' => $validProfiles,
+            // Full profile list dari MikroTik — untuk dropdown Add/Edit form
+            // (jangan filter by user-referenced, supaya user bisa assign
+            // voucher ke profile valid manapun)
+            'allProfiles' => array_keys($validProfiles),
+            'validProfiles' => $validProfiles,
             'error' => $error,
             'templates' => $templates,
             'defaultTemplate' => $defaultTemplate,
