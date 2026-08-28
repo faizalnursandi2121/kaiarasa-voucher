@@ -33,7 +33,7 @@ function salesFmtRp(int $v): string
 ?>
 <style>
 @media print {
-    /* Hide everything except the sales report body */
+    /* Hide chrome UI */
     #sidebar, header.session-mobile-header,
     nav.page-breadcrumb, .page-header,
     #sales-filter-form, #sales-search,
@@ -41,20 +41,26 @@ function salesFmtRp(int $v): string
     #chart-trend, #chart-volume, #chart-package,
     #kai-route-loading, .skip-link,
     footer, .footer, [role="contentinfo"] { display: none !important; }
-    /* Keep KPI cards + detail table */
-    .card, .grid, #sales-table { break-inside: avoid; }
+    /* Print layout: ukuran A4 portrait, hemat ruang */
     body { background: #fff !important; color: #000 !important; }
+    .max-w-7xl { max-width: 100% !important; padding: 0 !important; }
+    /* Tabel: pastikan tidak terpotong oleh overflow-x container */
+    .overflow-x-auto { overflow: visible !important; }
+    .table-glass { width: 100% !important; min-width: 0 !important; }
+    .table-glass th, .table-glass td { white-space: normal !important; padding: 4px 6px !important; font-size: 10px !important; }
+    /* Page break control */
+    .card, #sales-table { break-inside: auto; }
+    thead { display: table-header-group; } /* ulangi header di setiap halaman */
+    tr { page-break-inside: avoid; }
+    /* Print header */
     .print-header { display: block !important; margin-bottom: 12px; }
     .print-header h2 { font-size: 18px; font-weight: 700; margin: 0 0 4px; }
     .print-header p { font-size: 11px; margin: 0 0 2px; }
-    /* Reduce padding for compact print */
-    .max-w-7xl { max-width: 100% !important; padding: 0 !important; }
-    @page { margin: 1.5cm; }
+    @page { margin: 1cm; size: A4 landscape; }
 }
 .print-header { display: none; }
 </style>
 <script>
-window.addEventListener('beforeprint', function () {
     var h = document.querySelector('.print-header');
     if (!h) {
         h = document.createElement('div');
