@@ -114,8 +114,38 @@ $toolbar_html .= '
                         </td>
                         <td>
                             <div class="flex items-center">
-                                <div class="h-8 w-8 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xs font-bold mr-3">
-                                    <i data-lucide="ticket" class="w-4 h-4"></i>
+                                <?php
+                                    // Rate-limit seperti '10M/10M' atau '512k/1M'. Avatar pakai max speed
+                                    $rl = trim((string) ($profile['rate-limit'] ?? ''));
+                                    $avatarTxt = '—';
+                                    $avatarColor = 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400';
+                                    if ($rl !== '') {
+                                        $maxBytes = 0;
+                                        foreach (explode('/', $rl) as $part) {
+                                            $m = '/^\s*(\d+(?:\.\d+)?)\s*([kKmMgG]?)\s*$/';
+                                            if (preg_match($m, trim($part), $mm)) {
+                                                $n = (float) $mm[1];
+                                                $u = strtolower($mm[2] ?? '');
+                                                $b = $n * ($u === 'g' ? 1024 * 1024 : ($u === 'm' ? 1024 : ($u === 'k' ? 1 : 1)));
+                                                if ($b > $maxBytes) $maxBytes = $b;
+                                            }
+                                        }
+                                        if ($maxBytes >= 1024 * 1024) {
+                                            $avatarTxt = (string) (int) round($maxBytes / (1024 * 1024));
+                                        } elseif ($maxBytes >= 1024) {
+                                            $avatarTxt = (string) (int) round($maxBytes / 1024);
+                                        } elseif ($maxBytes > 0) {
+                                            $avatarTxt = (string) (int) round($maxBytes);
+                                        }
+                                    } else {
+                                        // Tanpa rate limit: avatar pakai 2 huruf pertama nama
+                                        $name2 = strtoupper(substr((string) ($profile['name'] ?? '?'), 0, 2));
+                                        $avatarTxt = $name2 !== '' ? $name2 : '?';
+                                        $avatarColor = 'bg-[#92aa96]/20 text-[#47614d] dark:text-[#92aa96]';
+                                    }
+                                ?>
+                                <div class="h-8 w-8 rounded-lg <?= $avatarColor ?> text-[11px] font-bold flex items-center justify-center shrink-0 mr-3">
+                                    <?= htmlspecialchars($avatarTxt) ?>
                                 </div>
                                 <div class="text-sm font-medium text-foreground">
                                     <button onclick="openProfileModal('edit', this)" class="hover:underline hover:text-purple-600 dark:hover:text-purple-400 text-left">
