@@ -338,21 +338,20 @@ $toolbar_html .= '
                         <div class="grid grid-cols-3 gap-2">
                             <div class="relative">
                                 <input type="number" name="timelimit_d" min="0" placeholder="0" aria-label="Days"
-                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">D</span>
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-12 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <span class="absolute inset-y-0 right-3.5 flex items-center text-[12px] font-semibold text-accents-5 pointer-events-none">Days</span>
                             </div>
                             <div class="relative">
                                 <input type="number" name="timelimit_h" min="0" max="23" placeholder="0" aria-label="Hours"
-                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">H</span>
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-12 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <span class="absolute inset-y-0 right-3.5 flex items-center text-[12px] font-semibold text-accents-5 pointer-events-none">Hours</span>
                             </div>
                             <div class="relative">
                                 <input type="number" name="timelimit_m" min="0" max="59" placeholder="0" aria-label="Minutes"
-                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-7 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
-                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold uppercase opacity-40 pointer-events-none">M</span>
+                                    class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-12 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                                <span class="absolute inset-y-0 right-3.5 flex items-center text-[12px] font-semibold text-accents-5 pointer-events-none">Minutes</span>
                             </div>
                         </div>
-                    </div>
                     <div>
                         <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_users.form.data_limit">Data limit</label>
                         <div class="flex gap-2">
