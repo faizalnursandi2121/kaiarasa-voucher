@@ -648,6 +648,9 @@ body {
   }
 }
 
+.custom-select-wrapper {
+  flex-shrink: 0;
+}
 
 .\!btn {
   display: inline-flex;
@@ -1242,43 +1245,37 @@ input:-webkit-autofill,
 .custom-select-dropdown {
   pointer-events: none;
   visibility: hidden;
-  /* Floating popover. position:fixed → ANCHOR via JS ke trigger
-     wrapper (left/top computed dari rect). TIDAK embedded di
-     table — visual separator: drop shadow dramatis + border
-     tegas + background yang kontras. */
-  position: fixed;
-  z-index: 100;
+  position: absolute;
+  top: 100%;
+  z-index: 50;
+  margin-top: 0.25rem;
   display: flex;
   max-height: 15rem;
   min-width: 100%;
-  transform-origin: top center;
+  transform-origin: top;
   --tw-translate-y: -0.5rem;
   --tw-scale-x: .95;
   --tw-scale-y: .95;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   flex-direction: column;
   overflow: hidden;
+  border-radius: 0.75rem;
   border-width: 1px;
-  border-style: solid;
   border-color: var(--accents-2);
   background-color: var(--background);
   opacity: 0;
-  /* Drop shadow dramatis: 2 layer. Layer 1 dekat (tight) untuk
-     definisi, layer 2 jauh (soft) untuk ambient occlusion. Tanpa
-     ini dropdown putih di atas table putih = terlihat embedded. */
-  box-shadow:
-    0 4px 6px -1px rgb(0 0 0 / 0.12),
-    0 10px 20px -4px rgb(0 0 0 / 0.18),
-    0 25px 50px -12px rgb(0 0 0 / 0.28);
-  transition-property: opacity, transform;
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(0 0 0 / 0.05);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-  transition-duration: 150ms;
 }
-.custom-select-wrapper {
-  flex-shrink: 0;
-  position: relative;
-}
-
 
 .custom-select-dropdown:is(.dark *) {
   border-color: rgb(255 255 255 / 0.1);
@@ -1294,19 +1291,21 @@ input:-webkit-autofill,
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   opacity: 1;
 }
-/* Animation origin untuk upward (fallback). Default transform
-   origin top center — saat .dropdown-up, geser origin ke bottom
-   supaya scale-in animation terasa datang dari trigger. */
+
 .custom-select-dropdown.dropdown-up {
-  transform-origin: bottom center;
+  bottom: 100%;
+  top: auto;
+  margin-bottom: 0.25rem;
+  margin-top: 0px;
+  transform-origin: bottom;
   --tw-translate-y: 0.5rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+
 .custom-select-dropdown.dropdown-up.open {
   --tw-translate-y: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
-
-
-
 
 /* Premium Control Pill & Segmented Switch */
 
@@ -1497,6 +1496,7 @@ input:-webkit-autofill,
   align-items: center;
   gap: 0.5rem;
 }
+
 /* Glassmorphism Table */
 
 .table-container {
