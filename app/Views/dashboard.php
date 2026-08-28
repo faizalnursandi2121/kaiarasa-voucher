@@ -189,6 +189,10 @@ window.whenReady(function () {
 
     // Amankan data & pastikan kontainer terukur sebelum menggambar.
     function safeNum(v) { var n = Number(v); return isFinite(n) ? n : 0; }
+    function hasValidData(series) {
+        if (! Array.isArray(series) || ! series.length) return false;
+        return series.some(function (p) { return p && (Number(p.value) > 0 || Number(p.avg) > 0 || Number(p.max) > 0 || Number(p.count) > 0); });
+    }
     function drawWhenReady(el, makeOpts) {
         var attempt = function (left) {
             if (! el.isConnected) return;                 // halaman sudah berganti
@@ -211,6 +215,8 @@ window.whenReady(function () {
     if (uaEl) {
         if (! uaSeries.length) {
             uaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">Not enough data yet — activity is sampled every few minutes.</p>';
+        } else if (! hasValidData(uaSeries)) {
+            uaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No active sessions in this period.</p>';
         } else if (uaMode === 'today') {
             if (window.kaiMark) window.kaiMark('chart-ua-init');
             var __c = document.getElementById('chart-ua'); __c.innerHTML = '';
@@ -249,6 +255,8 @@ window.whenReady(function () {
     if (vaEl) {
         if ((va.daily || []).length === 0) {
             vaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No voucher activity yet.</p>';
+        } else if (! (va.daily || []).some(function (d) { return safeNum(d.count) > 0; })) {
+            vaEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No voucher activity in this period.</p>';
         } else {
             var __c = document.getElementById('chart-va'); __c.innerHTML = '';
             drawWhenReady(vaEl, function () { return baseChart({
@@ -266,7 +274,7 @@ window.whenReady(function () {
     // ---- Top Packages donut ----
     var pkgEl = document.getElementById('chart-packages');
     if (pkgEl) {
-        if (! topPkgs.length) {
+        if (! topPkgs.length || ! topPkgs.some(function (p) { return safeNum(p.count) > 0; })) {
             pkgEl.innerHTML = '<p class="text-xs opacity-50 py-10 text-center">No package data yet.</p>';
         } else {
             var __c = document.getElementById('chart-packages'); __c.innerHTML = '';
