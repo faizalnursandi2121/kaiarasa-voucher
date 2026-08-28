@@ -732,13 +732,16 @@ $toolbar_html .= '
             if (!res) return;
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/<?= htmlspecialchars($session) ?>/hotspot/delete'; 
+            form.action = '/<?= htmlspecialchars($session) ?>/hotspot/delete';
             const sInput = document.createElement('input');
             sInput.type = 'hidden'; sInput.name = 'session'; sInput.value = '<?= htmlspecialchars($session) ?>';
             form.appendChild(sInput);
             const idInput = document.createElement('input');
             idInput.type = 'hidden'; idInput.name = 'id'; idInput.value = selected.join(',');
             form.appendChild(idInput);
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden'; csrfInput.name = '_csrf'; csrfInput.value = window.CSRF_TOKEN;
+            form.appendChild(csrfInput);
             document.body.appendChild(form);
             form.submit();
         });

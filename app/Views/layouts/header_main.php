@@ -2,6 +2,7 @@
 
 use App\Config\SiteConfig;
 use App\Core\Hooks;
+use App\Helpers\CsrfHelper;
 
 // Initialize variables to avoid undefined notices if not set
 $hotspotname = isset($hotspotname) ? $hotspotname : SiteConfig::APP_NAME;
@@ -113,6 +114,10 @@ $title = isset($title) ? SiteConfig::getTitle($title) : SiteConfig::getTitle();
                 cb();
             }
         };
+        // CSRF synchronizer token for JS-issued state-changing requests
+        // (fetch header X-CSRF-Token / dynamically built forms). Verified
+        // server-side in CsrfHelper::enforceRequestSafety().
+        window.CSRF_TOKEN = <?= json_encode(CsrfHelper::token()) ?>;
     </script>
     <script src="/assets/js/kaiarasa.js" defer></script>
     <script src="/assets/js/modules/updater.js" defer></script>

@@ -838,7 +838,7 @@ window.whenReady(function () {
         var doDelete = function () {
             return fetch('/settings/delete', {
                 method: 'POST',
-                headers: { Accept: 'application/json' },
+                headers: { Accept: 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN || '' },
                 body: new URLSearchParams({ id: String(r.id) }),
             }).then(function (res) { return res.json(); });
         };
