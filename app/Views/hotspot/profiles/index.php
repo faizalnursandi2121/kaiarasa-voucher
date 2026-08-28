@@ -23,8 +23,8 @@ $page_title = 'Access Packages';
 $page_desc_key = 'hotspot_profiles.subtitle';
 $page_desc = 'Manage hotspot rate limits and pricing for session: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
-    ['label' => 'Access Packages', 'href' => null],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('hotspot_profiles.title', 'Data Plans'), 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>

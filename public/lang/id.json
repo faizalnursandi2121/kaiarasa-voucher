@@ -750,9 +750,9 @@
         "packages": "Paket Data"
     },
     "activity": {
-        "active_users": "Pengguna Online",
+        "active_users": "Pengguna Aktif",
         "devices": "Perangkat Terhubung",
-        "activity_log": "Log Aktivitas"
+        "activity_log": "Log Pengguna"
     },
     "sales": {
         "report": "Laporan Penjualan"

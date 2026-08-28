@@ -23,7 +23,7 @@ $page_title = 'DHCP Leases';
 $page_desc_key = 'dhcp.subtitle';
 $page_desc = 'Active DHCP leases for: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
     ['label' => 'Network', 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';

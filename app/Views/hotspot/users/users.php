@@ -5,7 +5,7 @@ use App\Helpers\HotspotHelper;
 use App\Helpers\ViewHelper;
 use App\Helpers\LanguageHelper;
 
-$title = 'User Accounts';
+$title = 'Vouchers';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 
 // Prepare Filters Data
@@ -38,8 +38,8 @@ $page_title = 'Vouchers';
 $page_desc_key = 'hotspot_users.subtitle';
 $page_desc = 'Manage vouchers and user accounts for session: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
-    ['label' => 'User Accounts', 'href' => null],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('hotspot_users.title', 'Vouchers'), 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>

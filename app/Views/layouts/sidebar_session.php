@@ -222,12 +222,12 @@ $getInitials = function ($name) {
                 <div class="space-y-0.5">
                 <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/active" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="users" class="w-[18px] h-[18px]"></i>
-                    <span data-i18n="activity.active_users">Online Users</span>
+                    <span data-i18n="activity.active_users">Active Users</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= (strpos($uri, '/hotspot/active') !== false) ? 'bg-white' : 'bg-transparent' ?>"></span>
                 </a>
                 <a href="/<?php echo htmlspecialchars($session) ?>/reports/user-log" class="flex items-center gap-3 px-3 py-2 rounded-[10px] text-[13px] font-medium transition-colors <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white/[.18] text-white font-semibold' : 'text-white/75 hover:text-white hover:bg-white/10' ?>">
                     <i data-lucide="scroll-text" class="w-[18px] h-[18px]"></i>
-                    <span data-i18n="activity.activity_log">Activity Log</span>
+                    <span data-i18n="activity.activity_log">User Log</span>
                     <span class="ml-auto w-1.5 h-1.5 rounded-full <?= (strpos($uri, '/reports/user-log') !== false) ? 'bg-white' : 'bg-transparent' ?>"></span>
                 </a>
                 </div>

@@ -748,9 +748,9 @@
         "packages": "Data Plans"
     },
     "activity": {
-        "active_users": "Online Users",
+        "active_users": "Active Users",
         "devices": "Connected Devices",
-        "activity_log": "Activity Log"
+        "activity_log": "User Log"
     },
     "sales": {
         "report": "Sales Report"

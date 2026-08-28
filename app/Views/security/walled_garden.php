@@ -10,7 +10,7 @@ $page_title_key = 'security.walled_garden.title';
 $page_title = 'Walled Garden';
 $page_desc = 'Manage allowed destinations (bypass without login) for: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
     ['label' => 'Walled Garden', 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';

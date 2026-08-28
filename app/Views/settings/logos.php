@@ -21,7 +21,7 @@ $page_title = 'Logo Management';
 $page_desc_key = 'settings.logos_subtitle';
 $page_desc = 'Upload and manage logos for your hotspots and vouchers.';
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
     ['label' => LanguageHelper::t('sidebar.settings', 'Settings'), 'href' => "/settings"],
     ['label' => LanguageHelper::t('settings.logos_title', 'Logos'), 'href' => null],
 ];

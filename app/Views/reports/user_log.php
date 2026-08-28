@@ -25,8 +25,8 @@ $page_title = 'User Log';
 $page_desc_key = 'reports.user_log_subtitle';
 $page_desc = 'Login and logout history for: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
-    ['label' => 'Activity Log', 'href' => null],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
+    ['label' => LanguageHelper::t('reports.user_log_title', 'User Log'), 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>

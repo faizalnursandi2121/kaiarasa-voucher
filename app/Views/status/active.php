@@ -25,7 +25,7 @@ $page_title = 'Active Users';
 $page_desc_key = 'hotspot_active.subtitle';
 $page_desc = 'Monitor currently active hotspot sessions: ' . htmlspecialchars($session);
 $breadcrumbs = [
-    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/"],
+    ['label' => LanguageHelper::t('common.dashboard', 'Dashboard'), 'href' => "/" . htmlspecialchars($session) . "/dashboard"],
     ['label' => 'Active Users', 'href' => null],
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
