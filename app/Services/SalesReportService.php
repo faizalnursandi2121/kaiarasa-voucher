@@ -102,39 +102,62 @@ class SalesReportService
     }
 
     /** Normalisasi satu baris user RouterOS menjadi record penjualan. */
+    /** Normalisasi satu baris user RouterOS menjadi record penjualan.
+     * sale_type: trust DB value kalau ada, else detect dari comment.
+     * Sama untuk billable: trust DB kalau ada, else compute. */
     public static function normalizeUser(array $user, array $profilePriceMap): array
     {
         $comment = (string) ($user['comment'] ?? '');
-        $saleType = self::detectSaleType($comment);
+        // Trust DB sale_type (sales_records) bila ada; fallback ke comment
+        // detection untuk raw MikroTik users.
+        $saleType = ! empty($user['sale_type'])
+            ? (string) $user['sale_type']
+            : self::detectSaleType($comment);
         $price = self::detectPrice($user, $profilePriceMap);
 
         $explicit = self::hasExplicitPriceMarker($comment);
-        $billable = $saleType !== 'manual_user'
-            ? true
-            : ($explicit && $price > 0);
+        // Trust DB billable bila field ada; fallback ke logic compute.
+        $billable = array_key_exists('billable', $user)
+            ? (bool) $user['billable']
+            : ($saleType !== 'manual_user' ? true : ($explicit && $price > 0));
 
         $uptime = (string) ($user['uptime'] ?? '0s');
         $bytesOut = $user['bytes-out'] ?? 0;
+
+        // Trust DB price kalau sudah snapshot di sales_records.
+        $effectivePrice = array_key_exists('price', $user) && (int) $user['price'] > 0
+            ? (int) $user['price']
+            : $price;
+
+        // Trust DB datetime kalau ada (sales_records menyimpan datetime ISO).
+        if (! empty($user['datetime'])) {
+            $dt = (string) $user['datetime'];
+            $date = substr($dt, 0, 10);
+            $time = strlen($dt) > 10 ? substr($dt, 11, 5) : '';
+        } else {
+            $dp = self::parseDateTime($comment);
+            $date = $dp['date'];
+            $time = $dp['time'];
+        }
 
         return [
             'name' => (string) ($user['name'] ?? ''),
             'password' => (string) ($user['password'] ?? ''),
             'profile' => (string) ($user['profile'] ?? 'default'),
             'server' => (string) ($user['server'] ?? 'all'),
-            'price' => $price,
+            'price' => $effectivePrice,
             'comment' => $comment,
             'sale_type' => $saleType,
             'billable' => $billable,
-            'datetime' => (($dp = self::parseDateTime($comment))),
-            'date' => $dp['date'],
-            'time' => $dp['time'],
+            'datetime' => ['date' => $date, 'time' => $time],
+            'date' => $date,
+            'time' => $time,
             'used' => ($uptime !== '' && $uptime !== '0s') || (is_numeric($bytesOut) && $bytesOut > 0),
             'uptime' => $uptime,
             'deleted_at' => (string) ($user['deleted_at'] ?? ''),
             'sold_at' => (string) ($user['sold_at'] ?? ''),
         ];
     }
-
 
     /**
      * MURNI (tanpa I/O): agregasi records hasil normalizeUser.
@@ -399,6 +422,10 @@ class SalesReportService
                 'comment' => $comment,
                 'uptime' => '0s',
                 'bytes-out' => 0,
+                'sale_type' => (string) ($r['sale_type'] ?? ''),
+                'price' => (int) ($r['price'] ?? 0),
+                'billable' => (bool) ($r['billable'] ?? 0),
+                'datetime' => (string) ($r['datetime'] ?? ''),
                 'deleted_at' => (string) ($r['deleted_at'] ?? ''),
                 'sold_at' => (string) ($r['sold_at'] ?? ''),
             ];

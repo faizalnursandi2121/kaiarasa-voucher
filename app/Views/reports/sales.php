@@ -287,35 +287,51 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
         <div class="overflow-x-auto">
             <table class="table-glass" id="sales-table">
                 <thead>
+                    <tr>
                         <th class="cursor-pointer" data-sort="datetime">Generated ▲▼</th>
                         <th class="cursor-pointer" data-sort="code">Voucher ▲▼</th>
                         <th class="cursor-pointer" data-sort="package">Package ▲▼</th>
                         <th class="cursor-pointer" data-sort="server">Server ▲▼</th>
                         <th class="cursor-pointer" data-sort="sale_type">Sale Type ▲▼</th>
                         <th class="text-right cursor-pointer" data-sort="price">Price ▲▼</th>
+                        <th class="cursor-pointer" data-sort="deleted_at">Status ▲▼</th>
                     </tr>
                 </thead>
                 <tbody id="sales-tbody">
                     <?php foreach ($report['list'] as $row):
-                        $dtLabel = date('d M Y', strtotime($row['date'])) . (! empty($row['time']) ? ' · '.substr($row['time'], 0, 5) : ''); ?>
-                    <tr data-datetime="<?= htmlspecialchars($row['date'].(! empty($row['time']) ? ' '.$row['time'] : '')) ?>"
-                        data-code="<?= htmlspecialchars($row['code']) ?>"
-                        data-package="<?= htmlspecialchars($row['package']) ?>"
-                        data-server="<?= htmlspecialchars($row['server']) ?>"
-                        data-sale_type="<?= htmlspecialchars($row['sale_type']) ?>"
-                        data-price="<?= (int) $row['price'] ?>">
-                        <td class="whitespace-nowrap">
-                            <?= $dtLabel ?>
-                            <?php if (! empty($row['deleted_at'])): ?>
-                            <span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-red-500/10 text-red-600" title="Voucher deleted from MikroTik at <?= htmlspecialchars($row['deleted_at']) ?>">
-                                <i data-lucide="trash-2" class="w-2.5 h-2.5 mr-0.5"></i> DELETED
-                            </span>
-                            <?php endif; ?>
-                        </td>
-                        <td class="font-mono font-medium <?= ! empty($row['deleted_at']) ? 'line-through opacity-50' : '' ?>"><?= htmlspecialchars($row['code']) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
+                        $dtLabel = date('d M Y', strtotime($row['date'])) . (! empty($row['time']) ? ' · '.substr($row['time'], 0, 5) : '');
+                        $isDeleted = ! empty($row['deleted_at']); ?>
+                     <tr data-datetime="<?= htmlspecialchars($row['date'].(! empty($row['time']) ? ' '.$row['time'] : '')) ?>"
+                         data-code="<?= htmlspecialchars($row['code']) ?>"
+                         data-package="<?= htmlspecialchars($row['package']) ?>"
+                         data-server="<?= htmlspecialchars($row['server']) ?>"
+                         data-sale_type="<?= htmlspecialchars($row['sale_type']) ?>"
+                         data-price="<?= (int) $row['price'] ?>"
+                         data-deleted_at="<?= htmlspecialchars($row['deleted_at'] ?? '') ?>">
+                         <td class="whitespace-nowrap"><?= $dtLabel ?></td>
+                         <td class="font-mono font-medium <?= $isDeleted ? 'line-through opacity-50' : '' ?>"><?= htmlspecialchars($row['code']) ?></td>
+                         <td class="font-medium"><?= htmlspecialchars($row['package']) ?></td>
+                         <td><span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-black/[.04] dark:bg-white/[.05]"><?= htmlspecialchars($row['server'] ?: '—') ?></span></td>
+                         <td>
+                             <span class="px-2 py-0.5 rounded text-[11px] font-semibold <?= $row['sale_type'] === 'quick_print' ? 'bg-sky-500/10 text-sky-600' : 'bg-purple-500/10 text-purple-600' ?>">
+                                 <?= $row['sale_type'] === 'quick_print' ? 'Quick Print' : 'Bulk Generate' ?>
+                             </span>
+                         </td>
+                         <td class="text-right tabular-nums font-semibold"><?= salesFmtRp((int) $row['price']) ?></td>
+                         <td>
+                             <?php if ($isDeleted): ?>
+                             <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-red-500/10 text-red-600" title="Voucher deleted from MikroTik at <?= htmlspecialchars($row['deleted_at']) ?>">
+                                 <i data-lucide="trash-2" class="w-3 h-3 mr-1"></i> Deleted
+                             </span>
+                             <?php else: ?>
+                             <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-green-500/10 text-green-600">
+                                 <i data-lucide="check" class="w-3 h-3 mr-1"></i> Active
+                             </span>
+                             <?php endif; ?>
+                         </td>
+                     </tr>
+                     <?php endforeach; ?>
+                 </tbody>
             </table>
         </div>
         <div class="flex items-center justify-between px-5 py-3 border-t border-black/[.06] dark:border-white/[.06] text-xs opacity-60">
