@@ -107,8 +107,11 @@ $toolbar_html .= '
                             </div>
                         </td>
                         <td>
-                            <span class="text-sm font-semibold"><?= htmlspecialchars($profile['shared-users'] ?? '1') ?></span>
-                            <span class="text-xs text-accents-5">dev</span>
+                            <?php $sv = (string) ($profile['shared-users'] ?? '1'); if ($sv === 'unlimited'): ?>
+                            <i data-lucide="infinity" class="w-5 h-5 text-[#5f7f67]" title="Unlimited"></i>
+                            <?php else: ?>
+                            <span class="text-sm font-semibold"><?= htmlspecialchars($sv) ?></span>
+                            <?php endif; ?>
                         </td>
                          <td>
                             <?php if (! empty($profile['rate-limit'])) { ?>
@@ -374,11 +377,15 @@ $toolbar_html .= '
                  idInput.disabled = false;
                  idInput.value = row.dataset.id;
 
-                 // Populate Fields
-                 form.querySelector('[name="name"]').value = row.dataset.name || '';
-                 form.querySelector('[name="shared-users"]').value = row.dataset.sharedUsers || '1';
-                                  const rlCombined = row.dataset.rateLimit || '';
-                 if (form.querySelector('[name="rate-limit"]')) form.querySelector('[name="rate-limit"]').value = rlCombined;
+                var sv = row.dataset.sharedUsers;
+                var inp = form.querySelector('[name="shared-users"]');
+                if (sv === 'unlimited') {
+                    inp.value = '';
+                    inp.placeholder = 'unlimited';
+                } else {
+                    inp.value = sv || '1';
+                    inp.placeholder = '1';
+                }
                  const rlParts = rlCombined.split('/');
                  const parseRl = (s) => { const m = /^\s*(\d+(?:\.\d+)?)\s*([kKmMgG]?)\s*$/.exec(s || ''); return m ? [m[1], (m[2] || 'M')] : null; };
                  if (rlParts.length === 2) {
