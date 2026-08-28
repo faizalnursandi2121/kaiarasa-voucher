@@ -289,6 +289,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         <th class="cursor-pointer" data-sort="datetime">Generated ▲▼</th>
                         <th class="cursor-pointer" data-sort="code">Code ▲▼</th>
                         <th class="cursor-pointer" data-sort="package">Package ▲▼</th>
+                        <th class="cursor-pointer" data-sort="server">Server ▲▼</th>
                         <th class="cursor-pointer" data-sort="sale_type">Sale Type ▲▼</th>
                         <th class="cursor-pointer" data-sort="batch_id">Batch ID ▲▼</th>
                         <th class="text-right cursor-pointer" data-sort="price">Price ▲▼</th>
