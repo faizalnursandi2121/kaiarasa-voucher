@@ -68,6 +68,9 @@ $toolbar_html .= '
         <table class="table-glass" id="profiles-table">
             <thead>
                 <tr>
+                    <th scope="col" class="px-4 py-3 w-10">
+                        <input type="checkbox" id="select-all" class="checkbox">
+                    </th>
                     <th data-sort="name" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="hotspot_profiles.name">Name</th>
                     <th data-i18n="hotspot_profiles.shared_users">Max. devices</th>
                     <th data-i18n="hotspot_profiles.rate_limit">Rate Limit</th>
@@ -80,7 +83,7 @@ $toolbar_html .= '
             <tbody id="table-body">
                 <?php if (! empty($profiles)) { ?>
                     <?php foreach ($profiles as $profile) { ?>
-                    <tr class="table-row-item group-row" 
+                    <tr class="table-row-item group-row"
                         data-id="<?= $profile['.id'] ?>"
                         data-name="<?= htmlspecialchars($profile['name'] ?? '') ?>"
                         data-shared-users="<?= htmlspecialchars($profile['shared-users'] ?? '1') ?>"
@@ -93,7 +96,9 @@ $toolbar_html .= '
                         data-val-m="<?= htmlspecialchars($profile['val_m'] ?? '') ?>"
                         data-search-name="<?= strtolower($profile['name'] ?? '') ?>"
                         data-mode="<?= htmlspecialchars($profile['meta']['expired_mode_formatted'] ?? '') ?>">
-                        
+                        <td class="px-4 py-4">
+                            <input type="checkbox" name="selected_profiles[]" value="<?= htmlspecialchars($profile['.id']) ?>" class="profile-checkbox checkbox">
+                        </td>
                         <td>
                             <div class="flex items-center">
                                 <div class="h-8 w-8 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xs font-bold mr-3">
@@ -438,6 +443,20 @@ $toolbar_html .= '
         
         const rows = document.querySelectorAll('.table-row-item');
         new TableManager(rows, 10);
+
+        // Select-all checkbox (sama pola dengan halaman Vouchers)
+        const selectAll = document.getElementById('select-all');
+        const tableBody = document.getElementById('table-body');
+        if (selectAll && tableBody) {
+            selectAll.addEventListener('change', (e) => {
+                tableBody.querySelectorAll('.profile-checkbox').forEach(cb => { cb.checked = e.target.checked; });
+            });
+            tableBody.addEventListener('change', (e) => {
+                if (e.target.classList.contains('profile-checkbox') && !e.target.checked) {
+                    selectAll.checked = false;
+                }
+            });
+        }
     });
 </script>
 
