@@ -169,6 +169,12 @@ class CustomSelect {
         document.addEventListener('click', e => {
             if (!this.wrapper.contains(e.target)) this.close();
         });
+        // position:fixed popover tidak auto-follow saat trigger
+        // scroll. Close on scroll supaya user experience jelas:
+        // dropdown tutup saat scroll, re-open saat user butuh.
+        this._onScroll = () => { if (this.menu.classList.contains('open')) this.close(); };
+        window.addEventListener('scroll', this._onScroll, true);
+        window.addEventListener('resize', this._onScroll);
     }
 
     toggle() {
@@ -179,18 +185,19 @@ class CustomSelect {
         // Close others
         CustomSelect.instances.forEach(i => i !== this && i.close());
 
-        // Smart Position. Dropdown adalah position:absolute di
-        // dalam wrapper, jadi space check terhadap viewport.
+        // Popover positioning. position:fixed → ANCHOR dropdown
+        // ke trigger via viewport coords (rect.left, rect.bottom).
+        // Default DOWNWARD (natural). Fallback UPWARD kalau
+        // space di bawah tidak cukup.
         const rect = this.wrapper.getBoundingClientRect();
-        const menuHeight = 260; // 15rem + search + padding
-        const spaceBelow = window.innerHeight - rect.bottom;
-        const spaceAbove = rect.top;
-        // DEFAULT: open DOWNWARD (natural flow UX). Fallback ke
-        // upward HANYA kalau spaceBelow tidak cukup untuk menu
-        // (misal trigger dekat dasar viewport).
-        const goUp = spaceBelow < menuHeight && spaceAbove > spaceBelow;
+        const menuMaxHeight = 240; // 15rem
+        const padding = 4;
+        const viewportH = window.innerHeight;
+        const spaceBelow = viewportH - rect.bottom - padding;
+        const spaceAbove = rect.top - padding;
+        const goUp = spaceBelow < menuMaxHeight && spaceAbove > spaceBelow;
 
-        // Reset positioning classes
+        // Reset state
         this.menu.classList.remove(
             'right-0', 'left-0',
             'origin-top-right', 'origin-top-left',
@@ -198,39 +205,36 @@ class CustomSelect {
             'dropdown-up'
         );
 
+        if (goUp) this.menu.classList.add('dropdown-up');
+
+        // Horizontal: align left edge ke trigger left (kecuali
+        // trigger dekat tepi kanan viewport)
+        const isRightAligned = window.innerWidth - rect.right < 250;
+        if (isRightAligned) this.menu.classList.add('origin-top-right');
+        else this.menu.classList.add('origin-top-left');
+
+        // Apply open dulu supaya real height terukur
+        this.menu.classList.add('open');
+        const realHeight = this.menu.offsetHeight || menuMaxHeight;
+
+        // Position. position:fixed left/top in viewport coords.
+        const minWidth = Math.max(rect.width, 160);
+        if (isRightAligned) {
+            this.menu.style.left = (rect.right - minWidth) + 'px';
+        } else {
+            this.menu.style.left = rect.left + 'px';
+        }
+        this.menu.style.minWidth = minWidth + 'px';
+        this.menu.style.width = 'auto';
+
         if (goUp) {
-            this.menu.classList.add('dropdown-up');
+            this.menu.style.top = (rect.top - realHeight - padding) + 'px';
+        } else {
+            this.menu.style.top = (rect.bottom + padding) + 'px';
         }
 
-        // Horizontal alignment
-        const isRightAligned = window.innerWidth - rect.left < 250;
-        this.menu.classList.add(isRightAligned ? 'right-0' : 'left-0');
-
-        // Origin for animation
-        const originY = goUp ? 'bottom' : 'top';
-        const originX = isRightAligned ? 'right' : 'left';
-        this.menu.classList.add(`origin-${originY}-${originX}`);
-
-        this.menu.classList.add('open');
         this.trigger.classList.add('ring-1', 'ring-foreground');
         this.trigger.querySelector('.custom-select-icon')?.classList.add('rotate-180');
-
-        // Backdrop overlay: semi-transparent layer yang cover
-        // seluruh viewport. Visual efek: dropdown jadi terasa
-        // floating popover, bukan embedded di table. Click di
-        // backdrop = close.
-        if (!document.getElementById('cs-backdrop')) {
-            const bd = document.createElement('div');
-            bd.id = 'cs-backdrop';
-            bd.className = 'custom-select-backdrop';
-            bd.addEventListener('click', () => {
-                CustomSelect.instances.forEach(i => i.close());
-                bd.remove();
-            });
-            document.body.appendChild(bd);
-            // trigger reflow untuk transition
-            requestAnimationFrame(() => bd.classList.add('show'));
-        }
 
         if (this.searchInput) setTimeout(() => this.searchInput.focus(), 50);
     }
@@ -239,12 +243,6 @@ class CustomSelect {
         this.menu.classList.remove('open');
         this.trigger.classList.remove('ring-1', 'ring-foreground');
         this.trigger.querySelector('.custom-select-icon')?.classList.remove('rotate-180');
-        // Hapus backdrop kalau tidak ada dropdown lain yang open
-        const anyOpen = CustomSelect.instances.some(i => i.menu.classList.contains('open'));
-        if (!anyOpen) {
-            const bd = document.getElementById('cs-backdrop');
-            if (bd) bd.classList.remove('show'), setTimeout(() => bd.remove(), 150);
-        }
     }
 
     select(index) {
