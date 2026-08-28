@@ -669,16 +669,19 @@ $toolbar_html .= '
                     <span class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.validity">Validity</span>
                     <div class="grid grid-cols-3 gap-2">
                         <div class="relative">
-                            <input type="number" name="validity_d" min="0" placeholder="0D" aria-label="Validity days"
-                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 pr-6 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            <input type="number" name="validity_d" min="0" placeholder="0" aria-label="Validity days"
+                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-12 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            <span class="absolute inset-y-0 right-3.5 flex items-center text-[12px] font-semibold text-accents-5 pointer-events-none">Days</span>
                         </div>
                         <div class="relative">
-                            <input type="number" name="validity_h" min="0" placeholder="0H" aria-label="Validity hours"
-                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            <input type="number" name="validity_h" min="0" placeholder="0" aria-label="Validity hours"
+                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-12 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            <span class="absolute inset-y-0 right-3.5 flex items-center text-[12px] font-semibold text-accents-5 pointer-events-none">Hours</span>
                         </div>
                         <div class="relative">
-                            <input type="number" name="validity_m" min="0" placeholder="0M" aria-label="Validity minutes"
-                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            <input type="number" name="validity_m" min="0" placeholder="0" aria-label="Validity minutes"
+                                class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3.5 pr-12 text-[14px] text-center outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                            <span class="absolute inset-y-0 right-3.5 flex items-center text-[12px] font-semibold text-accents-5 pointer-events-none">Minutes</span>
                         </div>
                     </div>
                 </div>

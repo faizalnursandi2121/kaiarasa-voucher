@@ -44,10 +44,21 @@ class HotspotHelper
         if (empty($val)) {
             return '';
         }
-        // Insert space after letters
-        $val = preg_replace('/([a-z]+)/i', '$1 ', $val);
-
-        return trim($val);
+        $parts = [];
+        $map = ['d' => 'Day', 'h' => 'Hour', 'm' => 'Minute'];
+        if (preg_match('/(\d+)d/i', $val, $m)) {
+            $n = (int) $m[1];
+            $parts[] = $n.' '.($n === 1 ? 'Day' : 'Days');
+        }
+        if (preg_match('/(\d+)h/i', $val, $m)) {
+            $n = (int) $m[1];
+            $parts[] = $n.' '.($n === 1 ? 'Hour' : 'Hours');
+        }
+        if (preg_match('/(\d+)m/i', $val, $m)) {
+            $n = (int) $m[1];
+            $parts[] = $n.' '.($n === 1 ? 'Minute' : 'Minutes');
+        }
+        return implode(' ', $parts);
     }
 
     /**
