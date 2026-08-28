@@ -220,11 +220,12 @@ class ProfileController extends Controller
 
             return;
         }
-
         $session = $_POST['session'] ?? '';
-        $id = $_POST['id'] ?? '';
-
-        if (empty($session) || empty($id)) {
+        // Bulk: ids = array (dari checkbox selected_profiles[])
+        $ids = $_POST['id'] ?? '';
+        $idList = is_array($ids) ? array_values(array_filter($ids, fn ($v) => $v !== '')) : [$ids];
+        $idList = array_filter($idList, fn ($v) => is_string($v) && $v !== '');
+        if (empty($session) || empty($idList)) {
             $this->redirect('/');
 
             return;
@@ -239,14 +240,16 @@ class ProfileController extends Controller
         $API = RouterOSAPI::fromSession($creds);
         $API->attempts = 1;
         $API->delay = 0;
+        $deleted = 0;
         if ($API->connect($creds['ip'], $creds['user'], $creds['password'])) {
-            $API->comm('/ip/hotspot/user/profile/remove', [
-                '.id' => $id,
-            ]);
+            foreach ($idList as $id) {
+                $API->comm('/ip/hotspot/user/profile/remove', ['.id' => $id]);
+                $deleted++;
+            }
             $API->disconnect();
         }
-
-        FlashHelper::set('success', 'toasts.profile_deleted', 'toasts.profile_deleted_desc', [], true);
+        $msgKey = count($idList) > 1 ? 'toasts.profile_bulk_deleted' : 'toasts.profile_deleted';
+        FlashHelper::set('success', $msgKey, 'toasts.profile_deleted_desc', ['count' => $deleted], true);
         $this->redirect('/'.$session.'/hotspot/profiles');
     }
 

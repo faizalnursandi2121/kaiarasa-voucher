@@ -608,6 +608,8 @@
         "profile_updated_desc": "Changes to profile \"{name}\" have been saved.",
         "profile_deleted": "Profile Deleted",
         "profile_deleted_desc": "The user profile has been removed.",
+        "profile_bulk_deleted": "Profiles Deleted",
+        "profile_bulk_deleted_desc": "{count} user profile(s) have been removed.",
         "user_added": "User Added",
         "user_added_desc": "Hotspot user \"{name}\" has been created.",
         "user_deleted": "User(s) Deleted",

@@ -620,6 +620,8 @@
         "profile_updated_desc": "Perubahan pada profil \"{name}\" berhasil disimpan.",
         "profile_deleted": "Profil Dihapus",
         "profile_deleted_desc": "Profil user berhasil dihapus.",
+        "profile_bulk_deleted": "Profil Dihapus",
+        "profile_bulk_deleted_desc": "{count} profil user berhasil dihapus.",
         "user_added": "User Ditambahkan",
         "user_added_desc": "User hotspot \"{name}\" berhasil dibuat.",
         "user_deleted": "User Dihapus",

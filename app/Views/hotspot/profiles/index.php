@@ -28,6 +28,19 @@ $breadcrumbs = [
 ];
 require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>
+<!-- Batch Action Toolbar -->
+<div id="batch-toolbar" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-foreground text-background px-6 py-3 rounded-full shadow-lg z-50 flex items-center gap-4 transition-all duration-300 translate-y-20 opacity-0">
+    <span class="text-sm font-medium"><span id="selected-count">0</span> <span data-i18n="common.selected">Selected</span></span>
+    <div class="h-4 w-px bg-background/20"></div>
+    <button type="button" id="bulk-delete-btn" class="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-bold text-sm">
+        <i data-lucide="trash-2" class="w-4 h-4"></i> <span data-i18n="common.delete">Delete</span>
+    </button>
+    <form id="bulk-delete-form" action="/<?= htmlspecialchars($session) ?>/hotspot/profile/delete" method="POST" class="hidden">
+        <input type="hidden" name="session" value="<?= htmlspecialchars($session) ?>">
+        <input type="hidden" name="_csrf" value="<?= htmlspecialchars(\App\Helpers\CsrfHelper::token()) ?>">
+        <div id="bulk-delete-ids"></div>
+    </form>
+</div>
 
 <?php if (isset($error)) { ?>
     <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center dark:bg-red-900/20 dark:text-red-400 dark:border dark:border-red-500/20">
@@ -442,19 +455,57 @@ $toolbar_html .= '
         }
         
         const rows = document.querySelectorAll('.table-row-item');
-        new TableManager(rows, 10);
-
         // Select-all checkbox (sama pola dengan halaman Vouchers)
         const selectAll = document.getElementById('select-all');
         const tableBody = document.getElementById('table-body');
+        const toolbar = document.getElementById('batch-toolbar');
+        const countSpan = document.getElementById('selected-count');
+        const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
+        const bulkDeleteForm = document.getElementById('bulk-delete-form');
+        const bulkDeleteIds = document.getElementById('bulk-delete-ids');
+
+        function updateToolbar() {
+            const checked = document.querySelectorAll('.profile-checkbox:checked');
+            countSpan.textContent = checked.length;
+            if (checked.length > 0) toolbar.classList.remove('translate-y-20', 'opacity-0');
+            else toolbar.classList.add('translate-y-20', 'opacity-0');
+        }
+
         if (selectAll && tableBody) {
             selectAll.addEventListener('change', (e) => {
                 tableBody.querySelectorAll('.profile-checkbox').forEach(cb => { cb.checked = e.target.checked; });
+                updateToolbar();
             });
             tableBody.addEventListener('change', (e) => {
-                if (e.target.classList.contains('profile-checkbox') && !e.target.checked) {
-                    selectAll.checked = false;
+                if (e.target.classList.contains('profile-checkbox')) {
+                    updateToolbar();
+                    if (!e.target.checked) selectAll.checked = false;
                 }
+            });
+        }
+
+        if (bulkDeleteBtn && bulkDeleteForm) {
+            bulkDeleteBtn.addEventListener('click', function () {
+                const checked = document.querySelectorAll('.profile-checkbox:checked');
+                if (checked.length === 0) return;
+                const names = Array.from(checked).map(cb => cb.closest('tr').querySelector('button')?.textContent.trim() || '').filter(Boolean);
+                const title = (window.i18n ? window.i18n.t('common.delete') : 'Delete') + ' ' + checked.length + ' ' + (window.i18n ? window.i18n.t('hotspot_profiles.title') : 'profile(s)') + '?';
+                const msg = (window.i18n ? window.i18n.t('common.confirm_delete') : 'Are you sure you want to delete the selected profile(s)?');
+                const ok = (window.i18n ? window.i18n.t('common.delete') : 'Delete');
+                const cancel = (window.i18n ? window.i18n.t('common.cancel') : 'Cancel');
+                Kaiarasa.confirm(title, msg, ok, cancel).then(res => {
+                    if (!res) return;
+                    // Populate hidden form
+                    bulkDeleteIds.innerHTML = '';
+                    checked.forEach(cb => {
+                        const i = document.createElement('input');
+                        i.type = 'hidden';
+                        i.name = 'id[]';
+                        i.value = cb.value;
+                        bulkDeleteIds.appendChild(i);
+                    });
+                    bulkDeleteForm.submit();
+                });
             });
         }
     });
