@@ -71,7 +71,6 @@ $toolbar_html .= '</select>
                     <th data-i18n="hotspot_active.address">Address / MAC</th>
                     <th data-i18n="hotspot_active.uptime">Uptime / Left</th>
                     <th data-i18n="hotspot_active.bytes_in_out">Bytes In/Out</th>
-                    <th data-i18n="hotspot_active.note">Note</th>
                     <th class="relative text-right" data-i18n="common.actions">
                         Actions
                     </th>
@@ -113,9 +112,6 @@ $toolbar_html .= '</select>
                                 <span class="flex items-center"><i data-lucide="arrow-down" class="w-3 h-3 mr-1 text-green-500"></i> <?= FormatHelper::formatBytes($item['bytes-in'] ?? 0) ?></span>
                                 <span class="flex items-center"><i data-lucide="arrow-up" class="w-3 h-3 mr-1 text-blue-500"></i> <?= FormatHelper::formatBytes($item['bytes-out'] ?? 0) ?></span>
                             </div>
-                        </td>
-                        <td>
-                            <div class="text-sm text-accents-5 italic"><?= htmlspecialchars($item['comment'] ?? '-') ?></div>
                         </td>
                         <td class="text-right text-sm font-medium">
                             <div class="flex items-center justify-end">
