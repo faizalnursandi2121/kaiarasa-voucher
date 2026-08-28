@@ -46,20 +46,36 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             </a>
         </div>
         <?php } else { ?>
-            <?php foreach ($packages as $pkg) { ?>
+        <?php
+            $routerProfiles = $routerProfiles ?? [];
+            $missing = static function (string $profile, array $list): bool {
+                return ! in_array($profile, $list, true);
+            };
+        ?>
+        <?php foreach ($packages as $pkg) {
+            $profileMissing = $missing((string) ($pkg['profile'] ?? ''), $routerProfiles);
+        ?>
             <!-- Card -->
-            <div class="card relative group overflow-hidden hover:border-primary/50 hover:-translate-y-1 transition-all duration-300 p-0">
+            <div class="card relative group overflow-hidden hover:border-primary/50 hover:-translate-y-1 transition-all duration-300 p-0 <?= $profileMissing ? 'opacity-60 border-red-500/30' : '' ?>">
                 <!-- Color Header -->
                 <div class="h-2 <?= htmlspecialchars($pkg['color'] ?? 'bg-blue-500') ?>"></div>
-                
+
+                <?php if ($profileMissing) { ?>
+                <!-- Missing profile warning banner -->
+                <div class="bg-red-500/10 border-b border-red-500/20 px-5 py-2 flex items-center gap-2 text-[12px] font-semibold text-red-600 dark:text-red-400">
+                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+                    <span data-i18n="quick_print.card_profile_missing">Data Plan Missing</span>
+                </div>
+                <?php } ?>
+
                 <div class="p-5 bg-background">
                     <div class="flex justify-between items-start mb-4">
                         <div>
                             <h3 class="font-bold text-lg text-foreground truncate" title="<?= htmlspecialchars($pkg['name']) ?>">
                                 <?= htmlspecialchars($pkg['name']) ?>
                             </h3>
-                            <div class="text-xs text-accents-5 font-mono mt-1">
-                                <span data-i18n="quick_print.profile">Profile</span>: <?= htmlspecialchars($pkg['profile']) ?>
+                            <div class="text-xs <?= $profileMissing ? 'text-red-500 font-semibold' : 'text-accents-5' ?> font-mono mt-1">
+                                <span data-i18n="quick_print.data_plan">Data Plans</span>: <?= htmlspecialchars($pkg['profile']) ?>
                             </div>
                         </div>
                         <div class="text-right">
@@ -82,20 +98,30 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
                     </div>
 
                     <!-- Action -->
+                    <?php if ($profileMissing) { ?>
+                    <button type="button" disabled
+                        class="w-full btn flex items-center justify-center gap-2 bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 cursor-not-allowed border border-red-200/50 dark:border-red-500/20"
+                        title="<?= htmlspecialchars($pkg['profile']) ?>">
+                        <i data-lucide="ban" class="w-4 h-4"></i>
+                        <span data-i18n="quick_print.card_profile_missing">Data Plan Missing</span>
+                    </button>
+                    <a href="/<?= htmlspecialchars($session) ?>/quick-print/manage" class="block w-full text-center mt-2 text-[12px] font-semibold text-[#47614d] dark:text-[#92aa96] hover:underline">
+                        <span data-i18n="quick_print.edit_package">Edit Package</span> &rarr;
+                    </a>
+                    <?php } else { ?>
                     <button onclick="printPackage('<?= $pkg['id'] ?>', '<?= htmlspecialchars($pkg['name']) ?>')" class="w-full btn btn-primary flex items-center justify-center gap-2">
                         <i data-lucide="printer" class="w-4 h-4"></i>
                         <span data-i18n="quick_print.print_voucher">Print Voucher</span>
                     </button>
-                    
+                    <?php } ?>
+
                     <?php if (! empty($pkg['comment'])) { ?>
                     <p class="text-xs text-accents-4 text-center mt-3 truncate"><?= htmlspecialchars($pkg['comment']) ?></p>
                     <?php } ?>
                 </div>
             </div>
-            <?php } ?>
         <?php } ?>
-    </div>
-</div>
+        <?php } ?>
 
 <!-- Print Script -->
 <script>

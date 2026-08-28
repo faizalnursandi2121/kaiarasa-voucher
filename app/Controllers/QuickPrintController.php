@@ -41,11 +41,35 @@ class QuickPrintController extends Controller
         $settingModel = new Setting;
         $defaultTemplate = $settingModel->get('default_voucher_template', 'default');
 
+        // Fetch router profiles — untuk visual check: card dengan profile
+        // yang sudah dihapus dari Data Plans akan diberi badge "Data Plan Missing"
+        // dan tombol Print di-disable. Server-side tetap reject di printPacket.
+        $routerProfiles = [];
+        if ($creds) {
+            $API = RouterOSAPI::fromSession($creds);
+            $API->attempts = 1;
+            $API->delay = 0;
+            $password = $creds['password'];
+            if (isset($creds['source']) && $creds['source'] === 'legacy') {
+                $password = RouterOSAPI::decrypt($password);
+            }
+            if ($API->connect($creds['ip'], $creds['user'], $password)) {
+                $profiles = $API->comm('/ip/hotspot/user/profile/print');
+                if (is_array($profiles)) {
+                    foreach ($profiles as $p) {
+                        $routerProfiles[] = $p['name'] ?? '';
+                    }
+                }
+                $API->disconnect();
+            }
+        }
+
         $data = [
             'session' => $session,
             'packages' => $packages,
             'templates' => $templates,
             'defaultTemplate' => $defaultTemplate,
+            'routerProfiles' => $routerProfiles,
         ];
 
         // Note: View will be 'quick_print/index'
@@ -274,17 +298,27 @@ class QuickPrintController extends Controller
                 'comment' => $qpComment, // Report-friendly comment
             ];
 
-            // Effective uptime: override package -> Validity Data Plan
+            // Effective uptime: override package -> Validity Data Plan.
+            // Validate: package.profile HARUS ada di router. Jika sudah dihapus dari
+            // Data Plans, abort print — operator tidak boleh create voucher orphan.
             $planValidityRaw = '';
+            $profileExists = false;
             $plans = $API->comm('/ip/hotspot/user/profile/print');
             if (is_array($plans)) {
                 foreach ($plans as $rp) {
                     if (($rp['name'] ?? '') === $package['profile']) {
+                        $profileExists = true;
                         $planMeta = \App\Helpers\HotspotHelper::parseProfileMetadata($rp['on-login'] ?? '');
                         $planValidityRaw = $planMeta['validity_raw'] ?? '';
                         break;
                     }
                 }
+            }
+            if (! $profileExists) {
+                $API->disconnect();
+                FlashHelper::set('error', 'quick_print.profile_missing', 'quick_print.profile_missing_desc', ['profile' => $package['profile']], true);
+                header('Location: /'.$session.'/quick-print');
+                exit;
             }
             $effectiveUptime = ! empty($package['time_limit']) ? $package['time_limit'] : $planValidityRaw;
 

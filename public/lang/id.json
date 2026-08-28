@@ -241,7 +241,7 @@
         "print_voucher": "Cetak Voucher",
         "name": "Nama",
         "package_name": "Nama Paket",
-        "profile": "Profil",
+        "data_plan": "Paket Data",
         "select_profile": "Pilih paket data",
         "prefix": "Awalan",
         "server": "Server",
@@ -255,7 +255,10 @@
         "char_length": "Panjang Karakter",
         "vouchers_to_generate": "Jumlah Voucher",
         "comment": "Komentar",
-        "default_thermal": "Thermal Default"
+        "default_thermal": "Thermal Default",
+        "profile_missing": "Paket Data Tidak Ditemukan",
+        "profile_missing_desc": "Paket data \"{profile}\" sudah tidak ada di router. Edit atau hapus paket ini untuk memperbaikinya.",
+        "card_profile_missing": "Paket Data Hilang"
     },
     "sidebar": {
         "dashboard": "Dashboard",

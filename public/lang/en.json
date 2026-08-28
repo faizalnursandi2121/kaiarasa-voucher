@@ -239,7 +239,7 @@
         "print_voucher": "Print Voucher",
         "name": "Name",
         "package_name": "Package Name",
-        "profile": "Profile",
+        "data_plan": "Data Plans",
         "select_profile": "Select data plan",
         "prefix": "Prefix",
         "server": "Server",
@@ -253,7 +253,10 @@
         "char_length": "Char Length",
         "vouchers_to_generate": "Vouchers to Generate",
         "comment": "Comment",
-        "default_thermal": "Default Thermal"
+        "default_thermal": "Default Thermal",
+        "profile_missing": "Data Plan Not Found",
+        "profile_missing_desc": "The data plan \"{profile}\" no longer exists in the router. Edit or delete this package to fix.",
+        "card_profile_missing": "Data Plan Missing"
     },
     "sidebar": {
         "dashboard": "Dashboard",

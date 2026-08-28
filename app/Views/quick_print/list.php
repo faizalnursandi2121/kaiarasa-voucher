@@ -39,7 +39,7 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
             <thead>
                 <tr>
                     <th data-sort="name" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="quick_print.name">Name</th>
-                    <th data-i18n="quick_print.profile">Profile</th>
+                    <th data-i18n="quick_print.data_plan">Data Plans</th>
                     <th data-i18n="quick_print.prefix">Prefix</th>
                     <th data-sort="price" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="quick_print.price">Price</th>
                     <th class="text-right" data-i18n="common.actions">Actions</th>
