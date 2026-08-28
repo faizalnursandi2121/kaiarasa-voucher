@@ -19,18 +19,22 @@ class ReportController extends Controller
             'end' => $_GET['end'] ?? null,
             'package' => ($_GET['package'] ?? '') !== '' ? $_GET['package'] : null,
             'sale_type' => ($_GET['sale_type'] ?? '') !== '' ? $_GET['sale_type'] : null,
+            'server' => ($_GET['server'] ?? '') !== '' ? $_GET['server'] : null,
         ];
 
         $report = $svc->getReport($filters, isset($_GET['refresh']));
         $packages = [];
+        $servers = [];
         if (! isset($report['__unreachable'])) {
             $packages = array_map(fn ($p) => $p['name'], $report['by_package']);
+            $servers = array_map(fn ($s) => $s['name'], $report['by_server']);
         }
 
         return $this->view('reports/sales', [
             'session' => $session,
             'filters' => $filters,
             'packages' => $packages,
+            'servers' => $servers,
             'report' => $report,
         ]);
     }
@@ -51,6 +55,7 @@ class ReportController extends Controller
             'end' => $_GET['end'] ?? null,
             'package' => ($_GET['package'] ?? '') !== '' ? $_GET['package'] : null,
             'sale_type' => ($_GET['sale_type'] ?? '') !== '' ? $_GET['sale_type'] : null,
+            'server' => ($_GET['server'] ?? '') !== '' ? $_GET['server'] : null,
         ];
         $report = $svc->getReport($filters);
 
@@ -64,11 +69,12 @@ class ReportController extends Controller
             header('Content-Type: text/csv');
             header('Content-Disposition: attachment; filename="sales-report.csv"');
             $out = fopen('php://output', 'w');
-            fputcsv($out, ['Date', 'Package', 'Quantity', 'Unit Price', 'Total', 'Sale Type', 'Used']);
+            fputcsv($out, ['Generated', 'Code', 'Package', 'Server', 'Sale Type', 'Batch ID', 'Price']);
             foreach ($report['list'] as $row) {
                 fputcsv($out, [
-                    $row['date'], $row['package'], $row['quantity'], $row['unit_price'],
-                    $row['total'], $row['sale_type'], $row['used_count'],
+                    $row['date'].($row['time'] ? ' '.$row['time'] : ''),
+                    $row['code'], $row['package'], $row['server'],
+                    $row['sale_type'], $row['batch_id'], $row['price'],
                 ]);
             }
             fclose($out);

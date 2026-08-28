@@ -151,6 +151,7 @@ class SalesReportService
         $end = $f['end'] ?? null;
         $pkg = $f['package'] ?? null;
         $stype = $f['sale_type'] ?? null;
+        $server = $f['server'] ?? null;
 
         $summary = ['revenue' => 0, 'vouchers_sold' => 0, 'avg_sale' => null, 'top_package' => null,
             'issued' => 0, 'used' => 0, 'unused' => 0, 'undated' => 0,
@@ -161,8 +162,9 @@ class SalesReportService
             'manual_user' => ['count' => 0, 'revenue' => 0],
         ];
         $pkgAgg = [];
+        $serverAgg = [];
         $daily = [];
-        $batches = [];
+        $list = [];
         $undatedCount = 0;
         $totalRecords = 0;
 
@@ -171,6 +173,9 @@ class SalesReportService
                 continue;
             }
             if ($stype !== null && $rec['sale_type'] !== $stype) {
+                continue;
+            }
+            if ($server !== null && ($rec['server'] ?? '') !== $server) {
                 continue;
             }
             $totalRecords++;
@@ -184,16 +189,12 @@ class SalesReportService
             }
 
             $sold = $rec['billable'] && $rec['price'] > 0;
-
             $isUndated = $rec['date'] === null;
             $rangeActive = ($start !== null || $end !== null);
             $inRange = ! $isUndated
                 && ($start === null || $rec['date'] >= $start)
                 && ($end === null || $rec['date'] <= $end);
 
-            // Undated: keluar dari agregasi BER-RANGE (konsistensi dashboard);
-            // masuk total hanya pada view all-time. Tipe & paket tetap tercatat
-            // karena diketahui (hanya tanggalnya yang tidak ada).
             if ($sold && $isUndated) {
                 $undatedCount++;
                 if (! $rangeActive) {
@@ -207,11 +208,19 @@ class SalesReportService
                 }
                 $pkgAgg[$rec['profile']]['count']++;
                 $pkgAgg[$rec['profile']]['revenue'] += $rec['price'];
+                $srv = $rec['server'] ?? '';
+                if ($srv !== '' && ! isset($serverAgg[$srv])) {
+                    $serverAgg[$srv] = ['name' => $srv, 'count' => 0, 'revenue' => 0];
+                }
+                if ($srv !== '') {
+                    $serverAgg[$srv]['count']++;
+                    $serverAgg[$srv]['revenue'] += $rec['price'];
+                }
                 continue;
             }
 
             if ($sold && ! $inRange) {
-                continue; // dated di luar rentang: eksklusi dari semua agregasi
+                continue;
             }
 
             if ($sold) {
@@ -234,6 +243,15 @@ class SalesReportService
             $pkgAgg[$rec['profile']]['count']++;
             $pkgAgg[$rec['profile']]['revenue'] += $rec['price'];
 
+            $srv = $rec['server'] ?? '';
+            if ($srv !== '' && ! isset($serverAgg[$srv])) {
+                $serverAgg[$srv] = ['name' => $srv, 'count' => 0, 'revenue' => 0];
+            }
+            if ($srv !== '') {
+                $serverAgg[$srv]['count']++;
+                $serverAgg[$srv]['revenue'] += $rec['price'];
+            }
+
             if (! isset($daily[$rec['date']])) {
                 $daily[$rec['date']] = ['date' => $rec['date'], 'revenue' => 0, 'sold' => 0];
             }
@@ -242,22 +260,17 @@ class SalesReportService
 
             $refParts = explode(' ', trim($rec['comment']));
             $ref = $refParts[0] ?? '';
-            $key = $rec['date'].'|'.$rec['sale_type'].'|'.$rec['profile'].'|'.$rec['price'].'|'.$ref;
-            if (! isset($batches[$key])) {
-                $batches[$key] = ['date' => $rec['date'], 'time' => $rec['time'],
-                    'package' => $rec['profile'],
-                    'quantity' => 0, 'unit_price' => $rec['price'], 'total' => 0,
-                    'sale_type' => $rec['sale_type'], 'used_count' => 0, 'reference' => $ref];
-            }
-            $batches[$key]['quantity']++;
-            $batches[$key]['total'] += $rec['price'];
-            if ($rec['used']) {
-                $batches[$key]['used_count']++;
-            }
-            // simpan jam terbaru dalam batch utk urutan tampil
-            if ($rec['time'] !== null && (! isset($batches[$key]['last_time']) || strcmp($rec['time'], $batches[$key]['last_time']) > 0)) {
-                $batches[$key]['last_time'] = $rec['time'];
-            }
+
+            $list[] = [
+                'date' => $rec['date'],
+                'time' => $rec['time'],
+                'code' => $rec['name'],
+                'package' => $rec['profile'],
+                'server' => $srv,
+                'sale_type' => $rec['sale_type'],
+                'batch_id' => $ref,
+                'price' => $rec['price'],
+            ];
         }
 
         $summary['unused'] = max($summary['issued'] - $summary['used'], 0);
@@ -275,25 +288,27 @@ class SalesReportService
             $summary['top_package'] = ['name' => $byPackage[0]['name'], 'count' => $byPackage[0]['count']];
         }
 
+        $byServer = array_values($serverAgg);
+        usort($byServer, fn ($a, $b) => $b['count'] <=> $a['count']);
+
         $trend = array_values($daily);
         usort($trend, fn ($a, $b) => strcmp($a['date'], $b['date']));
         $breakdown = array_map(fn ($d) => ['date' => $d['date'], 'vouchers' => $d['sold'], 'revenue' => $d['revenue']], $trend);
 
-        $list = array_values($batches);
         usort($list, function ($a, $b) {
             $ad = $a['date'].($a['time'] ?? ''); $bd = $b['date'].($b['time'] ?? '');
-
-            return [$bd, $a['reference']] <=> [$ad, $b['reference']];
+            return [$bd, $a['code']] <=> [$ad, $b['code']];
         });
 
         ksort($byType);
 
         return [
-            'filters' => ['start' => $start, 'end' => $end, 'package' => $pkg, 'sale_type' => $stype],
+            'filters' => ['start' => $start, 'end' => $end, 'package' => $pkg, 'sale_type' => $stype, 'server' => $server],
             'meta' => ['total_records' => $totalRecords, 'undated_count' => $undatedCount],
             'summary' => $summary,
             'by_type' => $byType,
             'by_package' => $byPackage,
+            'by_server' => $byServer,
             'revenue_trend' => $trend,
             'sales_volume' => $trend,
             'daily_breakdown' => $breakdown,

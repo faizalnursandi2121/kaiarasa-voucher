@@ -31,6 +31,45 @@ function salesFmtRp(int $v): string
     return 'Rp'.number_format($v, 0, ',', '.');
 }
 ?>
+<style>
+@media print {
+    /* Hide nav, filter, charts, action buttons during print */
+    nav, #kai-route-loading, .page-breadcrumb, .page-header,
+    #sales-filter-form, .card .lucide-printer, .card .lucide-download,
+    [onclick="window.print()"], #export-csv, #sales-search,
+    #chart-trend, #chart-volume, #chart-package { display: none !important; }
+    /* Keep KPI cards + detail table visible */
+    .card, .grid { break-inside: avoid; }
+    body { background: #fff !important; color: #000 !important; }
+    /* Print header (added by JS at print time) */
+    .print-header { display: block !important; }
+    .print-header h2 { font-size: 18px; font-weight: 700; margin: 0 0 4px; }
+    .print-header p { font-size: 11px; margin: 0 0 2px; }
+    @page { margin: 1.5cm; }
+}
+.print-header { display: none; }
+</style>
+<script>
+window.addEventListener('beforeprint', function () {
+    var h = document.querySelector('.print-header');
+    if (!h) {
+        h = document.createElement('div');
+        h.className = 'print-header';
+        document.body.prepend(h);
+    }
+    var range = (<?= json_encode([
+        'start' => $filters['start'] ?? '',
+        'end' => $filters['end'] ?? '',
+        'range' => $activeRange,
+    ]) ?>);
+    var rangeText = range.range === 'custom'
+        ? range.start + ' to ' + range.end
+        : (range.range || 'all').toUpperCase();
+    h.innerHTML = '<h2>Sales Report — ' + <?= json_encode($session ?? '') ?> + '</h2>' +
+        '<p>Period: ' + rangeText + '</p>' +
+        '<p>Generated: ' + new Date().toLocaleString() + '</p>';
+});
+</script>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col">
 
@@ -57,7 +96,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
     <?php else: ?>
 
     <!-- ===== Filter Bar ===== -->
-    <form method="GET" id="sales-filter-form" class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
+    <form method="GET" id="sales-filter-form" class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-end">
         <div>
             <label class="block text-[11px] font-semibold uppercase tracking-wider opacity-50 mb-2">Date Range</label>
             <select name="range" id="f-range"
@@ -89,6 +128,15 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                 <option value="">All Types</option>
                 <option value="bulk_generate" <?= ($filters['sale_type'] ?? '') === 'bulk_generate' ? 'selected' : '' ?>>Bulk Generate</option>
                 <option value="quick_print" <?= ($filters['sale_type'] ?? '') === 'quick_print' ? 'selected' : '' ?>>Quick Print</option>
+            </select>
+        </div>
+        <div>
+            <select name="server"
+                class="w-full h-[46px] rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 cursor-pointer">
+                <option value="">All Servers</option>
+                <?php foreach ($servers as $s): ?>
+                <option value="<?= htmlspecialchars($s) ?>" <?= ($filters['server'] ?? '') === $s ? 'selected' : '' ?>><?= htmlspecialchars($s) ?></option>
+                <?php endforeach; ?>
             </select>
         </div>
         <button type="submit" id="apply-filter"
@@ -234,35 +282,36 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
             <table class="table-glass" id="sales-table">
                 <thead>
                     <tr>
-                        <th class="cursor-pointer" data-sort="date">Date ▲▼</th>
+                        <th class="cursor-pointer" data-sort="datetime">Generated ▲▼</th>
+                        <th class="cursor-pointer" data-sort="code">Code ▲▼</th>
                         <th class="cursor-pointer" data-sort="package">Package ▲▼</th>
-                        <th class="text-right cursor-pointer" data-sort="quantity">Qty ▲▼</th>
-                        <th class="text-right cursor-pointer" data-sort="unit_price">Unit Price ▲▼</th>
-                        <th class="text-right cursor-pointer" data-sort="total">Total ▲▼</th>
-                        <th class="cursor-pointer" data-sort="sale_type">Type ▲▼</th>
-                        <th class="text-right">Used</th>
+                        <th class="cursor-pointer" data-sort="server">Server ▲▼</th>
+                        <th class="cursor-pointer" data-sort="sale_type">Sale Type ▲▼</th>
+                        <th class="cursor-pointer" data-sort="batch_id">Batch ID ▲▼</th>
+                        <th class="text-right cursor-pointer" data-sort="price">Price ▲▼</th>
                     </tr>
                 </thead>
                 <tbody id="sales-tbody">
-                    <?php foreach ($report['list'] as $row): ?>
-                    <tr data-date="<?= htmlspecialchars($row['date'].(! empty($row['time']) ? ' '.$row['time'] : '')) ?>"
+                    <?php foreach ($report['list'] as $row):
+                        $dtLabel = date('d M Y', strtotime($row['date'])) . (! empty($row['time']) ? ' · '.substr($row['time'], 0, 5) : ''); ?>
+                    <tr data-datetime="<?= htmlspecialchars($row['date'].(! empty($row['time']) ? ' '.$row['time'] : '')) ?>"
+                        data-code="<?= htmlspecialchars($row['code']) ?>"
                         data-package="<?= htmlspecialchars($row['package']) ?>"
-                        data-quantity="<?= (int) $row['quantity'] ?>"
-                        data-unit_price="<?= (int) $row['unit_price'] ?>"
-                        data-total="<?= (int) $row['total'] ?>"
-                        data-sale_type="<?= htmlspecialchars($row['sale_type']) ?>">
-                        <?php $dtLabel = date('d M Y', strtotime($row['date'])) . (! empty($row['time']) ? ' · '.substr($row['time'], 0, 5) : ''); ?>
+                        data-server="<?= htmlspecialchars($row['server']) ?>"
+                        data-sale_type="<?= htmlspecialchars($row['sale_type']) ?>"
+                        data-batch_id="<?= htmlspecialchars($row['batch_id']) ?>"
+                        data-price="<?= (int) $row['price'] ?>">
                         <td class="whitespace-nowrap"><?= $dtLabel ?></td>
+                        <td class="font-mono font-medium"><?= htmlspecialchars($row['code']) ?></td>
                         <td class="font-medium"><?= htmlspecialchars($row['package']) ?></td>
-                        <td class="text-right tabular-nums"><?= $row['quantity'] ?></td>
-                        <td class="text-right tabular-nums"><?= salesFmtRp((int) $row['unit_price']) ?></td>
-                        <td class="text-right tabular-nums font-semibold"><?= salesFmtRp((int) $row['total']) ?></td>
+                        <td><span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-black/[.04] dark:bg-white/[.05]"><?= htmlspecialchars($row['server'] ?: '—') ?></span></td>
                         <td>
                             <span class="px-2 py-0.5 rounded text-[11px] font-semibold <?= $row['sale_type'] === 'quick_print' ? 'bg-sky-500/10 text-sky-600' : 'bg-purple-500/10 text-purple-600' ?>">
                                 <?= $row['sale_type'] === 'quick_print' ? 'Quick Print' : 'Bulk Generate' ?>
                             </span>
                         </td>
-                        <td class="text-right tabular-nums opacity-60"><?= $row['used_count'] ?></td>
+                        <td class="font-mono text-[12px] opacity-80"><?= htmlspecialchars($row['batch_id'] ?: '—') ?></td>
+                        <td class="text-right tabular-nums font-semibold"><?= salesFmtRp((int) $row['price']) ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
