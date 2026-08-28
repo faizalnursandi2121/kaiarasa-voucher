@@ -3,21 +3,6 @@ $title = 'Generate Vouchers';
 require_once ROOT.'/app/Views/layouts/header_main.php';
 require_once ROOT.'/app/Views/layouts/sidebar_session.php';
 ?>
-<style>
-/* Sembunyikan spinner up/down di input number — user input manual */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-            appearance: none;
-    margin: 0;
-    display: none;
-}
-input[type="number"] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-    -webkit-appearance: none;
-}
-</style>
 <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
     <!-- Form Column -->
     <div class="lg:col-span-2 min-w-0">

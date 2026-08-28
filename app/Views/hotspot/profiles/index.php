@@ -1,23 +1,6 @@
 <?php
-$title = 'Access Packages'; ?>
-<style>
-/* Sembunyikan spinner up/down di input number — user input manual */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-            appearance: none;
-    margin: 0;
-    display: none;
-}
-input[type="number"] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-    -webkit-appearance: none;
-}
-</style>
-<?php
+$title = 'Access Packages';
 require_once ROOT.'/app/Views/layouts/header_main.php';
-
 use App\Helpers\LanguageHelper;
 
 // Prepare Filters Data
