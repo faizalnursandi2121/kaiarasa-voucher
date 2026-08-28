@@ -66,15 +66,19 @@ class ReportController extends Controller
         }
 
         if ($type === 'csv') {
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="sales-report.csv"');
+            $filename = 'sales-report-'.date('Y-m-d').'.csv';
+            header('Content-Type: text/csv; charset=UTF-8');
+            header('Content-Disposition: attachment; filename="'.$filename.'"');
             $out = fopen('php://output', 'w');
+            // BOM agar Excel detect UTF-8 dengan benar (karakter non-ASCII aman)
+            fwrite($out, "\xEF\xBB\xBF");
+            // Header: pakai label bersih (Excel-friendly), bukan slug
             fputcsv($out, ['Generated', 'Code', 'Package', 'Server', 'Sale Type', 'Batch ID', 'Price']);
             foreach ($report['list'] as $row) {
                 fputcsv($out, [
                     $row['date'].($row['time'] ? ' '.$row['time'] : ''),
                     $row['code'], $row['package'], $row['server'],
-                    $row['sale_type'], $row['batch_id'], $row['price'],
+                    $row['sale_type'], $row['batch_id'], (int) $row['price'],
                 ]);
             }
             fclose($out);
