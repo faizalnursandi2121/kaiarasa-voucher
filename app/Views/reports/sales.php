@@ -33,18 +33,22 @@ function salesFmtRp(int $v): string
 ?>
 <style>
 @media print {
-    /* Hide nav, filter, charts, action buttons during print */
-    nav, #kai-route-loading, .page-breadcrumb, .page-header,
-    #sales-filter-form, .card .lucide-printer, .card .lucide-download,
-    [onclick="window.print()"], #export-csv, #sales-search,
-    #chart-trend, #chart-volume, #chart-package { display: none !important; }
-    /* Keep KPI cards + detail table visible */
-    .card, .grid { break-inside: avoid; }
+    /* Hide everything except the sales report body */
+    #sidebar, header.session-mobile-header,
+    nav.page-breadcrumb, .page-header,
+    #sales-filter-form, #sales-search,
+    [onclick="window.print()"], #export-csv,
+    #chart-trend, #chart-volume, #chart-package,
+    #kai-route-loading, .skip-link,
+    footer, .footer, [role="contentinfo"] { display: none !important; }
+    /* Keep KPI cards + detail table */
+    .card, .grid, #sales-table { break-inside: avoid; }
     body { background: #fff !important; color: #000 !important; }
-    /* Print header (added by JS at print time) */
-    .print-header { display: block !important; }
+    .print-header { display: block !important; margin-bottom: 12px; }
     .print-header h2 { font-size: 18px; font-weight: 700; margin: 0 0 4px; }
     .print-header p { font-size: 11px; margin: 0 0 2px; }
+    /* Reduce padding for compact print */
+    .max-w-7xl { max-width: 100% !important; padding: 0 !important; }
     @page { margin: 1.5cm; }
 }
 .print-header { display: none; }
@@ -268,7 +272,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
             <div class="flex items-center gap-2">
                 <input type="search" id="sales-search" placeholder="Search…"
                     class="h-9 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3 pr-3 text-[13px] outline-none focus:border-[#5f7f67] w-44 transition">
-                <a href="?<?= http_build_query(array_filter(array_merge($_GET, ['export' => 'csv']))) ?>" id="export-csv"
+                <a href="/<?= htmlspecialchars($session) ?>/reports/sales/export/csv?<?= htmlspecialchars(http_build_query(array_filter($filters ?? [], fn ($v) => $v !== null && $v !== ''))) ?>" id="export-csv"
                     class="h-9 px-3 inline-flex items-center gap-1.5 rounded-xl border border-black/10 dark:border-white/10 text-[12px] font-semibold hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
                     <i data-lucide="download" class="w-3.5 h-3.5"></i> CSV
                 </a>

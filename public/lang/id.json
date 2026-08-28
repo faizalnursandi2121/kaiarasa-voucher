@@ -755,6 +755,12 @@
         "activity_log": "Log Pengguna"
     },
     "sales": {
-        "report": "Laporan Penjualan"
+        "report": "Laporan Penjualan",
+        "title": "Laporan Penjualan",
+        "subtitle": "Pantau penjualan dan pendapatan voucher.",
+        "filter_server": "Semua Server",
+        "filter_type": "Semua Tipe",
+        "csv": "CSV",
+        "print": "Cetak"
     }
 }

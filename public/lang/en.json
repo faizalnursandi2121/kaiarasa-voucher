@@ -753,6 +753,12 @@
         "activity_log": "User Log"
     },
     "sales": {
-        "report": "Sales Report"
+        "report": "Sales Report",
+        "title": "Sales Report",
+        "subtitle": "Track voucher sales and revenue for this location.",
+        "filter_server": "All Servers",
+        "filter_type": "All Types",
+        "csv": "CSV",
+        "print": "Print"
     }
 }
