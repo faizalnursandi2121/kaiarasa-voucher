@@ -185,12 +185,10 @@ class CustomSelect {
         const menuHeight = 260; // 15rem + search + padding
         const spaceBelow = window.innerHeight - rect.bottom;
         const spaceAbove = rect.top;
-        // DEFAULT: open UPWARD. Toolbar dropdown umumnya di atas
-        // halaman — opening downward cover table content di
-        // bawah, terasa "embedded" di table. Opening upward =
-        // clean popover di atas trigger, tidak overlap content.
-        // Fallback ke downward HANYA kalau space atas tidak cukup.
-        const goUp = spaceAbove >= 200 || spaceBelow < menuHeight;
+        // DEFAULT: open DOWNWARD (natural flow UX). Fallback ke
+        // upward HANYA kalau spaceBelow tidak cukup untuk menu
+        // (misal trigger dekat dasar viewport).
+        const goUp = spaceBelow < menuHeight && spaceAbove > spaceBelow;
 
         // Reset positioning classes
         this.menu.classList.remove(
@@ -217,6 +215,23 @@ class CustomSelect {
         this.trigger.classList.add('ring-1', 'ring-foreground');
         this.trigger.querySelector('.custom-select-icon')?.classList.add('rotate-180');
 
+        // Backdrop overlay: semi-transparent layer yang cover
+        // seluruh viewport. Visual efek: dropdown jadi terasa
+        // floating popover, bukan embedded di table. Click di
+        // backdrop = close.
+        if (!document.getElementById('cs-backdrop')) {
+            const bd = document.createElement('div');
+            bd.id = 'cs-backdrop';
+            bd.className = 'custom-select-backdrop';
+            bd.addEventListener('click', () => {
+                CustomSelect.instances.forEach(i => i.close());
+                bd.remove();
+            });
+            document.body.appendChild(bd);
+            // trigger reflow untuk transition
+            requestAnimationFrame(() => bd.classList.add('show'));
+        }
+
         if (this.searchInput) setTimeout(() => this.searchInput.focus(), 50);
     }
 
@@ -224,6 +239,12 @@ class CustomSelect {
         this.menu.classList.remove('open');
         this.trigger.classList.remove('ring-1', 'ring-foreground');
         this.trigger.querySelector('.custom-select-icon')?.classList.remove('rotate-180');
+        // Hapus backdrop kalau tidak ada dropdown lain yang open
+        const anyOpen = CustomSelect.instances.some(i => i.menu.classList.contains('open'));
+        if (!anyOpen) {
+            const bd = document.getElementById('cs-backdrop');
+            if (bd) bd.classList.remove('show'), setTimeout(() => bd.remove(), 150);
+        }
     }
 
     select(index) {

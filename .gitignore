@@ -42,3 +42,5 @@ deploy.ps1
 app/Database/installed.lock
 app/Database/app_key
 strix_runs/
+app/Database/database.sqlite-shm
+app/Database/database.sqlite-wal
