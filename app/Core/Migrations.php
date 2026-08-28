@@ -142,7 +142,35 @@ class Migrations
         $pdo->exec('CREATE INDEX IF NOT EXISTS idx_sas_session_time
             ON session_activity_snapshots(session_name, recorded_at)');
 
-        return true;
+        // 13. Sales records (denormalized snapshot voucher yang dijual)
+        // Tabel ini SUMBER PRIMER untuk Sales Report. INSERT saat voucher
+        // dibuat (Generate/QuickPrint/Add), soft-delete saat voucher dihapus
+        // dari MikroTik. Profile yang dihapus dari Data Plans TIDAK
+        // mempengaruhi rows di sini karena profile_name & profile_price
+        // sudah di-snapshot saat INSERT.
+        $pdo->exec("CREATE TABLE IF NOT EXISTS sales_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            router_id INTEGER NOT NULL,
+            voucher_name TEXT NOT NULL,
+            voucher_password TEXT,
+            profile_name TEXT,
+            profile_price INTEGER DEFAULT 0,
+            server TEXT,
+            comment TEXT,
+            sale_type TEXT NOT NULL,
+            price INTEGER DEFAULT 0,
+            billable INTEGER DEFAULT 0,
+            datetime TEXT,
+            sold_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            deleted_at DATETIME NULL
+        )");
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_sales_router_sold
+            ON sales_records(router_id, sold_at)');
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_sales_router_profile
+            ON sales_records(router_id, profile_name)');
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_sales_router_deleted
+            ON sales_records(router_id, deleted_at)');
+
     }
 
     /**

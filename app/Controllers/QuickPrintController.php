@@ -331,8 +331,31 @@ class QuickPrintController extends Controller
                 $userData['limit-bytes-total'] = intval($package['data_limit']);
             }
 
-            $API->comm('/ip/hotspot/user/add', $userData);
+            $addResult = $API->comm('/ip/hotspot/user/add', $userData);
             $API->disconnect();
+
+            // Persistent denormalized snapshot ke sales_records (sumber primer
+            // Sales Report). Hanya insert kalau MikroTik add sukses.
+            if ($addResult !== false && ! (is_array($addResult) && isset($addResult['!trap']))) {
+                try {
+                    $pkgPrice = intval($package['price'] ?? 0);
+                    (new \App\Models\SalesRecordModel)->insert([
+                        'router_id' => (int) ($creds['id'] ?? 0),
+                        'voucher_name' => $username,
+                        'voucher_password' => $password,
+                        'profile_name' => (string) ($package['profile'] ?? ''),
+                        'profile_price' => $pkgPrice,
+                        'server' => (string) ($package['server'] ?? 'all'),
+                        'comment' => $qpComment,
+                        'sale_type' => 'quick_print',
+                        'price' => $pkgPrice,
+                        'billable' => $pkgPrice > 0,
+                        'datetime' => date('Y-m-d H:i:s'),
+                    ]);
+                } catch (\Throwable $e) {
+                    // ignore
+                }
+            }
         } else {
             FlashHelper::set('error', 'Connection Failed', 'Could not connect to router at '.$creds['ip']);
             header('Location: '.($_SERVER['HTTP_REFERER'] ?? '/'.$session.'/quick-print/manage'));

@@ -193,8 +193,38 @@ class HotspotController extends Controller
                 $userData['limit-bytes-total'] = $datalimit;
             }
 
-            $API->comm('/ip/hotspot/user/add', $userData);
+            $addResult = $API->comm('/ip/hotspot/user/add', $userData);
             $API->disconnect();
+
+            // Persistent denormalized snapshot ke sales_records untuk manual
+            // voucher. Hanya insert kalau billable (ada explicit p:price atau
+            // profile punya on-login price). Sumber primer Sales Report.
+            if ($addResult !== false && ! (is_array($addResult) && isset($addResult['!trap']))) {
+                try {
+                    $price = 0;
+                    if (preg_match('/\b(?:p|price|harga)\s*[:-]?\s*(\d+)/i', $comment, $m)) {
+                        $price = (int) $m[1];
+                    }
+                    $billable = $price > 0;
+                    if ($billable) {
+                        (new \App\Models\SalesRecordModel)->insert([
+                            'router_id' => (int) ($creds['id'] ?? 0),
+                            'voucher_name' => $name,
+                            'voucher_password' => $password_user,
+                            'profile_name' => $profile,
+                            'profile_price' => 0,
+                            'server' => $_POST['server'] ?? 'all',
+                            'comment' => $comment,
+                            'sale_type' => 'manual_user',
+                            'price' => $price,
+                            'billable' => true,
+                            'datetime' => date('Y-m-d H:i:s'),
+                        ]);
+                    }
+                } catch (\Throwable $e) {
+                    // ignore
+                }
+            }
         }
 
         FlashHelper::set('success', 'toasts.user_added', 'toasts.user_added_desc', ['name' => $name], true);
@@ -240,6 +270,17 @@ class HotspotController extends Controller
 
                         // 2. Remove User
                         $API->comm('/ip/hotspot/user/remove', ['.id' => $id]);
+
+                        // Soft-delete di sales_records — row tetap ada untuk
+                        // Sales Report walau voucher sudah dihapus.
+                        try {
+                            (new \App\Models\SalesRecordModel)->softDeleteByVoucherName(
+                                (int) ($creds['id'] ?? 0),
+                                $username
+                            );
+                        } catch (\Throwable $e) {
+                            // ignore
+                        }
 
                         // 3. Remove Scheduler (Ghost Cleanup)
                         // Check if scheduler exists with same name as user

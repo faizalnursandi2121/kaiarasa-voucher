@@ -183,7 +183,6 @@ class GeneratorController extends Controller
                 if (! empty($dataLimit)) {
                     $user['limit-bytes-total'] = $dataLimit;
                 }
-
                 $result = $API->comm('/ip/hotspot/user/add', $user);
 
                 // SECURITY/UX (CWE-754): kegagalan per-item tidak boleh senyap —
@@ -192,9 +191,28 @@ class GeneratorController extends Controller
                     $failed++;
                 } else {
                     $created++;
+                    // Persistent denormalized snapshot ke sales_records.
+                    // Source of truth untuk Sales Report — tidak hilang walau
+                    // voucher dihapus dari MikroTik (soft-delete on remove).
+                    try {
+                        (new \App\Models\SalesRecordModel)->insert([
+                            'router_id' => (int) ($creds['id'] ?? 0),
+                            'voucher_name' => $username,
+                            'voucher_password' => $password,
+                            'profile_name' => $profile,
+                            'profile_price' => $pkgPrice,
+                            'server' => $server,
+                            'comment' => $finalComment,
+                            'sale_type' => 'bulk_generate',
+                            'price' => $pkgPrice,
+                            'billable' => $pkgPrice > 0,
+                            'datetime' => date('Y-m-d H:i:s'),
+                        ]);
+                    } catch (\Throwable $e) {
+                        // Jangan gagalkan create hanya karena sales insert error
+                    }
                 }
             }
-
             $API->disconnect();
         }
 

@@ -362,11 +362,94 @@ class SalesReportService
                 $map[$p['name']] = intval($meta['price']);
             }
         }
+        return $map;
+    }
+    /**
+     * Ambil data dari sales_records (persistent local snapshot).
+     * Tabel ini adalah SUMBER PRIMER — INSERT saat voucher dibuat
+     * (Generator/QuickPrint/Add), soft-delete saat voucher dihapus.
+     * Return shape compatible dengan normalizeUser.
+     */
+    private function fetchFromSalesTable(): array
+    {
+        $srModel = new \App\Models\SalesRecordModel;
+        $routerId = $srModel->routerIdBySession($this->session);
+        if (! $routerId) {
+            return ['__no_router' => true];
+        }
 
-        return ['users' => (array) $users, 'price_map' => $map];
+        $rows = $srModel->getByRouter($routerId, false); // exclude soft-deleted
+        if (empty($rows)) {
+            return ['__empty' => true, 'router_id' => $routerId];
+        }
+
+        // Convert sales_records row → shape yang diharapkan normalizeUser
+        $users = [];
+        foreach ($rows as $r) {
+            $comment = (string) ($r['comment'] ?? '');
+            $users[] = [
+                'name' => (string) ($r['voucher_name'] ?? ''),
+                'password' => (string) ($r['voucher_password'] ?? ''),
+                'profile' => (string) ($r['profile_name'] ?? 'default'),
+                'server' => (string) ($r['server'] ?? 'all'),
+                'comment' => $comment,
+                'uptime' => '0s',
+                'bytes-out' => 0,
+            ];
+        }
+        // price_map tidak diperlukan kalau setiap record sudah punya price (dari snapshot)
+        $priceMap = [];
+        return ['users' => $users, 'price_map' => $priceMap, 'source' => 'sales_table', 'router_id' => $routerId];
     }
 
-    /** Records ternormalisasi + cache 300 detik. */
+    /**
+     * First-time backfill: copy existing MikroTik users ke sales_records
+     * supaya sales report punya historical data. Idempotent — dipanggil
+     * sekali per router (heuristic: count=0).
+     */
+    private function maybeBackfillFromMikrotik(int $routerId): void
+    {
+        $srModel = new \App\Models\SalesRecordModel;
+        if ($srModel->countByRouter($routerId) > 0) {
+            return; // sudah ada data
+        }
+        $raw = $this->fetchRaw();
+        if (isset($raw['__unreachable']) || empty($raw['users'])) {
+            return;
+        }
+        foreach ($raw['users'] as $u) {
+            $comment = (string) ($u['comment'] ?? '');
+            $saleType = self::detectSaleType($comment);
+            // Skip manual_user (live data, bukan historical sale)
+            if ($saleType === 'manual_user') {
+                continue;
+            }
+            $price = self::detectPrice($u, $raw['price_map']);
+            $name = (string) ($u['name'] ?? '');
+            if ($name === '') {
+                continue;
+            }
+            $dp = self::parseDateTime($comment);
+            try {
+                $srModel->insert([
+                    'router_id' => $routerId,
+                    'voucher_name' => $name,
+                    'voucher_password' => (string) ($u['password'] ?? ''),
+                    'profile_name' => (string) ($u['profile'] ?? 'default'),
+                    'profile_price' => 0,
+                    'server' => (string) ($u['server'] ?? 'all'),
+                    'comment' => $comment,
+                    'sale_type' => $saleType,
+                    'price' => $price,
+                    'billable' => $price > 0,
+                    'datetime' => $dp['date'] ? $dp['date'].' '.$dp['time'] : '',
+                ]);
+            } catch (\Throwable $e) {
+                // ignore duplicate / error
+            }
+        }
+    }
+
     public function getVoucherRecords(bool $force = false): array
     {
         $file = $this->cachePath();
@@ -380,15 +463,29 @@ class SalesReportService
         if ($this->session === 'demo') {
             $raw = self::demoRaw();
         } else {
-            $raw = $this->fetchRaw();
+            // Try sales_records first (persistent), fall back ke MikroTik.
+            $raw = $this->fetchFromSalesTable();
+            if (isset($raw['__empty']) && ! empty($raw['router_id'])) {
+                // First-time: backfill dari MikroTik users.
+                $this->maybeBackfillFromMikrotik((int) $raw['router_id']);
+                $raw = $this->fetchFromSalesTable();
+                if (isset($raw['__empty'])) {
+                    $raw = $this->fetchRaw(); // fallback MikroTik live
+                }
+            }
+            if (isset($raw['__no_router'])) {
+                $raw = $this->fetchRaw(); // router tidak dikenal → MikroTik
+            }
         }
 
-        $payload = isset($raw['__unreachable'])
-            ? ['__unreachable' => true]
-            : array_map(
+        if (isset($raw['__unreachable'])) {
+            $payload = ['__unreachable' => true];
+        } else {
+            $payload = array_map(
                 fn ($u) => self::normalizeUser($u, $raw['price_map']),
                 array_values($raw['users'])
             );
+        }
 
         @file_put_contents($file, json_encode(['ts' => time(), 'payload' => $payload]));
 
