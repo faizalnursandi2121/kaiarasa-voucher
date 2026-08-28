@@ -106,7 +106,35 @@ $toolbar_html .= '
         <p class="text-sm opacity-60">No vouchers yet.</p>
         <a href="/<?php echo htmlspecialchars($session) ?>/hotspot/generate" class="inline-block mt-3 text-[13px] font-semibold text-[#47614d] dark:text-[#92aa96] hover:underline">+ Generate your first batch</a>
     </div>
-    <?php } else { ?>
+    <?php } else {
+    // Hitung voucher orphan: profile reference sudah dihapus dari Data Plans
+    $orphanCount = 0;
+    foreach ($users as $u) {
+        $p = (string) ($u['profile'] ?? '');
+        if ($p !== '' && ! isset($validProfiles[$p])) {
+            $orphanCount++;
+        }
+    }
+    ?>
+    <?php if ($orphanCount > 0): ?>
+    <!-- Orphan Warning Banner -->
+    <div class="mb-4 rounded-2xl border border-red-500/30 bg-red-500/[.07] p-4 flex items-start gap-3">
+        <i data-lucide="alert-triangle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
+        <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-red-600 dark:text-red-400">
+                <strong><?= (int) $orphanCount ?></strong>
+                <span data-i18n="hotspot_users.orphan_banner_text">voucher(s) reference a data plan that no longer exists.</span>
+            </p>
+            <p class="text-xs text-red-600/80 dark:text-red-400/80 mt-1">
+                <span data-i18n="hotspot_users.orphan_banner_help">Select broken rows and use the toolbar to re-assign or delete them.</span>
+            </p>
+        </div>
+        <button type="button" onclick="selectAllBroken()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500 text-white text-xs font-semibold hover:bg-red-600 transition-colors flex-shrink-0">
+            <i data-lucide="check-square" class="w-3.5 h-3.5"></i>
+            <span data-i18n="hotspot_users.orphan_select_all">Select All Broken</span>
+        </button>
+    </div>
+    <?php endif; ?>
     <!-- Table Container -->
     <div class="table-container">
         <table class="table-glass" id="users-table">
@@ -126,25 +154,24 @@ $toolbar_html .= '
                 </tr>
             </thead>
             <tbody id="table-body">
-                <?php if (! empty($users)) { ?>
-                    <?php foreach ($users as $user) { ?>
-                    <?php
-                        // Helper to split time limit for editing (Simple parsing or raw passing)
-                        // Assuming time limit format from router is like 1d2h3m or just 1h
-                        // We will pass the raw string if we can't easily split, OR rely on a JS parser.
-                        // For now let's pass raw limit-uptime.
+                <?php foreach ($users as $user) {
+                    // Helper to split time limit for editing (Simple parsing or raw passing)
+                    // Assuming time limit format from router is like 1d2h3m or just 1h
+                    // We will pass the raw string if we can't easily split, OR rely on a JS parser.
+                    // For now let's pass raw limit-uptime.
 
-                        // Just prepare some safe values
-                        $id = $user['.id'];
-                        $name = $user['name'] ?? '';
-                        $profile = $user['profile'] ?? 'default';
-                        $comment = $user['comment'] ?? '';
-                        $server = $user['server'] ?? 'all';
-                        $password = $user['password'] ?? '';
+                    // Just prepare some safe values
+                    $id = $user['.id'];
+                    $name = $user['name'] ?? '';
+                    $profile = $user['profile'] ?? 'default';
+                    $profileMissing = ! isset($validProfiles[$profile]);
+                    $comment = $user['comment'] ?? '';
+                    $server = $user['server'] ?? 'all';
+                    $password = $user['password'] ?? '';
 
-                        // Limits
-                        $limitUptime = $user['limit-uptime'] ?? '';
-                        $limitBytes = $user['limit-bytes-total'] ?? '';
+                    // Limits
+                    $limitUptime = $user['limit-uptime'] ?? '';
+                    $limitBytes = $user['limit-bytes-total'] ?? '';
                         ?>
                     <tr class="table-row-item" 
                         data-id="<?= htmlspecialchars($id) ?>"
@@ -156,7 +183,9 @@ $toolbar_html .= '
                         data-password="<?= htmlspecialchars($password) ?>"
                         data-server="<?= htmlspecialchars($server) ?>"
                         data-limit-uptime="<?= htmlspecialchars($limitUptime) ?>"
-                        data-limit-bytes-total="<?= htmlspecialchars($limitBytes) ?>">
+                        data-limit-bytes-total="<?= htmlspecialchars($limitBytes) ?>"
+                        data-profile-missing="<?= $profileMissing ? '1' : '0' ?>">
+
                         
                         <td class="px-4 py-4">
                             <input type="checkbox" name="selected_users[]" value="<?= htmlspecialchars($id) ?>" class="user-checkbox checkbox">
@@ -178,10 +207,20 @@ $toolbar_html .= '
                                 </div>
                             </div>
                         </td>
+                        <?php
+                            $profileMissing = ! isset($validProfiles[$profile]);
+                        ?>
                         <td>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                <?= htmlspecialchars($profile) ?>
-                            </span>
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $profileMissing ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' ?>">
+                                    <?= htmlspecialchars($profile) ?>
+                                </span>
+                                <?php if ($profileMissing): ?>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-red-500/15 text-red-600 dark:text-red-400" title="Data plan ini sudah dihapus dari Data Plans. Edit voucher untuk assign data plan baru, atau hapus voucher ini.">
+                                    <i data-lucide="alert-triangle" class="w-3 h-3 mr-1"></i> DATA PLAN MISSING
+                                </span>
+                                <?php endif; ?>
+                            </div>
                         </td>
                         <td>
                             <div class="text-sm text-foreground"><?= FormatHelper::elapsedTime($user['uptime'] ?? '0s') ?></div>
@@ -224,7 +263,7 @@ $toolbar_html .= '
             <div class="text-sm text-accents-5">
                  <span id="pagination-text">Showing <span id="start-idx" class="font-medium text-foreground">0</span> to <span id="end-idx" class="font-medium text-foreground">0</span> of <span id="total-count" class="font-medium text-foreground">0</span> users</span>
             
-    <?php } ?></div>
+    </div>
             <div class="flex gap-2">
                 <button id="prev-btn" class="btn btn-sm btn-secondary" disabled data-i18n="common.previous">Previous</button>
                 <div id="page-numbers" class="flex gap-1"></div>
@@ -676,8 +715,17 @@ $toolbar_html .= '
                 }
             });
         }
-    });
 
+        // 'Select All Broken' — centang semua voucher orphan (data plan missing)
+        window.selectAllBroken = function() {
+            const broken = tableBody.querySelectorAll('tr[data-profile-missing="1"]');
+            broken.forEach(row => {
+                const cb = row.querySelector('.user-checkbox');
+                if (cb) cb.checked = true;
+            });
+            updateToolbar();
+        };
+    });
     // Actions
     // Use var (not let) to allow re-declaration during SPA navigation
     var selectedTemplate = '<?= htmlspecialchars($defaultTemplate ?? 'default') ?>';

@@ -50,16 +50,27 @@ class HotspotController extends Controller
 
                 $users = $API->comm('/ip/hotspot/user/print');
                 $servers = $API->comm('/ip/hotspot/server/print');
+                $profiles = $API->comm('/ip/hotspot/user/profile/print');
                 $API->disconnect();
 
                 return [
                     'users' => is_array($users) ? $users : [],
                     'servers' => is_array($servers) ? $servers : [],
+                    'profiles' => is_array($profiles) ? $profiles : [],
                 ];
             });
 
             $users = $fetched['users'];
             $servers = $fetched['servers'];
+            // Set of valid profile names — untuk detect voucher orphan
+            // (profile reference sudah dihapus dari Data Plans)
+            $validProfiles = [];
+            foreach (($fetched['profiles'] ?? []) as $p) {
+                $n = (string) ($p['name'] ?? '');
+                if ($n !== '') {
+                    $validProfiles[$n] = true;
+                }
+            }
         } catch (\Throwable $e) {
             FlashHelper::set('error', 'Connection Failed', 'Could not connect to router at '.$creds['ip']);
             header('Location: '.($_SERVER['HTTP_REFERER'] ?? '/'.$session.'/dashboard'));
@@ -78,6 +89,7 @@ class HotspotController extends Controller
             'session' => $session,
             'users' => $users,
             'servers' => $servers,
+            'validProfiles' => $validProfiles,
             'error' => $error,
             'templates' => $templates,
             'defaultTemplate' => $defaultTemplate,

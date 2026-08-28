@@ -464,6 +464,9 @@
         "uptime_limit": "Waktu Aktif / Batas",
         "bytes_in_out": "Bytes Masuk/Keluar",
         "comment": "Komentar",
+        "orphan_banner_text": "voucher reference paket data yang sudah tidak ada.",
+        "orphan_banner_help": "Pilih baris yang broken lalu gunakan toolbar untuk re-assign atau hapus.",
+        "orphan_select_all": "Pilih Semua Broken",
         "no_users_selected": "Tidak ada pengguna yang dipilih.",
         "form": {
             "add_title": "Tambah Voucher",

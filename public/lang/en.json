@@ -452,6 +452,9 @@
         "uptime_limit": "Uptime / Limit",
         "bytes_in_out": "Bytes In/Out",
         "comment": "Comment",
+        "orphan_banner_text": "voucher(s) reference a data plan that no longer exists.",
+        "orphan_banner_help": "Select broken rows and use the toolbar to re-assign or delete them.",
+        "orphan_select_all": "Select All Broken",
         "no_users_selected": "No users selected.",
         "form": {
             "add_title": "Add Voucher",
