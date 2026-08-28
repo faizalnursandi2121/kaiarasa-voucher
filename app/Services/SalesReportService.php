@@ -480,9 +480,11 @@ class SalesReportService
 
         if (isset($raw['__unreachable'])) {
             $payload = ['__unreachable' => true];
+        } elseif (empty($raw['users']) || ! is_array($raw['users'])) {
+            $payload = [];
         } else {
             $payload = array_map(
-                fn ($u) => self::normalizeUser($u, $raw['price_map']),
+                fn ($u) => self::normalizeUser($u, $raw['price_map'] ?? []),
                 array_values($raw['users'])
             );
         }
