@@ -272,7 +272,7 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
             <div class="flex items-center gap-2">
                 <input type="search" id="sales-search" placeholder="Search…"
                     class="h-9 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 pl-3 pr-3 text-[13px] outline-none focus:border-[#5f7f67] w-44 transition">
-                <a href="/<?= htmlspecialchars($session) ?>/reports/sales/export/csv?<?= htmlspecialchars(http_build_query(array_filter($filters ?? [], fn ($v) => $v !== null && $v !== ''))) ?>" id="export-csv"
+                <a href="/<?= htmlspecialchars($session) ?>/reports/sales/export/csv?<?= htmlspecialchars(http_build_query(array_filter($filters ?? [], fn ($v) => $v !== null && $v !== ''))) ?>" id="export-csv" data-no-spa download
                     class="h-9 px-3 inline-flex items-center gap-1.5 rounded-xl border border-black/10 dark:border-white/10 text-[12px] font-semibold hover:bg-black/[.03] dark:hover:bg-white/[.05] transition-colors">
                     <i data-lucide="download" class="w-3.5 h-3.5"></i> CSV
                 </a>
@@ -289,7 +289,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                         <th class="cursor-pointer" data-sort="datetime">Generated ▲▼</th>
                         <th class="cursor-pointer" data-sort="code">Code ▲▼</th>
                         <th class="cursor-pointer" data-sort="package">Package ▲▼</th>
-                        <th class="cursor-pointer" data-sort="server">Server ▲▼</th>
                         <th class="cursor-pointer" data-sort="sale_type">Sale Type ▲▼</th>
                         <th class="cursor-pointer" data-sort="batch_id">Batch ID ▲▼</th>
                         <th class="text-right cursor-pointer" data-sort="price">Price ▲▼</th>
