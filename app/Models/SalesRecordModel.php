@@ -30,7 +30,7 @@ class SalesRecordModel
     public function insert(array $data): int
     {
         $db = Database::getInstance();
-        $sql = 'INSERT INTO sales_records
+        $sql = 'INSERT OR IGNORE INTO sales_records
                 (router_id, voucher_name, voucher_password, profile_name, profile_price,
                  server, comment, sale_type, price, billable, datetime)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -47,25 +47,18 @@ class SalesRecordModel
             ! empty($data['billable']) ? 1 : 0,
             (string) ($data['datetime'] ?? ''),
         ]);
-        $db = Database::getInstance();
-        $sql = 'INSERT INTO sales_records
-                (router_id, voucher_name, voucher_password, profile_name, profile_price,
-                 server, comment, sale_type, price, billable, datetime)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        $db->query($sql, [
-            (int) $data['router_id'],
-            (string) $data['voucher_name'],
-            (string) ($data['voucher_password'] ?? ''),
-            (string) ($data['profile_name'] ?? ''),
-            (int) ($data['profile_price'] ?? 0),
-            (string) ($data['server'] ?? ''),
-            (string) ($data['comment'] ?? ''),
-            (string) $data['sale_type'],
-            (int) ($data['price'] ?? 0),
-            ! empty($data['billable']) ? 1 : 0,
-            (string) ($data['datetime'] ?? ''),
-        ]);
-        return (int) $db->getConnection()->lastInsertId();
+        // INSERT OR IGNORE: kalau duplicate (UNIQUE constraint), tidak ada
+        // row baru, lastInsertId() returns 0. Ambil id existing untuk return.
+        $newId = (int) $db->getConnection()->lastInsertId();
+        if ($newId === 0) {
+            $stmt = $db->query(
+                'SELECT id FROM sales_records WHERE router_id = ? AND voucher_name = ? AND sale_type = ?',
+                [(int) $data['router_id'], (string) $data['voucher_name'], (string) $data['sale_type']]
+            );
+            $existing = $stmt->fetch();
+            return $existing ? (int) $existing['id'] : 0;
+        }
+        return $newId;
     }
 
     /**

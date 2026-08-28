@@ -162,8 +162,11 @@ class Migrations
             billable INTEGER DEFAULT 0,
             datetime TEXT,
             sold_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            deleted_at DATETIME NULL
+            deleted_at DATETIME NULL,
+            UNIQUE(router_id, voucher_name, sale_type)
         )");
+        $pdo->exec('CREATE UNIQUE INDEX IF NOT EXISTS uniq_sales_voucher
+            ON sales_records(router_id, voucher_name, sale_type)');
         $pdo->exec('CREATE INDEX IF NOT EXISTS idx_sales_router_sold
             ON sales_records(router_id, sold_at)');
         $pdo->exec('CREATE INDEX IF NOT EXISTS idx_sales_router_profile
