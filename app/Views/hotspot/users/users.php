@@ -74,7 +74,7 @@ $toolbar_html = '
     <div class="page-toolbar-right">
         <div class="w-40">
             <select id="filter-profile" class="custom-select form-filter" data-search="true">
-                <option value="" data-i18n="common.all_profiles">All Profiles</option>';
+                <option value="" data-i18n="common.all_profiles">All Data Plans</option>';
 foreach ($uniqueProfiles as $p) {
     $toolbar_html .= '<option value="' . htmlspecialchars($p) . '">' . htmlspecialchars($p) . '</option>';
 }
@@ -116,7 +116,7 @@ $toolbar_html .= '
                         <input type="checkbox" id="select-all" class="checkbox">
                     </th>
                     <th data-sort="name" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="hotspot_users.name">Name</th>
-                    <th data-sort="profile" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="hotspot_users.profile">Profile</th>
+                    <th data-sort="profile" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="hotspot_users.profile">Data Plans</th>
                     <th data-i18n="hotspot_users.uptime_limit">Uptime / Limit</th>
                     <th data-i18n="hotspot_users.bytes_in_out">Bytes In/Out</th>
                     <th data-sort="comment" class="sortable cursor-pointer hover:text-foreground select-none" data-i18n="hotspot_users.comment">Comment</th>

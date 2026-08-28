@@ -73,7 +73,7 @@ class ReportController extends Controller
             // BOM agar Excel detect UTF-8 dengan benar (karakter non-ASCII aman)
             fwrite($out, "\xEF\xBB\xBF");
             // Header: pakai label bersih (Excel-friendly), bukan slug
-            fputcsv($out, ['Generated', 'Code', 'Package', 'Server', 'Sale Type', 'Batch ID', 'Price']);
+            fputcsv($out, ['Generated', 'Voucher', 'Package', 'Server', 'Sale Type', 'Batch ID', 'Price']);
             foreach ($report['list'] as $row) {
                 fputcsv($out, [
                     $row['date'].($row['time'] ? ' '.$row['time'] : ''),

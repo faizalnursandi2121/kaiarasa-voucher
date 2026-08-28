@@ -287,9 +287,8 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
         <div class="overflow-x-auto">
             <table class="table-glass" id="sales-table">
                 <thead>
-                    <tr>
                         <th class="cursor-pointer" data-sort="datetime">Generated ▲▼</th>
-                        <th class="cursor-pointer" data-sort="code">Code ▲▼</th>
+                        <th class="cursor-pointer" data-sort="code">Voucher ▲▼</th>
                         <th class="cursor-pointer" data-sort="package">Package ▲▼</th>
                         <th class="cursor-pointer" data-sort="server">Server ▲▼</th>
                         <th class="cursor-pointer" data-sort="sale_type">Sale Type ▲▼</th>
