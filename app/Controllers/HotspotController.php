@@ -535,45 +535,6 @@ class HotspotController extends Controller
         exit;
     }
 
-    public function hosts($session)
-    {
-        $configModel = new Config;
-        $creds = $configModel->getSession($session);
-        if (! $creds) {
-            header('Location: /');
-            exit;
-        }
-
-        $items = [];
-        $error = null;
-
-        $API = RouterOSAPI::fromSession($creds);
-        $API->attempts = 1;
-        $API->delay = 0;
-        $password_router = $creds['password'];
-        if (isset($creds['source']) && $creds['source'] === 'legacy') {
-            $password_router = RouterOSAPI::decrypt($password_router);
-        }
-
-        if ($API->connect($creds['ip'], $creds['user'], $password_router)) {
-            $items = $API->comm('/ip/hotspot/host/print');
-            $API->disconnect();
-        } else {
-            FlashHelper::set('error', 'Connection Failed', 'Could not connect to router at '.$creds['ip']);
-            header('Location: '.($_SERVER['HTTP_REFERER'] ?? '/'.$session.'/dashboard'));
-            exit;
-        }
-
-        $data = [
-            'session' => $session,
-            'items' => $items,
-            'error' => $error,
-            'asOf' => $asOf,
-        ];
-
-        return $this->view('status/hosts', $data);
-    }
-
     public function bindings($session)
     {
         $configModel = new Config;

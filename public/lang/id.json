@@ -284,8 +284,7 @@
         "access.user_accounts": "Akun User",
         "access.vouchers": "Voucher",
         "access.packages": "Paket Akses",
-        "activity.active_users": "User Aktif",
-        "activity.devices": "Perangkat Terhubung"
+        "activity.active_users": "User Aktif"
     },
     "hotspot_active": {
         "title": "User Aktif",
@@ -297,16 +296,8 @@
         "uptime": "Waktu Aktif / Sisa",
         "bytes_in_out": "Bytes Masuk/Keluar",
         "time_left": "Sisa",
-        "remove": "Putuskan User?"
-    },
-    "hotspot_hosts": {
-        "title": "Host Hotspot",
-        "subtitle": "Perangkat yang terhubung ke jaringan hotspot untuk:",
-        "mac": "Alamat MAC",
-        "address": "Alamat IP",
-        "to_address": "Ke Alamat",
-        "server": "Server",
-        "comment": "Komentar"
+        "remove": "Putuskan User?",
+        "note": "Catatan"
     },
     "hotspot_menu": {
         "users": "User",

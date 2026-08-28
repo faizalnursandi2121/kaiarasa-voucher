@@ -164,10 +164,9 @@ $redirectToSessionRoute = function (string $suffix) {
         $router->get('/{session}/hotspot/print-batch', [HotspotController::class, 'printBatchActions']);
         $router->get('/{session}/hotspot/print/([a-zA-Z0-9*]+)', [HotspotController::class, 'printUser']);
 
-        // Hotspot - Active & Hosts
+        // Hotspot - Active
         $router->get('/{session}/hotspot/active', [HotspotController::class, 'active']);
         $router->post('/{session}/hotspot/active/remove', [HotspotController::class, 'removeActive']);
-        $router->get('/{session}/hotspot/hosts', [HotspotController::class, 'hosts']);
         $router->get('/{session}/hotspot/bindings', [HotspotController::class, 'bindings']);
         $router->post('/{session}/hotspot/bindings/store', [HotspotController::class, 'storeBinding']);
         $router->post('/{session}/hotspot/bindings/remove', [HotspotController::class, 'removeBinding']);

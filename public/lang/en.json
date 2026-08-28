@@ -282,8 +282,7 @@
         "access.user_accounts": "User Accounts",
         "access.vouchers": "Vouchers",
         "access.packages": "Access Packages",
-        "activity.active_users": "Active Users",
-        "activity.devices": "Connected Devices"
+        "activity.active_users": "Active Users"
     },
     "hotspot_active": {
         "title": "Active Users",
@@ -295,16 +294,8 @@
         "uptime": "Uptime / Left",
         "bytes_in_out": "Bytes In/Out",
         "time_left": "Left",
-        "remove": "Disconnect User?"
-    },
-    "hotspot_hosts": {
-        "title": "Hotspot Hosts",
-        "subtitle": "Devices connected to the hotspot network for:",
-        "mac": "MAC Address",
-        "address": "Address",
-        "to_address": "To Address",
-        "server": "Server",
-        "comment": "Comment"
+        "remove": "Disconnect User?",
+        "note": "Note"
     },
     "hotspot_menu": {
         "users": "Users",
