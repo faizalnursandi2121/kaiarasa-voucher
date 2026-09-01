@@ -20,18 +20,24 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
 ?>
 
 <div class="page-toolbar">
-    <div></div>
+    <div class="input-group md:w-64 z-10">
+        <div class="input-icon">
+            <i data-lucide="search" class="h-4 w-4"></i>
+        </div>
+        <input type="text" id="global-search" class="form-input-search w-full" placeholder="Search..." data-i18n-placeholder="common.table.search_placeholder">
+    </div>
     <div class="page-toolbar-right">
-        <div class="dropdown dropdown-end relative" id="export-dropdown">
-            <button class="btn btn-secondary dropdown-toggle" onclick="document.getElementById('export-menu').classList.toggle('hidden')">
+        <div class="relative" id="export-dropdown">
+            <button class="btn btn-secondary" id="export-toggle"
+                aria-haspopup="true" aria-expanded="false">
                 <i data-lucide="download" class="w-4 h-4 mr-2"></i> <span data-i18n="reports.export">Export</span>
-                <i data-lucide="chevron-down" class="w-4 h-4 ml-1"></i>
+                <i data-lucide="chevron-down" class="w-4 h-4 ml-1 transition-transform duration-200" id="export-chevron"></i>
             </button>
-            <div id="export-menu" class="dropdown-menu hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-black border border-accents-2 z-50 p-1">
-                <button onclick="exportReport('csv')" class="block w-full text-left px-4 py-2 text-sm text-foreground hover:bg-accents-1 rounded flex items-center">
+            <div id="export-menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-black border border-accents-2 z-[60] p-1" role="menu">
+                <button onclick="exportReport('csv')" class="block w-full text-left px-4 py-2 text-sm text-foreground hover:bg-accents-1 rounded flex items-center" role="menuitem">
                     <i data-lucide="file-text" class="w-4 h-4 mr-2 text-green-600"></i> Export CSV
                 </button>
-                <button onclick="exportReport('xlsx')" class="block w-full text-left px-4 py-2 text-sm text-foreground hover:bg-accents-1 rounded flex items-center">
+                <button onclick="exportReport('xlsx')" class="block w-full text-left px-4 py-2 text-sm text-foreground hover:bg-accents-1 rounded flex items-center" role="menuitem">
                     <i data-lucide="sheet" class="w-4 h-4 mr-2 text-green-600"></i> Export Excel
                 </button>
             </div>
@@ -44,7 +50,6 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
         </button>
     </div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
     <!-- Total Income -->
     <div class="card">
         <div class="text-sm text-accents-5 uppercase font-bold tracking-wide" data-i18n="reports.total_income">Total Potential</div>

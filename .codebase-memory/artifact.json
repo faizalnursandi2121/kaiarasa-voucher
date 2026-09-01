@@ -1,0 +1,11 @@
+{
+    "schema_version": 2,
+    "commit": "eeda021b5ea008b987132b84df3ff16c294b5c1c",
+    "indexed_at": "2026-09-01T03:44:13Z",
+    "project": "MIVO",
+    "nodes": 4358,
+    "edges": 14800,
+    "original_size": 10944512,
+    "compressed_size": 2372469,
+    "compression_level": 9
+}

@@ -75,6 +75,11 @@ $toolbar_html .= '
 <div class="page-toolbar">
 <?php echo $toolbar_html; ?>
 </div>
+<!-- Active Filter Chips -->
+<div class="filter-chips-bar">
+    <div class="filter-chips"></div>
+    <button type="button" class="filter-clear hidden" data-i18n="common.clear_all">Clear all</button>
+</div>
 
     <div class="table-container">
         <table class="table-glass" id="profiles-table">
@@ -263,11 +268,11 @@ $toolbar_html .= '
 
         setupListeners() {
             const searchInput = document.getElementById('global-search');
-            if (searchInput) searchInput.addEventListener('input', (e) => {
+            if (searchInput) searchInput.addEventListener('input', window.Kaiarasa.debounce((e) => {
                 this.filters.search = e.target.value.toLowerCase();
                 this.currentPage = 1;
                 this.update();
-            });
+            }, 300));
 
             if (this.elements.prevBtn) this.elements.prevBtn.addEventListener('click', () => {
                 if (this.currentPage > 1) {
@@ -481,6 +486,10 @@ $toolbar_html .= '
             document.querySelectorAll('.custom-select').forEach(select => {
                 new CustomSelect(select);
             });
+        }
+
+        if (window.Kaiarasa && window.Kaiarasa.initFilterChips) {
+            window.Kaiarasa.initFilterChips(['filter-mode'], 'global-search');
         }
         
         const rows = document.querySelectorAll('.table-row-item');

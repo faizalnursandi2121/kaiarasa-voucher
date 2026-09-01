@@ -106,6 +106,11 @@ $toolbar_html .= '
 <div class="page-toolbar">
 <?php echo $toolbar_html; ?>
 </div>
+<!-- Active Filter Chips -->
+<div class="filter-chips-bar">
+    <div class="filter-chips"></div>
+    <button type="button" class="filter-clear hidden" data-i18n="common.clear_all">Clear all</button>
+</div>
 
     <?php if (empty($users)) { ?>
     <!-- Empty State -->
@@ -479,11 +484,11 @@ $toolbar_html .= '
 
         setupListeners() {
             // Search Input
-            document.getElementById('global-search').addEventListener('input', (e) => {
+            document.getElementById('global-search').addEventListener('input', window.Kaiarasa.debounce((e) => {
                 this.filters.search = e.target.value.toLowerCase();
                 this.currentPage = 1;
                 this.update();
-            });
+            }, 300));
 
             // Prev/Next
             this.elements.prevBtn.addEventListener('click', () => {
@@ -690,6 +695,10 @@ $toolbar_html .= '
         // Init Custom Selects on Filter Bar
         if (typeof CustomSelect !== 'undefined') {
             document.querySelectorAll('.custom-select.form-filter').forEach(s => new CustomSelect(s));
+        }
+
+        if (window.Kaiarasa && window.Kaiarasa.initFilterChips) {
+            window.Kaiarasa.initFilterChips(['filter-profile', 'filter-comment'], 'global-search');
         }
 
         // Init Table

@@ -26,11 +26,11 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
 
 <?php
 $toolbar_html = '
-    <div class="relative w-full md:w-64">
-         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i data-lucide="search" class="h-4 w-4 text-accents-5"></i>
+    <div class="input-group md:w-64 z-10">
+        <div class="input-icon">
+            <i data-lucide="search" class="h-4 w-4"></i>
         </div>
-        <input type="text" id="global-search" class="form-input pl-10 w-full" placeholder="Search user, mac..." data-i18n="common.table.search_placeholder">
+        <input type="text" id="global-search" class="form-input-search w-full" placeholder="Search user, mac..." data-i18n="common.table.search_placeholder">
     </div>
     <div class="page-toolbar-right">
         <button onclick="location.reload()" class="btn btn-secondary">' .

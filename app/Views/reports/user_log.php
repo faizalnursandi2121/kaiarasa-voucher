@@ -40,15 +40,15 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
 
 <?php
 $toolbar_html = '
-    <div class="relative w-full md:w-64">
-         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i data-lucide="search" class="h-4 w-4 text-accents-5"></i>
+    <div class="input-group md:w-64 z-10">
+        <div class="input-icon">
+            <i data-lucide="search" class="h-4 w-4"></i>
         </div>
-        <input type="text" id="global-search" class="form-input pl-10 w-full" placeholder="Search message..." data-i18n-placeholder="common.table.search_placeholder">
+        <input type="text" id="global-search" class="form-input-search w-full" placeholder="Search message..." data-i18n-placeholder="common.table.search_placeholder">
     </div>
     <div class="page-toolbar-right">
-        <div class="w-48">
-            <select id="filter-topic" class="custom-select" data-search="true">
+        <div class="w-44">
+            <select id="filter-topic" class="custom-select form-filter" data-search="true">
                 <option value="" data-i18n="common.all_topics">All Topics</option>
                 <option value="hotspot,info,debug">hotspot,info,debug</option>
                 <option value="hotspot,account,info,debug">hotspot,account,info,debug</option>
@@ -67,6 +67,11 @@ $toolbar_html .= '
 ?>
 <div class="page-toolbar">
 <?php echo $toolbar_html; ?>
+</div>
+<!-- Active Filter Chips -->
+<div class="filter-chips-bar">
+    <div class="filter-chips"></div>
+    <button type="button" class="filter-clear hidden" data-i18n="common.clear_all">Clear all</button>
 </div>
 
     <div class="table-container">
@@ -155,11 +160,11 @@ $toolbar_html .= '
             if (searchInput && window.i18n) {
                 searchInput.placeholder = window.i18n.t('common.table.search_placeholder');
             }
-            document.getElementById('global-search').addEventListener('input', (e) => {
+            document.getElementById('global-search').addEventListener('input', window.Kaiarasa.debounce((e) => {
                 this.filters.search = e.target.value.toLowerCase();
                 this.currentPage = 1;
                 this.update();
-            });
+            }, 300));
             document.getElementById('filter-topic').addEventListener('change', (e) => {
                 this.filters.topics = e.target.value;
                 this.currentPage = 1;
@@ -243,6 +248,9 @@ $toolbar_html .= '
     window.whenReady(() => {
         if (typeof CustomSelect !== 'undefined') {
             document.querySelectorAll('.custom-select').forEach(s => new CustomSelect(s));
+        }
+        if (window.Kaiarasa && window.Kaiarasa.initFilterChips) {
+            window.Kaiarasa.initFilterChips(['filter-topic'], 'global-search');
         }
         new TableManager(document.querySelectorAll('.table-row-item'), 15);
     });

@@ -163,19 +163,24 @@
         @apply bg-accents-1 dark:bg-white/5 border border-accents-2 dark:border-white/10 rounded-xl p-4 shadow-sm transition-all duration-200;
     }
 
-    /* Custom Select Dropdown Global Style */
+    /* Custom Select Dropdown Global Style — fixed positioning (portal pattern).
+       Menu di-append ke document.body saat open() untuk menghindari clipping
+       oleh ancestor overflow (scroll container, table-container). */
     .custom-select-dropdown {
-        @apply absolute z-50 min-w-full top-full mt-1 bg-background dark:bg-black/80 border border-accents-2 dark:border-white/10 rounded-xl shadow-2xl transition-all duration-200 ease-out origin-top opacity-0 scale-95 -translate-y-2 invisible pointer-events-none flex flex-col max-h-60 overflow-hidden ring-1 ring-black/5;
+        @apply fixed z-[60] bg-background dark:bg-black/80 border border-accents-2 dark:border-white/10 rounded-xl shadow-2xl origin-top opacity-0 scale-95 invisible pointer-events-none flex flex-col max-h-60 overflow-hidden ring-1 ring-black/5;
+        transition: opacity .2s ease-out, transform .2s ease-out;
+        /* Reset margin — menu di-portal ke body; body:has(#sidebar) rule
+           memberi margin-left:16rem ke semua child body di desktop. */
+        margin: 0 !important;
     }
-    
     .custom-select-dropdown.open {
-        @apply opacity-100 scale-100 translate-y-0 visible pointer-events-auto;
+        @apply opacity-100 scale-100 visible pointer-events-auto;
     }
 
     .custom-select-dropdown.dropdown-up {
-        @apply bottom-full top-auto mb-1 mt-0 origin-bottom translate-y-2;
+        @apply origin-bottom;
     }
-    
+
     .custom-select-dropdown.dropdown-up.open {
         @apply translate-y-0;
     }
@@ -293,15 +298,35 @@
     }
 
     .page-toolbar {
-        @apply flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-4;
+        @apply flex flex-col md:flex-row gap-4 justify-end items-start md:items-center mb-5;
     }
 
     .page-toolbar-left {
-        @apply flex items-center gap-2 flex-wrap;
+        @apply flex items-center gap-3 flex-wrap;
     }
 
     .page-toolbar-right {
-        @apply flex items-center gap-2 flex-wrap ml-auto;
+        @apply flex items-center gap-2.5 flex-wrap;
+    }
+
+    /* Filter Active Chips — badge yang menampilkan filter sedang aktif */
+    .filter-chips-bar {
+        @apply flex items-center justify-between gap-2 mb-5 min-h-[0px];
+    }
+
+    .filter-chips {
+        @apply flex items-center gap-2 flex-wrap;
+    }
+
+    .filter-chip {
+        @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#5f7f67]/10 text-[#47614d] dark:text-[#92aa96] text-xs font-semibold border border-[#5f7f67]/20 transition-all;
+    }
+    .filter-chip button {
+        @apply inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-[#5f7f67]/20 transition-colors;
+    }
+
+    .filter-clear {
+        @apply text-xs font-semibold text-accents-5 hover:text-foreground transition-colors;
     }
 
     /* Glassmorphism Table */
@@ -347,23 +372,23 @@
         @apply px-6 py-4 text-foreground whitespace-nowrap;
     }
 
-    /* Table Actions - visible on hover and focus-within, always visible on touch */
+    /* Table Actions - visible on hover and focus-within, always visible on touch.
+       visibility:hidden dipakai (bukan opacity-only) agar tidak dapat
+       fokus keyboard saat tersembunyi (a11y best practice). */
     .table-actions-reveal {
-        @apply opacity-0 transition-opacity duration-200;
+        @apply opacity-0 invisible transition-all duration-200;
     }
 
     .table-glass tr:hover .table-actions-reveal,
     .table-glass tr:focus-within .table-actions-reveal {
-        @apply opacity-100;
+        @apply opacity-100 visible;
     }
 
     @media (hover: none) {
         .table-actions-reveal {
-            @apply opacity-100;
+            @apply opacity-100 visible;
         }
     }
-
-    /* Modal classes removed - using SweetAlert2 */
 }
 
 @layer utilities {

@@ -271,7 +271,9 @@ $getInitials = function ($name) {
     #sidebar .ring-white\/10 { --tw-ring-color: rgba(255,255,255,.25); }
     /* Dorong seluruh konten melewati sidebar fixed (desktop) */
     @media (min-width: 1024px) {
-        body:has(#sidebar) > *:not(#sidebar) { margin-left: 16rem; }
+        /* Dorong konten melewati sidebar, TAPI jangan ikut elemen yang
+           di-portal ke body (CustomSelect dropdown, toast, dll). */
+        body:has(#sidebar) > *:not(#sidebar):not(.custom-select-dropdown):not(#kaiarasa-toast-container) { margin-left: 16rem; }
     }
     .session-mobile-header { background: #5f7f67 !important; backdrop-filter: none !important; }
     </style>

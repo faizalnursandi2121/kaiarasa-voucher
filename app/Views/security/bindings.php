@@ -37,18 +37,18 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
     <!-- List (2/3) -->
     <div class="lg:col-span-2 space-y-4">
         <!-- Filter Bar -->
-        <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-accents-1 p-4 rounded-lg border border-accents-2 shadow-sm">
+        <div class="page-toolbar">
             <!-- Search -->
-            <div class="relative w-full">
-                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i data-lucide="search" class="h-4 w-4 text-accents-5"></i>
+            <div class="input-group md:w-64 z-10">
+                <div class="input-icon">
+                    <i data-lucide="search" class="h-4 w-4"></i>
                 </div>
-                <input type="text" id="global-search" class="form-input pl-10 w-full" placeholder="Search mac, address, comment..." data-i18n="common.table.search_placeholder">
+                <input type="text" id="global-search" class="form-input-search w-full" placeholder="Search mac, address, comment..." data-i18n="common.table.search_placeholder">
             </div>
-             <!-- Dropdowns -->
-            <div class="flex gap-2 w-full md:w-auto">
-                <div class="w-40">
-                    <select id="filter-type" class="custom-select" data-search="true">
+            <!-- Dropdowns -->
+            <div class="page-toolbar-right">
+                <div class="w-44">
+                    <select id="filter-type" class="custom-select form-filter" data-search="true">
                         <option value="" data-i18n="security.bindings.all_types">All Types</option>
                         <option value="regular" data-i18n="security.bindings.regular">Regular</option>
                         <option value="bypassed" data-i18n="security.bindings.bypassed">Bypassed</option>
@@ -56,6 +56,11 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
                     </select>
                 </div>
             </div>
+        </div>
+        <!-- Active Filter Chips -->
+        <div class="filter-chips-bar">
+            <div class="filter-chips"></div>
+            <button type="button" class="filter-clear hidden" data-i18n="common.clear_all">Clear all</button>
         </div>
 
         <div class="table-container">
@@ -244,11 +249,11 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
         }
 
         init() {
-            document.getElementById('global-search').addEventListener('input', (e) => {
+            document.getElementById('global-search').addEventListener('input', window.Kaiarasa.debounce((e) => {
                 this.filters.search = e.target.value.toLowerCase();
                 this.currentPage = 1;
                 this.update();
-            });
+            }, 300));
             // Translate placeholder
             const searchInput = document.getElementById('global-search');
             if (searchInput && window.i18n) {
@@ -339,6 +344,9 @@ require_once ROOT.'/app/Views/layouts/page_header.php';
     window.whenReady(() => {
         if (typeof CustomSelect !== 'undefined') {
             document.querySelectorAll('.custom-select').forEach(s => new CustomSelect(s));
+        }
+        if (window.Kaiarasa && window.Kaiarasa.initFilterChips) {
+            window.Kaiarasa.initFilterChips(['filter-type'], 'global-search');
         }
         new TableManager(document.querySelectorAll('.table-row-item'), 10);
     });

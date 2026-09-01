@@ -21,14 +21,14 @@ require_once ROOT.'/app/Views/layouts/header_main.php';
     <!-- Content Area -->
     <div class="mt-8 flex-1 min-w-0" id="settings-content-area">
              <div class="space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-accents-2 pb-5 gap-4">
-                    <div class="hidden md:block">
-                        <!-- Spacer -->
+                <div class="page-toolbar">
+                    <div></div>
+                    <div class="page-toolbar-right">
+                        <a href="<?= $vtBase ?>/add" class="btn btn-primary w-full sm:w-auto justify-center">
+                            <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+                            <span data-i18n="settings.new_template">New Template</span>
+                        </a>
                     </div>
-                    <a href="<?= $vtBase ?>/add" class="btn btn-primary w-full sm:w-auto justify-center">
-                        <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
-                        <span data-i18n="settings.new_template">New Template</span>
-                    </a>
                 </div>
 
                 <!-- Template List -->
