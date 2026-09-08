@@ -730,6 +730,15 @@ $toolbar_html .= '
                     if (!e.target.checked) selectAll.checked = false;
                 }
             });
+
+            // Sinkron state select-all dengan baris yang TERLIHAT saat ini
+            // (pagination memindahkan baris — lihat catatan di profiles/index.php).
+            const syncSelectAll = () => {
+                const cbs = Array.from(tableBody.querySelectorAll('.user-checkbox'));
+                selectAll.checked = cbs.length > 0 && cbs.every(cb => cb.checked);
+            };
+            new MutationObserver(syncSelectAll).observe(tableBody, { childList: true });
+            syncSelectAll();
         }
 
         // 'Select All Broken' — centang semua voucher orphan (data plan missing)

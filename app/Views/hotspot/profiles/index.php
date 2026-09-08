@@ -570,6 +570,17 @@ $toolbar_html .= '
                     if (!e.target.checked) selectAll.checked = false;
                 }
             });
+
+            // Sinkron state select-all dengan baris yang TERLIHAT saat ini.
+            // Pagination memindahkan baris antar halaman; tanpa sync, checkbox
+            // header bisa "checked" padahal halaman aktif kosong seleksinya
+            // (klik pertama user jadi no-op — terkesan bulk select mati).
+            const syncSelectAll = () => {
+                const cbs = Array.from(tableBody.querySelectorAll('.profile-checkbox'));
+                selectAll.checked = cbs.length > 0 && cbs.every(cb => cb.checked);
+            };
+            new MutationObserver(syncSelectAll).observe(tableBody, { childList: true });
+            syncSelectAll();
         }
 
         if (bulkDeleteBtn && bulkDeleteForm) {
