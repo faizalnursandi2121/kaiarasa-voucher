@@ -158,8 +158,26 @@ $toolbar_html .= '
             this.init();
         }
 
+        debounce(fn, wait) {
+
+            var t;
+
+            return function () {
+
+                var ctx = this, args = arguments;
+
+                clearTimeout(t);
+
+                t = setTimeout(function () { fn.apply(ctx, args); }, wait || 300);
+
+            };
+
+        }
+
+
+
         init() {
-            document.getElementById('global-search').addEventListener('input', window.Kaiarasa.debounce((e) => {
+            document.getElementById('global-search').addEventListener('input', this.debounce((e) => {
                 this.filters.search = e.target.value.toLowerCase();
                 this.currentPage = 1;
                 this.update();

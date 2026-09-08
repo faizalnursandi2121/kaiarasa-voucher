@@ -247,6 +247,15 @@ $toolbar_html .= '
             this.init();
         }
 
+        debounce(fn, wait) {
+            var t;
+            return function () {
+                var ctx = this, args = arguments;
+                clearTimeout(t);
+                t = setTimeout(function () { fn.apply(ctx, args); }, wait || 300);
+            };
+        }
+
         init() {
             // Translate placeholder
             const searchInput = document.getElementById('global-search');
@@ -268,7 +277,7 @@ $toolbar_html .= '
 
         setupListeners() {
             const searchInput = document.getElementById('global-search');
-            if (searchInput) searchInput.addEventListener('input', window.Kaiarasa.debounce((e) => {
+            if (searchInput) searchInput.addEventListener('input', this.debounce((e) => {
                 this.filters.search = e.target.value.toLowerCase();
                 this.currentPage = 1;
                 this.update();
