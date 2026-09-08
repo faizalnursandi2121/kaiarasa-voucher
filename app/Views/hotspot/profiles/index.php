@@ -442,7 +442,12 @@ $toolbar_html .= '
                     inp.value = sv || '1';
                     inp.placeholder = '1';
                 }
-                 const rlParts = rlCombined.split('/');
+
+                // Name
+                form.querySelector('[name="name"]').value = row.dataset.name || '';
+
+                // Rate limit: parse combined "rx/tx" dari dataset row
+                const rlParts = (row.dataset.rateLimit || '').split('/');
                  const parseRl = (s) => { const m = /^\s*(\d+(?:\.\d+)?)\s*([kKmMgG]?)\s*$/.exec(s || ''); return m ? [m[1], (m[2] || 'M')] : null; };
                  if (rlParts.length === 2) {
                      const rxP = parseRl(rlParts[0]), txP = parseRl(rlParts[1]);
