@@ -496,6 +496,12 @@ $toolbar_html .= '
         if (window.Kaiarasa && window.Kaiarasa.initFilterChips) {
             window.Kaiarasa.initFilterChips(['filter-mode'], 'global-search');
         }
+
+        // Paginasi/search/filter tabel: TableManager wajib di-instantiate.
+        // Tanpa ini kontrol pagination mati (total=0) dan halaman >10 data
+        // plan tidak bisa dinavigasi.
+        new TableManager(document.querySelectorAll('.table-row-item'), 10);
+
         
         const rows = document.querySelectorAll('.table-row-item');
         // Select-all checkbox (sama pola dengan halaman Vouchers)

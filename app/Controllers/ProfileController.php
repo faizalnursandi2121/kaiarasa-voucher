@@ -204,8 +204,21 @@ class ProfileController extends Controller
                 $profileData['rate-limit'] = $rateLimit;
             }
 
-            $API->comm('/ip/hotspot/user/profile/add', $profileData);
+            $res = $API->comm('/ip/hotspot/user/profile/add', $profileData);
             $API->disconnect();
+
+            // API error (mis. nama profile sudah ada, parameter tidak valid)
+            if (is_array($res) && isset($res['!trap'][0]['message'])) {
+                FlashHelper::set('error', 'common.error', 'toasts.profile_create_failed_desc', ['reason' => $res['!trap'][0]['message']], true);
+                $this->redirect('/'.$session.'/hotspot/profiles');
+
+                return;
+            }
+        } else {
+            FlashHelper::set('error', 'common.error', 'toasts.profile_router_unreachable_desc', [], true);
+            $this->redirect('/'.$session.'/hotspot/profiles');
+
+            return;
         }
 
         FlashHelper::set('success', 'toasts.profile_created', 'toasts.profile_created_desc', ['name' => $name], true);
@@ -417,10 +430,22 @@ class ProfileController extends Controller
 
             $profileData['rate-limit'] = $rateLimit;
 
-            $API->comm('/ip/hotspot/user/profile/set', $profileData);
+            $res = $API->comm('/ip/hotspot/user/profile/set', $profileData);
             $API->disconnect();
-        }
 
+            // API error (mis. parameter tidak valid, rate-limit format salah)
+            if (is_array($res) && isset($res['!trap'][0]['message'])) {
+                FlashHelper::set('error', 'common.error', 'toasts.profile_update_failed_desc', ['reason' => $res['!trap'][0]['message']], true);
+                $this->redirect('/'.$session.'/hotspot/profiles');
+
+                return;
+            }
+        } else {
+            FlashHelper::set('error', 'common.error', 'toasts.profile_router_unreachable_desc', [], true);
+            $this->redirect('/'.$session.'/hotspot/profiles');
+
+            return;
+        }
         FlashHelper::set('success', 'toasts.profile_updated', 'toasts.profile_updated_desc', ['name' => $name], true);
         $this->redirect('/'.$session.'/hotspot/profiles');
     }
