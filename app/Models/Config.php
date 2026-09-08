@@ -27,6 +27,7 @@ class Config
             if ($router) {
                 return [
                     'id' => $router['id'],
+                    'session_name' => $router['session_name'],
                     'ip' => $router['ip_address'],
                     'ip_address' => $router['ip_address'], // Alias
                     'user' => $router['username'],
@@ -59,6 +60,7 @@ class Config
             $s = $data[$sessionName];
 
             return [
+                'session_name' => $sessionName,
                 'ip' => isset($s[1]) ? explode('!', $s[1])[1] : '',
                 'ip_address' => isset($s[1]) ? explode('!', $s[1])[1] : '', // Alias
                 'user' => isset($s[2]) ? explode('@|@', $s[2])[1] : '',
