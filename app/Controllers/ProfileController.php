@@ -176,13 +176,16 @@ class ProfileController extends Controller
         // MAC cookie timeout: kosong = ikut validity (auto), isi manual = override.
         // Default MikroTik tanpa field ini adalah 3d — padahal validity bisa
         // 7d/30d, sehingga device lama kehilangan MAC cookie duluan.
+        // Validity unlimited (plan tanpa auto-disable) → cookie 30d: cukup
+        // panjang untuk tamu tetap tanpa menumpuk cookie selamanya.
         $cookieAuto = ($_POST['mac_cookie_auto'] ?? '1') === '1';
         $cookieManual = trim($_POST['mac_cookie_timeout'] ?? '');
-        $macCookieTimeout = '';
         if (! $cookieAuto && $cookieManual !== '') {
             $macCookieTimeout = $cookieManual;
-        } elseif ($cookieAuto && $validity !== '') {
-            $macCookieTimeout = $validity;
+        } elseif ($cookieAuto) {
+            $macCookieTimeout = $validity !== '' ? $validity : '30d';
+        } else {
+            $macCookieTimeout = '';
         }
 
         // Construct on-login script
@@ -422,13 +425,15 @@ class ProfileController extends Controller
         $sellingPrice = $_POST['selling_price'] ?? '';
 
         // MAC cookie timeout: kosong = ikut validity (auto), isi manual = override.
+        // Validity unlimited → cookie 30d (sama dengan store).
         $cookieAuto = ($_POST['mac_cookie_auto'] ?? '1') === '1';
         $cookieManual = trim($_POST['mac_cookie_timeout'] ?? '');
-        $macCookieTimeout = '';
         if (! $cookieAuto && $cookieManual !== '') {
             $macCookieTimeout = $cookieManual;
-        } elseif ($cookieAuto && $validity !== '') {
-            $macCookieTimeout = $validity;
+        } elseif ($cookieAuto) {
+            $macCookieTimeout = $validity !== '' ? $validity : '30d';
+        } else {
+            $macCookieTimeout = '';
         }
 
         $metaScript = sprintf(

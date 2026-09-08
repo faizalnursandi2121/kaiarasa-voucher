@@ -422,11 +422,14 @@ $toolbar_html .= '
              const cookieHint = form.querySelector('#mac-cookie-hint');
              const cookieManualInput = form.querySelector('[name="mac_cookie_timeout"]');
 
+             // MAC cookie effektif: validity terisi → ikut validity;
+             // validity kosong (unlimited) → fallback 30d (sama dgn backend).
              function composeValidityText() {
                  const d = form.querySelector('[name="validity_d"]')?.value || '';
                  const h = form.querySelector('[name="validity_h"]')?.value || '';
                  const m = form.querySelector('[name="validity_m"]')?.value || '';
-                 return ((d ? d + 'd' : '') + (h ? h + 'h' : '') + (m ? m + 'm' : '')) || '3d';
+                 const v = (d ? d + 'd' : '') + (h ? h + 'h' : '') + (m ? m + 'm' : '');
+                 return v || '30d (unlimited)';
              }
 
              function toggleCookieMode() {
