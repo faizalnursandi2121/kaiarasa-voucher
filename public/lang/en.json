@@ -35,6 +35,7 @@
         "previous": "Previous",
         "next": "Next",
         "clear_all": "Clear all",
+        "page_of": "Page {current} of {total}",
         "all_topics": "All Topics",
         "open": "Open",
         "session": "Session",
