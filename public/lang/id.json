@@ -134,6 +134,8 @@
         "drag_drop": "Seret dan lepas atau klik untuk memilih file",
         "supports_formats": "Mendukung PNG, JPG, SVG, GIF",
         "no_logos": "Belum ada logo yang diunggah.",
+        "mac_cookie_auto": "MAC cookie ikut validity",
+        "mac_cookie_timeout": "MAC cookie timeout",
         "logo_broken": "File tidak ditemukan",
         "id_copied": "ID Disalin",
         "logo_id_copied_desc": "ID Logo <strong>{id}</strong> disalin ke papan klip.",

@@ -132,6 +132,8 @@
         "drag_drop": "Drag and drop or click to select file",
         "supports_formats": "Supports PNG, JPG, SVG, GIF",
         "no_logos": "No logos uploaded yet.",
+        "mac_cookie_auto": "MAC cookie follows validity",
+        "mac_cookie_timeout": "MAC cookie timeout",
         "logo_broken": "File missing",
         "id_copied": "ID Copied",
         "logo_id_copied_desc": "Logo ID <strong>{id}</strong> copied to clipboard.",

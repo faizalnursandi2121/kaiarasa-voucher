@@ -107,7 +107,7 @@ $toolbar_html .= '
                         data-rate-limit="<?= htmlspecialchars($profile['rate-limit'] ?? '') ?>"
                         data-address-pool="<?= htmlspecialchars($profile['address-pool'] ?? 'none') ?>"
                         data-parent-queue="<?= htmlspecialchars($profile['parent-queue'] ?? 'none') ?>"
-                        data-expired-mode="<?= htmlspecialchars($profile['meta']['expired_mode'] ?? 'none') ?>"
+                        data-mac-cookie-timeout="<?= htmlspecialchars($profile['mac-cookie-timeout'] ?? '') ?>"
                         data-val-d="<?= htmlspecialchars($profile['val_d'] ?? '') ?>"
                         data-val-h="<?= htmlspecialchars($profile['val_h'] ?? '') ?>"
                         data-val-m="<?= htmlspecialchars($profile['val_m'] ?? '') ?>"
@@ -410,18 +410,41 @@ $toolbar_html .= '
              const autoToggle  = form.querySelector('#auto-disable-toggle');
              const validityGroup = form.querySelector('#validity-group');
 
-             function toggleValidity() {
+            function toggleValidity() {
                  if (!validityGroup || !modeCarrier) return;
                  validityGroup.classList.toggle('hidden', modeCarrier.value === 'none');
              }
 
-             if (autoToggle && modeCarrier) {
-                 autoToggle.addEventListener('change', () => {
-                     modeCarrier.value = autoToggle.checked ? 'remc' : 'none';
-                     toggleValidity();
+             // MAC cookie toggle: auto = ikut validity, off = field manual
+             const cookieAutoToggle = form.querySelector('#mac-cookie-auto-toggle');
+             const cookieAutoCarrier = form.querySelector('#mac-cookie-auto');
+             const cookieManualGroup = form.querySelector('#mac-cookie-manual-group');
+             const cookieHint = form.querySelector('#mac-cookie-hint');
+             const cookieManualInput = form.querySelector('[name="mac_cookie_timeout"]');
+
+             function composeValidityText() {
+                 const d = form.querySelector('[name="validity_d"]')?.value || '';
+                 const h = form.querySelector('[name="validity_h"]')?.value || '';
+                 const m = form.querySelector('[name="validity_m"]')?.value || '';
+                 return ((d ? d + 'd' : '') + (h ? h + 'h' : '') + (m ? m + 'm' : '')) || '3d';
+             }
+
+             function toggleCookieMode() {
+                 if (!cookieAutoCarrier || !cookieAutoToggle) return;
+                 cookieAutoCarrier.value = cookieAutoToggle.checked ? '1' : '0';
+                 if (cookieManualGroup) cookieManualGroup.classList.toggle('hidden', cookieAutoToggle.checked);
+                 if (cookieHint) cookieHint.textContent = cookieAutoToggle.checked ? ('= ' + composeValidityText()) : '';
+             }
+
+             if (cookieAutoToggle) {
+                 cookieAutoToggle.addEventListener('change', toggleCookieMode);
+                 ['validity_d', 'validity_h', 'validity_m'].forEach(n => {
+                     form.querySelector('[name="' + n + '"]')?.addEventListener('input', () => {
+                         if (cookieAutoToggle.checked && cookieHint) cookieHint.textContent = '= ' + composeValidityText();
+                     });
                  });
              }
-             toggleValidity();
+             toggleCookieMode();
 
              if (mode === 'edit' && btn) {
                  const row = btn.closest('tr');
@@ -445,6 +468,23 @@ $toolbar_html .= '
 
                 // Name
                 form.querySelector('[name="name"]').value = row.dataset.name || '';
+                // Validity
+                form.querySelector('[name="validity_d"]').value = row.dataset.valD || '';
+                form.querySelector('[name="validity_h"]').value = row.dataset.valH || '';
+                form.querySelector('[name="validity_m"]').value = row.dataset.valM || '';
+
+                // MAC cookie: row punya mac-cookie-timeout di MikroTik = manual mode
+                const cookieTimeout = row.dataset.macCookieTimeout || '';
+                if (cookieAutoToggle && cookieAutoCarrier) {
+                    if (cookieTimeout !== '') {
+                        cookieAutoToggle.checked = false;
+                        if (cookieManualInput) cookieManualInput.value = cookieTimeout;
+                    } else {
+                        cookieAutoToggle.checked = true;
+                        if (cookieManualInput) cookieManualInput.value = '';
+                    }
+                    toggleCookieMode();
+                }
 
                 // Rate limit: parse combined "rx/tx" dari dataset row
                 const rlParts = (row.dataset.rateLimit || '').split('/');
@@ -463,10 +503,6 @@ $toolbar_html .= '
                  if (autoToggle) autoToggle.checked = (legacyMode !== 'none');
                  toggleValidity();
 
-                 // Validity
-                 form.querySelector('[name="validity_d"]').value = row.dataset.valD || '';
-                 form.querySelector('[name="validity_h"]').value = row.dataset.valH || '';
-                 form.querySelector('[name="validity_m"]').value = row.dataset.valM || '';
 
                  // Prices
 
@@ -704,6 +740,26 @@ $toolbar_html .= '
                         </div>
                     </div>
                 </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[13px] font-semibold mb-2" for="mac-cookie-auto-toggle" data-i18n="hotspot_profiles.form.mac_cookie_auto">MAC cookie follows validity</label>
+                        <div class="h-11 flex items-center">
+                            <label class="relative inline-flex items-center cursor-pointer select-none">
+                                <input type="checkbox" id="mac-cookie-auto-toggle" class="sr-only peer" checked>
+                                <span class="block w-10 h-[22px] rounded-full bg-black/[.15] dark:bg-white/[.15] peer-checked:bg-[#5f7f67] relative transition-colors after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:w-4 after:h-4 after:rounded-full after:bg-white after:shadow-sm after:transition-transform peer-checked:after:translate-x-[18px]"></span>
+                            </label>
+                            <span id="mac-cookie-hint" class="ml-3 text-[11px] text-accents-5"></span>
+                        </div>
+                    </div>
+                    <div id="mac-cookie-manual-group" class="hidden">
+                        <label class="block text-[13px] font-semibold mb-2" data-i18n="hotspot_profiles.form.mac_cookie_timeout">MAC cookie timeout</label>
+                        <input type="text" name="mac_cookie_timeout" placeholder="e.g. 5d" aria-label="MAC cookie timeout"
+                            class="w-full h-11 rounded-xl bg-black/[.04] dark:bg-white/[.05] border border-black/10 dark:border-white/10 px-3.5 text-[14px] outline-none focus:border-[#5f7f67] focus:ring-[3px] focus:ring-[#5f7f67]/20 transition">
+                    </div>
+                </div>
+
+                <input type="hidden" name="mac_cookie_auto" id="mac-cookie-auto" value="1">
 
             </form>
         </div>

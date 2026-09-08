@@ -54,6 +54,22 @@ class ProfileController extends Controller
                     $meta = HotspotHelper::parseProfileMetadata($profile['on-login'] ?? '');
                     $profile['meta'] = $meta;
                     $profile['meta']['expired_mode_formatted'] = HotspotHelper::formatExpiredMode($meta['expired_mode'] ?? '');
+
+                    // Split validity_raw ke d/h/m untuk populate form edit
+                    $profile['val_d'] = '';
+                    $profile['val_h'] = '';
+                    $profile['val_m'] = '';
+                    if (! empty($meta['validity_raw'])) {
+                        if (preg_match('/(\d+)d/i', $meta['validity_raw'], $m)) {
+                            $profile['val_d'] = $m[1];
+                        }
+                        if (preg_match('/(\d+)h/i', $meta['validity_raw'], $m)) {
+                            $profile['val_h'] = $m[1];
+                        }
+                        if (preg_match('/(\d+)m/i', $meta['validity_raw'], $m)) {
+                            $profile['val_m'] = $m[1];
+                        }
+                    }
                 }
                 unset($profile);
 
@@ -157,6 +173,18 @@ class ProfileController extends Controller
         $price = $_POST['price'] ?? '';
         $sellingPrice = $_POST['selling_price'] ?? '';
 
+        // MAC cookie timeout: kosong = ikut validity (auto), isi manual = override.
+        // Default MikroTik tanpa field ini adalah 3d — padahal validity bisa
+        // 7d/30d, sehingga device lama kehilangan MAC cookie duluan.
+        $cookieAuto = ($_POST['mac_cookie_auto'] ?? '1') === '1';
+        $cookieManual = trim($_POST['mac_cookie_timeout'] ?? '');
+        $macCookieTimeout = '';
+        if (! $cookieAuto && $cookieManual !== '') {
+            $macCookieTimeout = $cookieManual;
+        } elseif ($cookieAuto && $validity !== '') {
+            $macCookieTimeout = $validity;
+        }
+
         // Construct on-login script
         // Construct on-login script
         $metaScript = sprintf(
@@ -202,6 +230,10 @@ class ProfileController extends Controller
 
             if (! empty($rateLimit)) {
                 $profileData['rate-limit'] = $rateLimit;
+            }
+
+            if ($macCookieTimeout !== '') {
+                $profileData['mac-cookie-timeout'] = $macCookieTimeout;
             }
 
             $res = $API->comm('/ip/hotspot/user/profile/add', $profileData);
@@ -389,6 +421,16 @@ class ProfileController extends Controller
         $price = $_POST['price'] ?? '';
         $sellingPrice = $_POST['selling_price'] ?? '';
 
+        // MAC cookie timeout: kosong = ikut validity (auto), isi manual = override.
+        $cookieAuto = ($_POST['mac_cookie_auto'] ?? '1') === '1';
+        $cookieManual = trim($_POST['mac_cookie_timeout'] ?? '');
+        $macCookieTimeout = '';
+        if (! $cookieAuto && $cookieManual !== '') {
+            $macCookieTimeout = $cookieManual;
+        } elseif ($cookieAuto && $validity !== '') {
+            $macCookieTimeout = $validity;
+        }
+
         $metaScript = sprintf(
             ':put (",%s,%s,%s,%s,,");',
             $expiredMode,
@@ -429,6 +471,10 @@ class ProfileController extends Controller
             }
 
             $profileData['rate-limit'] = $rateLimit;
+
+            if ($macCookieTimeout !== '') {
+                $profileData['mac-cookie-timeout'] = $macCookieTimeout;
+            }
 
             $res = $API->comm('/ip/hotspot/user/profile/set', $profileData);
             $API->disconnect();
