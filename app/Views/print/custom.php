@@ -24,9 +24,16 @@
              display: inline-block;
              margin: 5px;
              page-break-inside: avoid;
-        }
     </style>
-    <script src="/assets/js/qrious.min.js"></script>
+    <script>
+        // Template dengan <img> rusak/ hilang: sembunyikan saat print agar
+        // ikon broken-image tidak ikut tercetak.
+        window.addEventListener("error", function (e) {
+            if (e.target && e.target.tagName === "IMG") {
+                e.target.style.display = "none";
+            }
+        }, true);
+    </script>
 </head>
 <body>
     <?php include __DIR__.'/toolbar.php'; ?>

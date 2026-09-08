@@ -73,12 +73,26 @@ class TemplateHelper
                 html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
                 body { display: flex; align-items: center; justify-content: center; background-color: transparent; }
                 #wrapper { display: inline-block; transform-origin: center center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+                img.kai-broken-img { display: inline-flex; align-items: center; justify-content: center;
+                    min-width: 60px; height: 40px; padding: 0 6px;
+                    border: 1px dashed #b6c2ba; border-radius: 6px; background: #f4f7f5;
+                    color: #7d8982; font: 700 8px/1.2 Arial, sans-serif; text-transform: uppercase; letter-spacing: .5px; }
             </style>
             <script src="/assets/js/qrious.min.js"></script>
         </head>
         <body>
             <div id="wrapper">'.$mockContent.'</div>
             <script>
+                // Fallback gambar rusak/ hilang di konten template: ganti <img> pecah
+                // dengan placeholder berlabel, bukan ikon broken-image browser.
+                window.addEventListener("error", function (e) {
+                    var el = e.target;
+                    if (!el || el.tagName !== "IMG" || el.dataset.kaiBroken) return;
+                    el.dataset.kaiBroken = "1";
+                    el.src = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAUwAOw==";
+                    el.classList.add("kai-broken-img");
+                    el.alt = "Image missing";
+                }, true);
                 window.addEventListener("load", () => {
                     const wrap = document.getElementById("wrapper");
                     if(!wrap) return;

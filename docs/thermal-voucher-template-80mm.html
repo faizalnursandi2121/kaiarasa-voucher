@@ -1,0 +1,269 @@
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .voucher {
+        width: 280px;
+        margin: 0 auto;
+        background: #fffdf8;
+        border-radius: 0;
+        overflow: hidden;
+    }
+
+    .v-header {
+        padding: 12px 12px 10px;
+        text-align: center;
+        background: #657d70;
+        color: #fffdf8;
+    }
+
+    .v-header img {
+        max-width: 120px;
+        max-height: 38px;
+        object-fit: contain;
+        display: inline-block;
+    }
+
+    .v-content {
+        padding: 12px;
+        background: #fffdf8;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #34483e;
+    }
+
+    .plan {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .plan-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: #34483e;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .price {
+        margin-top: 2px;
+        font-size: 22px;
+        font-weight: 800;
+        color: #657d70;
+    }
+
+    .credentials {
+        margin-bottom: 10px;
+        border: 1px solid #d4ded7;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #ffffff;
+    }
+
+    .credential {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 10px;
+        border-bottom: 1px solid #e8ede9;
+    }
+
+    .credential:last-child {
+        border-bottom: 0;
+    }
+
+    .label {
+        font-size: 8px;
+        color: #87938c;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+    }
+
+    .value {
+        font-size: 12px;
+        font-weight: 700;
+        color: #34483e;
+        text-align: right;
+        word-break: break-word;
+    }
+
+    .details {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+
+    .detail {
+        flex: 1;
+        padding: 7px 4px;
+        background: #eef3ef;
+        border-radius: 6px;
+        text-align: center;
+    }
+
+    .detail-label {
+        display: block;
+        font-size: 7px;
+        color: #7d8982;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-bottom: 2px;
+        font-weight: 700;
+    }
+
+    .detail-value {
+        display: block;
+        font-size: 10px;
+        color: #34483e;
+        font-weight: 800;
+    }
+
+    .qr-section {
+        text-align: center;
+        padding: 2px 0 10px;
+    }
+
+    .qr-box {
+        display: inline-block;
+        padding: 6px;
+        background: #ffffff;
+        border: 1px solid #d4ded7;
+        border-radius: 8px;
+    }
+
+    .qr-title {
+        margin-top: 6px;
+        font-size: 10px;
+        font-weight: 800;
+        color: #34483e;
+    }
+
+    .qr-description {
+        margin-top: 2px;
+        font-size: 8px;
+        color: #7d8982;
+    }
+
+    .login-box {
+        margin-top: 2px;
+        padding: 8px;
+        background: #eef3ef;
+        border: 1px solid #d4ded7;
+        border-radius: 6px;
+        text-align: center;
+    }
+
+    .login-label {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 7px;
+        color: #657d70;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+    }
+
+    .login-url {
+        color: #34483e;
+        font-size: 8px;
+        font-weight: 600;
+        word-break: break-all;
+    }
+
+    .footer {
+        padding: 8px 10px;
+        background: #eef3ef;
+        border-top: 1px solid #d4ded7;
+        text-align: center;
+        font-size: 7px;
+        color: #7d8982;
+    }
+
+    @media print {
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+        }
+        .voucher {
+            box-shadow: none;
+            width: 280px;
+        }
+    }
+</style>
+
+<div class="voucher">
+
+    <div class="v-header">
+
+        <div class="logo">
+            {{logo id=oEIftX}}
+        </div>
+
+    </div>
+
+    <div class="v-content">
+
+        <div class="plan">
+            <div class="plan-name">{{profile}}</div>
+            <div class="price">{{price}}</div>
+        </div>
+
+        <div class="credentials">
+
+            <div class="credential">
+                <div class="label">Username</div>
+                <div class="value">{{username}}</div>
+            </div>
+
+            <div class="credential">
+                <div class="label">Password</div>
+                <div class="value">{{password}}</div>
+            </div>
+
+        </div>
+
+        <div class="details">
+
+            <div class="detail">
+                <span class="detail-label">Validity</span>
+                <span class="detail-value">{{validity}}</span>
+            </div>
+
+            <div class="detail">
+                <span class="detail-label">Time Limit</span>
+                <span class="detail-value">{{timelimit}}</span>
+            </div>
+
+        </div>
+
+        <div class="qr-section">
+
+            <div class="qr-box">
+                {{qrcode size=90}}
+            </div>
+
+            <div class="qr-title">
+                Scan to Connect
+            </div>
+
+        </div>
+
+        <div class="login-box">
+            <span class="login-label">
+                Login Page
+            </span>
+
+            <span class="login-url">
+                {{login_url}}
+            </span>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Please keep this voucher until your WiFi session expires.
+    </div>
+
+</div>

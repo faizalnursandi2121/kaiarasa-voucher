@@ -132,6 +132,7 @@
         "drag_drop": "Drag and drop or click to select file",
         "supports_formats": "Supports PNG, JPG, SVG, GIF",
         "no_logos": "No logos uploaded yet.",
+        "logo_broken": "File missing",
         "id_copied": "ID Copied",
         "logo_id_copied_desc": "Logo ID <strong>{id}</strong> copied to clipboard.",
         "delete_logo_title": "Delete Logo?",
