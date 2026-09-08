@@ -34,6 +34,7 @@
         "search": "Cari",
         "previous": "Sebelumnya",
         "next": "Selanjutnya",
+        "clear_all": "Hapus semua",
         "confirm_delete": "Apakah Anda yakin ingin menghapus item ini?",
         "page_of": "Halaman {current} dari {total}",
         "all_topics": "Semua Topik",
